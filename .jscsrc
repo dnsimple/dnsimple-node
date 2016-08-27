@@ -1,0 +1,8 @@
+
+{
+  "preset": "node-style-guide",
+  "disallowKeywords": ["with"],
+  "requireSpread": false,
+  "requireTemplateStrings": false,
+  "requireCamelCaseOrUpperCaseIdentifiers": false
+}

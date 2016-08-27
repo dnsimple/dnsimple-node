@@ -1,0 +1,43 @@
+{
+  "name": "dnsimple",
+  "version": "0.0.1",
+  "description": "DNSimple API wrapper",
+  "keywords": [
+    "dnsimple",
+    "domains",
+    "dns",
+    "domain management",
+    "ssl certificates"
+  ],
+  "homepage": "https://github.com/dnsimple/dnsimple-node",
+  "author": "DNSimple <support@dnsimple.com> (https://dnsimple.com/)",
+  "contributors": [
+    "Anthony Eden <anthony.eden@dnsimple.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dnsimple/dnsimple-node.git"
+  },
+  "bugs:": "https://github.com/dnsimple/dnsimple-node/issues",
+  "engines": {
+    "node": ">= v0.10.0"
+  },
+  "main": "lib/dnsimple.js",
+  "devDependencies": {
+    "chai": "~1.10.0",
+    "chai-as-promised": "~4.1.1",
+    "jscs": "^2.3.5",
+    "mocha": "~2.1.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "lodash": "^4.11.1",
+    "qs": "^2.4.2"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "npm run lint && mocha",
+    "lint": "jscs ."
+  }
+}
+
