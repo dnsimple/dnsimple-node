@@ -15,7 +15,7 @@ describe('identity', function() {
                      .reply(fixture.statusCode, fixture.body);
 
     it('produces an account', function(done) {
-      dnsimple.identity.whoami(function(error, response) {
+      dnsimple.identity.whoami({}, function(error, response) {
         expect(error).to.be.null;
         expect(response.data.user).to.be.null;
         var account = response.data.account;
@@ -33,7 +33,7 @@ describe('identity', function() {
                      .reply(fixture.statusCode, fixture.body);
 
     it('produces a user', function(done) {
-      dnsimple.identity.whoami(function(error, response) {
+      dnsimple.identity.whoami({}, function(error, response) {
         expect(error).to.be.null;
         expect(response.data.account).to.be.null;
         var user = response.data.user;

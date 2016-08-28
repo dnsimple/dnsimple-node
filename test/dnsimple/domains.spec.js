@@ -13,12 +13,56 @@ describe('domains', function() {
     var accountId = '1010';
     var fixture = testUtils.fixture('listDomains/success.http');
 
+    it('supports pagination', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?page=1')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.listDomains(accountId, {page: 1}, function(error, response) {});
+
+      endpoint.done();
+      done();
+    });
+
+    it('supports extra request options', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?foo=bar')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.listDomains(accountId, {query: {foo: 'bar'}}, function(error, response) {});
+
+      endpoint.done();
+      done();
+    });
+
+    it('supports sorting', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?sort=expires_on%3Aasc')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.listDomains(accountId, {sort: 'expires_on:asc'}, function(error, response) {});
+
+      endpoint.done();
+      done();
+    });
+
+    it('supports filter', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?name_like=example')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.listDomains(accountId, {filter: {name_like: 'example'}}, function(error, response) {});
+
+      endpoint.done();
+      done();
+    });
+
     it('produces a domain list', function(done) {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, function(error, response) {
+      dnsimple.domains.listDomains(accountId, {}, function(error, response) {
         expect(error).to.be.null;
         var domains = response.data;
         expect(domains.length).to.eq(2);
@@ -33,7 +77,7 @@ describe('domains', function() {
         .get('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, function(error, response) {
+      dnsimple.domains.listDomains(accountId, {}, function(error, response) {
         expect(error).to.be.null;
         var pagination = response.pagination;
         expect(pagination).to.not.be.null;
@@ -52,7 +96,7 @@ describe('domains', function() {
         .get('/v2/1010/domains/example-alpha.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.domain(accountId, 'example-alpha.com', function(error, response) {
+      dnsimple.domains.domain(accountId, 'example-alpha.com', {}, function(error, response) {
         expect(error).to.be.null;
         var domain = response.data;
         expect(domain.id).to.eq(1);
@@ -76,7 +120,7 @@ describe('domains', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.domains.domain(accountId, 'example.com', function(error, response) {
+        dnsimple.domains.domain(accountId, 'example.com', {}, function(error, response) {
           expect(error).to.not.be.null
           done();
         });
