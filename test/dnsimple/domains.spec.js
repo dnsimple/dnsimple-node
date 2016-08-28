@@ -29,13 +29,13 @@ describe('domains', function() {
   });
 
   describe('#domain', function() {
+    var accountId = '1010';
     var fixture = testUtils.fixture('getDomain/success.http');
     var endpoint = nock('https://api.dnsimple.com')
                      .get('/v2/1010/domains/example-alpha.com')
                      .reply(fixture.statusCode, fixture.body);
 
     it('produces a domain', function(done) {
-      var accountId = '1010'
       var domainId = 'example-alpha.com';
       dnsimple.domains.domain(accountId, domainId, function(error, response) {
         expect(error).to.be.null;
@@ -55,7 +55,17 @@ describe('domains', function() {
     });
 
     describe('when the domain does not exist', function() {
+      var fixture = testUtils.fixture('notfound-domain.http');
+      var endpoint = nock('https://api.dnsimple.com')
+                       .get('/v2/1010/domains/example.com')
+                       .reply(fixture.statusCode, fixture.body);
 
+      it('produces an error', function(done) {
+        dnsimple.domains.domain(accountId, 'example.com', function(error, response) {
+          expect(error).to.not.be.null
+          done();
+        });
+      });
     });
 
   });
