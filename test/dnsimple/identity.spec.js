@@ -16,9 +16,11 @@ var endpoint = nock('https://api.dnsimple.com')
 describe('identity', function() {
   describe('#whoami', function() {
     it('produces an account', function(done) {
-      dnsimple.identity.whoami(function(error, account) {
+      dnsimple.identity.whoami(function(error, response) {
         expect(error).to.be.null;
-        expect(account).to.eql({id: 1});
+        var account = response.data.account;
+        expect(account.id).to.eql(1);
+        expect(account.email).to.eql('example-account@example.com');
         done();
       });
     });
