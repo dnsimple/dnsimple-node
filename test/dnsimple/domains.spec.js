@@ -18,7 +18,10 @@ describe('domains', function() {
       var accountId = '1010'
       dnsimple.domains.listDomains(accountId, function(error, response) {
         expect(error).to.be.null;
-        expect(response.data.length).to.eq(2);
+        var domains = response.data;
+        expect(domains.length).to.eq(2);
+        expect(domains[0].name).to.eq('example-alpha.com');
+        expect(domains[0].account_id).to.eq(1010);
         done();
       });
     });
