@@ -1,7 +1,6 @@
 'use strict';
 
 var testUtils = require('../testUtils');
-
 var dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken(),
 });
