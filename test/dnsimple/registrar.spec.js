@@ -31,4 +31,26 @@ describe('registrar', function() {
       });
     });
   });
+
+  describe('#registerDomain', function() {
+    var fixture = testUtils.fixture('registerDomain/success.http');
+
+    it('produces a domain', function(done) {
+      var attributes = {registrant_id: '10'};
+
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/registrar/domains/example.com/registration', attributes)
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.registrar.registerDomain(accountId, domainId, attributes).then(function(response) {
+        var domain = response.data;
+        expect(domain.id).to.eq(1);
+        expect(domain.name).to.eq('example.com');
+        expect(domain.state).to.eq('registered');
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
 });
