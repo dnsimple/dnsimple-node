@@ -18,6 +18,8 @@ There are no dependencies to install.
 
 This library is a nodejs client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
+The DNSimple nodejs library uses promises exclusively, thus all client calls that call out to the DNSimple API will return a Promise. The examples below demonstrate basic usage.
+
 :warning: Note: This library is currently not exposed in NPM. To make these examples work you must create a `node_modules` directory in your home directory and soft link from there to the directory where you checked out the `dnsimple-node` repository. Example: `ln -s /Users/you/development/aeden/dnsimple-node /Users/you/node_modules/dnsimple`.
 
 ```javascript
