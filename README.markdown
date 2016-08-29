@@ -20,18 +20,6 @@ This library is a nodejs client you can use to interact with the [DNSimple API v
 
 ```javascript
 var client = require('dnsimple')({
-  baseUrl: 'https://api.sandbox.dnsimple.com',
-  accessToken: process.env.TOKEN,
-});
-```
-
-## Sandbox Usage
-
-If you would like to test in the [DNSimple sandbox environment](https://developer.dnsimple.com/sandbox/) then pass the 'baseUrl' option when creating the client:
-
-```javascript
-var client = require('dnsimple')({
-  baseUrl: 'https://api.sandbox.dnsimple.com',
   accessToken: process.env.TOKEN,
 });
 
@@ -58,6 +46,17 @@ client.domains.createDomain(accountId, "example.com", {}, function(error, respon
 // Get a domain
 client.domains.domain(accountId, "example.com", {}, function(error, response) {
   console.log(response.data);
+});
+```
+
+## Sandbox Usage
+
+If you would like to test in the [DNSimple sandbox environment](https://developer.dnsimple.com/sandbox/) then pass the 'baseUrl' option when creating the client:
+
+```javascript
+var client = require('dnsimple')({
+  baseUrl: 'https://api.sandbox.dnsimple.com',
+  accessToken: process.env.TOKEN,
 });
 ```
 
