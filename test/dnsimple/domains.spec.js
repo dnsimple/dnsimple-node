@@ -62,7 +62,7 @@ describe('domains', function() {
         .get('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {}).then(function(response) {
+      dnsimple.domains.listDomains(accountId).then(function(response) {
         var domains = response.data;
         expect(domains.length).to.eq(2);
         expect(domains[0].name).to.eq('example-alpha.com');
@@ -78,7 +78,7 @@ describe('domains', function() {
         .get('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {}).then(function(response) {
+      dnsimple.domains.listDomains(accountId).then(function(response) {
         var pagination = response.pagination;
         expect(pagination).to.not.be.null;
         expect(pagination.current_page).to.eq(1);
@@ -98,7 +98,7 @@ describe('domains', function() {
         .get('/v2/1010/domains/example-alpha.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.domain(accountId, 'example-alpha.com', {}).then(function(response) {
+      dnsimple.domains.domain(accountId, 'example-alpha.com').then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         expect(domain.account_id).to.eq(1010);
@@ -123,7 +123,7 @@ describe('domains', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.domains.domain(accountId, 'example.com', {}).then(function(response) {
+        dnsimple.domains.domain(accountId, 'example.com').then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
@@ -143,7 +143,7 @@ describe('domains', function() {
         .post('/v2/1010/domains', {name: 'example-alpha.com'})
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createDomain(accountId, attributes, {});
+      dnsimple.domains.createDomain(accountId, attributes);
 
       endpoint.done();
       done();
@@ -154,7 +154,7 @@ describe('domains', function() {
         .post('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createDomain(accountId, attributes, {}).then(function(response) {
+      dnsimple.domains.createDomain(accountId, attributes).then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         done();
@@ -173,7 +173,7 @@ describe('domains', function() {
         .delete('/v2/1010/domains/example.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.deleteDomain(accountId, 'example.com', {}).then(function(response) {
+      dnsimple.domains.deleteDomain(accountId, 'example.com').then(function(response) {
         expect(response).to.eql({});
         done();
       }, function(error) {
@@ -191,7 +191,7 @@ describe('domains', function() {
         .post('/v2/1010/domains/example.com/token')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.resetDomainToken(accountId, 'example.com', {}).then(function(response) {
+      dnsimple.domains.resetDomainToken(accountId, 'example.com').then(function(response) {
         var domain = response.data
         expect(domain.id).to.eq(1);
         done();
