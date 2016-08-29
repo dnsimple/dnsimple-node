@@ -129,7 +129,7 @@ describe('zones', function() {
     });
   });
 
-  describe('#zone_file', function() {
+  describe('#zoneFile', function() {
     var accountId = '1010';
     var fixture = testUtils.fixture('getZoneFile/success.http');
 
@@ -138,7 +138,7 @@ describe('zones', function() {
         .get('/v2/1010/zones/example-alpha.com/file')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.zone_file(accountId, 'example-alpha.com').then(function(response) {
+      dnsimple.zones.zoneFile(accountId, 'example-alpha.com').then(function(response) {
         var zone = response.data;
         expect(zone).to.not.be.null;
         done();
@@ -154,7 +154,7 @@ describe('zones', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.zone_file(accountId, 'example.com').then(function(response) {
+        dnsimple.zones.zoneFile(accountId, 'example.com').then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
