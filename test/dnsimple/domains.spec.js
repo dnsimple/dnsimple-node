@@ -18,7 +18,7 @@ describe('domains', function() {
         .get('/v2/1010/domains?page=1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {page: 1}, function(error, response) {});
+      dnsimple.domains.listDomains(accountId, {page: 1});
 
       endpoint.done();
       done();
@@ -29,7 +29,7 @@ describe('domains', function() {
         .get('/v2/1010/domains?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {query: {foo: 'bar'}}, function(error, response) {});
+      dnsimple.domains.listDomains(accountId, {query: {foo: 'bar'}});
 
       endpoint.done();
       done();
@@ -40,7 +40,7 @@ describe('domains', function() {
         .get('/v2/1010/domains?sort=expires_on%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {sort: 'expires_on:asc'}, function(error, response) {});
+      dnsimple.domains.listDomains(accountId, {sort: 'expires_on:asc'});
 
       endpoint.done();
       done();
@@ -51,7 +51,7 @@ describe('domains', function() {
         .get('/v2/1010/domains?name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {filter: {name_like: 'example'}}, function(error, response) {});
+      dnsimple.domains.listDomains(accountId, {filter: {name_like: 'example'}});
 
       endpoint.done();
       done();
@@ -62,13 +62,14 @@ describe('domains', function() {
         .get('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.domains.listDomains(accountId, {}).then(function(response) {
         var domains = response.data;
         expect(domains.length).to.eq(2);
         expect(domains[0].name).to.eq('example-alpha.com');
         expect(domains[0].account_id).to.eq(1010);
         done();
+      }, function(error) {
+        done(error);
       });
     });
 
@@ -77,12 +78,13 @@ describe('domains', function() {
         .get('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, {}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.domains.listDomains(accountId, {}).then(function(response) {
         var pagination = response.pagination;
         expect(pagination).to.not.be.null;
         expect(pagination.current_page).to.eq(1);
         done();
+      }, function(error) {
+        done(error);
       });
     });
   });
@@ -96,8 +98,7 @@ describe('domains', function() {
         .get('/v2/1010/domains/example-alpha.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.domain(accountId, 'example-alpha.com', {}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.domains.domain(accountId, 'example-alpha.com', {}).then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         expect(domain.account_id).to.eq(1010);
@@ -110,6 +111,8 @@ describe('domains', function() {
         expect(domain.created_at).to.eq('2014-12-06T15:56:55.573Z');
         expect(domain.updated_at).to.eq('2015-12-09T00:20:56.056Z');
         done();
+      }, function(error) {
+        done(error);
       });
     });
 
@@ -120,8 +123,10 @@ describe('domains', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.domains.domain(accountId, 'example.com', {}, function(error, response) {
-          expect(error).to.not.be.null
+        dnsimple.domains.domain(accountId, 'example.com', {}).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
           done();
         });
       });
@@ -138,7 +143,7 @@ describe('domains', function() {
         .post('/v2/1010/domains', {name: 'example-alpha.com'})
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createDomain(accountId, attributes, {}, function(error, response) { });
+      dnsimple.domains.createDomain(accountId, attributes, {});
 
       endpoint.done();
       done();
@@ -149,11 +154,12 @@ describe('domains', function() {
         .post('/v2/1010/domains')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createDomain(accountId, attributes, {}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.domains.createDomain(accountId, attributes, {}).then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         done();
+      }, function(error) {
+        done(error);
       });
     });
   });
@@ -167,10 +173,11 @@ describe('domains', function() {
         .delete('/v2/1010/domains/example.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.deleteDomain(accountId, 'example.com', {}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.domains.deleteDomain(accountId, 'example.com', {}).then(function(response) {
         expect(response).to.eql({});
         done();
+      }, function(error) {
+        done(error);
       });
     });
   });
@@ -184,11 +191,12 @@ describe('domains', function() {
         .post('/v2/1010/domains/example.com/token')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.resetDomainToken(accountId, 'example.com', {}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.domains.resetDomainToken(accountId, 'example.com', {}).then(function(response) {
         var domain = response.data
         expect(domain.id).to.eq(1);
         done();
+      }, function(error) {
+        done(error);
       });
     });
 

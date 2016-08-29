@@ -16,7 +16,7 @@ There are no dependencies to install.
 
 ## Usage
 
-This library is a nodejs client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/). Here are some examples.
+This library is a nodejs client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
 :warning: Note: This library is currently not exposed in NPM. To make these examples work you must create a `node_modules` directory in your home directory and soft link from there to the directory where you checked out the `dnsimple-node` repository. Example: `ln -s /Users/you/development/aeden/dnsimple-node /Users/you/node_modules/dnsimple`.
 
@@ -26,28 +26,38 @@ var client = require('dnsimple')({
 });
 
 // Fetch your details
-client.identity.whoami({}, function(error, response) {
+client.identity.whoami({}).then(function(response) {
   console.log(response.data);
+}, function(error) {
+  console.log(error);
 });
 
 // List your domains
 var accountId = '1010';
-client.domains.listDomains(accountId, {}, function(error, response) {
+client.domains.listDomains(accountId, {}).then(function(response) {
   console.log(response.data);
+}, function(error) {
+  console.log(error);
 });
 
-client.domains.listDomains(accountId, {page: 3}, function(error, response) {
+client.domains.listDomains(accountId, {page: 3}).then(function(response) {
   console.log(response.data);
+}, function(error) {
+  console.log(error);
 });
 
 // Create a domain
-client.domains.createDomain(accountId, "example.com", {}, function(error, response) {
+client.domains.createDomain(accountId, "example.com", {}).then(function(response) {
   console.log(response.data);
+}, function(error) {
+  console.log(error);
 });
 
 // Get a domain
-client.domains.domain(accountId, "example.com", {}, function(error, response) {
+client.domains.domain(accountId, "example.com", {}).then(function(response) {
   console.log(response.data);
+}, function(error) {
+  console.log(error);
 });
 ```
 

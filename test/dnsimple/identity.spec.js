@@ -15,13 +15,14 @@ describe('identity', function() {
                      .reply(fixture.statusCode, fixture.body);
 
     it('produces an account', function(done) {
-      dnsimple.identity.whoami({}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.identity.whoami({}).then(function(response) {
         expect(response.data.user).to.be.null;
         var account = response.data.account;
         expect(account.id).to.eql(1);
         expect(account.email).to.eql('example-account@example.com');
         done();
+      }, function(error) {
+        done(error);
       });
     });
   });
@@ -33,13 +34,14 @@ describe('identity', function() {
                      .reply(fixture.statusCode, fixture.body);
 
     it('produces a user', function(done) {
-      dnsimple.identity.whoami({}, function(error, response) {
-        expect(error).to.be.null;
+      dnsimple.identity.whoami({}).then(function(response) {
         expect(response.data.account).to.be.null;
         var user = response.data.user;
         expect(user.id).to.eql(1);
         expect(user.email).to.eql('example-user@example.com');
         done();
+      }, function(error) {
+        done(error);
       });
     });
   });
