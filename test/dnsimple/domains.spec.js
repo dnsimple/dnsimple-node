@@ -158,4 +158,22 @@ describe('domains', function() {
     });
   });
 
+  describe('#deleteDomain', function() {
+    var accountId = '1010';
+    var fixture = testUtils.fixture('deleteDomain/success.http');
+
+    it('produces nothing', function(done) {
+      nock('https://api.dnsimple.com')
+        .delete('/v2/1010/domains/example.com')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.deleteDomain(accountId, 'example.com', {}, function(error, response) {
+        expect(error).to.be.null;
+        expect(response).to.eql({});
+        done();
+      });
+    });
+
+  });
+
 });

@@ -28,12 +28,14 @@ var utils = module.exports = {
       headers[pair[0]] = pair[1];
     }
 
-    var json = JSON.parse(lines.join('\n'));
-
     var fixture = {
       statusCode: statusCode,
       headers: headers,
-      body: json,
+      body: null,
+    }
+
+    if (statusCode != 204) {
+      fixture.body = JSON.parse(lines.join('\n'));
     }
 
     return fixture;
