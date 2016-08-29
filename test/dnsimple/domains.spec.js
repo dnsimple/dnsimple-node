@@ -126,6 +126,36 @@ describe('domains', function() {
         });
       });
     });
-
   });
+
+  describe('#createDomain', function() {
+    var accountId = '1010';
+    var attributes = {name: 'example-alpha.com'};
+    var fixture = testUtils.fixture('createDomain/created.http');
+
+    it('builds the correct request', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .post('/v2/1010/domains', {name: 'example-alpha.com'})
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.createDomain(accountId, attributes, {}, function(error, response) { });
+
+      endpoint.done();
+      done();
+    });
+
+    it('produces a domain', function(done) {
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/domains')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.createDomain(accountId, attributes, {}, function(error, response) {
+        expect(error).to.be.null;
+        var domain = response.data;
+        expect(domain.id).to.eq(1);
+        done();
+      });
+    });
+  });
+
 });
