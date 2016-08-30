@@ -120,12 +120,12 @@ describe('zone records', function() {
     describe('when the record does not exist', function() {
       var fixture = testUtils.fixture('notfound-record.http');
       nock('https://api.dnsimple.com')
-        .get('/v2/1010/zones/example.com/record/1')
+        .get('/v2/1010/zones/example.com/records/0')
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.record(accountId, 'example.com', 1).then(function(response) {
-          done();
+        dnsimple.zones.record(accountId, 'example.com', '0').then(function(response) {
+          done('Error expected but future resolved');
         }, function(error) {
           expect(error).to.not.be.null;
           done();
