@@ -28,7 +28,7 @@ var client = require('dnsimple')({
 });
 
 // Fetch your details
-client.identity.whoami({}).then(function(response) {
+client.identity.whoami().then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
@@ -36,7 +36,7 @@ client.identity.whoami({}).then(function(response) {
 
 // List your domains
 var accountId = '1010';
-client.domains.listDomains(accountId, {}).then(function(response) {
+client.domains.listDomains(accountId).then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
@@ -49,14 +49,14 @@ client.domains.listDomains(accountId, {page: 3}).then(function(response) {
 });
 
 // Create a domain
-client.domains.createDomain(accountId, "example.com", {}).then(function(response) {
+client.domains.createDomain(accountId, "example.com").then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
 });
 
 // Get a domain
-client.domains.getDomain(accountId, "example.com", {}).then(function(response) {
+client.domains.getDomain(accountId, "example.com").then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
