@@ -89,7 +89,7 @@ describe('zones', function() {
     });
   });
 
-  describe('#zone', function() {
+  describe('#getZone', function() {
     var accountId = '1010';
     var fixture = testUtils.fixture('getZone/success.http');
 
@@ -98,7 +98,7 @@ describe('zones', function() {
         .get('/v2/1010/zones/example-alpha.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.zone(accountId, 'example-alpha.com').then(function(response) {
+      dnsimple.zones.getZone(accountId, 'example-alpha.com').then(function(response) {
         var zone = response.data;
         expect(zone.id).to.eq(1);
         expect(zone.account_id).to.eq(1010);
@@ -119,7 +119,7 @@ describe('zones', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.zone(accountId, 'example.com').then(function(response) {
+        dnsimple.zones.getZone(accountId, 'example.com').then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
@@ -129,7 +129,7 @@ describe('zones', function() {
     });
   });
 
-  describe('#zoneFile', function() {
+  describe('#getZoneFile', function() {
     var accountId = '1010';
     var fixture = testUtils.fixture('getZoneFile/success.http');
 
@@ -138,7 +138,7 @@ describe('zones', function() {
         .get('/v2/1010/zones/example-alpha.com/file')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.zoneFile(accountId, 'example-alpha.com').then(function(response) {
+      dnsimple.zones.getZoneFile(accountId, 'example-alpha.com').then(function(response) {
         var zone = response.data;
         expect(zone).to.not.be.null;
         done();
@@ -154,7 +154,7 @@ describe('zones', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.zoneFile(accountId, 'example.com').then(function(response) {
+        dnsimple.zones.getZoneFile(accountId, 'example.com').then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;

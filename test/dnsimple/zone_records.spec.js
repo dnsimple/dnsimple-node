@@ -98,7 +98,7 @@ describe('zone records', function() {
     });
   });
 
-  describe('#record', function() {
+  describe('#getRecord', function() {
     var accountId = '1010';
     var zoneName = 'example.com';
     var fixture = testUtils.fixture('getZoneRecord/success.http');
@@ -108,7 +108,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records/64784')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.record(accountId, 'example.com', 64784).then(function(response) {
+      dnsimple.zones.getRecord(accountId, 'example.com', 64784).then(function(response) {
         var record = response.data;
         expect(record.id).to.eq(64784);
         done();
@@ -124,7 +124,7 @@ describe('zone records', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.record(accountId, 'example.com', '0').then(function(response) {
+        dnsimple.zones.getRecord(accountId, 'example.com', '0').then(function(response) {
           done('Error expected but future resolved');
         }, function(error) {
           expect(error).to.not.be.null;

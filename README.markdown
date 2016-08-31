@@ -56,7 +56,7 @@ client.domains.createDomain(accountId, "example.com", {}).then(function(response
 });
 
 // Get a domain
-client.domains.domain(accountId, "example.com", {}).then(function(response) {
+client.domains.getDomain(accountId, "example.com", {}).then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);

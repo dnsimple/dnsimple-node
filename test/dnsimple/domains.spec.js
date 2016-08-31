@@ -89,7 +89,7 @@ describe('domains', function() {
     });
   });
 
-  describe('#domain', function() {
+  describe('#getDomain', function() {
     var accountId = '1010';
     var fixture = testUtils.fixture('getDomain/success.http');
 
@@ -98,7 +98,7 @@ describe('domains', function() {
         .get('/v2/1010/domains/example-alpha.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.domain(accountId, 'example-alpha.com').then(function(response) {
+      dnsimple.domains.getDomain(accountId, 'example-alpha.com').then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         expect(domain.account_id).to.eq(1010);
@@ -123,7 +123,7 @@ describe('domains', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.domains.domain(accountId, 'example.com').then(function(response) {
+        dnsimple.domains.getDomain(accountId, 'example.com').then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;

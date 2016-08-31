@@ -91,7 +91,7 @@ describe('contacts', function() {
     });
   });
 
-  describe('#contact', function() {
+  describe('#getContact', function() {
     var accountId = '1010';
 
     it('produces a contact', function(done) {
@@ -100,7 +100,7 @@ describe('contacts', function() {
         .get('/v2/1010/contacts/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.contact(accountId, 1).then(function(response) {
+      dnsimple.contacts.getContact(accountId, 1).then(function(response) {
         var contact = response.data;
         expect(contact.id).to.eq(1);
         expect(contact.account_id).to.eq(1010);
@@ -121,7 +121,7 @@ describe('contacts', function() {
           .get('/v2/1010/contacts/0')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.contacts.contact(accountId, '0').then(function(response) {
+        dnsimple.contacts.getContact(accountId, '0').then(function(response) {
           done('Error expected but future resolved');
         }, function(error) {
           expect(error).to.not.be.null;
