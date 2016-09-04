@@ -221,3 +221,189 @@ describe('templates', function() {
     });
   });
 });
+
+describe('template records', function() {
+  describe('#listRecords', function() {
+    var accountId = '1010';
+    var templateId = '1';
+    var fixture = testUtils.fixture('listTemplateRecords/success.http');
+
+    it('supports pagination', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records?page=1')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.listRecords(accountId, templateId, {page: 1});
+
+      endpoint.done();
+      done();
+    });
+
+    it('supports extra request options', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records?foo=bar')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.listRecords(accountId, templateId, {query: {foo: 'bar'}});
+
+      endpoint.done();
+      done();
+    });
+
+    it('supports sorting', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records?sort=name%3Aasc')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.listRecords(accountId, templateId, {sort: 'name:asc'});
+
+      endpoint.done();
+      done();
+    });
+
+    it('produces a template list', function(done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.listRecords(accountId, templateId).then(function(response) {
+        var records = response.data;
+        expect(records.length).to.eq(2);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+
+    it('exposes the pagination info', function(done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.listRecords(accountId, templateId).then(function(response) {
+        var pagination = response.pagination;
+        expect(pagination).to.not.be.null;
+        expect(pagination.current_page).to.eq(1);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+
+  describe('#getTemplate', function() {
+    var accountId = '1010';
+    var templateId = 'name';
+    var recordId = 1;
+
+    it('produces a template', function(done) {
+      var fixture = testUtils.fixture('getTemplateRecord/success.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/name/records/1')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.getRecord(accountId, templateId, recordId).then(function(response) {
+        var record = response.data;
+        expect(record.id).to.eq(301);
+        expect(record.template_id).to.eq(268);
+        expect(record.name).to.eq('');
+        expect(record.content).to.eq('mx.example.com');
+        expect(record.ttl).to.eq(600);
+        expect(record.priority).to.eq(10);
+        expect(record.type).to.eq('MX');
+        expect(record.created_at).to.eq('2016-05-03T08:03:26.444Z');
+        expect(record.updated_at).to.eq('2016-05-03T08:03:26.444Z');
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+
+    describe('when the template does not exist', function() {
+      it('produces an error', function(done) {
+        var fixture = testUtils.fixture('notfound-template.http');
+
+        nock('https://api.dnsimple.com')
+          .get('/v2/1010/templates/0/records/1')
+          .reply(fixture.statusCode, fixture.body);
+
+        dnsimple.templates.getRecord(accountId, 0, recordId).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+
+    describe('when the template record does not exist', function() {
+      it('produces an error', function(done) {
+        var fixture = testUtils.fixture('notfound-record.http');
+
+        nock('https://api.dnsimple.com')
+          .get('/v2/1010/templates/name/records/0')
+          .reply(fixture.statusCode, fixture.body);
+
+        dnsimple.templates.getRecord(accountId, templateId, 0).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#createTemplateRecord', function() {
+    var accountId = '1010';
+    var templateId = 1;
+    var attributes = {content: 'mx.example.com'};
+    var fixture = testUtils.fixture('createTemplateRecord/created.http');
+
+    it('builds the correct request', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .post('/v2/1010/templates/1/records', {content: 'mx.example.com'})
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.createRecord(accountId, templateId, attributes);
+
+      endpoint.done();
+      done();
+    });
+
+    it('produces a record', function(done) {
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/templates/1/records')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.createRecord(accountId, templateId, attributes).then(function(response) {
+        var record = response.data;
+        expect(record.id).to.eq(300);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+
+  describe('#deleteTemplateRecord', function() {
+    var accountId = '1010';
+    var templateId = 1;
+    var recordId = 2;
+    var fixture = testUtils.fixture('deleteTemplateRecord/success.http');
+
+    it('produces nothing', function(done) {
+      nock('https://api.dnsimple.com')
+        .delete('/v2/1010/templates/1/records/2')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.deleteRecord(accountId, templateId, recordId).then(function(response) {
+        expect(response).to.eql({});
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+});
