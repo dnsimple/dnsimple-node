@@ -91,6 +91,7 @@ describe('domains', function() {
 
   describe('#getDomain', function() {
     var accountId = '1010';
+    var domainId = 'example-alpha.com';
     var fixture = testUtils.fixture('getDomain/success.http');
 
     it('produces a domain', function(done) {
@@ -98,7 +99,7 @@ describe('domains', function() {
         .get('/v2/1010/domains/example-alpha.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.getDomain(accountId, 'example-alpha.com').then(function(response) {
+      dnsimple.domains.getDomain(accountId, domainId).then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         expect(domain.account_id).to.eq(1010);
@@ -119,11 +120,11 @@ describe('domains', function() {
     describe('when the domain does not exist', function() {
       var fixture = testUtils.fixture('notfound-domain.http');
       nock('https://api.dnsimple.com')
-        .get('/v2/1010/domains/example.com')
+        .get('/v2/1010/domains/0')
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.domains.getDomain(accountId, 'example.com').then(function(response) {
+        dnsimple.domains.getDomain(accountId, 0).then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
@@ -166,6 +167,7 @@ describe('domains', function() {
 
   describe('#deleteDomain', function() {
     var accountId = '1010';
+    var domainId = 'example.com';
     var fixture = testUtils.fixture('deleteDomain/success.http');
 
     it('produces nothing', function(done) {
@@ -173,7 +175,7 @@ describe('domains', function() {
         .delete('/v2/1010/domains/example.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.deleteDomain(accountId, 'example.com').then(function(response) {
+      dnsimple.domains.deleteDomain(accountId, domainId).then(function(response) {
         expect(response).to.eql({});
         done();
       }, function(error) {
@@ -184,6 +186,7 @@ describe('domains', function() {
 
   describe('#resetDomainToken', function() {
     var accountId = '1010';
+    var domainId = 'example.com';
     var fixture = testUtils.fixture('resetDomainToken/success.http');
 
     it('produces a domain', function(done) {
@@ -191,7 +194,7 @@ describe('domains', function() {
         .post('/v2/1010/domains/example.com/token')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.resetDomainToken(accountId, 'example.com').then(function(response) {
+      dnsimple.domains.resetDomainToken(accountId, domainId).then(function(response) {
         var domain = response.data
         expect(domain.id).to.eq(1);
         done();
