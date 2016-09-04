@@ -220,6 +220,27 @@ describe('templates', function() {
       });
     });
   });
+
+  describe('#applyTemplate', function() {
+    var accountId = '1010';
+    var domainId = 'example.com'
+    var templateId = 1;
+    var fixture = testUtils.fixture('applyTemplate/success.http');
+
+    it('produces nothing', function(done) {
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/domains/example.com/templates/1')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.templates.applyTemplate(accountId, templateId, domainId).then(function(response) {
+        expect(response).to.eql({});
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+
 });
 
 describe('template records', function() {
@@ -291,7 +312,7 @@ describe('template records', function() {
     });
   });
 
-  describe('#getTemplate', function() {
+  describe('#getRecord', function() {
     var accountId = '1010';
     var templateId = 'name';
     var recordId = 1;
@@ -355,7 +376,7 @@ describe('template records', function() {
     });
   });
 
-  describe('#createTemplateRecord', function() {
+  describe('#createRecord', function() {
     var accountId = '1010';
     var templateId = 1;
     var attributes = {content: 'mx.example.com'};
@@ -387,7 +408,7 @@ describe('template records', function() {
     });
   });
 
-  describe('#deleteTemplateRecord', function() {
+  describe('#deleteRecord', function() {
     var accountId = '1010';
     var templateId = 1;
     var recordId = 2;
