@@ -78,14 +78,15 @@ describe('services', function() {
   });
 
   describe('#getService', function() {
+    var serviceId = 1;
     var fixture = testUtils.fixture('getService/success.http');
 
     it('produces a service', function(done) {
       nock('https://api.dnsimple.com')
-        .get('/v2/services/name')
+        .get('/v2/services/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.getService('name').then(function(response) {
+      dnsimple.services.getService(serviceId).then(function(response) {
         var service = response.data;
         expect(service.id).to.eq(1);
         done();
