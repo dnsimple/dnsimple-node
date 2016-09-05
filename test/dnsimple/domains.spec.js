@@ -91,17 +91,31 @@ describe('domains', function() {
 
   describe('#allDomains', function() {
     var accountId = '1010';
-    var fixture = testUtils.fixture('listDomains/success.http');
 
-    it('produces a domain list', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
-        .get('/v2/1010/domains?page=1&per_page=100')
-        .reply(fixture.statusCode, fixture.body);
+    it('produces a complete list', function(done) {
+      var fixture1 = testUtils.fixture('pages-1of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?page=1')
+        .reply(fixture1.statusCode, fixture1.body);
+
+      var fixture2 = testUtils.fixture('pages-2of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?page=2')
+        .reply(fixture2.statusCode, fixture2.body);
+
+      var fixture3 = testUtils.fixture('pages-3of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?page=3')
+        .reply(fixture3.statusCode, fixture3.body);
 
       dnsimple.domains.allDomains(accountId).then(function(domains) {
-        console.log(domains);
+        expect(domains.length).to.eq(5);
+        expect(domains[0].id).to.eq(1);
+        expect(domains[4].id).to.eq(5);
         done();
       }, function(error) {
+        done(error);
+      }).catch(function(error) {
         done(error);
       });
     });
