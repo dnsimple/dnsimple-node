@@ -91,6 +91,38 @@ describe('contacts', function() {
     });
   });
 
+  describe('#allContacts', function() {
+    var accountId = '1010';
+
+    it('produces a complete list', function(done) {
+      var fixture1 = testUtils.fixture('pages-1of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/contacts?page=1')
+        .reply(fixture1.statusCode, fixture1.body);
+
+      var fixture2 = testUtils.fixture('pages-2of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/contacts?page=2')
+        .reply(fixture2.statusCode, fixture2.body);
+
+      var fixture3 = testUtils.fixture('pages-3of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/contacts?page=3')
+        .reply(fixture3.statusCode, fixture3.body);
+
+      dnsimple.contacts.allContacts(accountId).then(function(contacts) {
+        expect(contacts.length).to.eq(5);
+        expect(contacts[0].id).to.eq(1);
+        expect(contacts[4].id).to.eq(5);
+        done();
+      }, function(error) {
+        done(error);
+      }).catch(function(error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#getContact', function() {
     var accountId = '1010';
 
