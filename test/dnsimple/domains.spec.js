@@ -89,6 +89,24 @@ describe('domains', function() {
     });
   });
 
+  describe('#allDomains', function() {
+    var accountId = '1010';
+    var fixture = testUtils.fixture('listDomains/success.http');
+
+    it('produces a domain list', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains?page=1&per_page=100')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.allDomains(accountId).then(function(domains) {
+        console.log(domains);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#getDomain', function() {
     var accountId = '1010';
     var domainId = 'example-alpha.com';
