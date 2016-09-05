@@ -141,7 +141,7 @@ describe('domains', function() {
 
     it('builds the correct request', function(done) {
       var endpoint = nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains', {name: 'example-alpha.com'})
+        .post('/v2/1010/domains', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.createDomain(accountId, attributes);
