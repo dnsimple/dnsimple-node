@@ -77,6 +77,39 @@ describe('domains', function() {
     });
   });
 
+  describe('#allEmailForwards', function() {
+    var accountId = '1010';
+    var domainId = 'example.com'
+
+    it('produces a complete list', function(done) {
+      var fixture1 = testUtils.fixture('pages-1of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains/example.com/email_forwards?page=1')
+        .reply(fixture1.statusCode, fixture1.body);
+
+      var fixture2 = testUtils.fixture('pages-2of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains/example.com/email_forwards?page=2')
+        .reply(fixture2.statusCode, fixture2.body);
+
+      var fixture3 = testUtils.fixture('pages-3of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/domains/example.com/email_forwards?page=3')
+        .reply(fixture3.statusCode, fixture3.body);
+
+      dnsimple.domains.allEmailForwards(accountId, domainId).then(function(items) {
+        expect(items.length).to.eq(5);
+        expect(items[0].id).to.eq(1);
+        expect(items[4].id).to.eq(5);
+        done();
+      }, function(error) {
+        done(error);
+      }).catch(function(error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#getEmailForward', function() {
     var accountId = '1010';
     var domainId = 'example.com';
