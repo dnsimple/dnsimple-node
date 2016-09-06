@@ -77,6 +77,36 @@ describe('services', function() {
     });
   });
 
+  describe('#allServices', function() {
+    it('produces a complete list', function(done) {
+      var fixture1 = testUtils.fixture('pages-1of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/services?page=1')
+        .reply(fixture1.statusCode, fixture1.body);
+
+      var fixture2 = testUtils.fixture('pages-2of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/services?page=2')
+        .reply(fixture2.statusCode, fixture2.body);
+
+      var fixture3 = testUtils.fixture('pages-3of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/services?page=3')
+        .reply(fixture3.statusCode, fixture3.body);
+
+      dnsimple.services.allServices().then(function(items) {
+        expect(items.length).to.eq(5);
+        expect(items[0].id).to.eq(1);
+        expect(items[4].id).to.eq(5);
+        done();
+      }, function(error) {
+        done(error);
+      }).catch(function(error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#getService', function() {
     var serviceId = 1;
     var fixture = testUtils.fixture('getService/success.http');
