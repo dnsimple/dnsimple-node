@@ -40,6 +40,36 @@ describe('webhooks', function() {
     });
   });
 
+  describe('#allWebhooks', function() {
+    var accountId = '1010';
+    var fixture = testUtils.fixture('listDomains/success.http');
+
+    it('supports extra request options', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .get('/v2/1010/webhooks?foo=bar')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.webhooks.allWebhooks(accountId, {query: {foo: 'bar'}});
+
+      endpoint.done();
+      done();
+    });
+
+    it('produces a webhook list', function(done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/webhooks')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.webhooks.allWebhooks(accountId).then(function(items) {
+        expect(items.length).to.eq(2);
+        expect(items[0].id).to.eq(1);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#getDomain', function() {
     var accountId = '1010';
     var webhookId = '1';
