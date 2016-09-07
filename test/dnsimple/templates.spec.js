@@ -78,6 +78,38 @@ describe('templates', function() {
     });
   });
 
+  describe('#allTemplates', function() {
+    var accountId = '1010';
+
+    it('produces a complete list', function(done) {
+      var fixture1 = testUtils.fixture('pages-1of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates?page=1')
+        .reply(fixture1.statusCode, fixture1.body);
+
+      var fixture2 = testUtils.fixture('pages-2of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates?page=2')
+        .reply(fixture2.statusCode, fixture2.body);
+
+      var fixture3 = testUtils.fixture('pages-3of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates?page=3')
+        .reply(fixture3.statusCode, fixture3.body);
+
+      dnsimple.templates.allTemplates(accountId).then(function(items) {
+        expect(items.length).to.eq(5);
+        expect(items[0].id).to.eq(1);
+        expect(items[4].id).to.eq(5);
+        done();
+      }, function(error) {
+        done(error);
+      }).catch(function(error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#getTemplate', function() {
     var accountId = '1010';
     var templateId = 'name';
@@ -307,6 +339,39 @@ describe('template records', function() {
         expect(pagination.current_page).to.eq(1);
         done();
       }, function(error) {
+        done(error);
+      });
+    });
+  });
+
+  describe('#allRecords', function() {
+    var accountId = '1010';
+    var templateId = 1;
+
+    it('produces a complete list', function(done) {
+      var fixture1 = testUtils.fixture('pages-1of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records?page=1')
+        .reply(fixture1.statusCode, fixture1.body);
+
+      var fixture2 = testUtils.fixture('pages-2of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records?page=2')
+        .reply(fixture2.statusCode, fixture2.body);
+
+      var fixture3 = testUtils.fixture('pages-3of3.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/templates/1/records?page=3')
+        .reply(fixture3.statusCode, fixture3.body);
+
+      dnsimple.templates.allRecords(accountId, templateId).then(function(items) {
+        expect(items.length).to.eq(5);
+        expect(items[0].id).to.eq(1);
+        expect(items[4].id).to.eq(5);
+        done();
+      }, function(error) {
+        done(error);
+      }).catch(function(error) {
         done(error);
       });
     });
