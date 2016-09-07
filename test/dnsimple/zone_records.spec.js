@@ -9,7 +9,7 @@ const expect = require('chai').expect;
 const nock = require('nock');
 
 describe('zone records', function() {
-  describe('#listRecords', function() {
+  describe('#listZoneRecords', function() {
     var accountId = '1010';
     var zoneId = 'example.com';
     var fixture = testUtils.fixture('listZoneRecords/success.http');
@@ -19,7 +19,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records?page=1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listRecords(accountId, zoneId, {page: 1});
+      dnsimple.zones.listZoneRecords(accountId, zoneId, {page: 1});
 
       endpoint.done();
       done();
@@ -30,7 +30,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listRecords(accountId, zoneId, {query: {foo: 'bar'}});
+      dnsimple.zones.listZoneRecords(accountId, zoneId, {query: {foo: 'bar'}});
 
       endpoint.done();
       done();
@@ -41,7 +41,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listRecords(accountId, zoneId, {sort: 'name:asc'});
+      dnsimple.zones.listZoneRecords(accountId, zoneId, {sort: 'name:asc'});
 
       endpoint.done();
       done();
@@ -52,7 +52,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records?name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listRecords(accountId, zoneId, {filter: {name_like: 'example'}});
+      dnsimple.zones.listZoneRecords(accountId, zoneId, {filter: {name_like: 'example'}});
 
       endpoint.done();
       done();
@@ -63,7 +63,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listRecords(accountId, zoneId).then(function(response) {
+      dnsimple.zones.listZoneRecords(accountId, zoneId).then(function(response) {
         var records = response.data;
         expect(records.length).to.eq(5);
         expect(records[0].id).to.eq(64779);
@@ -87,7 +87,7 @@ describe('zone records', function() {
         .get(`/v2/1010/zones/${zoneId}/records`)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listRecords(accountId, zoneId).then(function(response) {
+      dnsimple.zones.listZoneRecords(accountId, zoneId).then(function(response) {
         var pagination = response.pagination;
         expect(pagination).to.not.be.null;
         expect(pagination.current_page).to.eq(1);
@@ -98,7 +98,7 @@ describe('zone records', function() {
     });
   });
 
-  describe('#allRecords', function() {
+  describe('#allZoneRecords', function() {
     var accountId = '1010';
     var zoneId = 'example.com';
 
@@ -118,7 +118,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.zones.allRecords(accountId, zoneId).then(function(items) {
+      dnsimple.zones.allZoneRecords(accountId, zoneId).then(function(items) {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
@@ -131,7 +131,7 @@ describe('zone records', function() {
     });
   });
 
-  describe('#getRecord', function() {
+  describe('#getZoneRecord', function() {
     var accountId = '1010';
     var zoneId = 'example.com';
     var fixture = testUtils.fixture('getZoneRecord/success.http');
@@ -141,7 +141,7 @@ describe('zone records', function() {
         .get('/v2/1010/zones/example.com/records/64784')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.getRecord(accountId, zoneId, 64784).then(function(response) {
+      dnsimple.zones.getZoneRecord(accountId, zoneId, 64784).then(function(response) {
         var record = response.data;
         expect(record.id).to.eq(64784);
         done();
@@ -157,7 +157,7 @@ describe('zone records', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.getRecord(accountId, zoneId, '0').then(function(response) {
+        dnsimple.zones.getZoneRecord(accountId, zoneId, '0').then(function(response) {
           done('Error expected but future resolved');
         }, function(error) {
           expect(error).to.not.be.null;
@@ -167,7 +167,7 @@ describe('zone records', function() {
     });
   });
 
-  describe('#createRecord', function() {
+  describe('#createZoneRecord', function() {
     var accountId = '1010';
     var zoneId = 'example.com';
     var attributes = {name: '', type: 'A', ttl: 3600, content: '1.2.3.4'};
@@ -178,7 +178,7 @@ describe('zone records', function() {
         .post('/v2/1010/zones/example.com/records', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.createRecord(accountId, zoneId, attributes);
+      dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
 
       endpoint.done();
       done();
@@ -189,7 +189,7 @@ describe('zone records', function() {
         .post('/v2/1010/zones/example.com/records', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.createRecord(accountId, zoneId, attributes).then(function(response) {
+      dnsimple.zones.createZoneRecord(accountId, zoneId, attributes).then(function(response) {
         var record = response.data;
         expect(record.id).to.eq(64784);
         done();
@@ -199,7 +199,7 @@ describe('zone records', function() {
     });
   });
 
-  describe('#updateRecord', function() {
+  describe('#updateZoneRecord', function() {
     var accountId = '1010';
     var zoneId = 'example.com';
     var recordId = 64784;
@@ -211,7 +211,7 @@ describe('zone records', function() {
         .patch('/v2/1010/zones/example.com/records/' + recordId, attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.updateRecord(accountId, zoneId, recordId, attributes);
+      dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes);
 
       endpoint.done();
       done();
@@ -222,7 +222,7 @@ describe('zone records', function() {
         .patch('/v2/1010/zones/example.com/records/' + recordId, attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.updateRecord(accountId, zoneId, recordId, attributes).then(function(response) {
+      dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes).then(function(response) {
         var record = response.data;
         expect(record.id).to.eq(64784);
         done();
@@ -238,7 +238,7 @@ describe('zone records', function() {
         .reply(fixture.statusCode, fixture.body);
 
       it('produces an error', function(done) {
-        dnsimple.zones.updateRecord(accountId, zoneId, recordId, attributes).then(function(response) {
+        dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes).then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
@@ -248,7 +248,7 @@ describe('zone records', function() {
     });
   });
 
-  describe('#deleteRecord', function() {
+  describe('#deleteZoneRecord', function() {
     var accountId = '1010';
     var zoneId = 'example.com';
     var recordId = 64784;
@@ -259,7 +259,7 @@ describe('zone records', function() {
         .delete('/v2/1010/zones/example.com/records/' + recordId)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.deleteRecord(accountId, zoneId, recordId);
+      dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId);
 
       endpoint.done();
       done();
@@ -270,7 +270,7 @@ describe('zone records', function() {
         .delete('/v2/1010/zones/example.com/records/' + recordId)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.deleteRecord(accountId, zoneId, recordId).then(function(response) {
+      dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId).then(function(response) {
         expect(response).to.eql({});
         done();
       }, function(error) {
@@ -285,7 +285,7 @@ describe('zone records', function() {
           .delete('/v2/1010/zones/example.com/records/' + recordId)
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.zones.deleteRecord(accountId, zoneId, recordId).then(function(response) {
+        dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId).then(function(response) {
           done('Error expected but future resolved');
         }, function(error) {
           expect(error).to.not.be.null;

@@ -276,7 +276,7 @@ describe('templates', function() {
 });
 
 describe('template records', function() {
-  describe('#listRecords', function() {
+  describe('#listTemplateRecords', function() {
     var accountId = '1010';
     var templateId = '1';
     var fixture = testUtils.fixture('listTemplateRecords/success.http');
@@ -286,7 +286,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/1/records?page=1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listRecords(accountId, templateId, {page: 1});
+      dnsimple.templates.listTemplateRecords(accountId, templateId, {page: 1});
 
       endpoint.done();
       done();
@@ -297,7 +297,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/1/records?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listRecords(accountId, templateId, {query: {foo: 'bar'}});
+      dnsimple.templates.listTemplateRecords(accountId, templateId, {query: {foo: 'bar'}});
 
       endpoint.done();
       done();
@@ -308,7 +308,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/1/records?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listRecords(accountId, templateId, {sort: 'name:asc'});
+      dnsimple.templates.listTemplateRecords(accountId, templateId, {sort: 'name:asc'});
 
       endpoint.done();
       done();
@@ -319,7 +319,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/1/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listRecords(accountId, templateId).then(function(response) {
+      dnsimple.templates.listTemplateRecords(accountId, templateId).then(function(response) {
         var records = response.data;
         expect(records.length).to.eq(2);
         done();
@@ -333,7 +333,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/1/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listRecords(accountId, templateId).then(function(response) {
+      dnsimple.templates.listTemplateRecords(accountId, templateId).then(function(response) {
         var pagination = response.pagination;
         expect(pagination).to.not.be.null;
         expect(pagination.current_page).to.eq(1);
@@ -364,7 +364,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/1/records?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.templates.allRecords(accountId, templateId).then(function(items) {
+      dnsimple.templates.allTemplateRecords(accountId, templateId).then(function(items) {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
@@ -377,7 +377,7 @@ describe('template records', function() {
     });
   });
 
-  describe('#getRecord', function() {
+  describe('#getTemplateRecord', function() {
     var accountId = '1010';
     var templateId = 'name';
     var recordId = 1;
@@ -389,7 +389,7 @@ describe('template records', function() {
         .get('/v2/1010/templates/name/records/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.getRecord(accountId, templateId, recordId).then(function(response) {
+      dnsimple.templates.getTemplateRecord(accountId, templateId, recordId).then(function(response) {
         var record = response.data;
         expect(record.id).to.eq(301);
         expect(record.template_id).to.eq(268);
@@ -414,7 +414,7 @@ describe('template records', function() {
           .get('/v2/1010/templates/0/records/1')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates.getRecord(accountId, 0, recordId).then(function(response) {
+        dnsimple.templates.getTemplateRecord(accountId, 0, recordId).then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
@@ -431,7 +431,7 @@ describe('template records', function() {
           .get('/v2/1010/templates/name/records/0')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates.getRecord(accountId, templateId, 0).then(function(response) {
+        dnsimple.templates.getTemplateRecord(accountId, templateId, 0).then(function(response) {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
@@ -441,7 +441,7 @@ describe('template records', function() {
     });
   });
 
-  describe('#createRecord', function() {
+  describe('#createTemplateRecord', function() {
     var accountId = '1010';
     var templateId = 1;
     var attributes = {content: 'mx.example.com'};
@@ -452,7 +452,7 @@ describe('template records', function() {
         .post('/v2/1010/templates/1/records', {content: 'mx.example.com'})
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.createRecord(accountId, templateId, attributes);
+      dnsimple.templates.createTemplateRecord(accountId, templateId, attributes);
 
       endpoint.done();
       done();
@@ -463,7 +463,7 @@ describe('template records', function() {
         .post('/v2/1010/templates/1/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.createRecord(accountId, templateId, attributes).then(function(response) {
+      dnsimple.templates.createTemplateRecord(accountId, templateId, attributes).then(function(response) {
         var record = response.data;
         expect(record.id).to.eq(300);
         done();
@@ -473,7 +473,7 @@ describe('template records', function() {
     });
   });
 
-  describe('#deleteRecord', function() {
+  describe('#deleteTemplateRecord', function() {
     var accountId = '1010';
     var templateId = 1;
     var recordId = 2;
@@ -484,7 +484,7 @@ describe('template records', function() {
         .delete('/v2/1010/templates/1/records/2')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.deleteRecord(accountId, templateId, recordId).then(function(response) {
+      dnsimple.templates.deleteTemplateRecord(accountId, templateId, recordId).then(function(response) {
         expect(response).to.eql({});
         done();
       }, function(error) {

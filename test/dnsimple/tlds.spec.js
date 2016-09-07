@@ -124,7 +124,7 @@ describe('tlds', function() {
     });
   });
 
-  describe('#getExtendedAttributes', function() {
+  describe('#getTldExtendedAttributes', function() {
     it('produces a collection of extended attributes', function(done) {
       var fixture = testUtils.fixture('getTldExtendedAttributes/success.http');
 
@@ -132,7 +132,7 @@ describe('tlds', function() {
         .get('/v2/tlds/uk/extended_attributes')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.tlds.getExtendedAttributes('uk').then(function(response) {
+      dnsimple.tlds.getTldExtendedAttributes('uk').then(function(response) {
         var extended_attributes = response.data;
         expect(extended_attributes.length).to.eq(4)
         expect(extended_attributes[0].name).to.eq('uk_legal_type');
@@ -156,7 +156,7 @@ describe('tlds', function() {
           .get('/v2/tlds/com/extended_attributes')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.tlds.getExtendedAttributes('com').then(function(response) {
+        dnsimple.tlds.getTldExtendedAttributes('com').then(function(response) {
           expect(response.data).to.eql([]);
           done();
         }, function(error) {
