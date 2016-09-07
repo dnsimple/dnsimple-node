@@ -108,10 +108,10 @@ describe('domains', function() {
         .get('/v2/1010/domains?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.domains.allDomains(accountId).then(function(domains) {
-        expect(domains.length).to.eq(5);
-        expect(domains[0].id).to.eq(1);
-        expect(domains[4].id).to.eq(5);
+      dnsimple.domains.allDomains(accountId).then(function(items) {
+        expect(items.length).to.eq(5);
+        expect(items[0].id).to.eq(1);
+        expect(items[4].id).to.eq(5);
         done();
       }, function(error) {
         done(error);
