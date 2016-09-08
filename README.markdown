@@ -10,6 +10,12 @@ We provide a full API and an easy-to-use web interface so you can get your domai
 
 This library is currently in beta version, the methods and the implementation should be considered a work-in-progress. Changes in the method naming, method signatures, public or internal APIs may happen during the beta period.
 
+## Requirements
+
+The dnsimple-node package requires node 6.0.0 or higher.
+
+You must also have an activated DNSimple account to access the DNSimple API.
+
 ## Installation
 
 There are no dependencies to install.
