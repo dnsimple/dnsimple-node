@@ -35,7 +35,11 @@ var utils = module.exports = {
     }
 
     if (statusCode != 204) {
-      fixture.body = JSON.parse(lines.join('\n'));
+      if (headers['Content-Type'] == 'application/json') {
+        fixture.body = JSON.parse(lines.join('\n'));
+      } else {
+        fixture.body = lines.join('\n');
+      }
     }
 
     return fixture;
