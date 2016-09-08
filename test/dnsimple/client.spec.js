@@ -11,8 +11,24 @@ const expect = require('chai').expect;
 const nock = require('nock');
 
 describe('response handling', function() {
-  describe('identity.whoami returns a malformed JSON response', function() {
-    it('produces an error', function(done) {
+  describe('a 200 response with malformed json', function() {
+    it('produces a JSON parse error', function(done) {
+      let fixture = testUtils.fixture('success-with-malformed-json.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/success-with-malformed-json')
+        .reply(fixture.statusCode, fixture.body);
+
+      new Client(dnsimple).get('/success-with-malformed-json', {}).then(function(response) {
+        done('Expected error but promise resolved');
+      }, function(error) {
+        expect(error).to.eq('Unexpected token < in JSON at position 0');
+        done();
+      });
+    });
+  });
+
+  describe('an error response with HTML content', function() {
+    it('produces a JSON parse error', function(done) {
       let fixture = testUtils.fixture('badgateway.http');
       nock('https://api.dnsimple.com')
         .get('/v2/badgateway')
@@ -22,6 +38,22 @@ describe('response handling', function() {
         done('Expected error but promise resolved');
       }, function(error) {
         expect(error).to.eq('Unexpected token < in JSON at position 0');
+        done();
+      });
+    });
+  });
+
+  describe('a 405 error', function() {
+    it('results in a rejected promise', function(done) {
+      let fixture = testUtils.fixture('method-not-allowed.http');
+      nock('https://api.dnsimple.com')
+        .get('/v2/method-not-allowed')
+        .reply(fixture.statusCode, fixture.body);
+
+      new Client(dnsimple).get('/method-not-allowed', {}).then(function(response) {
+        done('Expected error but promise resolved');
+      }, function(error) {
+        expect(error.description).to.eq('Method not allowed');
         done();
       });
     });
