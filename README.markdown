@@ -6,10 +6,6 @@ A node client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 We provide a full API and an easy-to-use web interface so you can get your domain registered and set up with a minimal amount of effort.
 
 
-## :warning: Beta Warning
-
-This library is currently in beta version, the methods and the implementation should be considered a work-in-progress. Changes in the method naming, method signatures, public or internal APIs may happen during the beta period.
-
 ## Requirements
 
 The dnsimple-node package requires node 6.0.0 or higher.
@@ -18,7 +14,9 @@ You must also have an activated DNSimple account to access the DNSimple API.
 
 ## Installation
 
-Currently you can install this repo with `npm install dnsimple/dnsimple-node`
+You can install this package directly from the github repo with `npm install dnsimple/dnsimple-node`.
+
+Alternatively, install the latest stable version from NPM with `npm install dnsimple`.
 
 ## Usage
 
