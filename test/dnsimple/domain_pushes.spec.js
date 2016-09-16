@@ -46,4 +46,23 @@ describe('domains', function() {
       });
     });
   });
+
+  describe('#listPushes', function() {
+    var accountId = '1010';
+    var fixture = testUtils.fixture('listPushes/success.http');
+
+    it('produces an pushes list', function(done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/pushes')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.listPushes(accountId).then(function(response) {
+        var pushes = response.data;
+        expect(pushes.length).to.eq(2);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
 });
