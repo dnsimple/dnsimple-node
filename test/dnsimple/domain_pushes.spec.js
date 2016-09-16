@@ -65,4 +65,65 @@ describe('domains', function() {
       });
     });
   });
+
+  describe('#acceptPush', function() {
+    var accountId = '1010';
+    var pushId = '200';
+    var attributes = {contact_id: 1};
+    var fixture = testUtils.fixture('acceptPush/success.http');
+
+    it('builds the correct request', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .post('/v2/1010/pushes/200', attributes)
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.acceptPush(accountId, pushId, attributes);
+
+      endpoint.done();
+      done();
+    });
+
+    it('produces nothing', function(done) {
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/pushes/200')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.acceptPush(accountId, pushId, attributes).then(function(response) {
+        expect(response).to.eql({});
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
+
+  describe('#rejectPush', function() {
+    var accountId = '1010';
+    var pushId = '200';
+    var fixture = testUtils.fixture('rejectPush/success.http');
+
+    it('builds the correct request', function(done) {
+      var endpoint = nock('https://api.dnsimple.com')
+        .delete('/v2/1010/pushes/200')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.rejectPush(accountId, pushId);
+
+      endpoint.done();
+      done();
+    });
+
+    it('produces nothing', function(done) {
+      nock('https://api.dnsimple.com')
+        .delete('/v2/1010/pushes/200')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.domains.rejectPush(accountId, pushId).then(function(response) {
+        expect(response).to.eql({});
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
 });
