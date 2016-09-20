@@ -5,8 +5,8 @@
 Clone the repository and move into it:
 
 ```
-$ git clone git@github.com:dnsimple/dnsimple-ruby.git
-$ cd dnsimple-ruby
+$ git clone git@github.com:dnsimple/dnsimple-node.git
+$ cd dnsimple-node
 ```
 
 Install the test dependencies:
