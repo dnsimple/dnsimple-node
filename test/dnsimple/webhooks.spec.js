@@ -70,7 +70,7 @@ describe('webhooks', function() {
     });
   });
 
-  describe('#getDomain', function() {
+  describe('#getWebhook', function() {
     var accountId = '1010';
     var webhookId = '1';
     var fixture = testUtils.fixture('getWebhook/success.http');
