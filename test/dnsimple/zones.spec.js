@@ -155,6 +155,8 @@ describe('zones', function() {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
+          expect(error.description).to.eq('Not found');
+          expect(error.message).to.eq('Zone `0` not found');
           done();
         });
       });

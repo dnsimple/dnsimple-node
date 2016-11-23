@@ -148,6 +148,8 @@ describe('templates', function() {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
+          expect(error.description).to.eq('Not found');
+          expect(error.message).to.eq('Template `beta` not found');
           done();
         });
       });
@@ -418,6 +420,8 @@ describe('template records', function() {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
+          expect(error.description).to.eq('Not found');
+          expect(error.message).to.eq('Template `beta` not found');
           done();
         });
       });

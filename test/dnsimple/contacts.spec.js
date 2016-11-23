@@ -157,6 +157,8 @@ describe('contacts', function() {
           done('Error expected but future resolved');
         }, function(error) {
           expect(error).to.not.be.null;
+          expect(error.description).to.eq('Not found');
+          expect(error.message).to.eq('Contact `0` not found');
           done();
         });
       });

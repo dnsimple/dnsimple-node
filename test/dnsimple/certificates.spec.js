@@ -150,6 +150,8 @@ describe('certificates', function() {
           done();
         }, function(error) {
           expect(error).to.not.be.null;
+          expect(error.description).to.eq('Not found');
+          expect(error.message).to.eq('Certificate `0` not found');
           done();
         });
       });
