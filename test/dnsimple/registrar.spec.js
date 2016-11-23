@@ -96,7 +96,7 @@ describe('registrar', function() {
   });
 
   describe('#transferDomain', function() {
-    var attributes = {registrant_id: '10', auth_info: 'x1y2z3'};
+    var attributes = {registrant_id: '10', auth_code: 'x1y2z3'};
 
     it('produces a domain', function(done) {
       var fixture = testUtils.fixture('transferDomain/success.http');
@@ -132,7 +132,7 @@ describe('registrar', function() {
       });
     });
 
-    describe('when auth info was not provided and is required by the TLD', function() {
+    describe('when authcode was not provided and is required by the TLD', function() {
       var fixture = testUtils.fixture('transferDomain/error-missing-authcode.http');
 
       it('results in an error', function(done) {
