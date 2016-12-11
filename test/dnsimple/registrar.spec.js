@@ -32,6 +32,46 @@ describe('registrar', function() {
     });
   });
 
+  describe('#getDomainPremiumPrice', function() {
+    describe('when the domain has a premium price', function() {
+      var fixture = testUtils.fixture('getDomainPremiumPrice/success.http');
+
+      it('produces a premium price result', function(done) {
+        nock('https://api.dnsimple.com')
+          .get('/v2/1010/registrar/domains/example.com/premium_price')
+          .reply(fixture.statusCode, fixture.body);
+
+        dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function(response) {
+          var premiumPriceResult = response.data;
+          expect(premiumPriceResult.premium_price).to.eql('109.0');
+          expect(premiumPriceResult.action).to.eql('registration');
+          done();
+        }, function(error) {
+          done(error);
+        });
+      });
+    });
+
+    describe('when the domain is not a premium domain', function() {
+      var fixture = testUtils.fixture('getDomainPremiumPrice/failure.http');
+
+      it('produces an error', function(done) {
+        nock('https://api.dnsimple.com')
+          .get('/v2/1010/registrar/domains/example.com/premium_price')
+          .reply(fixture.statusCode, fixture.body);
+
+        dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          expect(error.description).to.eq('Bad request');
+          expect(error.message).to.eq('`example.com` is not a premium domain for registration.');
+          done();
+        });
+      });
+    });
+  });
+
   describe('#registerDomain', function() {
     var fixture = testUtils.fixture('registerDomain/success.http');
 
