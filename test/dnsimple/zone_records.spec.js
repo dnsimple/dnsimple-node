@@ -143,7 +143,10 @@ describe('zone records', function() {
 
       dnsimple.zones.getZoneRecord(accountId, zoneId, 64784).then(function(response) {
         var record = response.data;
-        expect(record.id).to.eq(64784);
+        expect(record.id).to.eq(5);
+        expect(record.regions.length).to.eq(2);
+        expect(record.regions[0]).to.eq('SV1');
+        expect(record.regions[1]).to.eq('IAD');
         done();
       }, function(error) {
         done(error);
