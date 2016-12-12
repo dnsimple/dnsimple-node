@@ -26,8 +26,8 @@ describe('vanity name servers', function() {
         expect(vanityNameServers[0].id).to.eq(1);
         expect(vanityNameServers[0].ipv4).to.eq('127.0.0.1');
         expect(vanityNameServers[0].ipv6).to.eq('::1');
-        expect(vanityNameServers[0].created_at).to.eq('2016-07-14T13:22:17.148Z');
-        expect(vanityNameServers[0].updated_at).to.eq('2016-07-14T13:22:17.148Z');
+        expect(vanityNameServers[0].created_at).to.eq('2016-07-14T13:22:17Z');
+        expect(vanityNameServers[0].updated_at).to.eq('2016-07-14T13:22:17Z');
         done();
       }, function(error) {
         done(error);

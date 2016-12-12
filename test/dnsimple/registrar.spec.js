@@ -13,18 +13,19 @@ describe('registrar', function() {
   let domainId = 'example.com';
 
   describe('#checkDomain', function() {
+    let domainId = 'ruby.codes';
     var fixture = testUtils.fixture('checkDomain/success.http');
 
     it('produces a check result', function(done) {
       nock('https://api.dnsimple.com')
-        .get('/v2/1010/registrar/domains/example.com/check')
+        .get('/v2/1010/registrar/domains/ruby.codes/check')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.checkDomain(accountId, domainId).then(function(response) {
         var checkResult = response.data;
-        expect(checkResult.domain).to.eql('example.com');
+        expect(checkResult.domain).to.eql('ruby.codes');
         expect(checkResult.available).to.be.true;
-        expect(checkResult.premium).to.be.false;
+        expect(checkResult.premium).to.be.true;
         done();
       }, function(error) {
         done(error);
@@ -34,11 +35,12 @@ describe('registrar', function() {
 
   describe('#getDomainPremiumPrice', function() {
     describe('when the domain has a premium price', function() {
+      let domainId = 'ruby.codes';
       var fixture = testUtils.fixture('getDomainPremiumPrice/success.http');
 
       it('produces a premium price result', function(done) {
         nock('https://api.dnsimple.com')
-          .get('/v2/1010/registrar/domains/example.com/premium_price')
+          .get('/v2/1010/registrar/domains/ruby.codes/premium_price')
           .reply(fixture.statusCode, fixture.body);
 
         dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function(response) {
@@ -53,6 +55,7 @@ describe('registrar', function() {
     });
 
     describe('when the domain is not a premium domain', function() {
+      let domainId = 'example.com';
       var fixture = testUtils.fixture('getDomainPremiumPrice/failure.http');
 
       it('produces an error', function(done) {
@@ -65,7 +68,7 @@ describe('registrar', function() {
         }, function(error) {
           expect(error).to.not.be.null;
           expect(error.description).to.eq('Bad request');
-          expect(error.message).to.eq('`example.com` is not a premium domain for registration.');
+          expect(error.message).to.eq('`example.com` is not a premium domain for registration');
           done();
         });
       });
@@ -83,10 +86,9 @@ describe('registrar', function() {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.registerDomain(accountId, domainId, attributes).then(function(response) {
-        var domain = response.data;
-        expect(domain.id).to.eq(1);
-        expect(domain.name).to.eq('example.com');
-        expect(domain.state).to.eq('registered');
+        var domainRegistration = response.data;
+        expect(domainRegistration.id).to.eq(1);
+        expect(domainRegistration.state).to.eq('new');
         done();
       }, function(error) {
         done(error);
@@ -105,10 +107,9 @@ describe('registrar', function() {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(function(response) {
-        var domain = response.data;
-        expect(domain.id).to.eq(1);
-        expect(domain.name).to.eq('example.com');
-        expect(domain.state).to.eq('registered');
+        var domainRenewal = response.data;
+        expect(domainRenewal.id).to.eq(1);
+        expect(domainRenewal.state).to.eq('new');
         done();
       }, function(error) {
         done(error);
@@ -147,8 +148,7 @@ describe('registrar', function() {
       dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function(response) {
         var domain = response.data;
         expect(domain.id).to.eq(1);
-        expect(domain.name).to.eq('example.com');
-        expect(domain.state).to.eq('hosted');
+        expect(domain.state).to.eq('transferring');
         done();
       }, function(error) {
         done(error);
@@ -156,7 +156,7 @@ describe('registrar', function() {
     });
 
     describe('when the domain is already in DNSimple', function() {
-      var fixture = testUtils.fixture('transferDomain/error-isdnsimple.http');
+      var fixture = testUtils.fixture('transferDomain/error-indnsimple.http');
 
       it('results in an error', function(done) {
         nock('https://api.dnsimple.com')

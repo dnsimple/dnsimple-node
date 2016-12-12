@@ -26,8 +26,8 @@ describe('whois privacy', function() {
         expect(whoisPrivacy.domain_id).to.eq(2);
         expect(whoisPrivacy.expires_on).to.eq('2017-02-13');
         expect(whoisPrivacy.enabled).to.be.true;
-        expect(whoisPrivacy.created_at).to.eq('2016-02-13T14:34:50.135Z');
-        expect(whoisPrivacy.updated_at).to.eq('2016-02-13T14:34:52.571Z');
+        expect(whoisPrivacy.created_at).to.eq('2016-02-13T14:34:50Z');
+        expect(whoisPrivacy.updated_at).to.eq('2016-02-13T14:34:52Z');
         done();
       }, function(error) {
         done(error);

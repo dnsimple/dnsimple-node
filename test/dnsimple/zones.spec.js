@@ -136,8 +136,8 @@ describe('zones', function() {
         expect(zone.account_id).to.eq(1010);
         expect(zone.name).to.eq('example-alpha.com');
         expect(zone.reverse).to.be.false;
-        expect(zone.created_at).to.eq('2015-04-23T07:40:03.045Z');
-        expect(zone.updated_at).to.eq('2015-04-23T07:40:03.051Z');
+        expect(zone.created_at).to.eq('2015-04-23T07:40:03Z');
+        expect(zone.updated_at).to.eq('2015-04-23T07:40:03Z');
         done();
       }, function(error) {
         done(error);

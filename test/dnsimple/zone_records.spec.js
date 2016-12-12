@@ -66,16 +66,16 @@ describe('zone records', function() {
       dnsimple.zones.listZoneRecords(accountId, zoneId).then(function(response) {
         var records = response.data;
         expect(records.length).to.eq(5);
-        expect(records[0].id).to.eq(64779);
+        expect(records[0].id).to.eq(1);
         expect(records[0].zone_id).to.eq(zoneId);
         expect(records[0].name).to.eq('');
-        expect(records[0].content).to.eq('ns1.dnsimple.com admin.dnsimple.com 1452184205 86400 7200 604800 300');
+        expect(records[0].content).to.eq('ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300');
         expect(records[0].ttl).to.eq(3600);
         expect(records[0].priority).to.be.null;
         expect(records[0].type).to.eq('SOA');
         expect(records[0].system_record).to.be.true;
-        expect(records[0].created_at).to.eq('2016-01-07T16:30:05.379Z');
-        expect(records[0].updated_at).to.eq('2016-01-07T16:30:05.379Z');
+        expect(records[0].created_at).to.eq('2016-03-22T10:20:53Z');
+        expect(records[0].updated_at).to.eq('2016-10-05T09:26:38Z');
         done();
       }, function(error) {
         done(error);
@@ -196,7 +196,7 @@ describe('zone records', function() {
 
       dnsimple.zones.createZoneRecord(accountId, zoneId, attributes).then(function(response) {
         var record = response.data;
-        expect(record.id).to.eq(64784);
+        expect(record.id).to.eq(5);
         done();
       }, function(error) {
         done(error);
@@ -229,7 +229,7 @@ describe('zone records', function() {
 
       dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes).then(function(response) {
         var record = response.data;
-        expect(record.id).to.eq(64784);
+        expect(record.id).to.eq(5);
         done();
       }, function(error) {
         done(error);

@@ -9,7 +9,7 @@ var nock = require('nock');
 
 describe('identity', function() {
   describe('#whoami when authenticated as account', function() {
-    var fixture = testUtils.fixture('whoami/success_account.http');
+    var fixture = testUtils.fixture('whoami/success-account.http');
     var endpoint = nock('https://api.dnsimple.com')
                      .get('/v2/whoami')
                      .reply(fixture.statusCode, fixture.body);
@@ -28,7 +28,7 @@ describe('identity', function() {
   });
 
   describe('#whoami when authenticated as user', function() {
-    var fixture = testUtils.fixture('whoami/success_user.http');
+    var fixture = testUtils.fixture('whoami/success-user.http');
     var endpoint = nock('https://api.dnsimple.com')
                      .get('/v2/whoami')
                      .reply(fixture.statusCode, fixture.body);

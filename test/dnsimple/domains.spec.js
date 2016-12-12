@@ -141,8 +141,8 @@ describe('domains', function() {
         expect(domain.auto_renew).to.eq(false);
         expect(domain.private_whois).to.eq(false);
         expect(domain.expires_on).to.be.null;
-        expect(domain.created_at).to.eq('2014-12-06T15:56:55.573Z');
-        expect(domain.updated_at).to.eq('2015-12-09T00:20:56.056Z');
+        expect(domain.created_at).to.eq('2014-12-06T15:56:55Z');
+        expect(domain.updated_at).to.eq('2015-12-09T00:20:56Z');
         done();
       }, function(error) {
         done(error);

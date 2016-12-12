@@ -13,7 +13,7 @@ describe('domains', function() {
     var accountId = '1010';
     var domainId = 'example.com';
     var attributes = {new_account_email: 'jim@example.com'};
-    var fixture = testUtils.fixture('initiatePush/created.http');
+    var fixture = testUtils.fixture('initiatePush/success.http');
 
     it('builds the correct request', function(done) {
       var endpoint = nock('https://api.dnsimple.com')
@@ -37,8 +37,8 @@ describe('domains', function() {
         expect(push.domain_id).to.eq(100);
         expect(push.contact_id).to.be.null;
         expect(push.account_id).to.eq(2020);
-        expect(push.created_at).to.eq('2016-08-11T10:16:03.340Z');
-        expect(push.updated_at).to.eq('2016-08-11T10:16:03.340Z');
+        expect(push.created_at).to.eq('2016-08-11T10:16:03Z');
+        expect(push.updated_at).to.eq('2016-08-11T10:16:03Z');
         expect(push.accepted_at).to.be.null;
         done();
       }, function(error) {

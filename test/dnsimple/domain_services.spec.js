@@ -102,7 +102,7 @@ describe('domain services', function() {
     var serviceId = 'name';
 
     it('produces nothing', function(done) {
-      var fixture = testUtils.fixture('applyService/created.http');
+      var fixture = testUtils.fixture('applyService/success.http');
 
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/services/name')

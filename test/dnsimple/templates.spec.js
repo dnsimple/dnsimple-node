@@ -126,10 +126,10 @@ describe('templates', function() {
         expect(template.id).to.eq(1);
         expect(template.account_id).to.eq(1010);
         expect(template.name).to.eq('Alpha');
-        expect(template.short_name).to.eq('alpha');
+        expect(template.sid).to.eq('alpha');
         expect(template.description).to.eq('An alpha template.');
-        expect(template.created_at).to.eq('2016-03-22T11:08:58.262Z');
-        expect(template.updated_at).to.eq('2016-03-22T11:08:58.262Z');
+        expect(template.created_at).to.eq('2016-03-22T11:08:58Z');
+        expect(template.updated_at).to.eq('2016-03-22T11:08:58Z');
         done();
       }, function(error) {
         done(error);
@@ -400,8 +400,8 @@ describe('template records', function() {
         expect(record.ttl).to.eq(600);
         expect(record.priority).to.eq(10);
         expect(record.type).to.eq('MX');
-        expect(record.created_at).to.eq('2016-05-03T08:03:26.444Z');
-        expect(record.updated_at).to.eq('2016-05-03T08:03:26.444Z');
+        expect(record.created_at).to.eq('2016-05-03T08:03:26Z');
+        expect(record.updated_at).to.eq('2016-05-03T08:03:26Z');
         done();
       }, function(error) {
         done(error);

@@ -54,7 +54,7 @@ describe('services', function() {
         var services = response.data;
         expect(services.length).to.eq(2);
         expect(services[0].name).to.eq('Service 1');
-        expect(services[0].short_name).to.eq('service1');
+        expect(services[0].sid).to.eq('service1');
         done();
       }, function(error) {
         done(error);

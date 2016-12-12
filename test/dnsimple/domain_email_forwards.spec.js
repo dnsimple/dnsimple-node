@@ -127,8 +127,8 @@ describe('domains', function() {
         expect(emailForward.domain_id).to.eq(228963);
         expect(emailForward.from).to.eq('jim@a-domain.com');
         expect(emailForward.to).to.eq('jim@another.com');
-        expect(emailForward.created_at).to.eq('2016-02-04T14:26:50.282Z');
-        expect(emailForward.updated_at).to.eq('2016-02-04T14:26:50.282Z');
+        expect(emailForward.created_at).to.eq('2016-02-04T14:26:50Z');
+        expect(emailForward.updated_at).to.eq('2016-02-04T14:26:50Z');
         done();
       }, function(error) {
         done(error);
