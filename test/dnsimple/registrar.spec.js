@@ -45,7 +45,7 @@ describe('registrar', function() {
 
         dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function(response) {
           var premiumPriceResult = response.data;
-          expect(premiumPriceResult.premium_price).to.eql('109.0');
+          expect(premiumPriceResult.premium_price).to.eql('109.00');
           expect(premiumPriceResult.action).to.eql('registration');
           done();
         }, function(error) {
