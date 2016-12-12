@@ -1,6 +1,6 @@
 {
   "name": "dnsimple",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "DNSimple v2 API wrapper",
   "keywords": [
     "dnsimple",
