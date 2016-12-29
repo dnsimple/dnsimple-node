@@ -80,3 +80,17 @@ var client = require('dnsimple')({
 ```
 
 You will need to ensure that you are using an access token created in the sandbox environment. Production tokens will *not* work in the sandbox environment.
+
+
+## Setting a custom `User-Agent` header
+
+You customize the `User-Agent` header for the calls made to the DNSimple API:
+
+```javascript
+var client = require('dnsimple')({
+  user_agent: 'my-app',
+  accessToken: process.env.TOKEN,
+});
+```
+
+The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/2.4.0 my-app` (note that it will vary depending on the client version).
