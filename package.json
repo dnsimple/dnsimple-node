@@ -23,6 +23,9 @@
     "node": ">= v6.0.0"
   },
   "main": "lib/dnsimple.js",
+  "files": [
+    "lib"
+  ],
   "devDependencies": {
     "chai": "~1.10.0",
     "chai-as-promised": "~4.1.1",
