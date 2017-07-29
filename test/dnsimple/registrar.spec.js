@@ -82,7 +82,7 @@ describe('registrar', function() {
       var attributes = {registrant_id: '10'};
 
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/registrar/domains/example.com/registration', attributes)
+        .post('/v2/1010/registrar/domains/example.com/registrations', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.registerDomain(accountId, domainId, attributes).then(function(response) {
@@ -103,7 +103,7 @@ describe('registrar', function() {
       var attributes = {period: '3'};
 
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/registrar/domains/example.com/renewal', attributes)
+        .post('/v2/1010/registrar/domains/example.com/renewals', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(function(response) {
@@ -123,7 +123,7 @@ describe('registrar', function() {
         var attributes = {};
 
         nock('https://api.dnsimple.com')
-          .post('/v2/1010/registrar/domains/example.com/renewal', attributes)
+          .post('/v2/1010/registrar/domains/example.com/renewals', attributes)
           .reply(fixture.statusCode, fixture.body);
 
         dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(function(response) {
@@ -142,7 +142,7 @@ describe('registrar', function() {
     it('produces a domain', function(done) {
       var fixture = testUtils.fixture('transferDomain/success.http');
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/registrar/domains/example.com/transfer', attributes)
+        .post('/v2/1010/registrar/domains/example.com/transfers', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function(response) {
@@ -160,7 +160,7 @@ describe('registrar', function() {
 
       it('results in an error', function(done) {
         nock('https://api.dnsimple.com')
-          .post('/v2/1010/registrar/domains/example.com/transfer', attributes)
+          .post('/v2/1010/registrar/domains/example.com/transfers', attributes)
           .reply(fixture.statusCode, fixture.body);
 
         dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function(response) {
@@ -179,7 +179,7 @@ describe('registrar', function() {
         var attributes = {registrant_id: '10'};
 
         nock('https://api.dnsimple.com')
-          .post('/v2/1010/registrar/domains/example.com/transfer', attributes)
+          .post('/v2/1010/registrar/domains/example.com/transfers', attributes)
           .reply(fixture.statusCode, fixture.body);
 
         dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function(response) {
@@ -197,7 +197,7 @@ describe('registrar', function() {
 
     it('produces nothing', function(done) {
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/registrar/domains/example.com/transfer_out')
+        .post('/v2/1010/registrar/domains/example.com/authorize_transfer_out')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.transferDomainOut(accountId, domainId).then(function(response) {
