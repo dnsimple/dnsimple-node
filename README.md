@@ -21,6 +21,8 @@ Alternatively, install the latest stable version from NPM with `npm install dnsi
 
 This library is a nodejs client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
+Note that in all examples below, the `accessToken` must be an OAuth token as described in the [DNSimple API Access Token documentation](https://support.dnsimple.com/articles/api-access-token/). 
+
 The DNSimple nodejs library uses promises exclusively, thus all client calls that call out to the DNSimple API will return a Promise. The examples below demonstrate basic usage.
 
 ```javascript
