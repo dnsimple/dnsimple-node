@@ -277,7 +277,7 @@ describe('certificates', function() {
     });
   });
 
-  describe('#letsencryptPurchaseRenewal', function() {
+  describe('#letsencryptPurchaseRenew', function() {
     var accountId = '1010';
     var domainId = 'example.com';
     var certificateId = 200
@@ -288,7 +288,7 @@ describe('certificates', function() {
         .post('/v2/1010/domains/example.com/certificates/letsencrypt/200/renewal')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.letsencryptPurchaseRenewal(accountId, domainId, certificateId)
+      dnsimple.certificates.letsencryptPurchaseRenew(accountId, domainId, certificateId)
           .then(function(response) {
         var certificateRenewal = response.data;
         expect(certificateRenewal.id).to.eq(999);
@@ -301,7 +301,7 @@ describe('certificates', function() {
     });
   });
 
-  describe('#letsencryptIssueRenewal', function() {
+  describe('#letsencryptIssueRenew', function() {
     var accountId = '1010';
     var domainId = 'example.com';
     var oldCertificateId = 200;
@@ -313,7 +313,7 @@ describe('certificates', function() {
         .post('/v2/1010/domains/example.com/certificates/200/renewals/999/issue')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.letsencryptIssueRenewal(accountId, domainId, oldCertificateId, certificateRenewalId)
+      dnsimple.certificates.letsencryptIssueRenew(accountId, domainId, oldCertificateId, certificateRenewalId)
           .then(function(response) {
         var certificateRenewal = response.data;
         expect(certificateRenewal.id).to.eq(999);
