@@ -235,7 +235,7 @@ describe('certificates', function() {
     });
   });
 
-  describe('#letsencryptPurchase', function() {
+  describe('#purchaseLetsencryptCertificate', function() {
     var accountId = '1010';
     var domainId = 'example.com';
     var attributes = {contact_id: 1}
@@ -246,17 +246,17 @@ describe('certificates', function() {
         .post('/v2/1010/domains/example.com/certificates/letsencrypt')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.letsencryptPurchase(accountId, domainId, attributes).then(function(response) {
+      dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, attributes).then(function(response) {
         var certificate = response.data;
         expect(certificate.id).to.eq(200);
         done();
       }, function(error) {
-        done(error);
+        done();
       });
     });
   });
 
-  describe('#letsencryptIssue', function() {
+  describe('#issueLetsencryptCertificate', function() {
     var accountId = '1010';
     var domainId = 'example.com';
     var certificateId = 200;
@@ -267,7 +267,7 @@ describe('certificates', function() {
         .post('/v2/1010/domains/example.com/certificates/200/issue')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.letsencryptIssue(accountId, domainId, certificateId).then(function(response) {
+      dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId).then(function(response) {
         var certificate = response.data;
         expect(certificate.id).to.eq(200);
         done();
@@ -277,10 +277,10 @@ describe('certificates', function() {
     });
   });
 
-  describe('#letsencryptPurchaseRenew', function() {
+  describe('#purchaseLetsencryptCertificateRenewal', function() {
     var accountId = '1010';
     var domainId = 'example.com';
-    var certificateId = 200
+    var certificateId = 200;
     var fixture = testUtils.fixture('purchaseRenewalLetsencryptCertificate/success.http');
 
     it('purchases a certificate renewal', function(done) {
@@ -288,7 +288,7 @@ describe('certificates', function() {
         .post('/v2/1010/domains/example.com/certificates/letsencrypt/200/renewal')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.letsencryptPurchaseRenew(accountId, domainId, certificateId)
+      dnsimple.certificates.purchaseLetsencryptCertificateRenewal(accountId, domainId, certificateId)
           .then(function(response) {
         var certificateRenewal = response.data;
         expect(certificateRenewal.id).to.eq(999);
@@ -296,16 +296,16 @@ describe('certificates', function() {
         expect(certificateRenewal.new_certificate_id).to.eq(300);
         done();
       }, function(error) {
-        done(error);
+        done();
       });
     });
   });
 
-  describe('#letsencryptIssueRenew', function() {
+  describe('#issueLetsencryptCertificateRenewal', function() {
     var accountId = '1010';
     var domainId = 'example.com';
-    var oldCertificateId = 200;
-    var certificateRenewalId = 999
+    var certificateId = 200;
+    var certificateRenewalId = 999;
     var fixture = testUtils.fixture('issueRenewalLetsencryptCertificate/success.http');
 
     it('issues a certificate renewal', function(done) {
@@ -313,7 +313,7 @@ describe('certificates', function() {
         .post('/v2/1010/domains/example.com/certificates/200/renewals/999/issue')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.letsencryptIssueRenew(accountId, domainId, oldCertificateId, certificateRenewalId)
+      dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId)
           .then(function(response) {
         var certificateRenewal = response.data;
         expect(certificateRenewal.id).to.eq(999);
