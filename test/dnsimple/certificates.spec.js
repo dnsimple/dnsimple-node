@@ -57,7 +57,6 @@ describe('certificates', function() {
         expect(certificates.length).to.eq(2);
         expect(certificates[0].id).to.eq(1);
         expect(certificates[0].domain_id).to.eq(10);
-        expect(certificates[0].name).to.eq('www');
         expect(certificates[0].common_name).to.eq('www.weppos.net');
         done();
       }, function(error) {
@@ -129,8 +128,9 @@ describe('certificates', function() {
         var certificate = response.data;
         expect(certificate.id).to.eq(1);
         expect(certificate.domain_id).to.eq(2);
-        expect(certificate.name).to.eq('www');
+        expect(certificate.contact_id).to.eq(3);
         expect(certificate.common_name).to.eq('www.weppos.net');
+        expect(certificate.alternate_names).to.eql(['weppos.net', 'www.weppos.net']);
         expect(certificate.state).to.eq('issued');
         expect(certificate.expires_on).to.eq('2016-09-09');
         done();
