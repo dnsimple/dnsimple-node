@@ -193,7 +193,7 @@ describe('registrar', function() {
   });
 
   describe('#transferDomainOut', function() {
-    var fixture = testUtils.fixture('transferDomainOut/success.http');
+    var fixture = testUtils.fixture('authorizeDomainTransferOut/success.http');
 
     it('produces nothing', function(done) {
       nock('https://api.dnsimple.com')
