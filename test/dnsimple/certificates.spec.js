@@ -248,7 +248,7 @@ describe('certificates', function() {
 
       dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, attributes).then(function(response) {
         var certificate = response.data;
-        expect(certificate.id).to.eq(200);
+        expect(certificate.id).to.eq(300);
         done();
       }, function(error) {
         done();
