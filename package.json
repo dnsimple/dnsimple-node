@@ -1,7 +1,7 @@
 {
   "name": "dnsimple",
   "version": "2.7.0",
-  "description": "DNSimple v2 API wrapper",
+  "description": "A Node.JS client for the DNSimple API.",
   "keywords": [
     "dnsimple",
     "domains",
