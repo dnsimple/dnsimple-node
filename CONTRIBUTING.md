@@ -73,6 +73,7 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
 1. Release to npm.
 
     ```shell
+    npm login
     npm publish
     ```
 
