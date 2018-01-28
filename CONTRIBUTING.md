@@ -40,6 +40,8 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
     Dnsimple.VERSION = '$VERSION';
     ```
 
+1. Run the test suite and ensure all the tests pass.
+
 1. Finalize the `## master` section in `CHANGELOG.md` assigning the version.
 
 1. Commit and push the changes
