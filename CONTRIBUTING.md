@@ -2,12 +2,16 @@
 
 ## Getting started
 
+#### 1. Clone the repository
+
 Clone the repository and move into it:
 
 ```
 $ git clone git@github.com:dnsimple/dnsimple-node.git
 $ cd dnsimple-node
 ```
+
+#### 2. Install the dependencies
 
 Install the test dependencies:
 
@@ -19,7 +23,10 @@ npm install chai-as-promised
 npm install nock
 ```
 
+#### 3. Build and test
+
 [Run the test suite](#testing) to check everything works as expected.
+
 
 ## Testing
 
