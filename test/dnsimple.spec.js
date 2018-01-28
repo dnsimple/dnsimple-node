@@ -18,7 +18,6 @@ describe('dnsimple module', function() {
 
   describe('#setUserAgent', function() {
     it('respects the default User-Agent', function() {
-      console.log(dnsimple)
       expect(dnsimple._api.userAgent).to.equal('dnsimple-node/' + dnsimple.VERSION);
     });
 
