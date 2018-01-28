@@ -6,16 +6,16 @@
 
 Clone the repository and move into it:
 
-```
-$ git clone git@github.com:dnsimple/dnsimple-node.git
-$ cd dnsimple-node
+```shell
+git clone git@github.com:dnsimple/dnsimple-node.git
+cd dnsimple-node
 ```
 
 #### 2. Install the dependencies
 
 Install the test dependencies:
 
-```
+```shell
 npm install jscs
 npm install mocha
 npm install chai
@@ -32,7 +32,7 @@ npm install nock
 
 To run the test suite:
 
-```
+```shell
 npm test
 ```
 
