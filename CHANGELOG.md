@@ -1,7 +1,7 @@
 # Changelog
 
 
-#### master
+#### Release 2.7.0
 
 - NEW: Added Let's Encrypt certificate methods (GH-14)
 

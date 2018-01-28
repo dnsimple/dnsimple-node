@@ -34,6 +34,16 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
 
 1. Run the test suite and ensure all the tests pass.
 
+1. Set the version in `package.json`:
+
+    ```javascript
+    {
+      "name": "dnsimple",
+      "version": "$VERSION",
+      ...
+    }
+    ```
+
 1. Set the version in `lib/dnsimple.js`:
 
     ```javascript
