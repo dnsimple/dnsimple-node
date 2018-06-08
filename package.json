@@ -30,10 +30,12 @@
     "chai": "^1.10.0",
     "chai-as-promised": "^4.3.0",
     "jscs": "^2.11.0",
-    "mocha": "^2.5.3",
+    "mocha": "^5.2.0",
     "nock": "^8.2.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "npm": "^6.1.0"
+  },
   "license": "MIT",
   "scripts": {
     "test": "npm run lint && mocha",
