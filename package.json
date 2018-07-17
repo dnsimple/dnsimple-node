@@ -27,13 +27,15 @@
     "lib"
   ],
   "devDependencies": {
-    "chai": "^1.10.0",
-    "chai-as-promised": "^4.1.1",
-    "jscs": "^2.11.0",
-    "mocha": "^2.1.0",
-    "nock": "^8.0.0"
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "jscs": "^3.0.7",
+    "mocha": "^5.2.0",
+    "nock": "^9.3.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "npm": "^6.1.0"
+  },
   "license": "MIT",
   "scripts": {
     "test": "npm run lint && mocha",
