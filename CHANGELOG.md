@@ -1,5 +1,8 @@
 # Changelog
 
+### master
+
+- NEW: Added zone distribution and zone record distribution (GH-16)
 
 #### Release 2.7.0
 
