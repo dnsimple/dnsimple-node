@@ -197,4 +197,162 @@ describe('zones', function() {
       });
     });
   });
+
+  describe('#checkZoneDistribution', function() {
+    var accountId = '1010';
+    var fixture = testUtils.fixture('checkZoneDistribution/success.http');
+
+    it('returns true when the zone is fully distributed', function(done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example-alpha.com/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.zones.checkZoneDistribution(accountId, 'example-alpha.com').then(function(response) {
+        var zone = response.data;
+        expect(zone).to.not.be.null;
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+
+    describe('returns false when the zone is not fully distributed', function() {
+      var fixture = testUtils.fixture('checkZoneDistribution/failure.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneDistribution(accountId, 'example.com').then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+
+    describe('returns an error when the server was not able to complete the check', function() {
+      var fixture = testUtils.fixture('checkZoneDistribution/error.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneDistribution(accountId, 'example.com').then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+
+    describe('when the zone does not exist', function() {
+      var fixture = testUtils.fixture('notfound-zone.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneDistribution(accountId, 'example.com').then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#checkZoneRecordDistribution', function() {
+    var accountId = '1010';
+    var recordId = 1;
+    var fixture = testUtils.fixture('checkZoneRecordDistribution/success.http');
+
+    it('returns true when the zone record is fully distributed', function(done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example-alpha.com/records/1/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.zones.checkZoneRecordDistribution(accountId, 'example-alpha.com', recordId).then(function(response) {
+        var zone = response.data;
+        expect(zone).to.not.be.null;
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+
+    describe('returns false when the zone record is not fully distributed', function() {
+      var fixture = testUtils.fixture('checkZoneRecordDistribution/failure.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/records/1/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+
+    describe('returns an error when the server was not able to complete the check', function() {
+      var fixture = testUtils.fixture('checkZoneRecordDistribution/error.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/records/1/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+
+    describe('when the zone does not exist', function() {
+      var fixture = testUtils.fixture('notfound-zone.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/records/1/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+
+    describe('when the zone record does not exist', function() {
+      var fixture = testUtils.fixture('notfound-record.http');
+
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/zones/example.com/records/1/distribution')
+        .reply(fixture.statusCode, fixture.body);
+
+      it('produces an error', function(done) {
+        dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function(response) {
+          done();
+        }, function(error) {
+          expect(error).to.not.be.null;
+          done();
+        });
+      });
+    });
+  });
 });
