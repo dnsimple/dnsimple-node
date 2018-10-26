@@ -26,7 +26,9 @@ Note that in all examples below, the `accessToken` must be an OAuth token as des
 The DNSimple nodejs library uses promises exclusively, thus all client calls that call out to the DNSimple API will return a Promise. The examples below demonstrate basic usage.
 
 ```javascript
-var client = require('dnsimple')({
+"use strict";
+
+var client = require("dnsimple")({
   accessToken: process.env.TOKEN,
 });
 
@@ -38,21 +40,21 @@ client.identity.whoami().then(function(response) {
 });
 
 // List your domains
-var accountId = '1010';
+var accountId = "1010";
 client.domains.listDomains(accountId).then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
 });
 
-client.domains.listDomains(accountId, {page: 3}).then(function(response) {
+client.domains.listDomains(accountId, { page: 3 }).then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
 });
 
 // Create a domain
-client.domains.createDomain(accountId, "example.com").then(function(response) {
+client.domains.createDomain(accountId, { name: "example.com" }).then(function(response) {
   console.log(response.data);
 }, function(error) {
   console.log(error);
@@ -64,6 +66,12 @@ client.domains.getDomain(accountId, "example.com").then(function(response) {
 }, function(error) {
   console.log(error);
 });
+```
+
+To be run like this:
+
+```shell
+$ TOKEN=[TOKEN VALUE GOES HERE] node test.js
 ```
 
 Take a look at [https://github.com/dnsimple/hello-domains-node](https://github.com/dnsimple/hello-domains-node) for an example app that authorizes via OAuth and displays your domain list.
