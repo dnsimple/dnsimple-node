@@ -93,4 +93,26 @@ describe('whois privacy', function() {
       });
     });
   });
+
+  describe('#renewWhoisPrivacy', function() {
+    var fixture = testUtils.fixture('renewWhoisPrivacy/success.http');
+
+    it('produces a whois privacy renewal', function(done) {
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/registrar/domains/example.com/whois_privacy/renewals')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.registrar.renewWhoisPrivacy(accountId, domainId).then(function(response) {
+        var whoisPrivacyRenewal = response.data;
+        expect(whoisPrivacyRenewal.id).to.eq(1);
+        expect(whoisPrivacyRenewal.domain_id).to.eq(100);
+        expect(whoisPrivacyRenewal.whois_privacy_id).to.eq(999);
+        expect(whoisPrivacyRenewal.state).to.eq('new');
+        expect(whoisPrivacyRenewal.enabled).to.eq(true);
+        done();
+      }, function(error) {
+        done(error);
+      });
+    });
+  });
 });
