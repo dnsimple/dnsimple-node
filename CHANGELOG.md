@@ -1,5 +1,9 @@
 # Changelog
 
+### Release 2.9.0
+
+- NEW: Added WHOIS privacy renewal (GH-17)
+
 ### Release 2.8.0
 
 - NEW: Added zone distribution and zone record distribution (GH-16)
