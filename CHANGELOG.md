@@ -1,5 +1,9 @@
 # Changelog
 
+### Release 3.0.0
+
+- NEW: Updates to support Node v8. Node v6 is deprecated.
+
 ### Release 2.9.0
 
 - NEW: Added WHOIS privacy renewal (GH-17)
