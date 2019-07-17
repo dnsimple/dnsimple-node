@@ -20,7 +20,7 @@
   },
   "bugs:": "https://github.com/dnsimple/dnsimple-node/issues",
   "engines": {
-    "node": ">= v6.0.0"
+    "node": ">= v12.0.0"
   },
   "main": "lib/dnsimple.js",
   "files": [
@@ -36,7 +36,7 @@
     "nock": "^9.3.2"
   },
   "dependencies": {
-    "npm": "^6.1.0"
+    "npm": "^6.10.1"
   },
   "license": "MIT",
   "scripts": {
