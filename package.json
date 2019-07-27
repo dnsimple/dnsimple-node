@@ -35,9 +35,7 @@
     "mocha": "^5.2.0",
     "nock": "^9.3.2"
   },
-  "dependencies": {
-    "npm": "^6.10.1"
-  },
+  "dependencies": {},
   "license": "MIT",
   "scripts": {
     "test": "npm run lint && mocha",
