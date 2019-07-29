@@ -1,5 +1,9 @@
 # Changelog
 
+### Release 3.0.1
+
+- Drops dependency on `npm`
+
 ### Release 3.0.0
 
 - NEW: Updates to support Node v8. Node v6 is deprecated.
