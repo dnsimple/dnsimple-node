@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## Release 3.0.2
 
 - CHANGED: User-agent format has been changed to prepend custom token before default token.
 
