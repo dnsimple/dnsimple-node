@@ -23,7 +23,7 @@ describe('dnsimple module', function() {
 
     it('composes the User-Agent', function() {
       dnsimple.setUserAgent('my-app');
-      expect(dnsimple._api.userAgent).to.equal('dnsimple-node/' +  dnsimple.VERSION + ' my-app');
+      expect(dnsimple._api.userAgent).to.equal('my-app dnsimple-node/' +  dnsimple.VERSION);
     });
   });
 
