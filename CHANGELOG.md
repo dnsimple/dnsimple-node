@@ -1,5 +1,9 @@
 # Changelog
 
+## master
+
+- CHANGED: Default timeout is now hard-coded to ensure compatibility with Node.js 13. (GH-25) @jonchurch
+
 ## Release 3.0.2
 
 - CHANGED: User-agent format has been changed to prepend custom token before default token.
