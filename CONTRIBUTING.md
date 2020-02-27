@@ -1,8 +1,8 @@
-# Contributing to DNSimple/node
+# Contributing to DNSimple-node
 
 ## Getting started
 
-#### 1. Clone the repository
+### 1. Clone the repository
 
 Clone the repository and move into it:
 
@@ -11,19 +11,13 @@ git clone git@github.com:dnsimple/dnsimple-node.git
 cd dnsimple-node
 ```
 
-#### 2. Install the dependencies
-
-Install the test dependencies:
+### 2. Install the dependencies
 
 ```shell
-npm install jscs
-npm install mocha
-npm install chai
-npm install chai-as-promised
-npm install nock
+npm install
 ```
 
-#### 3. Build and test
+### 3. Build and test
 
 [Run the test suite](#testing) to check everything works as expected.
 
@@ -76,7 +70,6 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
     npm login
     npm publish
     ```
-
 
 ## Testing
 
