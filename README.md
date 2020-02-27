@@ -2,7 +2,7 @@
 
 A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
-[![Build Status](https://travis-ci.org/dnsimple/dnsimple-node.svg)](https://travis-ci.org/dnsimple/dnsimple-node)
+[![Build Status](https://travis-ci.com/dnsimple/dnsimple-node.svg?branch=master)](https://travis-ci.com/dnsimple/dnsimple-node)
 
 
 ## Requirements
