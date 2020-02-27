@@ -2,6 +2,8 @@
 
 ## master
 
+- CHANGED: Simplifies testing instructions
+
 ## Release 3.0.3
 
 - CHANGED: Default timeout is now hard-coded to ensure compatibility with Node.js 13. (GH-25) @jonchurch
