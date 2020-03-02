@@ -38,7 +38,7 @@
   "dependencies": {},
   "license": "MIT",
   "scripts": {
-    "test": "npm run lint && mocha",
+    "test": "npm run lint && mocha --bail --recursive",
     "lint": "jscs ."
   }
 }
