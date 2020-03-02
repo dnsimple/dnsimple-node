@@ -13,14 +13,8 @@ cd dnsimple-node
 
 #### 2. Install the dependencies
 
-Install the test dependencies:
-
 ```shell
-npm install jscs
-npm install mocha
-npm install chai
-npm install chai-as-promised
-npm install nock
+npm install
 ```
 
 #### 3. Build and test

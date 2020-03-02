@@ -2,6 +2,7 @@
 
 ## master
 
+- CHANGED: Simplifies testing instructions
 - CHANGED: Bump lodash from 4.17.14 to 4.17.15
 - CHANGED: Bump chai from 4.1.2 to 4.2.0
 - CHANGED: Bump mocha from 5.2.0 to 7.1.0
