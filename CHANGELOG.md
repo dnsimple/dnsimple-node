@@ -2,6 +2,7 @@
 
 ## master
 
+- NEW: Adds NodeJS v13 to Travis build
 - CHANGED: Simplifies testing instructions
 - CHANGED: Bump lodash from 4.17.14 to 4.17.15
 - CHANGED: Bump chai from 4.1.2 to 4.2.0
