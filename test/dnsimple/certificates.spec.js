@@ -15,35 +15,35 @@ describe('certificates', function() {
     var fixture = testUtils.fixture('listCertificates/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates?sort=expires_on%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId, {sort: 'expires_on:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

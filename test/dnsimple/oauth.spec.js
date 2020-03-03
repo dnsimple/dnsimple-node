@@ -20,7 +20,7 @@ describe('oauth', function() {
     var fixture = testUtils.fixture('oauthAccessToken/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/oauth/access_token', {
           client_id: clientId,
           client_secret: clientSecret,
@@ -31,7 +31,7 @@ describe('oauth', function() {
 
       dnsimple.oauth.exchangeAuthorizationForToken(code, clientId, clientSecret);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -60,7 +60,7 @@ describe('oauth', function() {
       var redirectUri = 'super-redirect-uri';
 
       it('builds the correct request', function(done) {
-        var endpoint = nock('https://api.dnsimple.com')
+        nock('https://api.dnsimple.com')
           .post('/v2/oauth/access_token', {
             client_id: clientId,
             client_secret: clientSecret,
@@ -74,7 +74,7 @@ describe('oauth', function() {
         let options = {state: state, redirectUri: redirectUri};
         dnsimple.oauth.exchangeAuthorizationForToken(code, clientId, clientSecret, options);
 
-        endpoint.done();
+        nock.isDone();
         done();
       });
     });

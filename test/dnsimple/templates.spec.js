@@ -14,35 +14,35 @@ describe('templates', function() {
     var fixture = testUtils.fixture('listTemplates/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplates(accountId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplates(accountId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplates(accountId, {sort: 'name:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -162,13 +162,13 @@ describe('templates', function() {
     var fixture = testUtils.fixture('createTemplate/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/templates', {name: 'Beta'})
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.createTemplate(accountId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -194,13 +194,13 @@ describe('templates', function() {
     var fixture = testUtils.fixture('updateTemplate/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .patch('/v2/1010/templates/1', {name: 'Alpha'})
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.updateTemplate(accountId, templateId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -284,35 +284,35 @@ describe('template records', function() {
     var fixture = testUtils.fixture('listTemplateRecords/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplateRecords(accountId, templateId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplateRecords(accountId, templateId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplateRecords(accountId, templateId, {sort: 'name:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -452,13 +452,13 @@ describe('template records', function() {
     var fixture = testUtils.fixture('createTemplateRecord/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/templates/1/records', {content: 'mx.example.com'})
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.createTemplateRecord(accountId, templateId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

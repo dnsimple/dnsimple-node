@@ -14,46 +14,46 @@ describe('contacts', function() {
     var fixture = testUtils.fixture('listContacts/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.listContacts(accountId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.listContacts(accountId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?sort=first_name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.listContacts(accountId, {sort: 'first_name:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports filter', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?first_name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.listContacts(accountId, {filter: {first_name_like: 'example'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -171,13 +171,13 @@ describe('contacts', function() {
     var fixture = testUtils.fixture('createContact/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/contacts', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.createContact(accountId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -207,13 +207,13 @@ describe('contacts', function() {
     var fixture = testUtils.fixture('updateContact/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .patch('/v2/1010/contacts/' + contactId, attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.updateContact(accountId, contactId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -254,13 +254,13 @@ describe('contacts', function() {
     var fixture = testUtils.fixture('deleteContact/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .delete('/v2/1010/contacts/' + contactId)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.deleteContact(accountId, contactId);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

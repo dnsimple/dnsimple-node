@@ -16,13 +16,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('initiatePush/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/pushes', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.initiatePush(accountId, domainId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -73,13 +73,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('acceptPush/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/pushes/200', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.acceptPush(accountId, pushId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -103,13 +103,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('rejectPush/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .delete('/v2/1010/pushes/200')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.rejectPush(accountId, pushId);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

@@ -14,46 +14,46 @@ describe('zones', function() {
     var fixture = testUtils.fixture('listZones/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZones(accountId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZones(accountId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones?sort=expires_on%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZones(accountId, {sort: 'expires_on:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports filter', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones?name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZones(accountId, {filter: {name_like: 'example'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
