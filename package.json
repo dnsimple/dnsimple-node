@@ -33,7 +33,7 @@
     "lodash": ">=4.17.13",
     "js-yaml": ">=3.13.1",
     "mocha": "^7.1.0",
-    "nock": "10.x"
+    "nock": "11.x"
   },
   "dependencies": {},
   "license": "MIT",
