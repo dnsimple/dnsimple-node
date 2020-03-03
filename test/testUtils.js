@@ -1,4 +1,4 @@
-'use strinct';
+'use strict';
 
 require('mocha');
 require('chai').use(require('chai-as-promised'));
@@ -13,8 +13,8 @@ var utils = module.exports = {
   },
 
   fixture: function(path) {
-    data = fs.readFileSync('./test/fixtures.http/' + path, {encoding: 'UTF8'});
-    lines = data.split(/\r?\n/);
+    var data = fs.readFileSync('./test/fixtures.http/' + path, {encoding: 'UTF8'});
+    var lines = data.split(/\r?\n/);
 
     var statusLine = lines.shift();
     var statusParts = statusLine.split(/\s+/);
@@ -22,7 +22,8 @@ var utils = module.exports = {
     var statusCode = statusParts[1];
     var reasonPhrase = statusParts[2];
 
-    var headers = {}
+    var headers = {};
+    var val;
     while ((val = lines.shift()) != '') {
       var pair = val.split(/:\s/);
       headers[pair[0]] = pair[1];
