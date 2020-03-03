@@ -19,7 +19,7 @@ describe('oauth', function() {
   describe('#exchangeAuthorizationForToken', function() {
     var fixture = testUtils.fixture('oauthAccessToken/success.http');
 
-    it('builds the correct requrest', function(done) {
+    it('builds the correct request', function(done) {
       var endpoint = nock('https://api.dnsimple.com')
         .post('/v2/oauth/access_token', {
           client_id: clientId,
