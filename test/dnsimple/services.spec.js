@@ -13,35 +13,35 @@ describe('services', function() {
     var fixture = testUtils.fixture('listServices/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/services?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.listServices({page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/services?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.listServices({query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/services?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.listServices({sort: 'name:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

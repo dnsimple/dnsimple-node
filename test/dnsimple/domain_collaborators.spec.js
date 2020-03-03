@@ -15,24 +15,24 @@ describe('collaborators', function() {
     var fixture = testUtils.fixture('listCollaborators/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/collaborators?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listCollaborators(accountId, domainId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/collaborators?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listCollaborators(accountId, domainId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

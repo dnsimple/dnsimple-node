@@ -15,13 +15,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('enableDnssec/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.enableDnssec(accountId, domainId);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -65,13 +65,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('getDnssec/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.getDnssec(accountId, domainId);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

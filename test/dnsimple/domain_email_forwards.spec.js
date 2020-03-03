@@ -15,35 +15,35 @@ describe('domains', function() {
     var fixture = testUtils.fixture('listEmailForwards/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listEmailForwards(accountId, domainId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listEmailForwards(accountId, domainId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?sort=from%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listEmailForwards(accountId, domainId, {sort: 'from:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -161,13 +161,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('createEmailForward/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/email_forwards', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.createEmailForward(accountId, domainId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

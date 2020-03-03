@@ -14,13 +14,13 @@ describe('webhooks', function() {
     var fixture = testUtils.fixture('listDomains/success.http');
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/webhooks?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.webhooks.listWebhooks(accountId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -45,13 +45,13 @@ describe('webhooks', function() {
     var fixture = testUtils.fixture('listDomains/success.http');
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/webhooks?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.webhooks.allWebhooks(accountId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -115,13 +115,13 @@ describe('webhooks', function() {
     var fixture = testUtils.fixture('createWebhook/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/webhooks', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.webhooks.createWebhook(accountId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

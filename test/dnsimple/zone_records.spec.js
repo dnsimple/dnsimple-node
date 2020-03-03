@@ -15,46 +15,46 @@ describe('zone records', function() {
     var fixture = testUtils.fixture('listZoneRecords/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones/example.com/records?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZoneRecords(accountId, zoneId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones/example.com/records?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZoneRecords(accountId, zoneId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones/example.com/records?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZoneRecords(accountId, zoneId, {sort: 'name:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports filter', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/zones/example.com/records?name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZoneRecords(accountId, zoneId, {filter: {name_like: 'example'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -179,13 +179,13 @@ describe('zone records', function() {
     var fixture = testUtils.fixture('createZoneRecord/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/zones/example.com/records', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -212,13 +212,13 @@ describe('zone records', function() {
     var fixture = testUtils.fixture('updateZoneRecord/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .patch('/v2/1010/zones/example.com/records/' + recordId, attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -260,13 +260,13 @@ describe('zone records', function() {
     var fixture = testUtils.fixture('deleteZoneRecord/success.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .delete('/v2/1010/zones/example.com/records/' + recordId)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

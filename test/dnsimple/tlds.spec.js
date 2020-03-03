@@ -13,35 +13,35 @@ describe('tlds', function() {
     var fixture = testUtils.fixture('listTlds/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/tlds?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.listTlds({page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/tlds?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.listTlds({query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/tlds?sort=tld%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.listTlds({sort: 'tld:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

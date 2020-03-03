@@ -14,46 +14,46 @@ describe('domains', function() {
     var fixture = testUtils.fixture('listDomains/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?sort=expires_on%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId, {sort: 'expires_on:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports filter', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId, {filter: {name_like: 'example'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
@@ -174,13 +174,13 @@ describe('domains', function() {
     var fixture = testUtils.fixture('createDomain/created.http');
 
     it('builds the correct request', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .post('/v2/1010/domains', attributes)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.createDomain(accountId, attributes);
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 

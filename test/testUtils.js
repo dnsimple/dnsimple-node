@@ -19,7 +19,7 @@ var utils = module.exports = {
     var statusLine = lines.shift();
     var statusParts = statusLine.split(/\s+/);
     var httpVersion = statusParts[0];
-    var statusCode = statusParts[1];
+    var statusCode = parseInt(statusParts[1]);
     var reasonPhrase = statusParts[2];
 
     var headers = {};

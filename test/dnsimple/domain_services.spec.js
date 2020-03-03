@@ -15,35 +15,35 @@ describe('domain services', function() {
     var fixture = testUtils.fixture('appliedServices/success.http');
 
     it('supports pagination', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?page=1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.appliedServices(accountId, domainId, {page: 1});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports extra request options', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.appliedServices(accountId, domainId, {query: {foo: 'bar'}});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
     it('supports sorting', function(done) {
-      var endpoint = nock('https://api.dnsimple.com')
+      nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.appliedServices(accountId, domainId, {sort: 'name:asc'});
 
-      endpoint.done();
+      nock.isDone();
       done();
     });
 
