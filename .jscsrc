@@ -1,9 +1,0 @@
-
-{
-  "preset": "node-style-guide",
-  "disallowKeywords": ["with"],
-  "maximumLineLength": { "value": 120 },
-  "requireSpread": false,
-  "requireTemplateStrings": false,
-  "requireCamelCaseOrUpperCaseIdentifiers": false
-}
