@@ -41,5 +41,11 @@
   "scripts": {
     "test": "mocha --bail --recursive",
     "lint": "semistandard --verbose | snazzy"
+  },
+  "semistandard": {
+    "globals": [
+      "describe",
+      "it"
+    ]
   }
 }
