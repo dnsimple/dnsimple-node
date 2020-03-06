@@ -7,13 +7,13 @@ const fs = require('fs');
 
 var utils = module.exports = {
 
-  getAccessToken: function() {
+  getAccessToken: function () {
     var key = process.env.TOKEN || 'bogus';
-    return key
+    return key;
   },
 
-  fixture: function(path) {
-    var data = fs.readFileSync('./test/fixtures.http/' + path, {encoding: 'UTF8'});
+  fixture: function (path) {
+    var data = fs.readFileSync('./test/fixtures.http/' + path, { encoding: 'UTF8' });
     var lines = data.split(/\r?\n/);
 
     var statusLine = lines.shift();
@@ -32,8 +32,8 @@ var utils = module.exports = {
     var fixture = {
       statusCode: statusCode,
       headers: headers,
-      body: null,
-    }
+      body: null
+    };
 
     if (statusCode != 204) {
       if (headers['Content-Type'] == 'application/json') {
@@ -44,6 +44,6 @@ var utils = module.exports = {
     }
 
     return fixture;
-  },
+  }
 
-}
+};

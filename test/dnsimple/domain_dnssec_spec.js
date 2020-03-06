@@ -2,19 +2,19 @@
 
 var testUtils = require('../testUtils');
 var dnsimple = require('../../lib/dnsimple')({
-  accessToken: testUtils.getAccessToken(),
+  accessToken: testUtils.getAccessToken()
 });
 
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('domains', function() {
-  describe('#enableDnssec', function() {
+describe('domains', function () {
+  describe('#enableDnssec', function () {
     var accountId = '1010';
     var domainId = 'example.com';
     var fixture = testUtils.fixture('enableDnssec/success.http');
 
-    it('builds the correct request', function(done) {
+    it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
@@ -25,46 +25,46 @@ describe('domains', function() {
       done();
     });
 
-    it('produces an response', function(done) {
+    it('produces an response', function (done) {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.enableDnssec(accountId, domainId).then(function(response) {
+      dnsimple.domains.enableDnssec(accountId, domainId).then(function (response) {
         var dnssec = response.data;
         expect(dnssec.enabled).to.be.true;
         done();
-      }, function(error) {
+      }, function (error) {
         done(error);
       });
     });
   });
 
-  describe('#disableDnssec', function() {
+  describe('#disableDnssec', function () {
     var accountId = '1010';
     var domainId = 'example.com';
     var fixture = testUtils.fixture('disableDnssec/success.http');
 
-    it('produces nothing', function(done) {
+    it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.disableDnssec(accountId, domainId).then(function(response) {
+      dnsimple.domains.disableDnssec(accountId, domainId).then(function (response) {
         expect(response).to.eql({});
         done();
-      }, function(error) {
+      }, function (error) {
         done(error);
       });
     });
   });
 
-  describe('#getDnssec', function() {
+  describe('#getDnssec', function () {
     var accountId = '1010';
     var domainId = 'example.com';
     var fixture = testUtils.fixture('getDnssec/success.http');
 
-    it('builds the correct request', function(done) {
+    it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
@@ -75,19 +75,18 @@ describe('domains', function() {
       done();
     });
 
-    it('produces an response', function(done) {
+    it('produces an response', function (done) {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/dnssec')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.getDnssec(accountId, domainId).then(function(response) {
+      dnsimple.domains.getDnssec(accountId, domainId).then(function (response) {
         var dnssec = response.data;
         expect(dnssec.enabled).to.be.true;
         done();
-      }, function(error) {
+      }, function (error) {
         done(error);
       });
     });
   });
 });
-
