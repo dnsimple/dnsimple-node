@@ -133,15 +133,15 @@ describe('tlds', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.getTldExtendedAttributes('uk').then(function (response) {
-        var extended_attributes = response.data;
-        expect(extended_attributes.length).to.eq(4);
-        expect(extended_attributes[0].name).to.eq('uk_legal_type');
-        expect(extended_attributes[0].description).to.eq('Legal type of registrant contact');
-        expect(extended_attributes[0].required).to.be.false;
-        expect(extended_attributes[0].options.length).to.eq(17);
-        expect(extended_attributes[0].options[0].title).to.eq('UK Individual');
-        expect(extended_attributes[0].options[0].value).to.eq('IND');
-        expect(extended_attributes[0].options[0].description).to.eq('UK Individual (our default value)');
+        var extendedAttributes = response.data;
+        expect(extendedAttributes.length).to.eq(4);
+        expect(extendedAttributes[0].name).to.eq('uk_legal_type');
+        expect(extendedAttributes[0].description).to.eq('Legal type of registrant contact');
+        expect(extendedAttributes[0].required).to.be.false;
+        expect(extendedAttributes[0].options.length).to.eq(17);
+        expect(extendedAttributes[0].options[0].title).to.eq('UK Individual');
+        expect(extendedAttributes[0].options[0].value).to.eq('IND');
+        expect(extendedAttributes[0].options[0].description).to.eq('UK Individual (our default value)');
         done();
       }, function (error) {
         done(error);
