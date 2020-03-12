@@ -8,7 +8,6 @@ var dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-const url = require('url');
 const querystring = require('querystring');
 
 describe('oauth', function () {
@@ -82,8 +81,8 @@ describe('oauth', function () {
 
   describe('#authorizeUrl', function () {
     it('builds the correct url', function () {
-      const authorizeUrl = url.parse(dnsimple.oauth.authorizeUrl('great-app'));
-      const expectedUrl = url.parse('https://dnsimple.com/oauth/authorize?client_id=great-app&response_type=code');
+      const authorizeUrl = new URL(dnsimple.oauth.authorizeUrl('great-app'));
+      const expectedUrl = new URL('https://dnsimple.com/oauth/authorize?client_id=great-app&response_type=code');
 
       expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
       expect(authorizeUrl.host).to.eq(expectedUrl.host);
@@ -92,11 +91,11 @@ describe('oauth', function () {
 
     it('exposes the options in the query string', function () {
       var authorizeUrl = dnsimple.oauth.authorizeUrl('great-app', { secret: '1', redirect_uri: 'http://example.com' });
-      authorizeUrl = url.parse(authorizeUrl);
+      authorizeUrl = new URL(authorizeUrl);
 
       var expectedUrl = 'https://dnsimple.com/oauth/authorize';
       expectedUrl += '?client_id=great-app&secret=1&redirect_uri=http://example.com&response_type=code';
-      expectedUrl = url.parse(expectedUrl);
+      expectedUrl = new URL(expectedUrl);
 
       expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
       expect(authorizeUrl.host).to.eq(expectedUrl.host);
