@@ -5,7 +5,7 @@ require('chai').use(require('chai-as-promised'));
 
 const fs = require('fs');
 
-var utils = module.exports = {
+module.exports = {
 
   getAccessToken: function () {
     var key = process.env.TOKEN || 'bogus';
@@ -24,19 +24,21 @@ var utils = module.exports = {
 
     var headers = {};
     var val;
-    while ((val = lines.shift()) != '') {
+    while ((val = lines.shift()) !== '') {
       var pair = val.split(/:\s/);
       headers[pair[0]] = pair[1];
     }
 
     var fixture = {
+      httpVersion: httpVersion,
       statusCode: statusCode,
       headers: headers,
+      reasonPhrase: reasonPhrase,
       body: null
     };
 
-    if (statusCode != 204) {
-      if (headers['Content-Type'] == 'application/json') {
+    if (statusCode !== 204) {
+      if (headers['Content-Type'] === 'application/json') {
         fixture.body = JSON.parse(lines.join('\n'));
       } else {
         fixture.body = lines.join('\n');
