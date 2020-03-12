@@ -251,7 +251,7 @@ describe('certificates', function() {
         expect(certificate.id).to.eq(300);
         done();
       }, function(error) {
-        done();
+        done(error);
       });
     });
   });
@@ -264,7 +264,7 @@ describe('certificates', function() {
 
     it('issues a certificate', function(done) {
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains/example.com/certificates/200/issue')
+        .post('/v2/1010/domains/example.com/certificates/letsencrypt/200/issue')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId).then(function(response) {
@@ -272,7 +272,7 @@ describe('certificates', function() {
         expect(certificate.id).to.eq(200);
         done();
       }, function(error) {
-        done();
+        done(error);
       });
     });
   });
@@ -296,7 +296,7 @@ describe('certificates', function() {
         expect(certificateRenewal.new_certificate_id).to.eq(300);
         done();
       }, function(error) {
-        done();
+        done(error);
       });
     });
   });
@@ -310,7 +310,7 @@ describe('certificates', function() {
 
     it('issues a certificate renewal', function(done) {
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains/example.com/certificates/200/renewals/999/issue')
+        .post('/v2/1010/domains/example.com/certificates/letsencrypt/200/renewals/999/issue')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId)
@@ -319,7 +319,7 @@ describe('certificates', function() {
         expect(certificateRenewal.id).to.eq(999);
         done();
       }, function(error) {
-        done();
+        done(error);
       });
     });
 
