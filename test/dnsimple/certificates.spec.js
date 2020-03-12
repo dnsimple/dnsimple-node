@@ -251,7 +251,7 @@ describe('certificates', function () {
         expect(certificate.id).to.eq(300);
         done();
       }, function (error) {
-        done();
+        done(error);
       });
     });
   });
@@ -264,15 +264,15 @@ describe('certificates', function () {
 
     it('issues a certificate', function (done) {
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains/example.com/certificates/200/issue')
+        .post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/issue`)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId).then(function (response) {
         var certificate = response.data;
-        expect(certificate.id).to.eq(200);
+        expect(certificate.id).to.eq(certificateId);
         done();
       }, function (error) {
-        done();
+        done(error);
       });
     });
   });
@@ -285,7 +285,7 @@ describe('certificates', function () {
 
     it('purchases a certificate renewal', function (done) {
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains/example.com/certificates/letsencrypt/200/renewal')
+        .post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewal`)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.purchaseLetsencryptCertificateRenewal(accountId, domainId, certificateId)
@@ -296,7 +296,7 @@ describe('certificates', function () {
           expect(certificateRenewal.new_certificate_id).to.eq(300);
           done();
         }, function (error) {
-          done();
+          done(error);
         });
     });
   });
@@ -305,21 +305,21 @@ describe('certificates', function () {
     var accountId = '1010';
     var domainId = 'example.com';
     var certificateId = 200;
-    var certificateRenewalId = 999;
+    var certificateRenewalId = 300;
     var fixture = testUtils.fixture('issueRenewalLetsencryptCertificate/success.http');
 
     it('issues a certificate renewal', function (done) {
       nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains/example.com/certificates/200/renewals/999/issue')
+        .post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals/${certificateRenewalId}/issue`)
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId)
         .then(function (response) {
           var certificateRenewal = response.data;
-          expect(certificateRenewal.id).to.eq(999);
+          expect(certificateRenewal.id).to.eq(certificateRenewalId);
           done();
         }, function (error) {
-          done();
+          done(error);
         });
     });
   });
