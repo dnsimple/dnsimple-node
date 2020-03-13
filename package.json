@@ -39,7 +39,7 @@
   "dependencies": {},
   "license": "MIT",
   "scripts": {
-    "test": "mocha --bail --recursive",
+    "test": "npm run lint && mocha --bail --recursive",
     "lint": "semistandard --verbose | snazzy"
   },
   "semistandard": {
