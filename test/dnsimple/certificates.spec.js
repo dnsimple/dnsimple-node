@@ -305,7 +305,7 @@ describe('certificates', function () {
     var accountId = '1010';
     var domainId = 'example.com';
     var certificateId = 200;
-    var certificateRenewalId = 300;
+    var certificateRenewalId = 999;
     var fixture = testUtils.fixture('issueRenewalLetsencryptCertificate/success.http');
 
     it('issues a certificate renewal', function (done) {
