@@ -68,7 +68,7 @@ describe('services', function () {
 
       dnsimple.services.listServices().then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {

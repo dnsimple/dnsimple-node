@@ -69,7 +69,7 @@ describe('templates', function () {
 
       dnsimple.templates.listTemplates(accountId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -147,7 +147,7 @@ describe('templates', function () {
         dnsimple.templates.getTemplate(accountId, templateId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Template `beta` not found');
           done();
@@ -229,7 +229,7 @@ describe('templates', function () {
         dnsimple.templates.updateTemplate(accountId, templateId, attributes).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -336,7 +336,7 @@ describe('template records', function () {
 
       dnsimple.templates.listTemplateRecords(accountId, templateId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -418,7 +418,7 @@ describe('template records', function () {
         dnsimple.templates.getTemplateRecord(accountId, 0, recordId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Template `beta` not found');
           done();
@@ -437,7 +437,7 @@ describe('template records', function () {
         dnsimple.templates.getTemplateRecord(accountId, templateId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

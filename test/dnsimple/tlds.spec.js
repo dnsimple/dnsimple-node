@@ -67,7 +67,7 @@ describe('tlds', function () {
 
       dnsimple.tlds.listTlds().then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -137,7 +137,7 @@ describe('tlds', function () {
         expect(extendedAttributes.length).to.eq(4);
         expect(extendedAttributes[0].name).to.eq('uk_legal_type');
         expect(extendedAttributes[0].description).to.eq('Legal type of registrant contact');
-        expect(extendedAttributes[0].required).to.be.false;
+        expect(extendedAttributes[0].required).to.eq(false);
         expect(extendedAttributes[0].options.length).to.eq(17);
         expect(extendedAttributes[0].options[0].title).to.eq('UK Individual');
         expect(extendedAttributes[0].options[0].value).to.eq('IND');

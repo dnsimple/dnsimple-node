@@ -32,7 +32,7 @@ describe('domains', function () {
 
       dnsimple.domains.enableDnssec(accountId, domainId).then(function (response) {
         var dnssec = response.data;
-        expect(dnssec.enabled).to.be.true;
+        expect(dnssec.enabled).to.eq(true);
         done();
       }, function (error) {
         done(error);
@@ -82,7 +82,7 @@ describe('domains', function () {
 
       dnsimple.domains.getDnssec(accountId, domainId).then(function (response) {
         var dnssec = response.data;
-        expect(dnssec.enabled).to.be.true;
+        expect(dnssec.enabled).to.eq(true);
         done();
       }, function (error) {
         done(error);

@@ -71,9 +71,9 @@ describe('zone records', function () {
         expect(records[0].name).to.eq('');
         expect(records[0].content).to.eq('ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300');
         expect(records[0].ttl).to.eq(3600);
-        expect(records[0].priority).to.be.null;
+        expect(records[0].priority).to.eq(null);
         expect(records[0].type).to.eq('SOA');
-        expect(records[0].system_record).to.be.true;
+        expect(records[0].system_record).to.eq(true);
         expect(records[0].created_at).to.eq('2016-03-22T10:20:53Z');
         expect(records[0].updated_at).to.eq('2016-10-05T09:26:38Z');
         done();
@@ -89,7 +89,7 @@ describe('zone records', function () {
 
       dnsimple.zones.listZoneRecords(accountId, zoneId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -163,7 +163,7 @@ describe('zone records', function () {
         dnsimple.zones.getZoneRecord(accountId, zoneId, '0').then(function (response) {
           done('Error expected but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Record `0` not found');
           done();
@@ -246,7 +246,7 @@ describe('zone records', function () {
         dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -293,7 +293,7 @@ describe('zone records', function () {
         dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId).then(function (response) {
           done('Error expected but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

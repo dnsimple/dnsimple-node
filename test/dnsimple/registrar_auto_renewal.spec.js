@@ -39,7 +39,7 @@ describe('registrar auto renewal', function () {
         dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId).then(function (response) {
           done('Expected error but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -73,7 +73,7 @@ describe('registrar auto renewal', function () {
         dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId).then(function (response) {
           done('Expected error but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

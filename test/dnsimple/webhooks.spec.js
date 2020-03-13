@@ -100,7 +100,7 @@ describe('webhooks', function () {
         dnsimple.webhooks.getWebhook(accountId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Webhook `0` not found');
           done();
@@ -168,7 +168,7 @@ describe('webhooks', function () {
         dnsimple.webhooks.deleteWebhook(accountId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

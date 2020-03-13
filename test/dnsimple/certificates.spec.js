@@ -71,7 +71,7 @@ describe('certificates', function () {
 
       dnsimple.certificates.listCertificates(accountId, domainId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -149,7 +149,7 @@ describe('certificates', function () {
         dnsimple.certificates.getCertificate(accountId, domainId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Certificate `0` not found');
           done();
@@ -172,7 +172,7 @@ describe('certificates', function () {
       dnsimple.certificates.downloadCertificate(accountId, domainId, certificateId).then(function (response) {
         var certificate = response.data;
         expect(certificate.server).to.match(/-----BEGIN CERTIFICATE-----/);
-        expect(certificate.root).be.null;
+        expect(certificate.root).to.eq(null);
         expect(certificate.chain.length).to.eq(1);
         expect(certificate.chain[0]).to.match(/-----BEGIN CERTIFICATE-----/);
         done();
@@ -191,7 +191,7 @@ describe('certificates', function () {
         dnsimple.certificates.downloadCertificate(accountId, domainId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -228,7 +228,7 @@ describe('certificates', function () {
         dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

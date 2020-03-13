@@ -80,7 +80,7 @@ describe('domains', function () {
 
       dnsimple.domains.listDomains(accountId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -135,12 +135,12 @@ describe('domains', function () {
         var domain = response.data;
         expect(domain.id).to.eq(1);
         expect(domain.account_id).to.eq(1010);
-        expect(domain.registrant_id).to.be.null;
+        expect(domain.registrant_id).to.eq(null);
         expect(domain.name).to.eq('example-alpha.com');
         expect(domain.state).to.eq('hosted');
         expect(domain.auto_renew).to.eq(false);
         expect(domain.private_whois).to.eq(false);
-        expect(domain.expires_on).to.be.null;
+        expect(domain.expires_on).to.eq(null);
         expect(domain.created_at).to.eq('2014-12-06T15:56:55Z');
         expect(domain.updated_at).to.eq('2015-12-09T00:20:56Z');
         done();
@@ -159,7 +159,7 @@ describe('domains', function () {
         dnsimple.domains.getDomain(accountId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Domain `0` not found');
           done();

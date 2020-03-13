@@ -80,7 +80,7 @@ describe('zones', function () {
 
       dnsimple.zones.listZones(accountId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -135,7 +135,7 @@ describe('zones', function () {
         expect(zone.id).to.eq(1);
         expect(zone.account_id).to.eq(1010);
         expect(zone.name).to.eq('example-alpha.com');
-        expect(zone.reverse).to.be.false;
+        expect(zone.reverse).to.eq(false);
         expect(zone.created_at).to.eq('2015-04-23T07:40:03Z');
         expect(zone.updated_at).to.eq('2015-04-23T07:40:03Z');
         done();
@@ -154,7 +154,7 @@ describe('zones', function () {
         dnsimple.zones.getZone(accountId, 'example.com').then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Zone `0` not found');
           done();
@@ -174,7 +174,7 @@ describe('zones', function () {
 
       dnsimple.zones.getZoneFile(accountId, 'example-alpha.com').then(function (response) {
         var zone = response.data;
-        expect(zone).to.not.be.null;
+        expect(zone).to.not.eq(null);
         done();
       }, function (error) {
         done(error);
@@ -191,7 +191,7 @@ describe('zones', function () {
         dnsimple.zones.getZoneFile(accountId, 'example.com').then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -209,7 +209,7 @@ describe('zones', function () {
 
       dnsimple.zones.checkZoneDistribution(accountId, 'example-alpha.com').then(function (response) {
         var zone = response.data;
-        expect(zone).to.not.be.null;
+        expect(zone).to.not.eq(null);
         done();
       }, function (error) {
         done(error);
@@ -227,7 +227,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneDistribution(accountId, 'example.com').then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -244,7 +244,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneDistribution(accountId, 'example.com').then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -261,7 +261,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneDistribution(accountId, 'example.com').then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -280,7 +280,7 @@ describe('zones', function () {
 
       dnsimple.zones.checkZoneRecordDistribution(accountId, 'example-alpha.com', recordId).then(function (response) {
         var zone = response.data;
-        expect(zone).to.not.be.null;
+        expect(zone).to.not.eq(null);
         done();
       }, function (error) {
         done(error);
@@ -298,7 +298,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -315,7 +315,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -332,7 +332,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -349,7 +349,7 @@ describe('zones', function () {
         dnsimple.zones.checkZoneRecordDistribution(accountId, 'example.com', recordId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

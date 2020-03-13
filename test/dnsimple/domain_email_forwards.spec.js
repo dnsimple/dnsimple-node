@@ -68,7 +68,7 @@ describe('domains', function () {
 
       dnsimple.domains.listEmailForwards(accountId, domainId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -145,7 +145,7 @@ describe('domains', function () {
         dnsimple.domains.getEmailForward(accountId, domainId, 0).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Email forward `0` not found');
           done();

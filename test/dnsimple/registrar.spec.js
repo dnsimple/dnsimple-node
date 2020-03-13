@@ -24,8 +24,8 @@ describe('registrar', function () {
       dnsimple.registrar.checkDomain(accountId, domainId).then(function (response) {
         var checkResult = response.data;
         expect(checkResult.domain).to.eql('ruby.codes');
-        expect(checkResult.available).to.be.true;
-        expect(checkResult.premium).to.be.true;
+        expect(checkResult.available).to.eq(true);
+        expect(checkResult.premium).to.eq(true);
         done();
       }, function (error) {
         done(error);
@@ -66,7 +66,7 @@ describe('registrar', function () {
         dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function (response) {
           done();
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Bad request');
           expect(error.message).to.eq('`example.com` is not a premium domain for registration');
           done();
@@ -129,7 +129,7 @@ describe('registrar', function () {
         dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(function (response) {
           done('Expected error, but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -166,7 +166,7 @@ describe('registrar', function () {
         dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function (response) {
           done('Expected error, but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -185,7 +185,7 @@ describe('registrar', function () {
         dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function (response) {
           done('Expected error, but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });

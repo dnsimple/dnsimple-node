@@ -82,7 +82,7 @@ describe('contacts', function () {
 
       dnsimple.contacts.listContacts(accountId).then(function (response) {
         var pagination = response.pagination;
-        expect(pagination).to.not.be.null;
+        expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
       }, function (error) {
@@ -156,7 +156,7 @@ describe('contacts', function () {
         dnsimple.contacts.getContact(accountId, '0').then(function (response) {
           done('Error expected but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Contact `0` not found');
           done();
@@ -241,7 +241,7 @@ describe('contacts', function () {
         dnsimple.contacts.updateContact(accountId, '0', attributes).then(function (response) {
           done('Expected error but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
@@ -287,7 +287,7 @@ describe('contacts', function () {
         dnsimple.contacts.deleteContact(accountId, '0').then(function (response) {
           done('Error expected but future resolved');
         }, function (error) {
-          expect(error).to.not.be.null;
+          expect(error).to.not.eq(null);
           done();
         });
       });
