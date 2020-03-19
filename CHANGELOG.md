@@ -6,8 +6,8 @@
 - CHANGED: Simplifies testing instructions
 - CHANGED: Bump lodash from 4.17.14 to 4.17.15
 - CHANGED: Bump chai from 4.1.2 to 4.2.0
-- CHANGED: Bump mocha from 5.2.0 to 7.1.0
-- CHANGED: Bump nock from 9.3.2 to 12.0.2
+- CHANGED: Bump mocha from 5.2.0 to 7.1.1
+- CHANGED: Bump nock from 9.3.2 to 12.0.3
 - FIX: Fixes typo in test helper
 - FIX: Fixes bad Certificates endpoint specs
 
