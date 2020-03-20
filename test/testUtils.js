@@ -5,15 +5,15 @@ require('chai').use(require('chai-as-promised'));
 
 const fs = require('fs');
 
-var utils = module.exports = {
+module.exports = {
 
-  getAccessToken: function() {
+  getAccessToken: function () {
     var key = process.env.TOKEN || 'bogus';
-    return key
+    return key;
   },
 
-  fixture: function(path) {
-    var data = fs.readFileSync('./test/fixtures.http/' + path, {encoding: 'UTF8'});
+  fixture: function (path) {
+    var data = fs.readFileSync('./test/fixtures.http/' + path, { encoding: 'UTF8' });
     var lines = data.split(/\r?\n/);
 
     var statusLine = lines.shift();
@@ -24,19 +24,21 @@ var utils = module.exports = {
 
     var headers = {};
     var val;
-    while ((val = lines.shift()) != '') {
+    while ((val = lines.shift()) !== '') {
       var pair = val.split(/:\s/);
       headers[pair[0]] = pair[1];
     }
 
     var fixture = {
+      httpVersion: httpVersion,
       statusCode: statusCode,
       headers: headers,
-      body: null,
-    }
+      reasonPhrase: reasonPhrase,
+      body: null
+    };
 
-    if (statusCode != 204) {
-      if (headers['Content-Type'] == 'application/json') {
+    if (statusCode !== 204) {
+      if (headers['Content-Type'] === 'application/json') {
         fixture.body = JSON.parse(lines.join('\n'));
       } else {
         fixture.body = lines.join('\n');
@@ -44,6 +46,6 @@ var utils = module.exports = {
     }
 
     return fixture;
-  },
+  }
 
-}
+};
