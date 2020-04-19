@@ -3,8 +3,8 @@
 A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
 [![Build Status](https://travis-ci.com/dnsimple/dnsimple-node.svg?branch=master)](https://travis-ci.com/dnsimple/dnsimple-node)
-
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/standard/semistandard)
+
 
 ## Requirements
 
@@ -12,11 +12,13 @@ The dnsimple-node package requires node 10.0.0 or higher.
 
 You must also have an activated DNSimple account to access the DNSimple API.
 
+
 ## Installation
 
 You can install this package directly from the github repo with `npm install dnsimple/dnsimple-node`.
 
 Alternatively, install the latest stable version from NPM with `npm install dnsimple`.
+
 
 ## Usage
 
@@ -72,10 +74,11 @@ client.domains.getDomain(accountId, "example.com").then(function(response) {
 To be run like this:
 
 ```shell
-$ TOKEN=[TOKEN VALUE GOES HERE] node test.js
+TOKEN=[TOKEN VALUE GOES HERE] node test.js
 ```
 
 Take a look at [https://github.com/dnsimple/hello-domains-node](https://github.com/dnsimple/hello-domains-node) for an example app that authorizes via OAuth and displays your domain list.
+
 
 ## Sandbox Environment
 
