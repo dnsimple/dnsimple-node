@@ -2,6 +2,8 @@
 
 ## master
 
+- NEW: Adds NodeJS v14 to Travis build
+
 ## Release 4.0.0
 
 - NEW: Adds NodeJS v13 to Travis build
