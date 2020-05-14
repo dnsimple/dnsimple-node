@@ -192,6 +192,58 @@ describe('registrar', function () {
     });
   });
 
+  describe('#getDomainTransfer', function () {
+    var fixture = testUtils.fixture('getDomainTransfer/success.http');
+
+    it('produces a domain transfer', function (done) {
+      nock('https://api.dnsimple.com')
+        .get('/v2/1010/registrar/domains/example.com/transfers/42')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.registrar.getDomainTransfer(accountId, domainId, 42).then(function (response) {
+        var domainTransfer = response.data;
+        expect(domainTransfer.id).to.eq(42);
+        expect(domainTransfer.domain_id).to.eq(2);
+        expect(domainTransfer.registrant_id).to.eq(3);
+        expect(domainTransfer.state).to.eq('cancelled');
+        expect(domainTransfer.auto_renew).to.eq(false);
+        expect(domainTransfer.whois_privacy).to.eq(false);
+        expect(domainTransfer.status_description).to.eq('Canceled by customer');
+        expect(domainTransfer.created_at).to.eq('2020-04-27T18:08:44Z');
+        expect(domainTransfer.updated_at).to.eq('2020-04-27T18:20:01Z');
+        done();
+      }, function (error) {
+        done(error);
+      });
+    });
+  });
+
+  describe('#cancelDomainTransfer', function () {
+    var fixture = testUtils.fixture('cancelDomainTransfer/success.http');
+
+    it('produces a domain transfer', function (done) {
+      nock('https://api.dnsimple.com')
+        .delete('/v2/1010/registrar/domains/example.com/transfers/42')
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42).then(function (response) {
+        var domainTransfer = response.data;
+        expect(domainTransfer.id).to.eq(42);
+        expect(domainTransfer.domain_id).to.eq(6);
+        expect(domainTransfer.registrant_id).to.eq(1);
+        expect(domainTransfer.state).to.eq('transferring');
+        expect(domainTransfer.auto_renew).to.eq(true);
+        expect(domainTransfer.whois_privacy).to.eq(false);
+        expect(domainTransfer.status_description).to.eq(null);
+        expect(domainTransfer.created_at).to.eq('2020-04-24T19:19:03Z');
+        expect(domainTransfer.updated_at).to.eq('2020-04-24T19:19:15Z');
+        done();
+      }, function (error) {
+        done(error);
+      });
+    });
+  });
+
   describe('#transferDomainOut', function () {
     var fixture = testUtils.fixture('authorizeDomainTransferOut/success.http');
 
