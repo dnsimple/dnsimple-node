@@ -195,7 +195,7 @@ describe('registrar', function () {
   describe('#getDomainTransfer', function () {
     var fixture = testUtils.fixture('getDomainTransfer/success.http');
 
-    it('produces a domain transfer', function (done) {
+    it('retrieves a domain transfer', function (done) {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/registrar/domains/example.com/transfers/42')
         .reply(fixture.statusCode, fixture.body);
@@ -221,7 +221,7 @@ describe('registrar', function () {
   describe('#cancelDomainTransfer', function () {
     var fixture = testUtils.fixture('cancelDomainTransfer/success.http');
 
-    it('produces a domain transfer', function (done) {
+    it('cancels a domain transfer', function (done) {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/registrar/domains/example.com/transfers/42')
         .reply(fixture.statusCode, fixture.body);
