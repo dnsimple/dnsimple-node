@@ -4,6 +4,8 @@ A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
 [![Build Status](https://travis-ci.com/dnsimple/dnsimple-node.svg?branch=master)](https://travis-ci.com/dnsimple/dnsimple-node)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/standard/semistandard)
+[![npm version](https://badge.fury.io/js/dnsimple.svg)](https://badge.fury.io/js/dnsimple)
+[![npm downloads](https://img.shields.io/npm/dm/dnsimple.svg)]()
 
 
 ## Requirements
