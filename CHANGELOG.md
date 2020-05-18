@@ -2,6 +2,8 @@
 
 ## master
 
+## Release 4.1.0
+
 - NEW: Adds NodeJS v14 to Travis build
 - NEW: Added `registrar.getDomainTransfer` to retrieve a domain transfer. (dnsimple/dnsimple-node#40)
 - NEW: Added `registrar.cancelDomainTransfer` to cancel an in progress domain transfer. (dnsimple/dnsimple-node#40)
