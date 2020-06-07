@@ -3,6 +3,7 @@
 ## master
 
 - CHANGED: Bump mocha from 7.1.2 to 7.2.0
+- CHANGED: Bump js-yaml from 3.13.1 to 3.14.0
 
 ## Release 4.1.0
 
