@@ -2,11 +2,14 @@
 
 ## master
 
+- CHANGED: Bump mocha from 7.1.2 to 7.2.0
+
 ## Release 4.1.0
 
 - NEW: Adds NodeJS v14 to Travis build
 - NEW: Added `registrar.getDomainTransfer` to retrieve a domain transfer. (dnsimple/dnsimple-node#40)
 - NEW: Added `registrar.cancelDomainTransfer` to cancel an in progress domain transfer. (dnsimple/dnsimple-node#40)
+- CHANGED: Bump mocha from 7.1.1 to 7.1.2
 
 ## Release 4.0.0
 
