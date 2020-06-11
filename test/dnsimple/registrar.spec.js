@@ -202,15 +202,15 @@ describe('registrar', function () {
 
       dnsimple.registrar.getDomainTransfer(accountId, domainId, 42).then(function (response) {
         var domainTransfer = response.data;
-        expect(domainTransfer.id).to.eq(42);
-        expect(domainTransfer.domain_id).to.eq(2);
-        expect(domainTransfer.registrant_id).to.eq(3);
+        expect(domainTransfer.id).to.eq(361);
+        expect(domainTransfer.domain_id).to.eq(182245);
+        expect(domainTransfer.registrant_id).to.eq(2715);
         expect(domainTransfer.state).to.eq('cancelled');
         expect(domainTransfer.auto_renew).to.eq(false);
         expect(domainTransfer.whois_privacy).to.eq(false);
         expect(domainTransfer.status_description).to.eq('Canceled by customer');
-        expect(domainTransfer.created_at).to.eq('2020-04-27T18:08:44Z');
-        expect(domainTransfer.updated_at).to.eq('2020-04-27T18:20:01Z');
+        expect(domainTransfer.created_at).to.eq('2020-06-05T18:08:00Z');
+        expect(domainTransfer.updated_at).to.eq('2020-06-05T18:10:01Z');
         done();
       }, function (error) {
         done(error);
@@ -228,15 +228,15 @@ describe('registrar', function () {
 
       dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42).then(function (response) {
         var domainTransfer = response.data;
-        expect(domainTransfer.id).to.eq(42);
-        expect(domainTransfer.domain_id).to.eq(6);
-        expect(domainTransfer.registrant_id).to.eq(1);
+        expect(domainTransfer.id).to.eq(361);
+        expect(domainTransfer.domain_id).to.eq(182245);
+        expect(domainTransfer.registrant_id).to.eq(2715);
         expect(domainTransfer.state).to.eq('transferring');
-        expect(domainTransfer.auto_renew).to.eq(true);
+        expect(domainTransfer.auto_renew).to.eq(false);
         expect(domainTransfer.whois_privacy).to.eq(false);
         expect(domainTransfer.status_description).to.eq(null);
-        expect(domainTransfer.created_at).to.eq('2020-04-24T19:19:03Z');
-        expect(domainTransfer.updated_at).to.eq('2020-04-24T19:19:15Z');
+        expect(domainTransfer.created_at).to.eq('2020-06-05T18:08:00Z');
+        expect(domainTransfer.updated_at).to.eq('2020-06-05T18:08:04Z');
         done();
       }, function (error) {
         done(error);

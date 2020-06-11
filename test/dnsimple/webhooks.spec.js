@@ -11,7 +11,7 @@ const nock = require('nock');
 describe('webhooks', function () {
   describe('#listWebhooks', function () {
     var accountId = '1010';
-    var fixture = testUtils.fixture('listDomains/success.http');
+    var fixture = testUtils.fixture('listWebhooks/success.http');
 
     it('supports extra request options', function (done) {
       nock('https://api.dnsimple.com')
@@ -42,7 +42,7 @@ describe('webhooks', function () {
 
   describe('#allWebhooks', function () {
     var accountId = '1010';
-    var fixture = testUtils.fixture('listDomains/success.http');
+    var fixture = testUtils.fixture('listWebhooks/success.http');
 
     it('supports extra request options', function (done) {
       nock('https://api.dnsimple.com')
