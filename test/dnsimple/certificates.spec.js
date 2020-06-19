@@ -55,9 +55,9 @@ describe('certificates', function () {
       dnsimple.certificates.listCertificates(accountId, domainId).then(function (response) {
         var certificates = response.data;
         expect(certificates.length).to.eq(2);
-        expect(certificates[0].id).to.eq(1);
-        expect(certificates[0].domain_id).to.eq(10);
-        expect(certificates[0].common_name).to.eq('www.weppos.net');
+        expect(certificates[0].id).to.eq(101973);
+        expect(certificates[0].domain_id).to.eq(14279);
+        expect(certificates[0].common_name).to.eq('www2.dnsimple.us');
         done();
       }, function (error) {
         done(error);
@@ -126,13 +126,13 @@ describe('certificates', function () {
 
       dnsimple.certificates.getCertificate(accountId, domainId, certificateId).then(function (response) {
         var certificate = response.data;
-        expect(certificate.id).to.eq(1);
-        expect(certificate.domain_id).to.eq(2);
-        expect(certificate.contact_id).to.eq(3);
-        expect(certificate.common_name).to.eq('www.weppos.net');
-        expect(certificate.alternate_names).to.eql(['weppos.net', 'www.weppos.net']);
+        expect(certificate.id).to.eq(101967);
+        expect(certificate.domain_id).to.eq(289333);
+        expect(certificate.contact_id).to.eq(2511);
+        expect(certificate.common_name).to.eq('www.bingo.pizza');
+        expect(certificate.alternate_names).to.eql([]);
         expect(certificate.state).to.eq('issued');
-        expect(certificate.expires_on).to.eq('2016-09-09');
+        expect(certificate.expires_on).to.eq('2020-09-16');
         done();
       }, function (error) {
         done(error);
@@ -248,7 +248,7 @@ describe('certificates', function () {
 
       dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, attributes).then(function (response) {
         var certificate = response.data;
-        expect(certificate.id).to.eq(300);
+        expect(certificate.id).to.eq(101967);
         done();
       }, function (error) {
         done(error);
@@ -259,7 +259,7 @@ describe('certificates', function () {
   describe('#issueLetsencryptCertificate', function () {
     var accountId = '1010';
     var domainId = 'example.com';
-    var certificateId = 200;
+    var certificateId = 101967;
     var fixture = testUtils.fixture('issueLetsencryptCertificate/success.http');
 
     it('issues a certificate', function (done) {
@@ -280,7 +280,7 @@ describe('certificates', function () {
   describe('#purchaseLetsencryptCertificateRenewal', function () {
     var accountId = '1010';
     var domainId = 'example.com';
-    var certificateId = 200;
+    var certificateId = 101967;
     var fixture = testUtils.fixture('purchaseRenewalLetsencryptCertificate/success.http');
 
     it('purchases a certificate renewal', function (done) {
@@ -291,9 +291,9 @@ describe('certificates', function () {
       dnsimple.certificates.purchaseLetsencryptCertificateRenewal(accountId, domainId, certificateId)
         .then(function (response) {
           var certificateRenewal = response.data;
-          expect(certificateRenewal.id).to.eq(999);
+          expect(certificateRenewal.id).to.eq(65082);
           expect(certificateRenewal.old_certificate_id).to.eq(certificateId);
-          expect(certificateRenewal.new_certificate_id).to.eq(300);
+          expect(certificateRenewal.new_certificate_id).to.eq(101972);
           done();
         }, function (error) {
           done(error);
@@ -304,8 +304,9 @@ describe('certificates', function () {
   describe('#issueLetsencryptCertificateRenewal', function () {
     var accountId = '1010';
     var domainId = 'example.com';
-    var certificateId = 200;
-    var certificateRenewalId = 999;
+    var certificateId = 101967;
+    var certificateRenewalId = 65082;
+    var newCertificateId = 101972;
     var fixture = testUtils.fixture('issueRenewalLetsencryptCertificate/success.http');
 
     it('issues a certificate renewal', function (done) {
@@ -315,8 +316,8 @@ describe('certificates', function () {
 
       dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId)
         .then(function (response) {
-          var certificateRenewal = response.data;
-          expect(certificateRenewal.id).to.eq(certificateRenewalId);
+          var newCertificate = response.data;
+          expect(newCertificate.id).to.eq(newCertificateId);
           done();
         }, function (error) {
           done(error);
