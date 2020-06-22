@@ -2,7 +2,7 @@
 
 ## master
 
-- CHANGED: Bump mocha from 7.1.2 to 7.2.0
+- CHANGED: Bump mocha from 7.1.2 to 8.0.1
 - CHANGED: Bump js-yaml from 3.13.1 to 3.14.0
 - CHANGED: Domain object deprecates `expires_on` attribute in favor of `expires_at`. (dnsimple/dnsimple-node#43)
 - CHANGED: Certificate object deprecates `expires_on` attribute in favor of `expires_at`. (dnsimple/dnsimple-node#45)
