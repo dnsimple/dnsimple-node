@@ -4,8 +4,8 @@
 
 ## Release 4.2.1
 
-- Bump semistandard from 14.2.0 to 14.2.2
-- Bump nock from 12.0.3 to 13.0.0
+- CHANGED: Bump semistandard from 14.2.0 to 14.2.2
+- CHANGED: Bump nock from 12.0.3 to 13.0.0
 
 ## Release 4.2.0
 
