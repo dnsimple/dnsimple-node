@@ -2,6 +2,8 @@
 
 ## master
 
+- CHANGED: Bump nock from 13.0.0 to 13.0.2
+
 ## Release 4.2.1
 
 - CHANGED: Bump semistandard from 14.2.0 to 14.2.2
