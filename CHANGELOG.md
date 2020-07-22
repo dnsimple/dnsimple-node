@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## main
 
 - CHANGED: Bump lodash from 4.17.15 to 4.17.19
 - CHANGED: Bump nock from 13.0.0 to 13.0.2
