@@ -3,7 +3,7 @@
 ## main
 
 - CHANGED: Bump semistandard from 14.2.2 to 14.2.3
-- CHANGED: Bump lodash from 4.17.15 to 4.17.19
+- CHANGED: Bump lodash from 4.17.15 to 4.17.20
 - CHANGED: Bump nock from 13.0.0 to 13.0.2
 
 ## Release 4.2.1
