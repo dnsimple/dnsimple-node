@@ -3,6 +3,7 @@
 ## main
 
 - NEW: Adds NodeJS v15 to Travis build
+- CHANGED: Removes NodeJS v13 from Travis build
 - CHANGED: Bump semistandard from 14.2.2 to 16.0.0
 - CHANGED: Bump lodash from 4.17.15 to 4.17.20
 - CHANGED: Bump nock from 13.0.0 to 13.0.4
