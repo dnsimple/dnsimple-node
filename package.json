@@ -34,8 +34,8 @@
     "lodash": ">=4.17.13",
     "mocha": "^8.0.1",
     "nock": "^13.0.0",
-    "semistandard": "^14.2.0",
-    "snazzy": "^8.0.0"
+    "semistandard": "^16.0.0",
+    "snazzy": "^9.0.0"
   },
   "dependencies": {},
   "license": "MIT",
