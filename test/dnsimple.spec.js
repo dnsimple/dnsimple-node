@@ -1,11 +1,11 @@
 'use strict';
 
-var testUtils = require('./testUtils');
-var dnsimple = require('../lib/dnsimple')(
+const testUtils = require('./testUtils');
+const dnsimple = require('../lib/dnsimple')(
   testUtils.getAccessToken()
 );
 
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 
 describe('dnsimple module', function () {
   describe('#setAccessToken', function () {

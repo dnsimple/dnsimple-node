@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,7 +10,7 @@ const nock = require('nock');
 
 describe('tlds', function () {
   describe('#listTlds', function () {
-    var fixture = testUtils.fixture('listTlds/success.http');
+    const fixture = testUtils.fixture('listTlds/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -51,7 +51,7 @@ describe('tlds', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.listTlds().then(function (response) {
-        var tlds = response.data;
+        const tlds = response.data;
         expect(tlds.length).to.eq(2);
         expect(tlds[0].tld).to.eq('ac');
         done();
@@ -66,7 +66,7 @@ describe('tlds', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.listTlds().then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -78,17 +78,17 @@ describe('tlds', function () {
 
   describe('#allTlds', function () {
     it('produces a complete list', function (done) {
-      var fixture1 = testUtils.fixture('pages-1of3.http');
+      const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/tlds?page=1')
         .reply(fixture1.statusCode, fixture1.body);
 
-      var fixture2 = testUtils.fixture('pages-2of3.http');
+      const fixture2 = testUtils.fixture('pages-2of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/tlds?page=2')
         .reply(fixture2.statusCode, fixture2.body);
 
-      var fixture3 = testUtils.fixture('pages-3of3.http');
+      const fixture3 = testUtils.fixture('pages-3of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/tlds?page=3')
         .reply(fixture3.statusCode, fixture3.body);
@@ -107,7 +107,7 @@ describe('tlds', function () {
   });
 
   describe('#getTld', function () {
-    var fixture = testUtils.fixture('getTld/success.http');
+    const fixture = testUtils.fixture('getTld/success.http');
 
     it('produces a tld', function (done) {
       nock('https://api.dnsimple.com')
@@ -115,7 +115,7 @@ describe('tlds', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.getTld('com').then(function (response) {
-        var tld = response.data;
+        const tld = response.data;
         expect(tld.tld).to.eq('com');
         done();
       }, function (error) {
@@ -126,14 +126,14 @@ describe('tlds', function () {
 
   describe('#getTldExtendedAttributes', function () {
     it('produces a collection of extended attributes', function (done) {
-      var fixture = testUtils.fixture('getTldExtendedAttributes/success.http');
+      const fixture = testUtils.fixture('getTldExtendedAttributes/success.http');
 
       nock('https://api.dnsimple.com')
         .get('/v2/tlds/uk/extended_attributes')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.tlds.getTldExtendedAttributes('uk').then(function (response) {
-        var extendedAttributes = response.data;
+        const extendedAttributes = response.data;
         expect(extendedAttributes.length).to.eq(4);
         expect(extendedAttributes[0].name).to.eq('uk_legal_type');
         expect(extendedAttributes[0].description).to.eq('Legal type of registrant contact');
@@ -149,7 +149,7 @@ describe('tlds', function () {
     });
 
     describe('when there are no extended attributes for a TLD', function () {
-      var fixture = testUtils.fixture('getTldExtendedAttributes/success-noattributes.http');
+      const fixture = testUtils.fixture('getTldExtendedAttributes/success-noattributes.http');
 
       it('returns an empty collection', function (done) {
         nock('https://api.dnsimple.com')

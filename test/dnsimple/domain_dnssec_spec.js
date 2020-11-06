@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,9 +10,9 @@ const nock = require('nock');
 
 describe('domains', function () {
   describe('#enableDnssec', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('enableDnssec/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('enableDnssec/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -31,7 +31,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.enableDnssec(accountId, domainId).then(function (response) {
-        var dnssec = response.data;
+        const dnssec = response.data;
         expect(dnssec.enabled).to.eq(true);
         done();
       }, function (error) {
@@ -41,9 +41,9 @@ describe('domains', function () {
   });
 
   describe('#disableDnssec', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('disableDnssec/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('disableDnssec/success.http');
 
     it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')
@@ -60,9 +60,9 @@ describe('domains', function () {
   });
 
   describe('#getDnssec', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('getDnssec/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('getDnssec/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -81,7 +81,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.getDnssec(accountId, domainId).then(function (response) {
-        var dnssec = response.data;
+        const dnssec = response.data;
         expect(dnssec.enabled).to.eq(true);
         done();
       }, function (error) {

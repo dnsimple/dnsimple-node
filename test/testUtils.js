@@ -8,28 +8,28 @@ const fs = require('fs');
 module.exports = {
 
   getAccessToken: function () {
-    var key = process.env.TOKEN || 'bogus';
+    const key = process.env.TOKEN || 'bogus';
     return key;
   },
 
   fixture: function (path) {
-    var data = fs.readFileSync('./test/fixtures.http/' + path, { encoding: 'UTF8' });
-    var lines = data.split(/\r?\n/);
+    const data = fs.readFileSync('./test/fixtures.http/' + path, { encoding: 'UTF8' });
+    const lines = data.split(/\r?\n/);
 
-    var statusLine = lines.shift();
-    var statusParts = statusLine.split(/\s+/);
-    var httpVersion = statusParts[0];
-    var statusCode = parseInt(statusParts[1]);
-    var reasonPhrase = statusParts[2];
+    const statusLine = lines.shift();
+    const statusParts = statusLine.split(/\s+/);
+    const httpVersion = statusParts[0];
+    const statusCode = parseInt(statusParts[1]);
+    const reasonPhrase = statusParts[2];
 
-    var headers = {};
-    var val;
+    const headers = {};
+    let val;
     while ((val = lines.shift()) !== '') {
-      var pair = val.split(/:\s/);
+      const pair = val.split(/:\s/);
       headers[pair[0]] = pair[1];
     }
 
-    var fixture = {
+    const fixture = {
       httpVersion: httpVersion,
       statusCode: statusCode,
       headers: headers,

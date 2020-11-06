@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,10 +10,10 @@ const nock = require('nock');
 
 describe('domains', function () {
   describe('#initiatePush', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var attributes = { new_account_email: 'jim@example.com' };
-    var fixture = testUtils.fixture('initiatePush/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const attributes = { new_account_email: 'jim@example.com' };
+    const fixture = testUtils.fixture('initiatePush/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -32,7 +32,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.initiatePush(accountId, domainId, attributes).then(function (response) {
-        var push = response.data;
+        const push = response.data;
         expect(push.id).to.eq(1);
         expect(push.domain_id).to.eq(100);
         expect(push.contact_id).to.eq(null);
@@ -48,8 +48,8 @@ describe('domains', function () {
   });
 
   describe('#listPushes', function () {
-    var accountId = '1010';
-    var fixture = testUtils.fixture('listPushes/success.http');
+    const accountId = '1010';
+    const fixture = testUtils.fixture('listPushes/success.http');
 
     it('produces an pushes list', function (done) {
       nock('https://api.dnsimple.com')
@@ -57,7 +57,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listPushes(accountId).then(function (response) {
-        var pushes = response.data;
+        const pushes = response.data;
         expect(pushes.length).to.eq(2);
         done();
       }, function (error) {
@@ -67,10 +67,10 @@ describe('domains', function () {
   });
 
   describe('#acceptPush', function () {
-    var accountId = '1010';
-    var pushId = '200';
-    var attributes = { contact_id: 1 };
-    var fixture = testUtils.fixture('acceptPush/success.http');
+    const accountId = '1010';
+    const pushId = '200';
+    const attributes = { contact_id: 1 };
+    const fixture = testUtils.fixture('acceptPush/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -98,9 +98,9 @@ describe('domains', function () {
   });
 
   describe('#rejectPush', function () {
-    var accountId = '1010';
-    var pushId = '200';
-    var fixture = testUtils.fixture('rejectPush/success.http');
+    const accountId = '1010';
+    const pushId = '200';
+    const fixture = testUtils.fixture('rejectPush/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')

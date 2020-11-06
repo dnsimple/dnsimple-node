@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -11,12 +11,12 @@ const nock = require('nock');
 const querystring = require('querystring');
 
 describe('oauth', function () {
-  var clientId = 'super-client';
-  var clientSecret = 'super-secret';
-  var code = 'super-code';
+  const clientId = 'super-client';
+  const clientSecret = 'super-secret';
+  const code = 'super-code';
 
   describe('#exchangeAuthorizationForToken', function () {
-    var fixture = testUtils.fixture('oauthAccessToken/success.http');
+    const fixture = testUtils.fixture('oauthAccessToken/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -55,8 +55,8 @@ describe('oauth', function () {
     });
 
     describe('when state and redirect_uri are provided', function () {
-      var state = 'super-state';
-      var redirectUri = 'super-redirect-uri';
+      const state = 'super-state';
+      const redirectUri = 'super-redirect-uri';
 
       it('builds the correct request', function (done) {
         nock('https://api.dnsimple.com')
@@ -90,10 +90,10 @@ describe('oauth', function () {
     });
 
     it('exposes the options in the query string', function () {
-      var authorizeUrl = dnsimple.oauth.authorizeUrl('great-app', { secret: '1', redirect_uri: 'http://example.com' });
+      let authorizeUrl = dnsimple.oauth.authorizeUrl('great-app', { secret: '1', redirect_uri: 'http://example.com' });
       authorizeUrl = new URL(authorizeUrl);
 
-      var expectedUrl = 'https://dnsimple.com/oauth/authorize';
+      let expectedUrl = 'https://dnsimple.com/oauth/authorize';
       expectedUrl += '?client_id=great-app&secret=1&redirect_uri=http://example.com&response_type=code';
       expectedUrl = new URL(expectedUrl);
 

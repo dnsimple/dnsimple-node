@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,7 +10,7 @@ const nock = require('nock');
 
 describe('services', function () {
   describe('#listServices', function () {
-    var fixture = testUtils.fixture('listServices/success.http');
+    const fixture = testUtils.fixture('listServices/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -51,7 +51,7 @@ describe('services', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.listServices().then(function (response) {
-        var services = response.data;
+        const services = response.data;
         expect(services.length).to.eq(2);
         expect(services[0].name).to.eq('Service 1');
         expect(services[0].sid).to.eq('service1');
@@ -67,7 +67,7 @@ describe('services', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.listServices().then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -79,17 +79,17 @@ describe('services', function () {
 
   describe('#allServices', function () {
     it('produces a complete list', function (done) {
-      var fixture1 = testUtils.fixture('pages-1of3.http');
+      const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/services?page=1')
         .reply(fixture1.statusCode, fixture1.body);
 
-      var fixture2 = testUtils.fixture('pages-2of3.http');
+      const fixture2 = testUtils.fixture('pages-2of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/services?page=2')
         .reply(fixture2.statusCode, fixture2.body);
 
-      var fixture3 = testUtils.fixture('pages-3of3.http');
+      const fixture3 = testUtils.fixture('pages-3of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/services?page=3')
         .reply(fixture3.statusCode, fixture3.body);
@@ -108,8 +108,8 @@ describe('services', function () {
   });
 
   describe('#getService', function () {
-    var serviceId = 1;
-    var fixture = testUtils.fixture('getService/success.http');
+    const serviceId = 1;
+    const fixture = testUtils.fixture('getService/success.http');
 
     it('produces a service', function (done) {
       nock('https://api.dnsimple.com')
@@ -117,7 +117,7 @@ describe('services', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services.getService(serviceId).then(function (response) {
-        var service = response.data;
+        const service = response.data;
         expect(service.id).to.eq(1);
         done();
       }, function (error) {

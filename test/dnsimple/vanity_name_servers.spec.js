@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -13,7 +13,7 @@ describe('vanity name servers', function () {
   const domainId = 'example.com';
 
   describe('#enableVanityNameServers', function () {
-    var fixture = testUtils.fixture('enableVanityNameServers/success.http');
+    const fixture = testUtils.fixture('enableVanityNameServers/success.http');
 
     it('produces a list of name servers', function (done) {
       nock('https://api.dnsimple.com')
@@ -21,7 +21,7 @@ describe('vanity name servers', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.vanityNameServers.enableVanityNameServers(accountId, domainId).then(function (response) {
-        var vanityNameServers = response.data;
+        const vanityNameServers = response.data;
         expect(vanityNameServers.length).to.eq(4);
         expect(vanityNameServers[0].id).to.eq(1);
         expect(vanityNameServers[0].ipv4).to.eq('127.0.0.1');
@@ -36,7 +36,7 @@ describe('vanity name servers', function () {
   });
 
   describe('#disableVanityNameServers', function () {
-    var fixture = testUtils.fixture('disableVanityNameServers/success.http');
+    const fixture = testUtils.fixture('disableVanityNameServers/success.http');
 
     it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')

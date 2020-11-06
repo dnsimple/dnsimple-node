@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,9 +10,9 @@ const nock = require('nock');
 
 describe('collaborators', function () {
   describe('#listCollaborators', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('listCollaborators/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('listCollaborators/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -42,7 +42,7 @@ describe('collaborators', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listCollaborators(accountId, domainId).then(function (response) {
-        var collaborators = response.data;
+        const collaborators = response.data;
         expect(collaborators.length).to.eq(2);
         expect(collaborators[0].id).to.eq(100);
         expect(collaborators[0].domain_id).to.eq(1);
@@ -59,7 +59,7 @@ describe('collaborators', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listCollaborators(accountId, domainId).then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -70,21 +70,21 @@ describe('collaborators', function () {
   });
 
   describe('#addCollaborator', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var collaborator = {
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const collaborator = {
       email: 'existing-user@example.com'
     };
 
     it('produces a response', function (done) {
-      var fixture = testUtils.fixture('addCollaborator/success.http');
+      const fixture = testUtils.fixture('addCollaborator/success.http');
 
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/collaborators')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.addCollaborator(accountId, domainId, collaborator).then(function (response) {
-        var data = response.data;
+        const data = response.data;
         expect(data.id).to.eql(100);
         expect(data.invitation).to.eql(false);
         done();
@@ -95,12 +95,12 @@ describe('collaborators', function () {
   });
 
   describe('#removeCollaborator', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var collaboratorId = '100';
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const collaboratorId = '100';
 
     it('produces nothing', function (done) {
-      var fixture = testUtils.fixture('removeCollaborator/success.http');
+      const fixture = testUtils.fixture('removeCollaborator/success.http');
 
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/domains/example.com/collaborators/100')
