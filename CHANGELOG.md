@@ -7,7 +7,7 @@
 - CHANGED: Bump semistandard from 14.2.2 to 16.0.0
 - CHANGED: Bump lodash from 4.17.15 to 4.17.20
 - CHANGED: Bump nock from 13.0.0 to 13.0.4
-- CHANGED: Bump mocha from 8.0.1 to 8.2.0
+- CHANGED: Bump mocha from 8.0.1 to 8.2.1
 - CHANGED: Bump snazzy from 8.0.0 to 9.0.0
 
 ## Release 4.2.1
