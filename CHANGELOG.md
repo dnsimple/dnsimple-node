@@ -2,6 +2,8 @@
 
 ## main
 
+## Release 4.3.0
+
 - NEW: Adds NodeJS v15 to Travis build
 - CHANGED: Removes NodeJS v13 from Travis build
 - CHANGED: Bump semistandard from 14.2.2 to 16.0.0
