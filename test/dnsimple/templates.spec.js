@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,8 +10,8 @@ const nock = require('nock');
 
 describe('templates', function () {
   describe('#listTemplates', function () {
-    var accountId = '1010';
-    var fixture = testUtils.fixture('listTemplates/success.http');
+    const accountId = '1010';
+    const fixture = testUtils.fixture('listTemplates/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -52,7 +52,7 @@ describe('templates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplates(accountId).then(function (response) {
-        var templates = response.data;
+        const templates = response.data;
         expect(templates.length).to.eq(2);
         expect(templates[0].name).to.eq('Alpha');
         expect(templates[0].account_id).to.eq(1010);
@@ -68,7 +68,7 @@ describe('templates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplates(accountId).then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -79,20 +79,20 @@ describe('templates', function () {
   });
 
   describe('#allTemplates', function () {
-    var accountId = '1010';
+    const accountId = '1010';
 
     it('produces a complete list', function (done) {
-      var fixture1 = testUtils.fixture('pages-1of3.http');
+      const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?page=1')
         .reply(fixture1.statusCode, fixture1.body);
 
-      var fixture2 = testUtils.fixture('pages-2of3.http');
+      const fixture2 = testUtils.fixture('pages-2of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?page=2')
         .reply(fixture2.statusCode, fixture2.body);
 
-      var fixture3 = testUtils.fixture('pages-3of3.http');
+      const fixture3 = testUtils.fixture('pages-3of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?page=3')
         .reply(fixture3.statusCode, fixture3.body);
@@ -111,18 +111,18 @@ describe('templates', function () {
   });
 
   describe('#getTemplate', function () {
-    var accountId = '1010';
-    var templateId = 'name';
+    const accountId = '1010';
+    const templateId = 'name';
 
     it('produces a template', function (done) {
-      var fixture = testUtils.fixture('getTemplate/success.http');
+      const fixture = testUtils.fixture('getTemplate/success.http');
 
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/name')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.getTemplate(accountId, templateId).then(function (response) {
-        var template = response.data;
+        const template = response.data;
         expect(template.id).to.eq(1);
         expect(template.account_id).to.eq(1010);
         expect(template.name).to.eq('Alpha');
@@ -138,7 +138,7 @@ describe('templates', function () {
 
     describe('when the template does not exist', function () {
       it('produces an error', function (done) {
-        var fixture = testUtils.fixture('notfound-template.http');
+        const fixture = testUtils.fixture('notfound-template.http');
 
         nock('https://api.dnsimple.com')
           .get('/v2/1010/templates/name')
@@ -157,9 +157,9 @@ describe('templates', function () {
   });
 
   describe('#createTemplate', function () {
-    var accountId = '1010';
-    var attributes = { name: 'Beta' };
-    var fixture = testUtils.fixture('createTemplate/created.http');
+    const accountId = '1010';
+    const attributes = { name: 'Beta' };
+    const fixture = testUtils.fixture('createTemplate/created.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -178,7 +178,7 @@ describe('templates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.createTemplate(accountId, attributes).then(function (response) {
-        var template = response.data;
+        const template = response.data;
         expect(template.id).to.eq(1);
         done();
       }, function (error) {
@@ -188,10 +188,10 @@ describe('templates', function () {
   });
 
   describe('#updateTemplate', function () {
-    var accountId = '1010';
-    var templateId = 1;
-    var attributes = { name: 'Alpha' };
-    var fixture = testUtils.fixture('updateTemplate/success.http');
+    const accountId = '1010';
+    const templateId = 1;
+    const attributes = { name: 'Alpha' };
+    const fixture = testUtils.fixture('updateTemplate/success.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -210,7 +210,7 @@ describe('templates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.updateTemplate(accountId, templateId, attributes).then(function (response) {
-        var template = response.data;
+        const template = response.data;
         expect(template.id).to.eq(1);
         done();
       }, function (error) {
@@ -220,7 +220,7 @@ describe('templates', function () {
 
     describe('when the template does not exist', function () {
       it('produces an error', function (done) {
-        var fixture = testUtils.fixture('notfound-template.http');
+        const fixture = testUtils.fixture('notfound-template.http');
 
         nock('https://api.dnsimple.com')
           .patch('/v2/1010/templates/0')
@@ -237,9 +237,9 @@ describe('templates', function () {
   });
 
   describe('#deleteTemplate', function () {
-    var accountId = '1010';
-    var templateId = 1;
-    var fixture = testUtils.fixture('deleteTemplate/success.http');
+    const accountId = '1010';
+    const templateId = 1;
+    const fixture = testUtils.fixture('deleteTemplate/success.http');
 
     it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')
@@ -256,10 +256,10 @@ describe('templates', function () {
   });
 
   describe('#applyTemplate', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var templateId = 1;
-    var fixture = testUtils.fixture('applyTemplate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const templateId = 1;
+    const fixture = testUtils.fixture('applyTemplate/success.http');
 
     it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')
@@ -278,9 +278,9 @@ describe('templates', function () {
 
 describe('template records', function () {
   describe('#listTemplateRecords', function () {
-    var accountId = '1010';
-    var templateId = '1';
-    var fixture = testUtils.fixture('listTemplateRecords/success.http');
+    const accountId = '1010';
+    const templateId = '1';
+    const fixture = testUtils.fixture('listTemplateRecords/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -321,7 +321,7 @@ describe('template records', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplateRecords(accountId, templateId).then(function (response) {
-        var records = response.data;
+        const records = response.data;
         expect(records.length).to.eq(2);
         done();
       }, function (error) {
@@ -335,7 +335,7 @@ describe('template records', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplateRecords(accountId, templateId).then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -346,21 +346,21 @@ describe('template records', function () {
   });
 
   describe('#allRecords', function () {
-    var accountId = '1010';
-    var templateId = 1;
+    const accountId = '1010';
+    const templateId = 1;
 
     it('produces a complete list', function (done) {
-      var fixture1 = testUtils.fixture('pages-1of3.http');
+      const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?page=1')
         .reply(fixture1.statusCode, fixture1.body);
 
-      var fixture2 = testUtils.fixture('pages-2of3.http');
+      const fixture2 = testUtils.fixture('pages-2of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?page=2')
         .reply(fixture2.statusCode, fixture2.body);
 
-      var fixture3 = testUtils.fixture('pages-3of3.http');
+      const fixture3 = testUtils.fixture('pages-3of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?page=3')
         .reply(fixture3.statusCode, fixture3.body);
@@ -379,19 +379,19 @@ describe('template records', function () {
   });
 
   describe('#getTemplateRecord', function () {
-    var accountId = '1010';
-    var templateId = 'name';
-    var recordId = 1;
+    const accountId = '1010';
+    const templateId = 'name';
+    const recordId = 1;
 
     it('produces a template', function (done) {
-      var fixture = testUtils.fixture('getTemplateRecord/success.http');
+      const fixture = testUtils.fixture('getTemplateRecord/success.http');
 
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/name/records/1')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.getTemplateRecord(accountId, templateId, recordId).then(function (response) {
-        var record = response.data;
+        const record = response.data;
         expect(record.id).to.eq(301);
         expect(record.template_id).to.eq(268);
         expect(record.name).to.eq('');
@@ -409,7 +409,7 @@ describe('template records', function () {
 
     describe('when the template does not exist', function () {
       it('produces an error', function (done) {
-        var fixture = testUtils.fixture('notfound-template.http');
+        const fixture = testUtils.fixture('notfound-template.http');
 
         nock('https://api.dnsimple.com')
           .get('/v2/1010/templates/0/records/1')
@@ -428,7 +428,7 @@ describe('template records', function () {
 
     describe('when the template record does not exist', function () {
       it('produces an error', function (done) {
-        var fixture = testUtils.fixture('notfound-record.http');
+        const fixture = testUtils.fixture('notfound-record.http');
 
         nock('https://api.dnsimple.com')
           .get('/v2/1010/templates/name/records/0')
@@ -445,10 +445,10 @@ describe('template records', function () {
   });
 
   describe('#createTemplateRecord', function () {
-    var accountId = '1010';
-    var templateId = 1;
-    var attributes = { content: 'mx.example.com' };
-    var fixture = testUtils.fixture('createTemplateRecord/created.http');
+    const accountId = '1010';
+    const templateId = 1;
+    const attributes = { content: 'mx.example.com' };
+    const fixture = testUtils.fixture('createTemplateRecord/created.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -467,7 +467,7 @@ describe('template records', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.createTemplateRecord(accountId, templateId, attributes).then(function (response) {
-        var record = response.data;
+        const record = response.data;
         expect(record.id).to.eq(300);
         done();
       }, function (error) {
@@ -477,10 +477,10 @@ describe('template records', function () {
   });
 
   describe('#deleteTemplateRecord', function () {
-    var accountId = '1010';
-    var templateId = 1;
-    var recordId = 2;
-    var fixture = testUtils.fixture('deleteTemplateRecord/success.http');
+    const accountId = '1010';
+    const templateId = 1;
+    const recordId = 2;
+    const fixture = testUtils.fixture('deleteTemplateRecord/success.http');
 
     it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')

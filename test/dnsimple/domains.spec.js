@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,8 +10,8 @@ const nock = require('nock');
 
 describe('domains', function () {
   describe('#listDomains', function () {
-    var accountId = '1010';
-    var fixture = testUtils.fixture('listDomains/success.http');
+    const accountId = '1010';
+    const fixture = testUtils.fixture('listDomains/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -63,7 +63,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId).then(function (response) {
-        var domains = response.data;
+        const domains = response.data;
         expect(domains.length).to.eq(2);
         expect(domains[0].name).to.eq('example-alpha.com');
         expect(domains[0].account_id).to.eq(1385);
@@ -79,7 +79,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId).then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -90,20 +90,20 @@ describe('domains', function () {
   });
 
   describe('#allDomains', function () {
-    var accountId = '1010';
+    const accountId = '1010';
 
     it('produces a complete list', function (done) {
-      var fixture1 = testUtils.fixture('pages-1of3.http');
+      const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?page=1')
         .reply(fixture1.statusCode, fixture1.body);
 
-      var fixture2 = testUtils.fixture('pages-2of3.http');
+      const fixture2 = testUtils.fixture('pages-2of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?page=2')
         .reply(fixture2.statusCode, fixture2.body);
 
-      var fixture3 = testUtils.fixture('pages-3of3.http');
+      const fixture3 = testUtils.fixture('pages-3of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains?page=3')
         .reply(fixture3.statusCode, fixture3.body);
@@ -122,9 +122,9 @@ describe('domains', function () {
   });
 
   describe('#getDomain', function () {
-    var accountId = '1385';
-    var domainId = 'example-alpha.com';
-    var fixture = testUtils.fixture('getDomain/success.http');
+    const accountId = '1385';
+    const domainId = 'example-alpha.com';
+    const fixture = testUtils.fixture('getDomain/success.http');
 
     it('produces a domain', function (done) {
       nock('https://api.dnsimple.com')
@@ -132,7 +132,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.getDomain(accountId, domainId).then(function (response) {
-        var domain = response.data;
+        const domain = response.data;
         expect(domain.id).to.eq(181984);
         expect(domain.account_id).to.eq(1385);
         expect(domain.registrant_id).to.eq(2715);
@@ -151,7 +151,7 @@ describe('domains', function () {
     });
 
     describe('when the domain does not exist', function () {
-      var fixture = testUtils.fixture('notfound-domain.http');
+      const fixture = testUtils.fixture('notfound-domain.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1385/domains/0')
         .reply(fixture.statusCode, fixture.body);
@@ -170,9 +170,9 @@ describe('domains', function () {
   });
 
   describe('#createDomain', function () {
-    var accountId = '1385';
-    var attributes = { name: 'example-alpha.com' };
-    var fixture = testUtils.fixture('createDomain/created.http');
+    const accountId = '1385';
+    const attributes = { name: 'example-alpha.com' };
+    const fixture = testUtils.fixture('createDomain/created.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -191,7 +191,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.createDomain(accountId, attributes).then(function (response) {
-        var domain = response.data;
+        const domain = response.data;
         expect(domain.id).to.eq(181985);
         done();
       }, function (error) {
@@ -201,9 +201,9 @@ describe('domains', function () {
   });
 
   describe('#deleteDomain', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('deleteDomain/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('deleteDomain/success.http');
 
     it('produces nothing', function (done) {
       nock('https://api.dnsimple.com')
@@ -220,9 +220,9 @@ describe('domains', function () {
   });
 
   describe('#resetDomainToken', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('resetDomainToken/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('resetDomainToken/success.http');
 
     it('produces a domain', function (done) {
       nock('https://api.dnsimple.com')
@@ -230,7 +230,7 @@ describe('domains', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.resetDomainToken(accountId, domainId).then(function (response) {
-        var domain = response.data;
+        const domain = response.data;
         expect(domain.id).to.eq(1);
         done();
       }, function (error) {

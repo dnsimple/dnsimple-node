@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -13,7 +13,7 @@ describe('registrar auto renewal', function () {
   const domainId = 'example.com';
 
   describe('#enableDomainAutoRenewal', function () {
-    var fixture = testUtils.fixture('enableDomainAutoRenewal/success.http');
+    const fixture = testUtils.fixture('enableDomainAutoRenewal/success.http');
 
     it('produces an empty result', function (done) {
       nock('https://api.dnsimple.com')
@@ -30,7 +30,7 @@ describe('registrar auto renewal', function () {
 
     describe('when the domain does not exist', function () {
       it('results in an error', function (done) {
-        var fixture = testUtils.fixture('notfound-domain.http');
+        const fixture = testUtils.fixture('notfound-domain.http');
 
         nock('https://api.dnsimple.com')
           .put('/v2/1010/registrar/domains/example.com/auto_renewal')
@@ -47,7 +47,7 @@ describe('registrar auto renewal', function () {
   });
 
   describe('#disableDomainAutoRenewal', function () {
-    var fixture = testUtils.fixture('disableDomainAutoRenewal/success.http');
+    const fixture = testUtils.fixture('disableDomainAutoRenewal/success.http');
 
     it('produces an empty result', function (done) {
       nock('https://api.dnsimple.com')
@@ -64,7 +64,7 @@ describe('registrar auto renewal', function () {
 
     describe('when the domain does not exist', function () {
       it('results in an error', function (done) {
-        var fixture = testUtils.fixture('notfound-domain.http');
+        const fixture = testUtils.fixture('notfound-domain.http');
 
         nock('https://api.dnsimple.com')
           .delete('/v2/1010/registrar/domains/example.com/auto_renewal')

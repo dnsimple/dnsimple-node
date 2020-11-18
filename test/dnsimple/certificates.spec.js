@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,9 +10,9 @@ const nock = require('nock');
 
 describe('certificates', function () {
   describe('#listCertificates', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var fixture = testUtils.fixture('listCertificates/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const fixture = testUtils.fixture('listCertificates/success.http');
 
     it('supports pagination', function (done) {
       nock('https://api.dnsimple.com')
@@ -53,7 +53,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId).then(function (response) {
-        var certificates = response.data;
+        const certificates = response.data;
         expect(certificates.length).to.eq(2);
         expect(certificates[0].id).to.eq(101973);
         expect(certificates[0].domain_id).to.eq(14279);
@@ -70,7 +70,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId).then(function (response) {
-        var pagination = response.pagination;
+        const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
@@ -81,21 +81,21 @@ describe('certificates', function () {
   });
 
   describe('#allCertificates', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
+    const accountId = '1010';
+    const domainId = 'example.com';
 
     it('produces a complete list', function (done) {
-      var fixture1 = testUtils.fixture('pages-1of3.http');
+      const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates?page=1')
         .reply(fixture1.statusCode, fixture1.body);
 
-      var fixture2 = testUtils.fixture('pages-2of3.http');
+      const fixture2 = testUtils.fixture('pages-2of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates?page=2')
         .reply(fixture2.statusCode, fixture2.body);
 
-      var fixture3 = testUtils.fixture('pages-3of3.http');
+      const fixture3 = testUtils.fixture('pages-3of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates?page=3')
         .reply(fixture3.statusCode, fixture3.body);
@@ -114,10 +114,10 @@ describe('certificates', function () {
   });
 
   describe('#getCertificate', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var certificateId = 1;
-    var fixture = testUtils.fixture('getCertificate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const certificateId = 1;
+    const fixture = testUtils.fixture('getCertificate/success.http');
 
     it('produces a certificate', function (done) {
       nock('https://api.dnsimple.com')
@@ -125,7 +125,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.getCertificate(accountId, domainId, certificateId).then(function (response) {
-        var certificate = response.data;
+        const certificate = response.data;
         expect(certificate.id).to.eq(101967);
         expect(certificate.domain_id).to.eq(289333);
         expect(certificate.contact_id).to.eq(2511);
@@ -140,7 +140,7 @@ describe('certificates', function () {
     });
 
     describe('when the certificate does not exist', function () {
-      var fixture = testUtils.fixture('notfound-certificate.http');
+      const fixture = testUtils.fixture('notfound-certificate.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates/0')
         .reply(fixture.statusCode, fixture.body);
@@ -159,10 +159,10 @@ describe('certificates', function () {
   });
 
   describe('#downloadCertificate', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var certificateId = 1;
-    var fixture = testUtils.fixture('downloadCertificate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const certificateId = 1;
+    const fixture = testUtils.fixture('downloadCertificate/success.http');
 
     it('produces a certificate', function (done) {
       nock('https://api.dnsimple.com')
@@ -170,7 +170,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.downloadCertificate(accountId, domainId, certificateId).then(function (response) {
-        var certificate = response.data;
+        const certificate = response.data;
         expect(certificate.server).to.match(/-----BEGIN CERTIFICATE-----/);
         expect(certificate.root).to.eq(null);
         expect(certificate.chain.length).to.eq(1);
@@ -182,7 +182,7 @@ describe('certificates', function () {
     });
 
     describe('when the certificate does not exist', function () {
-      var fixture = testUtils.fixture('notfound-certificate.http');
+      const fixture = testUtils.fixture('notfound-certificate.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates/0/download')
         .reply(fixture.statusCode, fixture.body);
@@ -199,10 +199,10 @@ describe('certificates', function () {
   });
 
   describe('#getCertificatePrivateKey', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var certificateId = 1;
-    var fixture = testUtils.fixture('getCertificatePrivateKey/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const certificateId = 1;
+    const fixture = testUtils.fixture('getCertificatePrivateKey/success.http');
 
     it('produces a certificate', function (done) {
       nock('https://api.dnsimple.com')
@@ -210,7 +210,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, certificateId).then(function (response) {
-        var certificate = response.data;
+        const certificate = response.data;
         expect(certificate.private_key).to.match(/-----BEGIN RSA PRIVATE KEY-----/);
         done();
       }, function (error) {
@@ -219,7 +219,7 @@ describe('certificates', function () {
     });
 
     describe('when the certificate does not exist', function () {
-      var fixture = testUtils.fixture('notfound-certificate.http');
+      const fixture = testUtils.fixture('notfound-certificate.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/certificates/0/private_key')
         .reply(fixture.statusCode, fixture.body);
@@ -236,10 +236,10 @@ describe('certificates', function () {
   });
 
   describe('#purchaseLetsencryptCertificate', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var attributes = { contact_id: 1 };
-    var fixture = testUtils.fixture('purchaseLetsencryptCertificate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const attributes = { contact_id: 1 };
+    const fixture = testUtils.fixture('purchaseLetsencryptCertificate/success.http');
 
     it('purchases a certificate', function (done) {
       nock('https://api.dnsimple.com')
@@ -247,7 +247,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, attributes).then(function (response) {
-        var certificate = response.data;
+        const certificate = response.data;
         expect(certificate.id).to.eq(101967);
         done();
       }, function (error) {
@@ -257,10 +257,10 @@ describe('certificates', function () {
   });
 
   describe('#issueLetsencryptCertificate', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var certificateId = 101967;
-    var fixture = testUtils.fixture('issueLetsencryptCertificate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const certificateId = 101967;
+    const fixture = testUtils.fixture('issueLetsencryptCertificate/success.http');
 
     it('issues a certificate', function (done) {
       nock('https://api.dnsimple.com')
@@ -268,7 +268,7 @@ describe('certificates', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId).then(function (response) {
-        var certificate = response.data;
+        const certificate = response.data;
         expect(certificate.id).to.eq(certificateId);
         done();
       }, function (error) {
@@ -278,10 +278,10 @@ describe('certificates', function () {
   });
 
   describe('#purchaseLetsencryptCertificateRenewal', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var certificateId = 101967;
-    var fixture = testUtils.fixture('purchaseRenewalLetsencryptCertificate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const certificateId = 101967;
+    const fixture = testUtils.fixture('purchaseRenewalLetsencryptCertificate/success.http');
 
     it('purchases a certificate renewal', function (done) {
       nock('https://api.dnsimple.com')
@@ -290,7 +290,7 @@ describe('certificates', function () {
 
       dnsimple.certificates.purchaseLetsencryptCertificateRenewal(accountId, domainId, certificateId)
         .then(function (response) {
-          var certificateRenewal = response.data;
+          const certificateRenewal = response.data;
           expect(certificateRenewal.id).to.eq(65082);
           expect(certificateRenewal.old_certificate_id).to.eq(certificateId);
           expect(certificateRenewal.new_certificate_id).to.eq(101972);
@@ -302,12 +302,12 @@ describe('certificates', function () {
   });
 
   describe('#issueLetsencryptCertificateRenewal', function () {
-    var accountId = '1010';
-    var domainId = 'example.com';
-    var certificateId = 101967;
-    var certificateRenewalId = 65082;
-    var newCertificateId = 101972;
-    var fixture = testUtils.fixture('issueRenewalLetsencryptCertificate/success.http');
+    const accountId = '1010';
+    const domainId = 'example.com';
+    const certificateId = 101967;
+    const certificateRenewalId = 65082;
+    const newCertificateId = 101972;
+    const fixture = testUtils.fixture('issueRenewalLetsencryptCertificate/success.http');
 
     it('issues a certificate renewal', function (done) {
       nock('https://api.dnsimple.com')
@@ -316,7 +316,7 @@ describe('certificates', function () {
 
       dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId)
         .then(function (response) {
-          var newCertificate = response.data;
+          const newCertificate = response.data;
           expect(newCertificate.id).to.eq(newCertificateId);
           done();
         }, function (error) {

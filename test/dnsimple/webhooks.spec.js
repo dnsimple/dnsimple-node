@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -10,8 +10,8 @@ const nock = require('nock');
 
 describe('webhooks', function () {
   describe('#listWebhooks', function () {
-    var accountId = '1010';
-    var fixture = testUtils.fixture('listWebhooks/success.http');
+    const accountId = '1010';
+    const fixture = testUtils.fixture('listWebhooks/success.http');
 
     it('supports extra request options', function (done) {
       nock('https://api.dnsimple.com')
@@ -30,7 +30,7 @@ describe('webhooks', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.webhooks.listWebhooks(accountId).then(function (response) {
-        var webhooks = response.data;
+        const webhooks = response.data;
         expect(webhooks.length).to.eq(2);
         expect(webhooks[0].id).to.eq(1);
         done();
@@ -41,8 +41,8 @@ describe('webhooks', function () {
   });
 
   describe('#allWebhooks', function () {
-    var accountId = '1010';
-    var fixture = testUtils.fixture('listWebhooks/success.http');
+    const accountId = '1010';
+    const fixture = testUtils.fixture('listWebhooks/success.http');
 
     it('supports extra request options', function (done) {
       nock('https://api.dnsimple.com')
@@ -71,9 +71,9 @@ describe('webhooks', function () {
   });
 
   describe('#getWebhook', function () {
-    var accountId = '1010';
-    var webhookId = '1';
-    var fixture = testUtils.fixture('getWebhook/success.http');
+    const accountId = '1010';
+    const webhookId = '1';
+    const fixture = testUtils.fixture('getWebhook/success.http');
 
     it('produces a webhook', function (done) {
       nock('https://api.dnsimple.com')
@@ -81,7 +81,7 @@ describe('webhooks', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.webhooks.getWebhook(accountId, webhookId).then(function (response) {
-        var webhook = response.data;
+        const webhook = response.data;
         expect(webhook.id).to.eq(1);
         expect(webhook.url).to.eq('https://webhook.test');
         done();
@@ -91,7 +91,7 @@ describe('webhooks', function () {
     });
 
     describe('when the webhook does not exist', function () {
-      var fixture = testUtils.fixture('notfound-webhook.http');
+      const fixture = testUtils.fixture('notfound-webhook.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/webhooks/0')
         .reply(fixture.statusCode, fixture.body);
@@ -110,9 +110,9 @@ describe('webhooks', function () {
   });
 
   describe('#createWebhook', function () {
-    var accountId = '1010';
-    var attributes = { url: 'https://some-site.com' };
-    var fixture = testUtils.fixture('createWebhook/created.http');
+    const accountId = '1010';
+    const attributes = { url: 'https://some-site.com' };
+    const fixture = testUtils.fixture('createWebhook/created.http');
 
     it('builds the correct request', function (done) {
       nock('https://api.dnsimple.com')
@@ -131,7 +131,7 @@ describe('webhooks', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.webhooks.createWebhook(accountId, attributes).then(function (response) {
-        var webhook = response.data;
+        const webhook = response.data;
         expect(webhook.id).to.eq(1);
         done();
       }, function (error) {
@@ -141,11 +141,11 @@ describe('webhooks', function () {
   });
 
   describe('#deleteWebhook', function () {
-    var accountId = '1010';
-    var webhookId = 1;
+    const accountId = '1010';
+    const webhookId = 1;
 
     it('produces nothing', function (done) {
-      var fixture = testUtils.fixture('deleteWebhook/success.http');
+      const fixture = testUtils.fixture('deleteWebhook/success.http');
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/webhooks/1')
         .reply(fixture.statusCode, fixture.body);
@@ -159,7 +159,7 @@ describe('webhooks', function () {
     });
 
     describe('when the webhook does not exist', function () {
-      var fixture = testUtils.fixture('notfound-webhook.http');
+      const fixture = testUtils.fixture('notfound-webhook.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/webhooks/0')
         .reply(fixture.statusCode, fixture.body);

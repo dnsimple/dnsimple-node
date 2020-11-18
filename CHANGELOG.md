@@ -9,6 +9,7 @@
 - CHANGED: Bump nock from 13.0.0 to 13.0.5
 - CHANGED: Bump mocha from 8.0.1 to 8.2.1
 - CHANGED: Bump snazzy from 8.0.0 to 9.0.0
+- CHANGED: Bump eslint-config-standard from 13.0.1 to 16.0.1
 
 ## Release 4.2.1
 

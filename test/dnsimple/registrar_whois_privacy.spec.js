@@ -1,7 +1,7 @@
 'use strict';
 
-var testUtils = require('../testUtils');
-var dnsimple = require('../../lib/dnsimple')({
+const testUtils = require('../testUtils');
+const dnsimple = require('../../lib/dnsimple')({
   accessToken: testUtils.getAccessToken()
 });
 
@@ -13,7 +13,7 @@ describe('whois privacy', function () {
   const domainId = 'example.com';
 
   describe('#getWhoisPrivacy', function () {
-    var fixture = testUtils.fixture('getWhoisPrivacy/success.http');
+    const fixture = testUtils.fixture('getWhoisPrivacy/success.http');
 
     it('produces a whois privacy', function (done) {
       nock('https://api.dnsimple.com')
@@ -21,7 +21,7 @@ describe('whois privacy', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.getWhoisPrivacy(accountId, domainId).then(function (response) {
-        var whoisPrivacy = response.data;
+        const whoisPrivacy = response.data;
         expect(whoisPrivacy.id).to.eq(1);
         expect(whoisPrivacy.domain_id).to.eq(2);
         expect(whoisPrivacy.expires_on).to.eq('2017-02-13');
@@ -37,7 +37,7 @@ describe('whois privacy', function () {
 
   describe('#enableWhoisPrivacy', function () {
     describe('when whois privacy is already purchased', function () {
-      var fixture = testUtils.fixture('enableWhoisPrivacy/success.http');
+      const fixture = testUtils.fixture('enableWhoisPrivacy/success.http');
 
       it('produces a whois privacy', function (done) {
         nock('https://api.dnsimple.com')
@@ -45,7 +45,7 @@ describe('whois privacy', function () {
           .reply(fixture.statusCode, fixture.body);
 
         dnsimple.registrar.enableWhoisPrivacy(accountId, domainId).then(function (response) {
-          var whoisPrivacy = response.data;
+          const whoisPrivacy = response.data;
           expect(whoisPrivacy.id).to.eq(1);
           expect(whoisPrivacy.domain_id).to.eq(2);
           done();
@@ -56,7 +56,7 @@ describe('whois privacy', function () {
     });
 
     describe('when whois privacy is newly purchased', function () {
-      var fixture = testUtils.fixture('enableWhoisPrivacy/created.http');
+      const fixture = testUtils.fixture('enableWhoisPrivacy/created.http');
 
       it('produces a whois privacy', function (done) {
         nock('https://api.dnsimple.com')
@@ -64,7 +64,7 @@ describe('whois privacy', function () {
           .reply(fixture.statusCode, fixture.body);
 
         dnsimple.registrar.enableWhoisPrivacy(accountId, domainId).then(function (response) {
-          var whoisPrivacy = response.data;
+          const whoisPrivacy = response.data;
           expect(whoisPrivacy.id).to.eq(1);
           expect(whoisPrivacy.domain_id).to.eq(2);
           done();
@@ -76,7 +76,7 @@ describe('whois privacy', function () {
   });
 
   describe('#disableWhoisPrivacy', function () {
-    var fixture = testUtils.fixture('disableWhoisPrivacy/success.http');
+    const fixture = testUtils.fixture('disableWhoisPrivacy/success.http');
 
     it('produces a whois privacy', function (done) {
       nock('https://api.dnsimple.com')
@@ -84,7 +84,7 @@ describe('whois privacy', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.disableWhoisPrivacy(accountId, domainId).then(function (response) {
-        var whoisPrivacy = response.data;
+        const whoisPrivacy = response.data;
         expect(whoisPrivacy.id).to.eq(1);
         expect(whoisPrivacy.domain_id).to.eq(2);
         done();
@@ -95,7 +95,7 @@ describe('whois privacy', function () {
   });
 
   describe('#renewWhoisPrivacy', function () {
-    var fixture = testUtils.fixture('renewWhoisPrivacy/success.http');
+    const fixture = testUtils.fixture('renewWhoisPrivacy/success.http');
 
     it('produces a whois privacy renewal', function (done) {
       nock('https://api.dnsimple.com')
@@ -103,7 +103,7 @@ describe('whois privacy', function () {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.renewWhoisPrivacy(accountId, domainId).then(function (response) {
-        var whoisPrivacyRenewal = response.data;
+        const whoisPrivacyRenewal = response.data;
         expect(whoisPrivacyRenewal.id).to.eq(1);
         expect(whoisPrivacyRenewal.domain_id).to.eq(100);
         expect(whoisPrivacyRenewal.whois_privacy_id).to.eq(999);
