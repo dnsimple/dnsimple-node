@@ -2,6 +2,8 @@
 
 ## main
 
+- NEW: Added `registrar.getDomainPrices` to retrieve whether a domain is premium and the prices to register, transfer, and renew. (dnsimple/dnsimple-node#88)
+
 ## Release 4.3.0
 
 - NEW: Adds NodeJS v15 to Travis build
