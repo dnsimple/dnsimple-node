@@ -2,6 +2,8 @@
 
 ## main
 
+- Drop the inexistent `domains.resetDomainToken` method (dnsimple-node#89)
+
 ## Release 4.3.0
 
 - NEW: Adds NodeJS v15 to Travis build
