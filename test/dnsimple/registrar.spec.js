@@ -75,6 +75,49 @@ describe('registrar', function () {
     });
   });
 
+  describe('#getDomainPrices', function () {
+    describe('when the TLD is supported', function () {
+      const fixture = testUtils.fixture('getDomainPrices/success.http');
+
+      it('produces a domain prices result', function (done) {
+        nock('https://api.dnsimple.com')
+          .get('/v2/1010/registrar/domains/bingo.pizza/prices')
+          .reply(fixture.statusCode, fixture.body);
+
+        dnsimple.registrar.getDomainPrices(accountId, 'bingo.pizza').then(function (response) {
+          const pricesResult = response.data;
+          expect(pricesResult.domain).to.eql('bingo.pizza');
+          expect(pricesResult.premium).to.eql(true);
+          expect(pricesResult.registration_price).to.eql(20.0);
+          expect(pricesResult.renewal_price).to.eql(20.0);
+          expect(pricesResult.transfer_price).to.eql(20.0);
+          done();
+        }, function (error) {
+          done(error);
+        });
+      });
+    });
+
+    describe('when the TLD is not available', function () {
+      const fixture = testUtils.fixture('getDomainPrices/failure.http');
+
+      it('produces an error', function (done) {
+        nock('https://api.dnsimple.com')
+          .get('/v2/1010/registrar/domains/bingo.pineaple/prices')
+          .reply(fixture.statusCode, fixture.body);
+
+        dnsimple.registrar.getDomainPrices(accountId, 'bingo.pineaple').then(function (response) {
+          done();
+        }, function (error) {
+          expect(error).to.not.eq(null);
+          expect(error.description).to.eq('Bad request');
+          expect(error.message).to.eq('TLD .PINEAPPLE is not supported');
+          done();
+        });
+      });
+    });
+  });
+
   describe('#registerDomain', function () {
     const fixture = testUtils.fixture('registerDomain/success.http');
 
