@@ -113,22 +113,22 @@ describe('domains', function () {
   describe('#getEmailForward', function () {
     const accountId = '1010';
     const domainId = 'example.com';
-    const emailForwardId = 1;
+    const emailForwardId = 41872;
     const fixture = testUtils.fixture('getEmailForward/success.http');
 
     it('produces an email forward', function (done) {
       nock('https://api.dnsimple.com')
-        .get('/v2/1010/domains/example.com/email_forwards/1')
+        .get('/v2/1010/domains/example.com/email_forwards/41872')
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.getEmailForward(accountId, domainId, emailForwardId).then(function (response) {
         const emailForward = response.data;
-        expect(emailForward.id).to.eq(17706);
-        expect(emailForward.domain_id).to.eq(228963);
-        expect(emailForward.from).to.eq('jim@a-domain.com');
-        expect(emailForward.to).to.eq('jim@another.com');
-        expect(emailForward.created_at).to.eq('2016-02-04T14:26:50Z');
-        expect(emailForward.updated_at).to.eq('2016-02-04T14:26:50Z');
+        expect(emailForward.id).to.eq(41872);
+        expect(emailForward.domain_id).to.eq(235146);
+        expect(emailForward.from).to.eq('example@dnsimple.xyz');
+        expect(emailForward.to).to.eq('example@example.com');
+        expect(emailForward.created_at).to.eq('2021-01-25T13:54:40Z');
+        expect(emailForward.updated_at).to.eq('2021-01-25T13:54:40Z');
         done();
       }, function (error) {
         done(error);
@@ -178,7 +178,7 @@ describe('domains', function () {
 
       dnsimple.domains.createEmailForward(accountId, domainId, attributes).then(function (response) {
         const emailForward = response.data;
-        expect(emailForward.id).to.eq(17706);
+        expect(emailForward.id).to.eq(41872);
         done();
       }, function (error) {
         done(error);

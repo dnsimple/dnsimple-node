@@ -218,24 +218,4 @@ describe('domains', function () {
       });
     });
   });
-
-  describe('#resetDomainToken', function () {
-    const accountId = '1010';
-    const domainId = 'example.com';
-    const fixture = testUtils.fixture('resetDomainToken/success.http');
-
-    it('produces a domain', function (done) {
-      nock('https://api.dnsimple.com')
-        .post('/v2/1010/domains/example.com/token')
-        .reply(fixture.statusCode, fixture.body);
-
-      dnsimple.domains.resetDomainToken(accountId, domainId).then(function (response) {
-        const domain = response.data;
-        expect(domain.id).to.eq(1);
-        done();
-      }, function (error) {
-        done(error);
-      });
-    });
-  });
 });
