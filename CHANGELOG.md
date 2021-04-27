@@ -2,6 +2,10 @@
 
 ## main
 
+- NEW: Adds NodeJS v16 to Travis build
+- NEW: Adds NodeJS node (latest) to Travis build
+- CHANGED: Moves lockfileVersion to v2
+
 ## Release 4.4.0
 
 - NEW: Added `registrar.getDomainPrices` to retrieve whether a domain is premium and the prices to register, transfer, and renew. (dnsimple/dnsimple-node#88)
