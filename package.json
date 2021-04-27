@@ -37,7 +37,6 @@
     "semistandard": "^16.0.0",
     "snazzy": "^9.0.0"
   },
-  "dependencies": {},
   "license": "MIT",
   "scripts": {
     "test": "npm run lint && mocha --bail --recursive",
