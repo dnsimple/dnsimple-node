@@ -1,4 +1,4 @@
-dist: bionic
+dist: focal
 
 language: node_js
 
@@ -7,6 +7,8 @@ node_js:
   - "12"
   - "14"
   - "15"
+  - "16"
+  - "node"
 
 notifications:
   email: false
