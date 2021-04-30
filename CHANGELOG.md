@@ -5,6 +5,7 @@
 - NEW: Adds NodeJS v16 to Travis build
 - NEW: Adds NodeJS node (latest) to Travis build
 - CHANGED: Moves lockfileVersion to v2
+- CHANGED: Deprecates support for NodeJS v10 (EOL)
 
 ## Release 4.4.0
 
