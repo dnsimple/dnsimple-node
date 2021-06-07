@@ -2,6 +2,8 @@
 
 ## main
 
+## Release 5.0.0
+
 - NEW: Adds NodeJS v16 to Travis build
 - NEW: Adds NodeJS node (latest) to Travis build
 - CHANGED: Moves lockfileVersion to v2
