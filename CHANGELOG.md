@@ -6,6 +6,7 @@
 - NEW: Adds NodeJS node (latest) to Travis build
 - CHANGED: Moves lockfileVersion to v2
 - CHANGED: Deprecates support for NodeJS v10 (EOL)
+- CHANGED: Deprecates `registrar.getDomainPremiumPrice` in favour of `registrar.getDomainPrices`
 
 ## Release 4.4.0
 
