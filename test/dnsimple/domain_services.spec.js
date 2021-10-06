@@ -8,13 +8,13 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('domain services', function () {
-  describe('#appliedServices', function () {
+describe('domain services', () => {
+  describe('#appliedServices', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const fixture = testUtils.fixture('appliedServices/success.http');
 
-    it('supports pagination', function (done) {
+    it('supports pagination', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?page=1')
         .reply(fixture.statusCode, fixture.body);
@@ -25,7 +25,7 @@ describe('domain services', function () {
       done();
     });
 
-    it('supports extra request options', function (done) {
+    it('supports extra request options', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?foo=bar')
         .reply(fixture.statusCode, fixture.body);
@@ -36,7 +36,7 @@ describe('domain services', function () {
       done();
     });
 
-    it('supports sorting', function (done) {
+    it('supports sorting', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
@@ -47,27 +47,27 @@ describe('domain services', function () {
       done();
     });
 
-    it('produces a service list', function (done) {
+    it('produces a service list', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.appliedServices(accountId, domainId).then(function (response) {
+      dnsimple.services.appliedServices(accountId, domainId).then((response) => {
         const services = response.data;
         expect(services.length).to.eq(1);
         expect(services[0].name).to.eq('WordPress');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#allAppliedServices', function () {
+  describe('#allAppliedServices', () => {
     const accountId = '1010';
     const domainId = 'example.com';
 
-    it('produces a complete list', function (done) {
+    it('produces a complete list', (done) => {
       const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/services?page=1')
@@ -83,56 +83,56 @@ describe('domain services', function () {
         .get('/v2/1010/domains/example.com/services?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.services.allAppliedServices(accountId, domainId).then(function (items) {
+      dnsimple.services.allAppliedServices(accountId, domainId).then((items) => {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
-      }).catch(function (error) {
+      }).catch((error) => {
         done(error);
       });
     });
   });
 
-  describe('#applyService', function () {
+  describe('#applyService', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const serviceId = 'name';
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       const fixture = testUtils.fixture('applyService/success.http');
 
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/services/name')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.applyService(accountId, domainId, serviceId).then(function (response) {
+      dnsimple.services.applyService(accountId, domainId, serviceId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#unapplyService', function () {
+  describe('#unapplyService', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const serviceId = 'name';
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       const fixture = testUtils.fixture('unapplyService/success.http');
 
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/domains/example.com/services/name')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.unapplyService(accountId, domainId, serviceId).then(function (response) {
+      dnsimple.services.unapplyService(accountId, domainId, serviceId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });

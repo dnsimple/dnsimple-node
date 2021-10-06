@@ -8,19 +8,19 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('vanity name servers', function () {
+describe('vanity name servers', () => {
   const accountId = '1010';
   const domainId = 'example.com';
 
-  describe('#enableVanityNameServers', function () {
+  describe('#enableVanityNameServers', () => {
     const fixture = testUtils.fixture('enableVanityNameServers/success.http');
 
-    it('produces a list of name servers', function (done) {
+    it('produces a list of name servers', (done) => {
       nock('https://api.dnsimple.com')
         .put('/v2/1010/vanity/example.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.vanityNameServers.enableVanityNameServers(accountId, domainId).then(function (response) {
+      dnsimple.vanityNameServers.enableVanityNameServers(accountId, domainId).then((response) => {
         const vanityNameServers = response.data;
         expect(vanityNameServers.length).to.eq(4);
         expect(vanityNameServers[0].id).to.eq(1);
@@ -29,24 +29,24 @@ describe('vanity name servers', function () {
         expect(vanityNameServers[0].created_at).to.eq('2016-07-14T13:22:17Z');
         expect(vanityNameServers[0].updated_at).to.eq('2016-07-14T13:22:17Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#disableVanityNameServers', function () {
+  describe('#disableVanityNameServers', () => {
     const fixture = testUtils.fixture('disableVanityNameServers/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/vanity/example.com')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.vanityNameServers.disableVanityNameServers(accountId, domainId).then(function (response) {
+      dnsimple.vanityNameServers.disableVanityNameServers(accountId, domainId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });

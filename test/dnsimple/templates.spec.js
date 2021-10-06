@@ -8,12 +8,12 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('templates', function () {
-  describe('#listTemplates', function () {
+describe('templates', () => {
+  describe('#listTemplates', () => {
     const accountId = '1010';
     const fixture = testUtils.fixture('listTemplates/success.http');
 
-    it('supports pagination', function (done) {
+    it('supports pagination', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?page=1')
         .reply(fixture.statusCode, fixture.body);
@@ -24,7 +24,7 @@ describe('templates', function () {
       done();
     });
 
-    it('supports extra request options', function (done) {
+    it('supports extra request options', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?foo=bar')
         .reply(fixture.statusCode, fixture.body);
@@ -35,7 +35,7 @@ describe('templates', function () {
       done();
     });
 
-    it('supports sorting', function (done) {
+    it('supports sorting', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
@@ -46,42 +46,42 @@ describe('templates', function () {
       done();
     });
 
-    it('produces a template list', function (done) {
+    it('produces a template list', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listTemplates(accountId).then(function (response) {
+      dnsimple.templates.listTemplates(accountId).then((response) => {
         const templates = response.data;
         expect(templates.length).to.eq(2);
         expect(templates[0].name).to.eq('Alpha');
         expect(templates[0].account_id).to.eq(1010);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    it('exposes the pagination info', function (done) {
+    it('exposes the pagination info', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listTemplates(accountId).then(function (response) {
+      dnsimple.templates.listTemplates(accountId).then((response) => {
         const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#allTemplates', function () {
+  describe('#allTemplates', () => {
     const accountId = '1010';
 
-    it('produces a complete list', function (done) {
+    it('produces a complete list', (done) => {
       const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates?page=1')
@@ -97,31 +97,31 @@ describe('templates', function () {
         .get('/v2/1010/templates?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.templates.allTemplates(accountId).then(function (items) {
+      dnsimple.templates.allTemplates(accountId).then((items) => {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
-      }).catch(function (error) {
+      }).catch((error) => {
         done(error);
       });
     });
   });
 
-  describe('#getTemplate', function () {
+  describe('#getTemplate', () => {
     const accountId = '1010';
     const templateId = 'name';
 
-    it('produces a template', function (done) {
+    it('produces a template', (done) => {
       const fixture = testUtils.fixture('getTemplate/success.http');
 
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/name')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.getTemplate(accountId, templateId).then(function (response) {
+      dnsimple.templates.getTemplate(accountId, templateId).then((response) => {
         const template = response.data;
         expect(template.id).to.eq(1);
         expect(template.account_id).to.eq(1010);
@@ -131,22 +131,22 @@ describe('templates', function () {
         expect(template.created_at).to.eq('2016-03-22T11:08:58Z');
         expect(template.updated_at).to.eq('2016-03-22T11:08:58Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the template does not exist', function () {
-      it('produces an error', function (done) {
+    describe('when the template does not exist', () => {
+      it('produces an error', (done) => {
         const fixture = testUtils.fixture('notfound-template.http');
 
         nock('https://api.dnsimple.com')
           .get('/v2/1010/templates/name')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates.getTemplate(accountId, templateId).then(function (response) {
+        dnsimple.templates.getTemplate(accountId, templateId).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Template `beta` not found');
@@ -156,12 +156,12 @@ describe('templates', function () {
     });
   });
 
-  describe('#createTemplate', function () {
+  describe('#createTemplate', () => {
     const accountId = '1010';
     const attributes = { name: 'Beta' };
     const fixture = testUtils.fixture('createTemplate/created.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/templates', { name: 'Beta' })
         .reply(fixture.statusCode, fixture.body);
@@ -172,28 +172,28 @@ describe('templates', function () {
       done();
     });
 
-    it('produces a template', function (done) {
+    it('produces a template', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/templates')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.createTemplate(accountId, attributes).then(function (response) {
+      dnsimple.templates.createTemplate(accountId, attributes).then((response) => {
         const template = response.data;
         expect(template.id).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#updateTemplate', function () {
+  describe('#updateTemplate', () => {
     const accountId = '1010';
     const templateId = 1;
     const attributes = { name: 'Alpha' };
     const fixture = testUtils.fixture('updateTemplate/success.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .patch('/v2/1010/templates/1', { name: 'Alpha' })
         .reply(fixture.statusCode, fixture.body);
@@ -204,31 +204,31 @@ describe('templates', function () {
       done();
     });
 
-    it('produces a template', function (done) {
+    it('produces a template', (done) => {
       nock('https://api.dnsimple.com')
         .patch('/v2/1010/templates/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.updateTemplate(accountId, templateId, attributes).then(function (response) {
+      dnsimple.templates.updateTemplate(accountId, templateId, attributes).then((response) => {
         const template = response.data;
         expect(template.id).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the template does not exist', function () {
-      it('produces an error', function (done) {
+    describe('when the template does not exist', () => {
+      it('produces an error', (done) => {
         const fixture = testUtils.fixture('notfound-template.http');
 
         nock('https://api.dnsimple.com')
           .patch('/v2/1010/templates/0')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates.updateTemplate(accountId, templateId, attributes).then(function (response) {
+        dnsimple.templates.updateTemplate(accountId, templateId, attributes).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });
@@ -236,53 +236,53 @@ describe('templates', function () {
     });
   });
 
-  describe('#deleteTemplate', function () {
+  describe('#deleteTemplate', () => {
     const accountId = '1010';
     const templateId = 1;
     const fixture = testUtils.fixture('deleteTemplate/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/templates/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.deleteTemplate(accountId, templateId).then(function (response) {
+      dnsimple.templates.deleteTemplate(accountId, templateId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#applyTemplate', function () {
+  describe('#applyTemplate', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const templateId = 1;
     const fixture = testUtils.fixture('applyTemplate/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/templates/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.applyTemplate(accountId, templateId, domainId).then(function (response) {
+      dnsimple.templates.applyTemplate(accountId, templateId, domainId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 });
 
-describe('template records', function () {
-  describe('#listTemplateRecords', function () {
+describe('template records', () => {
+  describe('#listTemplateRecords', () => {
     const accountId = '1010';
     const templateId = '1';
     const fixture = testUtils.fixture('listTemplateRecords/success.http');
 
-    it('supports pagination', function (done) {
+    it('supports pagination', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?page=1')
         .reply(fixture.statusCode, fixture.body);
@@ -293,7 +293,7 @@ describe('template records', function () {
       done();
     });
 
-    it('supports extra request options', function (done) {
+    it('supports extra request options', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?foo=bar')
         .reply(fixture.statusCode, fixture.body);
@@ -304,7 +304,7 @@ describe('template records', function () {
       done();
     });
 
-    it('supports sorting', function (done) {
+    it('supports sorting', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?sort=name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
@@ -315,41 +315,41 @@ describe('template records', function () {
       done();
     });
 
-    it('produces a template list', function (done) {
+    it('produces a template list', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId).then(function (response) {
+      dnsimple.templates.listTemplateRecords(accountId, templateId).then((response) => {
         const records = response.data;
         expect(records.length).to.eq(2);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    it('exposes the pagination info', function (done) {
+    it('exposes the pagination info', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId).then(function (response) {
+      dnsimple.templates.listTemplateRecords(accountId, templateId).then((response) => {
         const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#allRecords', function () {
+  describe('#allRecords', () => {
     const accountId = '1010';
     const templateId = 1;
 
-    it('produces a complete list', function (done) {
+    it('produces a complete list', (done) => {
       const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/1/records?page=1')
@@ -365,32 +365,32 @@ describe('template records', function () {
         .get('/v2/1010/templates/1/records?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.templates.allTemplateRecords(accountId, templateId).then(function (items) {
+      dnsimple.templates.allTemplateRecords(accountId, templateId).then((items) => {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
-      }).catch(function (error) {
+      }).catch((error) => {
         done(error);
       });
     });
   });
 
-  describe('#getTemplateRecord', function () {
+  describe('#getTemplateRecord', () => {
     const accountId = '1010';
     const templateId = 'name';
     const recordId = 1;
 
-    it('produces a template', function (done) {
+    it('produces a template', (done) => {
       const fixture = testUtils.fixture('getTemplateRecord/success.http');
 
       nock('https://api.dnsimple.com')
         .get('/v2/1010/templates/name/records/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.getTemplateRecord(accountId, templateId, recordId).then(function (response) {
+      dnsimple.templates.getTemplateRecord(accountId, templateId, recordId).then((response) => {
         const record = response.data;
         expect(record.id).to.eq(301);
         expect(record.template_id).to.eq(268);
@@ -402,22 +402,22 @@ describe('template records', function () {
         expect(record.created_at).to.eq('2016-05-03T08:03:26Z');
         expect(record.updated_at).to.eq('2016-05-03T08:03:26Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the template does not exist', function () {
-      it('produces an error', function (done) {
+    describe('when the template does not exist', () => {
+      it('produces an error', (done) => {
         const fixture = testUtils.fixture('notfound-template.http');
 
         nock('https://api.dnsimple.com')
           .get('/v2/1010/templates/0/records/1')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates.getTemplateRecord(accountId, 0, recordId).then(function (response) {
+        dnsimple.templates.getTemplateRecord(accountId, 0, recordId).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Template `beta` not found');
@@ -426,17 +426,17 @@ describe('template records', function () {
       });
     });
 
-    describe('when the template record does not exist', function () {
-      it('produces an error', function (done) {
+    describe('when the template record does not exist', () => {
+      it('produces an error', (done) => {
         const fixture = testUtils.fixture('notfound-record.http');
 
         nock('https://api.dnsimple.com')
           .get('/v2/1010/templates/name/records/0')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates.getTemplateRecord(accountId, templateId, 0).then(function (response) {
+        dnsimple.templates.getTemplateRecord(accountId, templateId, 0).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });
@@ -444,13 +444,13 @@ describe('template records', function () {
     });
   });
 
-  describe('#createTemplateRecord', function () {
+  describe('#createTemplateRecord', () => {
     const accountId = '1010';
     const templateId = 1;
     const attributes = { content: 'mx.example.com' };
     const fixture = testUtils.fixture('createTemplateRecord/created.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/templates/1/records', { content: 'mx.example.com' })
         .reply(fixture.statusCode, fixture.body);
@@ -461,36 +461,36 @@ describe('template records', function () {
       done();
     });
 
-    it('produces a record', function (done) {
+    it('produces a record', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/templates/1/records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.createTemplateRecord(accountId, templateId, attributes).then(function (response) {
+      dnsimple.templates.createTemplateRecord(accountId, templateId, attributes).then((response) => {
         const record = response.data;
         expect(record.id).to.eq(300);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#deleteTemplateRecord', function () {
+  describe('#deleteTemplateRecord', () => {
     const accountId = '1010';
     const templateId = 1;
     const recordId = 2;
     const fixture = testUtils.fixture('deleteTemplateRecord/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/templates/1/records/2')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.deleteTemplateRecord(accountId, templateId, recordId).then(function (response) {
+      dnsimple.templates.deleteTemplateRecord(accountId, templateId, recordId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });

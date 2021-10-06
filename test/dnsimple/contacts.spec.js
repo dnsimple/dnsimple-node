@@ -8,12 +8,12 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('contacts', function () {
-  describe('#listContacts', function () {
+describe('contacts', () => {
+  describe('#listContacts', () => {
     const accountId = '1010';
     const fixture = testUtils.fixture('listContacts/success.http');
 
-    it('supports pagination', function (done) {
+    it('supports pagination', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?page=1')
         .reply(fixture.statusCode, fixture.body);
@@ -24,7 +24,7 @@ describe('contacts', function () {
       done();
     });
 
-    it('supports extra request options', function (done) {
+    it('supports extra request options', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?foo=bar')
         .reply(fixture.statusCode, fixture.body);
@@ -35,7 +35,7 @@ describe('contacts', function () {
       done();
     });
 
-    it('supports sorting', function (done) {
+    it('supports sorting', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?sort=first_name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
@@ -46,7 +46,7 @@ describe('contacts', function () {
       done();
     });
 
-    it('supports filter', function (done) {
+    it('supports filter', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?first_name_like=example')
         .reply(fixture.statusCode, fixture.body);
@@ -57,12 +57,12 @@ describe('contacts', function () {
       done();
     });
 
-    it('produces a contact list', function (done) {
+    it('produces a contact list', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId).then(function (response) {
+      dnsimple.contacts.listContacts(accountId).then((response) => {
         const contacts = response.data;
         expect(contacts.length).to.eq(2);
         expect(contacts[0].account_id).to.eq(1010);
@@ -70,31 +70,31 @@ describe('contacts', function () {
         expect(contacts[0].first_name).to.eq('First');
         expect(contacts[0].last_name).to.eq('User');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    it('exposes the pagination info', function (done) {
+    it('exposes the pagination info', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId).then(function (response) {
+      dnsimple.contacts.listContacts(accountId).then((response) => {
         const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#allContacts', function () {
+  describe('#allContacts', () => {
     const accountId = '1010';
 
-    it('produces a complete list', function (done) {
+    it('produces a complete list', (done) => {
       const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts?page=1')
@@ -110,29 +110,29 @@ describe('contacts', function () {
         .get('/v2/1010/contacts?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.contacts.allContacts(accountId).then(function (contacts) {
+      dnsimple.contacts.allContacts(accountId).then((contacts) => {
         expect(contacts.length).to.eq(5);
         expect(contacts[0].id).to.eq(1);
         expect(contacts[4].id).to.eq(5);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
-      }).catch(function (error) {
+      }).catch((error) => {
         done(error);
       });
     });
   });
 
-  describe('#getContact', function () {
+  describe('#getContact', () => {
     const accountId = '1010';
 
-    it('produces a contact', function (done) {
+    it('produces a contact', (done) => {
       const fixture = testUtils.fixture('getContact/success.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.getContact(accountId, 1).then(function (response) {
+      dnsimple.contacts.getContact(accountId, 1).then((response) => {
         const contact = response.data;
         expect(contact.id).to.eq(1);
         expect(contact.account_id).to.eq(1010);
@@ -140,22 +140,22 @@ describe('contacts', function () {
         expect(contact.first_name).to.eq('First');
         expect(contact.last_name).to.eq('User');
         done();
-      }, function (error) {
+      }, (error) => {
         console.log(error);
         done(error);
       });
     });
 
-    describe('when the contact does not exist', function () {
-      it('produces an error', function (done) {
+    describe('when the contact does not exist', () => {
+      it('produces an error', (done) => {
         const fixture = testUtils.fixture('notfound-contact.http');
         nock('https://api.dnsimple.com')
           .get('/v2/1010/contacts/0')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.contacts.getContact(accountId, '0').then(function (response) {
+        dnsimple.contacts.getContact(accountId, '0').then((response) => {
           done('Error expected but future resolved');
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Contact `0` not found');
@@ -165,12 +165,12 @@ describe('contacts', function () {
     });
   });
 
-  describe('#createContact', function () {
+  describe('#createContact', () => {
     const accountId = '1010';
     const attributes = { first_name: 'John', last_name: 'Smith' };
     const fixture = testUtils.fixture('createContact/created.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/contacts', attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -181,12 +181,12 @@ describe('contacts', function () {
       done();
     });
 
-    it('produces a contact', function (done) {
+    it('produces a contact', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/contacts', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.createContact(accountId, attributes).then(function (response) {
+      dnsimple.contacts.createContact(accountId, attributes).then((response) => {
         const contact = response.data;
         expect(contact.id).to.eq(1);
         expect(contact.account_id).to.eq(1010);
@@ -194,19 +194,19 @@ describe('contacts', function () {
         expect(contact.first_name).to.eq('First');
         expect(contact.last_name).to.eq('User');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#updateContact', function () {
+  describe('#updateContact', () => {
     const accountId = '1010';
     const contactId = 1;
     const attributes = { last_name: 'Buckminster' };
     const fixture = testUtils.fixture('updateContact/success.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .patch('/v2/1010/contacts/' + contactId, attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -217,30 +217,30 @@ describe('contacts', function () {
       done();
     });
 
-    it('produces a contact', function (done) {
+    it('produces a contact', (done) => {
       nock('https://api.dnsimple.com')
         .patch('/v2/1010/contacts/' + contactId, attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.updateContact(accountId, contactId, attributes).then(function (response) {
+      dnsimple.contacts.updateContact(accountId, contactId, attributes).then((response) => {
         const contact = response.data;
         expect(contact.id).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the contact does not exist', function () {
+    describe('when the contact does not exist', () => {
       const fixture = testUtils.fixture('notfound-contact.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/contacts/0', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      it('produces an error', function (done) {
-        dnsimple.contacts.updateContact(accountId, '0', attributes).then(function (response) {
+      it('produces an error', (done) => {
+        dnsimple.contacts.updateContact(accountId, '0', attributes).then((response) => {
           done('Expected error but future resolved');
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });
@@ -248,12 +248,12 @@ describe('contacts', function () {
     });
   });
 
-  describe('#deleteContact', function () {
+  describe('#deleteContact', () => {
     const accountId = '1010';
     const contactId = 1;
     const fixture = testUtils.fixture('deleteContact/success.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/contacts/' + contactId)
         .reply(fixture.statusCode, fixture.body);
@@ -264,29 +264,29 @@ describe('contacts', function () {
       done();
     });
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/contacts/' + contactId)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.deleteContact(accountId, contactId).then(function (response) {
+      dnsimple.contacts.deleteContact(accountId, contactId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the contact does not exist', function () {
-      it('produces an error', function (done) {
+    describe('when the contact does not exist', () => {
+      it('produces an error', (done) => {
         const fixture = testUtils.fixture('notfound-contact.http');
         nock('https://api.dnsimple.com')
           .delete('/v2/1010/contacts/0')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.contacts.deleteContact(accountId, '0').then(function (response) {
+        dnsimple.contacts.deleteContact(accountId, '0').then((response) => {
           done('Error expected but future resolved');
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });

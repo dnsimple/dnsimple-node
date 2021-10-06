@@ -8,13 +8,13 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('domains', function () {
-  describe('#listDelegationSignerRecords', function () {
+describe('domains', () => {
+  describe('#listDelegationSignerRecords', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const fixture = testUtils.fixture('listDelegationSignerRecords/success.http');
 
-    it('supports pagination', function (done) {
+    it('supports pagination', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records?page=1')
         .reply(fixture.statusCode, fixture.body);
@@ -25,7 +25,7 @@ describe('domains', function () {
       done();
     });
 
-    it('supports extra request options', function (done) {
+    it('supports extra request options', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records?foo=bar')
         .reply(fixture.statusCode, fixture.body);
@@ -36,7 +36,7 @@ describe('domains', function () {
       done();
     });
 
-    it('supports sorting', function (done) {
+    it('supports sorting', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records?sort=from%3Aasc')
         .reply(fixture.statusCode, fixture.body);
@@ -47,41 +47,41 @@ describe('domains', function () {
       done();
     });
 
-    it('produces an delegation signer records list', function (done) {
+    it('produces an delegation signer records list', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(function (response) {
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then((response) => {
         const dsRecords = response.data;
         expect(dsRecords.length).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    it('exposes the pagination info', function (done) {
+    it('exposes the pagination info', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(function (response) {
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then((response) => {
         const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#allDelegationSignerRecords', function () {
+  describe('#allDelegationSignerRecords', () => {
     const accountId = '1010';
     const domainId = 'example.com';
 
-    it('produces a complete list', function (done) {
+    it('produces a complete list', (done) => {
       const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records?page=1')
@@ -97,31 +97,31 @@ describe('domains', function () {
         .get('/v2/1010/domains/example.com/ds_records?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.domains.allDelegationSignerRecords(accountId, domainId).then(function (items) {
+      dnsimple.domains.allDelegationSignerRecords(accountId, domainId).then((items) => {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
-      }).catch(function (error) {
+      }).catch((error) => {
         done(error);
       });
     });
   });
 
-  describe('#getDelegationSignerRecord', function () {
+  describe('#getDelegationSignerRecord', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const dsRecordId = 1;
     const fixture = testUtils.fixture('getDelegationSignerRecord/success.http');
 
-    it('produces a delegation signer record', function (done) {
+    it('produces a delegation signer record', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.getDelegationSignerRecord(accountId, domainId, dsRecordId).then(function (response) {
+      dnsimple.domains.getDelegationSignerRecord(accountId, domainId, dsRecordId).then((response) => {
         const dsRecord = response.data;
         expect(dsRecord.id).to.eq(24);
         expect(dsRecord.algorithm).to.eq('8');
@@ -131,21 +131,21 @@ describe('domains', function () {
         expect(dsRecord.created_at).to.eq('2017-03-03T13:49:58Z');
         expect(dsRecord.updated_at).to.eq('2017-03-03T13:49:58Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the delegation signer record does not exist', function () {
+    describe('when the delegation signer record does not exist', () => {
       const fixture = testUtils.fixture('notfound-delegationSignerRecord.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/ds_records/0')
         .reply(fixture.statusCode, fixture.body);
 
-      it('produces an error', function (done) {
-        dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0).then(function (response) {
+      it('produces an error', (done) => {
+        dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Delegation signer record `0` not found');
@@ -155,13 +155,13 @@ describe('domains', function () {
     });
   });
 
-  describe('#createDelegationSignerRecord', function () {
+  describe('#createDelegationSignerRecord', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const attributes = { algorithm: '8' };
     const fixture = testUtils.fixture('createDelegationSignerRecord/created.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/ds_records', attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -172,36 +172,36 @@ describe('domains', function () {
       done();
     });
 
-    it('produces a delegation signer record', function (done) {
+    it('produces a delegation signer record', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/ds_records')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes).then(function (response) {
+      dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes).then((response) => {
         const dsRecord = response.data;
         expect(dsRecord.id).to.eq(2);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#deleteDelegationSignerRecord', function () {
+  describe('#deleteDelegationSignerRecord', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const dsRecordId = 1;
     const fixture = testUtils.fixture('deleteDelegationSignerRecord/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/domains/example.com/ds_records/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.deleteDelegationSignerRecord(accountId, domainId, dsRecordId).then(function (response) {
+      dnsimple.domains.deleteDelegationSignerRecord(accountId, domainId, dsRecordId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });

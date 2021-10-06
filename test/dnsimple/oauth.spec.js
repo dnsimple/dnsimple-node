@@ -10,15 +10,15 @@ const nock = require('nock');
 
 const querystring = require('querystring');
 
-describe('oauth', function () {
+describe('oauth', () => {
   const clientId = 'super-client';
   const clientSecret = 'super-secret';
   const code = 'super-code';
 
-  describe('#exchangeAuthorizationForToken', function () {
+  describe('#exchangeAuthorizationForToken', () => {
     const fixture = testUtils.fixture('oauthAccessToken/success.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/oauth/access_token', {
           client_id: clientId,
@@ -34,7 +34,7 @@ describe('oauth', function () {
       done();
     });
 
-    it('returns the oauth token', function (done) {
+    it('returns the oauth token', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/oauth/access_token', {
           client_id: clientId,
@@ -44,21 +44,21 @@ describe('oauth', function () {
         })
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.oauth.exchangeAuthorizationForToken(code, clientId, clientSecret).then(function (response) {
+      dnsimple.oauth.exchangeAuthorizationForToken(code, clientId, clientSecret).then((response) => {
         expect(response.access_token).to.eq('zKQ7OLqF5N1gylcJweA9WodA000BUNJD');
         expect(response.token_type).to.eq('Bearer');
         expect(response.account_id).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when state and redirect_uri are provided', function () {
+    describe('when state and redirect_uri are provided', () => {
       const state = 'super-state';
       const redirectUri = 'super-redirect-uri';
 
-      it('builds the correct request', function (done) {
+      it('builds the correct request', (done) => {
         nock('https://api.dnsimple.com')
           .post('/v2/oauth/access_token', {
             client_id: clientId,
@@ -79,8 +79,8 @@ describe('oauth', function () {
     });
   });
 
-  describe('#authorizeUrl', function () {
-    it('builds the correct url', function () {
+  describe('#authorizeUrl', () => {
+    it('builds the correct url', () => {
       const authorizeUrl = new URL(dnsimple.oauth.authorizeUrl('great-app'));
       const expectedUrl = new URL('https://dnsimple.com/oauth/authorize?client_id=great-app&response_type=code');
 
@@ -89,7 +89,7 @@ describe('oauth', function () {
       expect(querystring.parse(authorizeUrl.query)).to.deep.equal(querystring.parse(expectedUrl.query));
     });
 
-    it('exposes the options in the query string', function () {
+    it('exposes the options in the query string', () => {
       let authorizeUrl = dnsimple.oauth.authorizeUrl('great-app', { secret: '1', redirect_uri: 'http://example.com' });
       authorizeUrl = new URL(authorizeUrl);
 

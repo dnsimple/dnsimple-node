@@ -8,64 +8,64 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('registrar', function () {
+describe('registrar', () => {
   const accountId = '1010';
   const domainId = 'example.com';
 
-  describe('#checkDomain', function () {
+  describe('#checkDomain', () => {
     const domainId = 'ruby.codes';
     const fixture = testUtils.fixture('checkDomain/success.http');
 
-    it('produces a check result', function (done) {
+    it('produces a check result', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/registrar/domains/ruby.codes/check')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.checkDomain(accountId, domainId).then(function (response) {
+      dnsimple.registrar.checkDomain(accountId, domainId).then((response) => {
         const checkResult = response.data;
         expect(checkResult.domain).to.eql('ruby.codes');
         expect(checkResult.available).to.eq(true);
         expect(checkResult.premium).to.eq(true);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#getDomainPremiumPrice', function () {
-    describe('when the domain has a premium price', function () {
+  describe('#getDomainPremiumPrice', () => {
+    describe('when the domain has a premium price', () => {
       const domainId = 'ruby.codes';
       const fixture = testUtils.fixture('getDomainPremiumPrice/success.http');
 
-      it('produces a premium price result', function (done) {
+      it('produces a premium price result', (done) => {
         nock('https://api.dnsimple.com')
           .get('/v2/1010/registrar/domains/ruby.codes/premium_price')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function (response) {
+        dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then((response) => {
           const premiumPriceResult = response.data;
           expect(premiumPriceResult.premium_price).to.eql('109.00');
           expect(premiumPriceResult.action).to.eql('registration');
           done();
-        }, function (error) {
+        }, (error) => {
           done(error);
         });
       });
     });
 
-    describe('when the domain is not a premium domain', function () {
+    describe('when the domain is not a premium domain', () => {
       const domainId = 'example.com';
       const fixture = testUtils.fixture('getDomainPremiumPrice/failure.http');
 
-      it('produces an error', function (done) {
+      it('produces an error', (done) => {
         nock('https://api.dnsimple.com')
           .get('/v2/1010/registrar/domains/example.com/premium_price')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(function (response) {
+        dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Bad request');
           expect(error.message).to.eq('`example.com` is not a premium domain for registration');
@@ -75,16 +75,16 @@ describe('registrar', function () {
     });
   });
 
-  describe('#getDomainPrices', function () {
-    describe('when the TLD is supported', function () {
+  describe('#getDomainPrices', () => {
+    describe('when the TLD is supported', () => {
       const fixture = testUtils.fixture('getDomainPrices/success.http');
 
-      it('produces a domain prices result', function (done) {
+      it('produces a domain prices result', (done) => {
         nock('https://api.dnsimple.com')
           .get('/v2/1010/registrar/domains/bingo.pizza/prices')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.getDomainPrices(accountId, 'bingo.pizza').then(function (response) {
+        dnsimple.registrar.getDomainPrices(accountId, 'bingo.pizza').then((response) => {
           const pricesResult = response.data;
           expect(pricesResult.domain).to.eql('bingo.pizza');
           expect(pricesResult.premium).to.eql(true);
@@ -92,23 +92,23 @@ describe('registrar', function () {
           expect(pricesResult.renewal_price).to.eql(20.0);
           expect(pricesResult.transfer_price).to.eql(20.0);
           done();
-        }, function (error) {
+        }, (error) => {
           done(error);
         });
       });
     });
 
-    describe('when the TLD is not available', function () {
+    describe('when the TLD is not available', () => {
       const fixture = testUtils.fixture('getDomainPrices/failure.http');
 
-      it('produces an error', function (done) {
+      it('produces an error', (done) => {
         nock('https://api.dnsimple.com')
           .get('/v2/1010/registrar/domains/bingo.pineaple/prices')
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.getDomainPrices(accountId, 'bingo.pineaple').then(function (response) {
+        dnsimple.registrar.getDomainPrices(accountId, 'bingo.pineaple').then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Bad request');
           expect(error.message).to.eq('TLD .PINEAPPLE is not supported');
@@ -118,60 +118,60 @@ describe('registrar', function () {
     });
   });
 
-  describe('#registerDomain', function () {
+  describe('#registerDomain', () => {
     const fixture = testUtils.fixture('registerDomain/success.http');
 
-    it('produces a domain', function (done) {
+    it('produces a domain', (done) => {
       const attributes = { registrant_id: '10' };
 
       nock('https://api.dnsimple.com')
         .post('/v2/1010/registrar/domains/example.com/registrations', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.registerDomain(accountId, domainId, attributes).then(function (response) {
+      dnsimple.registrar.registerDomain(accountId, domainId, attributes).then((response) => {
         const domainRegistration = response.data;
         expect(domainRegistration.id).to.eq(1);
         expect(domainRegistration.state).to.eq('new');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#renewDomain', function () {
+  describe('#renewDomain', () => {
     const fixture = testUtils.fixture('renewDomain/success.http');
 
-    it('produces a domain', function (done) {
+    it('produces a domain', (done) => {
       const attributes = { period: '3' };
 
       nock('https://api.dnsimple.com')
         .post('/v2/1010/registrar/domains/example.com/renewals', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(function (response) {
+      dnsimple.registrar.renewDomain(accountId, domainId, attributes).then((response) => {
         const domainRenewal = response.data;
         expect(domainRenewal.id).to.eq(1);
         expect(domainRenewal.state).to.eq('new');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when it is too soon for the domain to be renewed', function () {
+    describe('when it is too soon for the domain to be renewed', () => {
       const fixture = testUtils.fixture('renewDomain/error-tooearly.http');
 
-      it('results in an error', function (done) {
+      it('results in an error', (done) => {
         const attributes = {};
 
         nock('https://api.dnsimple.com')
           .post('/v2/1010/registrar/domains/example.com/renewals', attributes)
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(function (response) {
+        dnsimple.registrar.renewDomain(accountId, domainId, attributes).then((response) => {
           done('Expected error, but future resolved');
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });
@@ -179,55 +179,55 @@ describe('registrar', function () {
     });
   });
 
-  describe('#transferDomain', function () {
+  describe('#transferDomain', () => {
     const attributes = { registrant_id: '10', auth_code: 'x1y2z3' };
 
-    it('produces a domain', function (done) {
+    it('produces a domain', (done) => {
       const fixture = testUtils.fixture('transferDomain/success.http');
       nock('https://api.dnsimple.com')
         .post('/v2/1010/registrar/domains/example.com/transfers', attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function (response) {
+      dnsimple.registrar.transferDomain(accountId, domainId, attributes).then((response) => {
         const domain = response.data;
         expect(domain.id).to.eq(1);
         expect(domain.state).to.eq('transferring');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the domain is already in DNSimple', function () {
+    describe('when the domain is already in DNSimple', () => {
       const fixture = testUtils.fixture('transferDomain/error-indnsimple.http');
 
-      it('results in an error', function (done) {
+      it('results in an error', (done) => {
         nock('https://api.dnsimple.com')
           .post('/v2/1010/registrar/domains/example.com/transfers', attributes)
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function (response) {
+        dnsimple.registrar.transferDomain(accountId, domainId, attributes).then((response) => {
           done('Expected error, but future resolved');
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });
       });
     });
 
-    describe('when authcode was not provided and is required by the TLD', function () {
+    describe('when authcode was not provided and is required by the TLD', () => {
       const fixture = testUtils.fixture('transferDomain/error-missing-authcode.http');
 
-      it('results in an error', function (done) {
+      it('results in an error', (done) => {
         const attributes = { registrant_id: '10' };
 
         nock('https://api.dnsimple.com')
           .post('/v2/1010/registrar/domains/example.com/transfers', attributes)
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(function (response) {
+        dnsimple.registrar.transferDomain(accountId, domainId, attributes).then((response) => {
           done('Expected error, but future resolved');
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           done();
         });
@@ -235,15 +235,15 @@ describe('registrar', function () {
     });
   });
 
-  describe('#getDomainTransfer', function () {
+  describe('#getDomainTransfer', () => {
     const fixture = testUtils.fixture('getDomainTransfer/success.http');
 
-    it('retrieves a domain transfer', function (done) {
+    it('retrieves a domain transfer', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/registrar/domains/example.com/transfers/42')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.getDomainTransfer(accountId, domainId, 42).then(function (response) {
+      dnsimple.registrar.getDomainTransfer(accountId, domainId, 42).then((response) => {
         const domainTransfer = response.data;
         expect(domainTransfer.id).to.eq(361);
         expect(domainTransfer.domain_id).to.eq(182245);
@@ -255,21 +255,21 @@ describe('registrar', function () {
         expect(domainTransfer.created_at).to.eq('2020-06-05T18:08:00Z');
         expect(domainTransfer.updated_at).to.eq('2020-06-05T18:10:01Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#cancelDomainTransfer', function () {
+  describe('#cancelDomainTransfer', () => {
     const fixture = testUtils.fixture('cancelDomainTransfer/success.http');
 
-    it('cancels a domain transfer', function (done) {
+    it('cancels a domain transfer', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/registrar/domains/example.com/transfers/42')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42).then(function (response) {
+      dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42).then((response) => {
         const domainTransfer = response.data;
         expect(domainTransfer.id).to.eq(361);
         expect(domainTransfer.domain_id).to.eq(182245);
@@ -281,24 +281,24 @@ describe('registrar', function () {
         expect(domainTransfer.created_at).to.eq('2020-06-05T18:08:00Z');
         expect(domainTransfer.updated_at).to.eq('2020-06-05T18:08:04Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#transferDomainOut', function () {
+  describe('#transferDomainOut', () => {
     const fixture = testUtils.fixture('authorizeDomainTransferOut/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/registrar/domains/example.com/authorize_transfer_out')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.transferDomainOut(accountId, domainId).then(function (response) {
+      dnsimple.registrar.transferDomainOut(accountId, domainId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
