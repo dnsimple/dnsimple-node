@@ -128,6 +128,7 @@ describe('domains', function () {
         expect(dsRecord.digest).to.eq('C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F');
         expect(dsRecord.digest_type).to.eq('2');
         expect(dsRecord.keytag).to.eq('44620');
+        expect(dsRecord.public_key).to.eq(null);
         expect(dsRecord.created_at).to.eq('2017-03-03T13:49:58Z');
         expect(dsRecord.updated_at).to.eq('2017-03-03T13:49:58Z');
         done();

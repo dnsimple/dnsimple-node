@@ -2,6 +2,8 @@
 
 ## main
 
+- CHANGED: Updated DNSSEC-related test to reflect DS record key-data interface. (dnsimple/dnsimple-node#110)
+
 ## Release 5.0.0
 
 - NEW: Adds NodeJS v16 to Travis build
