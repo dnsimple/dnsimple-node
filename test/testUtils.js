@@ -7,12 +7,12 @@ const fs = require('fs');
 
 module.exports = {
 
-  getAccessToken: function () {
+  getAccessToken: () => {
     const key = process.env.TOKEN || 'bogus';
     return key;
   },
 
-  fixture: function (path) {
+  fixture: (path) => {
     const data = fs.readFileSync('./test/fixtures.http/' + path, { encoding: 'UTF8' });
     const lines = data.split(/\r?\n/);
 

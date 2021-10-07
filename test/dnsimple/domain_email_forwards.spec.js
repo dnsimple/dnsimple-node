@@ -8,13 +8,13 @@ const dnsimple = require('../../lib/dnsimple')({
 const expect = require('chai').expect;
 const nock = require('nock');
 
-describe('domains', function () {
-  describe('#listEmailForwards', function () {
+describe('domains', () => {
+  describe('#listEmailForwards', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const fixture = testUtils.fixture('listEmailForwards/success.http');
 
-    it('supports pagination', function (done) {
+    it('supports pagination', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?page=1')
         .reply(fixture.statusCode, fixture.body);
@@ -25,7 +25,7 @@ describe('domains', function () {
       done();
     });
 
-    it('supports extra request options', function (done) {
+    it('supports extra request options', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?foo=bar')
         .reply(fixture.statusCode, fixture.body);
@@ -36,7 +36,7 @@ describe('domains', function () {
       done();
     });
 
-    it('supports sorting', function (done) {
+    it('supports sorting', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?sort=from%3Aasc')
         .reply(fixture.statusCode, fixture.body);
@@ -47,41 +47,41 @@ describe('domains', function () {
       done();
     });
 
-    it('produces an email forward list', function (done) {
+    it('produces an email forward list', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listEmailForwards(accountId, domainId).then(function (response) {
+      dnsimple.domains.listEmailForwards(accountId, domainId).then((response) => {
         const emailForwards = response.data;
         expect(emailForwards.length).to.eq(2);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    it('exposes the pagination info', function (done) {
+    it('exposes the pagination info', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listEmailForwards(accountId, domainId).then(function (response) {
+      dnsimple.domains.listEmailForwards(accountId, domainId).then((response) => {
         const pagination = response.pagination;
         expect(pagination).to.not.eq(null);
         expect(pagination.current_page).to.eq(1);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#allEmailForwards', function () {
+  describe('#allEmailForwards', () => {
     const accountId = '1010';
     const domainId = 'example.com';
 
-    it('produces a complete list', function (done) {
+    it('produces a complete list', (done) => {
       const fixture1 = testUtils.fixture('pages-1of3.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards?page=1')
@@ -97,31 +97,31 @@ describe('domains', function () {
         .get('/v2/1010/domains/example.com/email_forwards?page=3')
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.domains.allEmailForwards(accountId, domainId).then(function (items) {
+      dnsimple.domains.allEmailForwards(accountId, domainId).then((items) => {
         expect(items.length).to.eq(5);
         expect(items[0].id).to.eq(1);
         expect(items[4].id).to.eq(5);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
-      }).catch(function (error) {
+      }).catch((error) => {
         done(error);
       });
     });
   });
 
-  describe('#getEmailForward', function () {
+  describe('#getEmailForward', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const emailForwardId = 41872;
     const fixture = testUtils.fixture('getEmailForward/success.http');
 
-    it('produces an email forward', function (done) {
+    it('produces an email forward', (done) => {
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards/41872')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.getEmailForward(accountId, domainId, emailForwardId).then(function (response) {
+      dnsimple.domains.getEmailForward(accountId, domainId, emailForwardId).then((response) => {
         const emailForward = response.data;
         expect(emailForward.id).to.eq(41872);
         expect(emailForward.domain_id).to.eq(235146);
@@ -130,21 +130,21 @@ describe('domains', function () {
         expect(emailForward.created_at).to.eq('2021-01-25T13:54:40Z');
         expect(emailForward.updated_at).to.eq('2021-01-25T13:54:40Z');
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
 
-    describe('when the email forward does not exist', function () {
+    describe('when the email forward does not exist', () => {
       const fixture = testUtils.fixture('notfound-emailforward.http');
       nock('https://api.dnsimple.com')
         .get('/v2/1010/domains/example.com/email_forwards/0')
         .reply(fixture.statusCode, fixture.body);
 
-      it('produces an error', function (done) {
-        dnsimple.domains.getEmailForward(accountId, domainId, 0).then(function (response) {
+      it('produces an error', (done) => {
+        dnsimple.domains.getEmailForward(accountId, domainId, 0).then((response) => {
           done();
-        }, function (error) {
+        }, (error) => {
           expect(error).to.not.eq(null);
           expect(error.description).to.eq('Not found');
           expect(error.message).to.eq('Email forward `0` not found');
@@ -154,13 +154,13 @@ describe('domains', function () {
     });
   });
 
-  describe('#createEmailForward', function () {
+  describe('#createEmailForward', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const attributes = { from: 'jim' };
     const fixture = testUtils.fixture('createEmailForward/created.http');
 
-    it('builds the correct request', function (done) {
+    it('builds the correct request', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/email_forwards', attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -171,36 +171,36 @@ describe('domains', function () {
       done();
     });
 
-    it('produces an email forward', function (done) {
+    it('produces an email forward', (done) => {
       nock('https://api.dnsimple.com')
         .post('/v2/1010/domains/example.com/email_forwards')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createEmailForward(accountId, domainId, attributes).then(function (response) {
+      dnsimple.domains.createEmailForward(accountId, domainId, attributes).then((response) => {
         const emailForward = response.data;
         expect(emailForward.id).to.eq(41872);
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });
   });
 
-  describe('#deleteEmailForward', function () {
+  describe('#deleteEmailForward', () => {
     const accountId = '1010';
     const domainId = 'example.com';
     const emailForwardId = 1;
     const fixture = testUtils.fixture('deleteEmailForward/success.http');
 
-    it('produces nothing', function (done) {
+    it('produces nothing', (done) => {
       nock('https://api.dnsimple.com')
         .delete('/v2/1010/domains/example.com/email_forwards/1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.deleteEmailForward(accountId, domainId, emailForwardId).then(function (response) {
+      dnsimple.domains.deleteEmailForward(accountId, domainId, emailForwardId).then((response) => {
         expect(response).to.eql({});
         done();
-      }, function (error) {
+      }, (error) => {
         done(error);
       });
     });

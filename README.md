@@ -35,37 +35,37 @@ var client = require("dnsimple")({
 });
 
 // Fetch your details
-client.identity.whoami().then(function(response) {
+client.identity.whoami().then((response) => {
   console.log(response.data);
-}, function(error) {
+}, (error) => {
   console.log(error);
 });
 
 // List your domains
 var accountId = "1010";
-client.domains.listDomains(accountId).then(function(response) {
+client.domains.listDomains(accountId).then((response) => {
   console.log(response.data);
-}, function(error) {
+}, (error) => {
   console.log(error);
 });
 
-client.domains.listDomains(accountId, { page: 3 }).then(function(response) {
+client.domains.listDomains(accountId, { page: 3 }).then((response) => {
   console.log(response.data);
-}, function(error) {
+}, (error) => {
   console.log(error);
 });
 
 // Create a domain
-client.domains.createDomain(accountId, { name: "example.com" }).then(function(response) {
+client.domains.createDomain(accountId, { name: "example.com" }).then((response) => {
   console.log(response.data);
-}, function(error) {
+}, (error) => {
   console.log(error);
 });
 
 // Get a domain
-client.domains.getDomain(accountId, "example.com").then(function(response) {
+client.domains.getDomain(accountId, "example.com").then((response) => {
   console.log(response.data);
-}, function(error) {
+}, (error) => {
   console.log(error);
 });
 ```
