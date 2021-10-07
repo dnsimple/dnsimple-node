@@ -5,8 +5,7 @@ A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 [![Build Status](https://travis-ci.com/dnsimple/dnsimple-node.svg?branch=main)](https://travis-ci.com/dnsimple/dnsimple-node)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/standard/semistandard)
 [![npm version](https://badge.fury.io/js/dnsimple.svg)](https://badge.fury.io/js/dnsimple)
-[![npm downloads](https://img.shields.io/npm/dm/dnsimple.svg)]()
-
+[![npm downloads](https://img.shields.io/npm/dm/dnsimple.svg)](https://www.npmjs.com/package/dnsimple)
 
 ## Requirements
 
@@ -14,13 +13,11 @@ The dnsimple-node package requires node 12.0.0 or higher.
 
 You must also have an activated DNSimple account to access the DNSimple API.
 
-
 ## Installation
 
 You can install this package directly from the github repo with `npm install dnsimple/dnsimple-node`.
 
 Alternatively, install the latest stable version from NPM with `npm install dnsimple`.
-
 
 ## Usage
 
@@ -81,7 +78,6 @@ TOKEN=[TOKEN VALUE GOES HERE] node test.js
 
 Take a look at [https://github.com/dnsimple/hello-domains-node](https://github.com/dnsimple/hello-domains-node) for an example app that authorizes via OAuth and displays your domain list.
 
-
 ## Sandbox Environment
 
 We highly recommend testing against our [sandbox environment](https://developer.dnsimple.com/sandbox/) before using our production environment. This will allow you to avoid real purchases, live charges on your credit card, and reduce the chance of your running up against rate limits.
@@ -97,7 +93,6 @@ var client = require('dnsimple')({
 
 You will need to ensure that you are using an access token created in the sandbox environment. Production tokens will *not* work in the sandbox environment.
 
-
 ## Setting a custom `User-Agent` header
 
 You customize the `User-Agent` header for the calls made to the DNSimple API:
@@ -110,7 +105,6 @@ var client = require('dnsimple')({
 ```
 
 The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
-
 
 ## License
 

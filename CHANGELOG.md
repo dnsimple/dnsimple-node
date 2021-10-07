@@ -2,6 +2,8 @@
 
 ## main
 
+- CHANGED: Updated DNSSEC-related test to reflect DS record key-data interface. (dnsimple/dnsimple-node#110)
+
 ## Release 5.0.0
 
 - NEW: Adds NodeJS v16 to Travis build
@@ -43,7 +45,7 @@
 
 - NEW: Adds NodeJS v13 to Travis build
 - CHANGED: Deprecates support for NodeJS v8
-- CHANGED: Deprecates JSCS usage. Implements https://www.npmjs.com/package/semistandard
+- CHANGED: Deprecates JSCS usage. Implements [https://www.npmjs.com/package/semistandard](https://www.npmjs.com/package/semistandard)
 - CHANGED: Simplifies testing instructions
 - CHANGED: Bump lodash from 4.17.14 to 4.17.15
 - CHANGED: Bump chai from 4.1.2 to 4.2.0

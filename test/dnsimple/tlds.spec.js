@@ -117,6 +117,15 @@ describe('tlds', () => {
       dnsimple.tlds.getTld('com').then((response) => {
         const tld = response.data;
         expect(tld.tld).to.eq('com');
+        expect(tld.tld_type).to.eq(1);
+        expect(tld.whois_privacy).to.eq(true);
+        expect(tld.auto_renew_only).to.eq(false);
+        expect(tld.idn).to.eq(true);
+        expect(tld.minimum_registration).to.eq(1);
+        expect(tld.registration_enabled).to.eq(true);
+        expect(tld.renewal_enabled).to.eq(true);
+        expect(tld.transfer_enabled).to.eq(true);
+        expect(tld.dnssec_interface_type).to.eq('ds');
         done();
       }, (error) => {
         done(error);
