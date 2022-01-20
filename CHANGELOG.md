@@ -2,6 +2,10 @@
 
 ## main
 
+## Release 5.1.1
+
+- CHANGED: Bump dependency versions
+
 ## Release 5.1.0
 
 - CHANGED: Updated DNSSEC-related test to reflect DS record key-data interface. (dnsimple/dnsimple-node#110)
