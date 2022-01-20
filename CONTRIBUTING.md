@@ -27,7 +27,7 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
 
 1. Run the test suite and ensure all the tests pass.
 
-1. Set the version in `package.json`:
+2. Set the version in `package.json`:
 
     ```json
     {
@@ -37,38 +37,33 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
     }
     ```
 
-1. Set the version in `lib/dnsimple.js`:
+3. Set the version in `lib/dnsimple.js`:
 
     ```javascript
     Dnsimple.VERSION = '$VERSION';
     ```
 
-1. Run the test suite and ensure all the tests pass.
+4. Run the test suite and ensure all the tests pass.
 
-1. Finalize the `## main` section in `CHANGELOG.md` assigning the version.
+5. Finalize the `## main` section in `CHANGELOG.md` assigning the version.
 
-1. Commit and push the changes
+6. Commit and push the changes
 
     ```shell
     git commit -a -m "Release $VERSION"
     git push origin main
     ```
 
-1. Wait for CI to complete.
+7. Wait for CI to complete.
 
-1. Create a signed tag.
+8. Create a signed tag.
 
     ```shell
     git tag -a v$VERSION -s -m "Release $VERSION"
     git push origin --tags
     ```
 
-1. Release to npm.
-
-    ```shell
-    npm login
-    npm publish
-    ```
+GitHub actions will take it from here and publish to `npm`
 
 ## Testing
 
