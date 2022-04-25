@@ -23,7 +23,7 @@ describe('oauth', () => {
         .post('/v2/oauth/access_token', {
           client_id: clientId,
           client_secret: clientSecret,
-          code: code,
+          code,
           grant_type: 'authorization_code'
         })
         .reply(fixture.statusCode, fixture.body);
@@ -39,7 +39,7 @@ describe('oauth', () => {
         .post('/v2/oauth/access_token', {
           client_id: clientId,
           client_secret: clientSecret,
-          code: code,
+          code,
           grant_type: 'authorization_code'
         })
         .reply(fixture.statusCode, fixture.body);
@@ -63,14 +63,14 @@ describe('oauth', () => {
           .post('/v2/oauth/access_token', {
             client_id: clientId,
             client_secret: clientSecret,
-            code: code,
+            code,
             grant_type: 'authorization_code',
-            state: state,
+            state,
             redirect_uri: redirectUri
           })
           .reply(fixture.statusCode, fixture.body);
 
-        const options = { state: state, redirectUri: redirectUri };
+        const options = { state, redirectUri };
         dnsimple.oauth.exchangeAuthorizationForToken(code, clientId, clientSecret, options);
 
         nock.isDone();
