@@ -30,10 +30,10 @@ module.exports = {
     }
 
     const fixture = {
-      httpVersion: httpVersion,
-      statusCode: statusCode,
-      headers: headers,
-      reasonPhrase: reasonPhrase,
+      httpVersion,
+      statusCode,
+      headers,
+      reasonPhrase,
       body: null
     };
 
