@@ -20,7 +20,7 @@
   },
   "bugs:": "https://github.com/dnsimple/dnsimple-node/issues",
   "engines": {
-    "node": ">= v12.0.0"
+    "node": ">= v14.0.0"
   },
   "main": "lib/dnsimple.js",
   "files": [
