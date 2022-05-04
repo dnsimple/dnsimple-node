@@ -2,6 +2,8 @@
 
 ## main
 
+## Release 6.0.0
+
 - NEW: Adds NodeJS v18 to Travis build
 - CHANGED: Deprecates support for NodeJS v12 (EOL)
 
