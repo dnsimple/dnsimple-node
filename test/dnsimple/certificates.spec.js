@@ -238,7 +238,6 @@ describe('certificates', () => {
   describe('#purchaseLetsencryptCertificate', () => {
     const accountId = '1010';
     const domainId = 'example.com';
-    const attributes = { contact_id: 1 };
     const fixture = testUtils.fixture('purchaseLetsencryptCertificate/success.http');
 
     it('purchases a certificate', (done) => {
@@ -246,7 +245,7 @@ describe('certificates', () => {
         .post('/v2/1010/domains/example.com/certificates/letsencrypt')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, attributes).then((response) => {
+      dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId).then((response) => {
         const certificate = response.data;
         expect(certificate.id).to.eq(101967);
         done();
