@@ -1,5 +1,7 @@
 # Changelog
 
+- CHANGED: Deprecate Certificate's `contact_id` (dnsimple/dnsimple-node#133)
+
 ## main
 
 ## Release 6.0.0
