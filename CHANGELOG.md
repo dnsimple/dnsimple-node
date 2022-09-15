@@ -1,9 +1,10 @@
 # Changelog
 
-- CHANGED: Deprecate Certificate's `contact_id` (dnsimple/dnsimple-node#133)
-
 ## main
 
+- CHANGED: Deprecate Certificate's `contact_id` (dnsimple/dnsimple-node#133)
+- CHANGED: Add getter for attribute errors in `error` object (dnsimple/dnsimple-node#150)
+  
 ## Release 6.0.0
 
 - NEW: Adds NodeJS v18 to Travis build
