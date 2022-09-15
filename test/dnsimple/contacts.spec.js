@@ -18,7 +18,7 @@ describe('contacts', () => {
         .get('/v2/1010/contacts?page=1')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId, { page: 1 });
+      dnsimple.contacts.listContacts(accountId, {page: 1});
 
       nock.isDone();
       done();
@@ -29,7 +29,7 @@ describe('contacts', () => {
         .get('/v2/1010/contacts?foo=bar')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId, { query: { foo: 'bar' } });
+      dnsimple.contacts.listContacts(accountId, {query: {foo: 'bar'}});
 
       nock.isDone();
       done();
@@ -40,7 +40,7 @@ describe('contacts', () => {
         .get('/v2/1010/contacts?sort=first_name%3Aasc')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId, { sort: 'first_name:asc' });
+      dnsimple.contacts.listContacts(accountId, {sort: 'first_name:asc'});
 
       nock.isDone();
       done();
@@ -51,7 +51,7 @@ describe('contacts', () => {
         .get('/v2/1010/contacts?first_name_like=example')
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId, { filter: { first_name_like: 'example' } });
+      dnsimple.contacts.listContacts(accountId, {filter: {first_name_like: 'example'}});
 
       nock.isDone();
       done();
@@ -167,7 +167,7 @@ describe('contacts', () => {
 
   describe('#createContact', () => {
     const accountId = '1010';
-    const attributes = { first_name: 'John', last_name: 'Smith' };
+    const attributes = {first_name: 'John', last_name: 'Smith'};
     const fixture = testUtils.fixture('createContact/created.http');
 
     it('builds the correct request', (done) => {
@@ -198,12 +198,34 @@ describe('contacts', () => {
         done(error);
       });
     });
+
+    it('includes validation errors coming from the API', async () => {
+      const fixture = testUtils.fixture('createContact/error-validation-errors.http');
+
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/contacts', attributes)
+        .reply(fixture.statusCode, fixture.body);
+
+      return dnsimple.contacts.createContact(accountId, attributes).then(() => {
+        throw new Error("The promise should follow the rejection path");
+      }, (error) => {
+        expect(error.errors.address1).to.deep.eq(["can't be blank"]);
+        expect(error.errors.city).to.deep.eq(["can't be blank"]);
+        expect(error.errors.country).to.deep.eq(["can't be blank"]);
+        expect(error.errors.email).to.deep.eq(["can't be blank", "is an invalid email address"]);
+        expect(error.errors.first_name).to.deep.eq(["can't be blank"]);
+        expect(error.errors.last_name).to.deep.eq(["can't be blank"]);
+        expect(error.errors.phone).to.deep.eq(["can't be blank", "is probably not a phone number"]);
+        expect(error.errors.postal_code).to.deep.eq(["can't be blank"]);
+        expect(error.errors.state_province).to.deep.eq(["can't be blank"]);
+      });
+    });
   });
 
   describe('#updateContact', () => {
     const accountId = '1010';
     const contactId = 1;
-    const attributes = { last_name: 'Buckminster' };
+    const attributes = {last_name: 'Buckminster'};
     const fixture = testUtils.fixture('updateContact/success.http');
 
     it('builds the correct request', (done) => {
