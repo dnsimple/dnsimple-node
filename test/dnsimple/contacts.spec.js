@@ -198,6 +198,28 @@ describe('contacts', () => {
         done(error);
       });
     });
+
+    it('includes validation errors coming from the API', async () => {
+      const fixture = testUtils.fixture('createContact/error-validation-errors.http');
+
+      nock('https://api.dnsimple.com')
+        .post('/v2/1010/contacts', attributes)
+        .reply(fixture.statusCode, fixture.body);
+
+      return dnsimple.contacts.createContact(accountId, attributes).then(() => {
+        throw new Error('The promise should follow the rejection path');
+      }, (error) => {
+        expect(error.attributeErrors().address1).to.deep.eq(["can't be blank"]);
+        expect(error.attributeErrors().city).to.deep.eq(["can't be blank"]);
+        expect(error.attributeErrors().country).to.deep.eq(["can't be blank"]);
+        expect(error.attributeErrors().email).to.deep.eq(["can't be blank", 'is an invalid email address']);
+        expect(error.attributeErrors().first_name).to.deep.eq(["can't be blank"]);
+        expect(error.attributeErrors().last_name).to.deep.eq(["can't be blank"]);
+        expect(error.attributeErrors().phone).to.deep.eq(["can't be blank", 'is probably not a phone number']);
+        expect(error.attributeErrors().postal_code).to.deep.eq(["can't be blank"]);
+        expect(error.attributeErrors().state_province).to.deep.eq(["can't be blank"]);
+      });
+    });
   });
 
   describe('#updateContact', () => {
