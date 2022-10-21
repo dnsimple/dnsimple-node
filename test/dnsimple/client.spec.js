@@ -38,7 +38,7 @@ describe('response handling', () => {
       new Client(dnsimple).get('/success-with-malformed-json', {}).then((response) => {
         done('Expected error but promise resolved');
       }, (error) => {
-        expect(error).to.eq('Unexpected token < in JSON at position 0');
+        expect(error.startsWith('Unexpected token')).to.eq(true);
         done();
       });
     });
@@ -54,7 +54,7 @@ describe('response handling', () => {
       new Client(dnsimple).get('/badgateway', {}).then((response) => {
         done('Expected error but promise resolved');
       }, (error) => {
-        expect(error).to.eq('Unexpected token < in JSON at position 0');
+        expect(error.startsWith('Unexpected token')).to.eq(true);
         done();
       });
     });
