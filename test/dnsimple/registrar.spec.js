@@ -1,9 +1,7 @@
 'use strict';
 
 const testUtils = require('../testUtils');
-const dnsimple = require('../../lib/dnsimple')({
-  accessToken: testUtils.getAccessToken()
-});
+const dnsimple = testUtils.createTestClient();
 
 const expect = require('chai').expect;
 const nock = require('nock');
@@ -115,6 +113,19 @@ describe('registrar', () => {
           done();
         });
       });
+    });
+  });
+
+  describe('#getDomainRegistration', () => {
+    it('calls the correct method', (done) => {
+      // TODO Use shared global client and remove `done()` call once all other tests migrate away from testing fixture responses.
+      const dnsimple = testUtils.createTestClient();
+      const stub = testUtils.stubRequest(dnsimple);
+
+      const options = {};
+      dnsimple.registrar.getDomainRegistration(1010, 'example.com', 1535, options);
+      expect(stub.calledOnceWithExactly('GET', '/1010/registrar/domains/example.com/registrations/1535', null, options)).to.equal(true);
+      done();
     });
   });
 
