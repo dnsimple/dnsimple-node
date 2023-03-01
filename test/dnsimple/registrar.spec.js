@@ -129,6 +129,19 @@ describe('registrar', () => {
     });
   });
 
+  describe('#getDomainRenewal', () => {
+    it('calls the correct method', (done) => {
+      // TODO Use shared global client and remove `done()` call once all other tests migrate away from testing fixture responses.
+      const dnsimple = testUtils.createTestClient();
+      const stub = testUtils.stubRequest(dnsimple);
+
+      const options = {};
+      dnsimple.registrar.getDomainRenewal(1023, 'example.com', 1694, options);
+      expect(stub.calledOnceWithExactly('GET', '/1023/registrar/domains/example.com/renewals/1694', null, options)).to.equal(true);
+      done();
+    });
+  });
+
   describe('#registerDomain', () => {
     const fixture = testUtils.fixture('registerDomain/success.http');
 
