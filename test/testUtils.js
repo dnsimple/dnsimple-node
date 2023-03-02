@@ -3,14 +3,24 @@
 require('mocha');
 require('chai').use(require('chai-as-promised'));
 
+const DNSimple = require('../lib/dnsimple');
 const fs = require('fs');
+const sinon = require('sinon');
+
+const getAccessToken = () => process.env.TOKEN || 'bogus';
 
 module.exports = {
+  createTestClient: () => new DNSimple({
+    accessToken: getAccessToken()
+  }),
 
-  getAccessToken: () => {
-    const key = process.env.TOKEN || 'bogus';
-    return key;
+  stubRequest: (client) => {
+    const stub = sinon.stub();
+    client.registrar._client.request = stub;
+    return stub;
   },
+
+  getAccessToken,
 
   fixture: (path) => {
     const data = fs.readFileSync('./test/fixtures.http/' + path, { encoding: 'UTF8' });
