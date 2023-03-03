@@ -1,6 +1,9 @@
 # Changelog
 
-## main
+## Release 6.2.0
+
+- NEW: Add support for getDomainRegistration and getDomainRenewal Registrar APIs (dnsimple/dnsimple-node#169)
+- CHANGED: Bump dependency version
 
 ## Release 6.1.0
 
