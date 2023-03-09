@@ -1,7 +1,6 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-
-const Paginate = require('./paginate');
+import Paginate = require('./paginate');
 
 /**
  * Provide access to the DNSimple Contacts API.
@@ -44,7 +43,7 @@ class Contacts {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listContacts (accountId, options: RequestOptions = {}) {
+  listContacts (accountId, options: RequestOptions = {}): any {
     return this._client.get(`/${accountId}/contacts`, options);
   }
 

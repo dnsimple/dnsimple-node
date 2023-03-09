@@ -59,10 +59,10 @@ class Dnsimple {
   public timeout!: number;
 
   constructor(attrs: {
-    timeout: number | null | undefined,
-    accessToken: string | null | undefined,
-    baseUrl: string | null | undefined,
-    userAgent: string | null | undefined,
+    timeout?: number | null | undefined,
+    accessToken?: string | null | undefined,
+    baseUrl?: string | null | undefined,
+    userAgent?: string | null | undefined,
   }) {
     for (const [name, cls] of Object.entries(Dnsimple.services)) {
       (this as any)[name] = new cls(this.client);

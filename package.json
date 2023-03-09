@@ -22,9 +22,9 @@
   "engines": {
     "node": ">= v14.0.0"
   },
-  "main": "lib/dnsimple.js",
+  "main": "dist/dnsimple.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "devDependencies": {
     "@types/node": "^18.14.6",

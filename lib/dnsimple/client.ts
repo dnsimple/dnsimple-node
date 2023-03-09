@@ -85,7 +85,14 @@ class Client {
               } else if (status === 429) {
                 reject({ description: 'Too many requests' });
               } else if (status >= 400 && status < 500) {
-                reject({ ...JSON.parse(data), description: 'Bad request' });
+                reject({
+                  ...JSON.parse(data),
+                  description: 'Bad request',
+                  // This is a standard method across all our clients to get the errors from a failed response.
+                  attributeErrors: function () {
+                    return this.errors;
+                  },
+                });
               } else if (status === 204) {
                 resolve({});
               } else if (status >= 200 && status < 300) {
