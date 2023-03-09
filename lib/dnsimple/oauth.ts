@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 const querystring = require('querystring');
 
@@ -8,9 +9,7 @@ const querystring = require('querystring');
  * @see https://developer.dnsimple.com/v2/oauth
  */
 class Oauth {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Exchange the short-lived authorization code for an access token
@@ -25,22 +24,22 @@ class Oauth {
    * @param {string} [options.redirectUri] A redirect URI
    * @return {Promise}
    */
-  exchangeAuthorizationForToken (code, clientId, clientSecret, options = {}) {
-    const attributes = {
+  exchangeAuthorizationForToken (code, clientId, clientSecret, options: RequestOptions = {}) {
+    const attributes: any = {
       code,
       client_id: clientId,
       client_secret: clientSecret,
       grant_type: 'authorization_code'
     };
 
-    if (!(options.state === undefined)) {
-      attributes.state = options.state;
-      delete options.state;
+    if (!(options["state"] === undefined)) {
+      attributes["state"] = options["state"];
+      delete options["state"];
     }
 
-    if (!(options.redirectUri === undefined)) {
-      attributes.redirect_uri = options.redirectUri;
-      delete options.redirectUri;
+    if (!(options["redirectUri"] === undefined)) {
+      attributes["redirect_uri"] = options["redirectUri"];
+      delete options["redirectUri"];
     }
 
     return this._client.post('/oauth/access_token', attributes, options);
@@ -58,7 +57,7 @@ class Oauth {
    * @param {string} [options.scope] The scope to request during authorization
    * @return {string} The URL to redirect the user to for authorization
    */
-  authorizeUrl (clientId, options = {}) {
+  authorizeUrl (clientId, options: RequestOptions = {}) {
     const siteUrl = this._client.baseUrl().href.replace('api.', '');
     let url = `${siteUrl}oauth/authorize`;
 
@@ -68,4 +67,4 @@ class Oauth {
   }
 }
 
-module.exports = Oauth;
+export = Oauth;

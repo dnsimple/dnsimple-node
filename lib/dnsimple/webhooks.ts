@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 /**
  * Provides access to the DNSimple Webhooks API.
@@ -6,9 +7,7 @@
  * @see https://developer.dnsimple.com/v2/webhooks
  */
 class Webhooks {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the webhooks in the account.
@@ -26,7 +25,7 @@ class Webhooks {
    * @param {Object} [options]
    * @return {Promise}
    */
-  listWebhooks (accountId, options = {}) {
+  listWebhooks (accountId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/webhooks`, options);
   }
 
@@ -40,9 +39,9 @@ class Webhooks {
    * @param {Object} [options]
    * @return {Promise}
    */
-  allWebhooks (accountId, options = {}) {
+  allWebhooks (accountId, options: RequestOptions = {}) {
     return new Promise((resolve, reject) => {
-      this.listWebhooks(accountId, options).then((response) => {
+      this.listWebhooks(accountId, options).then((response: any) => {
         resolve(response.data);
       }, (error) => {
         reject(error);
@@ -60,7 +59,7 @@ class Webhooks {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getWebhook (accountId, webhookId, options = {}) {
+  getWebhook (accountId, webhookId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/webhooks/${webhookId}`, options);
   }
 
@@ -74,7 +73,7 @@ class Webhooks {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createWebhook (accountId, attributes, options = {}) {
+  createWebhook (accountId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/webhooks`, attributes, options);
   }
 
@@ -89,9 +88,9 @@ class Webhooks {
    * @return {Promise}
    */
 
-  deleteWebhook (accountId, webhookId, options = {}) {
+  deleteWebhook (accountId, webhookId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/webhooks/${webhookId}`, options);
   }
 }
 
-module.exports = Webhooks;
+export = Webhooks;

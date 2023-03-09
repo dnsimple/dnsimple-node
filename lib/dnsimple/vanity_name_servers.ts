@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 /**
  * Provides access to the  DNSimple Vanity Name Server API
@@ -6,9 +7,7 @@
  * @see https://developer.dnsimple.com/v2/domains/vanity
  */
 class VanityNameServers {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Enable vanity name servers for the domain
@@ -20,7 +19,7 @@ class VanityNameServers {
    * @param {Object} [options]
    * @return {Promise}
    */
-  enableVanityNameServers (accountId, domainId, options = {}) {
+  enableVanityNameServers (accountId, domainId, options: RequestOptions = {}) {
     return this._client.put(`/${accountId}/vanity/${domainId}`, null, options);
   }
 
@@ -34,9 +33,9 @@ class VanityNameServers {
    * @param {Object} [options]
    * @return {Promise}
    */
-  disableVanityNameServers (accountId, domainId, options = {}) {
+  disableVanityNameServers (accountId, domainId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/vanity/${domainId}`, options);
   }
 }
 
-module.exports = VanityNameServers;
+export = VanityNameServers;

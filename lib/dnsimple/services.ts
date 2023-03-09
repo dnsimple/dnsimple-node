@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 const Paginate = require('./paginate');
 
@@ -8,9 +9,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/services
  */
 class Services {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the available one-click services.
@@ -44,7 +43,7 @@ class Services {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listServices (options = {}) {
+  listServices (options: RequestOptions = {}) {
     return this._client.get('/services', options);
   }
 
@@ -76,7 +75,7 @@ class Services {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allServices (options = {}) {
+  allServices (options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listServices, [options]);
   }
 
@@ -89,7 +88,7 @@ class Services {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getService (serviceId, options = {}) {
+  getService (serviceId, options: RequestOptions = {}) {
     return this._client.get(`/services/${serviceId}`, options);
   }
 
@@ -127,7 +126,7 @@ class Services {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  appliedServices (accountId, domainId, options = {}) {
+  appliedServices (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/services`, options);
   }
 
@@ -161,7 +160,7 @@ class Services {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allAppliedServices (accountId, domainId, options = {}) {
+  allAppliedServices (accountId, domainId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.appliedServices, [accountId, domainId, options]);
   }
 
@@ -176,7 +175,7 @@ class Services {
    * @param {Object} [options]
    * @return {Promise}
    */
-  applyService (accountId, domainId, serviceId, options = {}) {
+  applyService (accountId, domainId, serviceId, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/services/${serviceId}`, null, options);
   }
 
@@ -191,9 +190,9 @@ class Services {
    * @param {Object} [options]
    * @return {Promise}
    */
-  unapplyService (accountId, domainId, serviceId, options = {}) {
+  unapplyService (accountId, domainId, serviceId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}/services/${serviceId}`, options);
   }
 }
 
-module.exports = Services;
+export = Services;

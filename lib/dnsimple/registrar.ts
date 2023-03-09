@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 /**
  * Class providing access to the DNSimple Registrar API.
@@ -6,9 +7,7 @@
  * @see https://developer.dnsimple.com/v2/registrar/
  */
 class Registrar {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Checks whether a domain is available for registration.
@@ -27,7 +26,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  checkDomain (accountId, domainName, options = {}) {
+  checkDomain (accountId, domainName, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, 'check'), options);
   }
 
@@ -49,7 +48,7 @@ class Registrar {
    * @return {Promise}
    * @deprecated Use "getDomainPrices" instead
    */
-  getDomainPremiumPrice (accountId, domainName, options = {}) {
+  getDomainPremiumPrice (accountId, domainName, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, 'premium_price'), options);
   }
 
@@ -70,7 +69,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDomainPrices (accountId, domainName, options = {}) {
+  getDomainPrices (accountId, domainName, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, 'prices'), options);
   }
 
@@ -92,7 +91,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDomainRegistration (accountId, domainName, domainRegistration, options = {}) {
+  getDomainRegistration (accountId, domainName, domainRegistration, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, `registrations/${domainRegistration}`), options);
   }
 
@@ -114,7 +113,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDomainRenewal (accountId, domainName, domainRenewal, options = {}) {
+  getDomainRenewal (accountId, domainName, domainRenewal, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, `renewals/${domainRenewal}`), options);
   }
 
@@ -141,7 +140,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  registerDomain (accountId, domainName, attributes, options = {}) {
+  registerDomain (accountId, domainName, attributes, options: RequestOptions = {}) {
     // Note: registrar_id is required, but no validation occurs here.
     // In the ruby library this is validated.
     return this._client.post(this._registrarPath(accountId, domainName, 'registrations'), attributes, options);
@@ -166,7 +165,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  renewDomain (accountId, domainName, attributes, options = {}) {
+  renewDomain (accountId, domainName, attributes, options: RequestOptions = {}) {
     return this._client.post(this._registrarPath(accountId, domainName, 'renewals'), attributes, options);
   }
 
@@ -189,7 +188,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  transferDomain (accountId, domainName, attributes, options = {}) {
+  transferDomain (accountId, domainName, attributes, options: RequestOptions = {}) {
     // Note: registrar_id is required, but no validation occurs here.
     // In the ruby library this is validated.
     return this._client.post(this._registrarPath(accountId, domainName, 'transfers'), attributes, options);
@@ -213,7 +212,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDomainTransfer (accountId, domainName, domainTransferId, options = {}) {
+  getDomainTransfer (accountId, domainName, domainTransferId, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, `transfers/${domainTransferId}`), options);
   }
 
@@ -235,7 +234,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  cancelDomainTransfer (accountId, domainName, domainTransferId, options = {}) {
+  cancelDomainTransfer (accountId, domainName, domainTransferId, options: RequestOptions = {}) {
     return this._client.delete(this._registrarPath(accountId, domainName, `transfers/${domainTransferId}`), options);
   }
 
@@ -256,7 +255,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  transferDomainOut (accountId, domainName, options = {}) {
+  transferDomainOut (accountId, domainName, options: RequestOptions = {}) {
     return this._client.post(this._registrarPath(accountId, domainName, 'authorize_transfer_out'), null, options);
   }
 
@@ -265,7 +264,7 @@ class Registrar {
   /**
    * @deprecated Use `enableDomainAutoRenewal`.
    */
-  enableAutoRenewal (accountId, domainName, options = {}) {
+  enableAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
     return this._client.put(this._registrarPath(accountId, domainName, 'auto_renewal'), null, options);
   }
 
@@ -279,14 +278,14 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  enableDomainAutoRenewal (accountId, domainName, options = {}) {
+  enableDomainAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
     return this._client.put(this._registrarPath(accountId, domainName, 'auto_renewal'), null, options);
   }
 
   /**
    * @deprecated Use `disableDomainAutoRenewal`
    */
-  disableAutoRenewal (accountId, domainName, options = {}) {
+  disableAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
     return this._client.delete(this._registrarPath(accountId, domainName, 'auto_renewal'), options);
   }
 
@@ -300,7 +299,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  disableDomainAutoRenewal (accountId, domainName, options = {}) {
+  disableDomainAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
     return this._client.delete(this._registrarPath(accountId, domainName, 'auto_renewal'), options);
   }
 
@@ -316,7 +315,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getWhoisPrivacy (accountId, domainName, options = {}) {
+  getWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, 'whois_privacy'), options);
   }
 
@@ -337,7 +336,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  enableWhoisPrivacy (accountId, domainName, options = {}) {
+  enableWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
     return this._client.put(this._registrarPath(accountId, domainName, 'whois_privacy'), null, options);
   }
 
@@ -358,7 +357,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  disableWhoisPrivacy (accountId, domainName, options = {}) {
+  disableWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
     return this._client.delete(this._registrarPath(accountId, domainName, 'whois_privacy'), options);
   }
 
@@ -379,7 +378,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  renewWhoisPrivacy (accountId, domainName, options = {}) {
+  renewWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
     return this._client.post(this._registrarPath(accountId, domainName, 'whois_privacy/renewals'), null, options);
   }
 
@@ -402,7 +401,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDomainDelegation (accountId, domainName, options = {}) {
+  getDomainDelegation (accountId, domainName, options: RequestOptions = {}) {
     return this._client.get(this._registrarPath(accountId, domainName, 'delegation'), options);
   }
 
@@ -425,7 +424,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  changeDomainDelegation (accountId, domainName, attributes, options = {}) {
+  changeDomainDelegation (accountId, domainName, attributes, options: RequestOptions = {}) {
     return this._client.put(this._registrarPath(accountId, domainName, 'delegation'), attributes, options);
   }
 
@@ -448,7 +447,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  changeDomainDelegationToVanity (accountId, domainName, attributes, options = {}) {
+  changeDomainDelegationToVanity (accountId, domainName, attributes, options: RequestOptions = {}) {
     return this._client.put(this._registrarPath(accountId, domainName, 'delegation/vanity'), attributes, options);
   }
 
@@ -469,7 +468,7 @@ class Registrar {
    * @param {Object} [options]
    * @return {Promise}
    */
-  changeDomainDelegationFromVanity (accountId, domainName, options = {}) {
+  changeDomainDelegationFromVanity (accountId, domainName, options: RequestOptions = {}) {
     return this._client.delete(this._registrarPath(accountId, domainName, 'delegation/vanity'), options);
   }
 
@@ -480,4 +479,4 @@ class Registrar {
   }
 }
 
-module.exports = Registrar;
+export = Registrar;

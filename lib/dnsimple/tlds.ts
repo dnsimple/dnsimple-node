@@ -1,6 +1,6 @@
-'use strict';
-
-const Paginate = require('./paginate');
+import type Client = require("./client");
+import Paginate = require("./paginate");
+import type { RequestOptions } from "./request";
 
 /**
  * Provides access to the DNSimple TLD API.
@@ -8,9 +8,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/tlds
  */
 class Tlds {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the TLDs available for registration.
@@ -44,7 +42,7 @@ class Tlds {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listTlds (options = {}) {
+  listTlds (options: RequestOptions = {}): any {
     return this._client.get('/tlds', options);
   }
 
@@ -76,7 +74,7 @@ class Tlds {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allTlds (options = {}) {
+  allTlds (options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listTlds, [options]);
   }
 
@@ -96,7 +94,7 @@ class Tlds {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getTld (tld, options = {}) {
+  getTld (tld, options: RequestOptions = {}) {
     return this._client.get(`/tlds/${tld}`, options);
   }
 
@@ -116,9 +114,9 @@ class Tlds {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getTldExtendedAttributes (tld, options = {}) {
+  getTldExtendedAttributes (tld, options: RequestOptions = {}) {
     return this._client.get(`/tlds/${tld}/extended_attributes`, options);
   }
 }
 
-module.exports = Tlds;
+export = Tlds;

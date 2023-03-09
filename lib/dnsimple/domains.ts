@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 const Paginate = require('./paginate');
 
@@ -8,9 +9,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/domains
  */
 class Domains {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the domains in the account.
@@ -54,7 +53,7 @@ class Domains {
    * @param {string} [options.registrant_id] Filter only domains with the given registrant ID
    * @return {Promise}
    */
-  listDomains (accountId, options = {}) {
+  listDomains (accountId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains`, options);
   }
 
@@ -96,7 +95,7 @@ class Domains {
    * @param {string} [options.registrant_id] Filter only domains with the given registrant ID
    * @return {Promise}
    */
-  allDomains (accountId, options = {}) {
+  allDomains (accountId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listDomains, [accountId, options]);
   }
 
@@ -110,7 +109,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDomain (accountId, domainId, options = {}) {
+  getDomain (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}`, options);
   }
 
@@ -124,7 +123,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createDomain (accountId, attributes, options = {}) {
+  createDomain (accountId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains`, attributes, options);
   }
 
@@ -140,7 +139,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteDomain (accountId, domainId, options = {}) {
+  deleteDomain (accountId, domainId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}`, options);
   }
 
@@ -178,7 +177,7 @@ class Domains {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listCollaborators (accountId, domainId, options = {}) {
+  listCollaborators (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/collaborators`, options);
   }
 
@@ -193,7 +192,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  addCollaborator (accountId, domainId, collaborator, options = {}) {
+  addCollaborator (accountId, domainId, collaborator, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/collaborators`, collaborator, options);
   }
 
@@ -208,7 +207,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  removeCollaborator (accountId, domainId, collaboratorId, options = {}) {
+  removeCollaborator (accountId, domainId, collaboratorId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}/collaborators/${collaboratorId}`, options);
   }
 
@@ -222,7 +221,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  enableDnssec (accountId, domainId, options = {}) {
+  enableDnssec (accountId, domainId, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/dnssec`, null, options);
   }
 
@@ -236,7 +235,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  disableDnssec (accountId, domainId, options = {}) {
+  disableDnssec (accountId, domainId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}/dnssec`, options);
   }
 
@@ -250,7 +249,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDnssec (accountId, domainId, options = {}) {
+  getDnssec (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/dnssec`, options);
   }
 
@@ -288,7 +287,7 @@ class Domains {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listDelegationSignerRecords (accountId, domainId, options = {}) {
+  listDelegationSignerRecords (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/ds_records`, options);
   }
 
@@ -322,7 +321,7 @@ class Domains {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allDelegationSignerRecords (accountId, domainId, options = {}) {
+  allDelegationSignerRecords (accountId, domainId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listDelegationSignerRecords, [accountId, domainId, options]);
   }
 
@@ -338,7 +337,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getDelegationSignerRecord (accountId, domainId, delegationSignerRecordId, options = {}) {
+  getDelegationSignerRecord (accountId, domainId, delegationSignerRecordId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/ds_records/${delegationSignerRecordId}`, options);
   }
 
@@ -353,7 +352,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createDelegationSignerRecord (accountId, domainId, attributes, options = {}) {
+  createDelegationSignerRecord (accountId, domainId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/ds_records`, attributes, options);
   }
 
@@ -369,7 +368,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteDelegationSignerRecord (accountId, domainId, delegationSignerRecordId, options = {}) {
+  deleteDelegationSignerRecord (accountId, domainId, delegationSignerRecordId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}/ds_records/${delegationSignerRecordId}`, options);
   }
 
@@ -407,7 +406,7 @@ class Domains {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listEmailForwards (accountId, domainId, options = {}) {
+  listEmailForwards (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/email_forwards`, options);
   }
 
@@ -441,7 +440,7 @@ class Domains {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allEmailForwards (accountId, domainId, options = {}) {
+  allEmailForwards (accountId, domainId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listEmailForwards, [accountId, domainId, options]);
   }
 
@@ -456,7 +455,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getEmailForward (accountId, domainId, emailForwardId, options = {}) {
+  getEmailForward (accountId, domainId, emailForwardId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/email_forwards/${emailForwardId}`, options);
   }
 
@@ -471,7 +470,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createEmailForward (accountId, domainId, attributes, options = {}) {
+  createEmailForward (accountId, domainId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/email_forwards`, attributes, options);
   }
 
@@ -486,7 +485,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteEmailForward (accountId, domainId, emailForwardId, options = {}) {
+  deleteEmailForward (accountId, domainId, emailForwardId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}/email_forwards/${emailForwardId}`, options);
   }
 
@@ -503,7 +502,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  initiatePush (accountId, domainId, attributes, options = {}) {
+  initiatePush (accountId, domainId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/pushes`, attributes, options);
   }
 
@@ -516,7 +515,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  listPushes (accountId, options = {}) {
+  listPushes (accountId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/pushes`, options);
   }
 
@@ -532,7 +531,7 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  acceptPush (accountId, pushId, attributes, options = {}) {
+  acceptPush (accountId, pushId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/pushes/${pushId}`, attributes, options);
   }
 
@@ -546,9 +545,9 @@ class Domains {
    * @param {Object} [options]
    * @return {Promise}
    */
-  rejectPush (accountId, pushId, options = {}) {
+  rejectPush (accountId, pushId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/pushes/${pushId}`, options);
   }
 }
 
-module.exports = Domains;
+export = Domains;

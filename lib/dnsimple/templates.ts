@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 const Paginate = require('./paginate');
 
@@ -8,9 +9,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/templates
  */
 class Templates {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the templates in the account.
@@ -45,7 +44,7 @@ class Templates {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listTemplates (accountId, options = {}) {
+  listTemplates (accountId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/templates`, options);
   }
 
@@ -78,7 +77,7 @@ class Templates {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allTemplates (accountId, options = {}) {
+  allTemplates (accountId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listTemplates, [accountId, options]);
   }
 
@@ -92,7 +91,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getTemplate (accountId, templateId, options = {}) {
+  getTemplate (accountId, templateId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/templates/${templateId}`, options);
   }
 
@@ -106,7 +105,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createTemplate (accountId, attributes, options = {}) {
+  createTemplate (accountId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/templates`, attributes, options);
   }
 
@@ -121,7 +120,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  updateTemplate (accountId, templateId, attributes, options = {}) {
+  updateTemplate (accountId, templateId, attributes, options: RequestOptions = {}) {
     return this._client.patch(`/${accountId}/templates/${templateId}`, attributes, options);
   }
 
@@ -135,7 +134,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteTemplate (accountId, templateId, options = {}) {
+  deleteTemplate (accountId, templateId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/templates/${templateId}`, options);
   }
 
@@ -150,7 +149,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  applyTemplate (accountId, templateId, domainId, options = {}) {
+  applyTemplate (accountId, templateId, domainId, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/templates/${templateId}`, null, options);
   }
 
@@ -188,7 +187,7 @@ class Templates {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listTemplateRecords (accountId, templateId, options = {}) {
+  listTemplateRecords (accountId, templateId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/templates/${templateId}/records`, options);
   }
 
@@ -222,7 +221,7 @@ class Templates {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allTemplateRecords (accountId, domainId, options = {}) {
+  allTemplateRecords (accountId, domainId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listTemplateRecords, [accountId, domainId, options]);
   }
 
@@ -237,7 +236,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getTemplateRecord (accountId, templateId, recordId, options = {}) {
+  getTemplateRecord (accountId, templateId, recordId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/templates/${templateId}/records/${recordId}`, options);
   }
 
@@ -252,7 +251,7 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createTemplateRecord (accountId, templateId, attributes, options = {}) {
+  createTemplateRecord (accountId, templateId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/templates/${templateId}/records`, attributes, options);
   }
 
@@ -267,9 +266,9 @@ class Templates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteTemplateRecord (accountId, templateId, recordId, options = {}) {
+  deleteTemplateRecord (accountId, templateId, recordId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/templates/${templateId}/records/${recordId}`, options);
   }
 }
 
-module.exports = Templates;
+export = Templates;

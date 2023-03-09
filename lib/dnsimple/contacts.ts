@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 const Paginate = require('./paginate');
 
@@ -8,9 +9,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/contacts
  */
 class Contacts {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the contacts in the account.
@@ -45,7 +44,7 @@ class Contacts {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listContacts (accountId, options = {}) {
+  listContacts (accountId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/contacts`, options);
   }
 
@@ -78,7 +77,7 @@ class Contacts {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allContacts (accountId, options = {}) {
+  allContacts (accountId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listContacts, [accountId, options]);
   }
 
@@ -92,7 +91,7 @@ class Contacts {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getContact (accountId, contactId, options = {}) {
+  getContact (accountId, contactId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/contacts/${contactId}`, options);
   }
 
@@ -106,7 +105,7 @@ class Contacts {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createContact (accountId, attributes, options = {}) {
+  createContact (accountId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/contacts`, attributes, options);
   }
 
@@ -121,7 +120,7 @@ class Contacts {
    * @param {Object} [options]
    * @return {Promise}
    */
-  updateContact (accountId, contactId, attributes, options = {}) {
+  updateContact (accountId, contactId, attributes, options: RequestOptions = {}) {
     return this._client.patch(`/${accountId}/contacts/${contactId}`, attributes, options);
   }
 
@@ -135,9 +134,9 @@ class Contacts {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteContact (accountId, contactId, options = {}) {
+  deleteContact (accountId, contactId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/contacts/${contactId}`, options);
   }
 }
 
-module.exports = Contacts;
+export = Contacts;

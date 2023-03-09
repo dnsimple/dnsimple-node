@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 /**
  * Provides access to the DNSimple Collaborators API.
@@ -7,9 +8,7 @@
  * @deprecated Use domains.collaborators
  */
 class Collaborators {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the collaborators in the account attached to the given domain.
@@ -45,7 +44,7 @@ class Collaborators {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listCollaborators (accountId, domainId, options = {}) {
+  listCollaborators (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/collaborators`, options);
   }
 
@@ -60,7 +59,7 @@ class Collaborators {
    * @param {Object} [options]
    * @return {Promise}
    */
-  addCollaborator (accountId, domainId, collaborator, options = {}) {
+  addCollaborator (accountId, domainId, collaborator, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/collaborators`, collaborator, options);
   }
 
@@ -75,9 +74,9 @@ class Collaborators {
    * @param {Object} [options]
    * @return {Promise}
    */
-  removeCollaborator (accountId, domainId, collaboratorId, options = {}) {
+  removeCollaborator (accountId, domainId, collaboratorId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/domains/${domainId}/collaborators/${collaboratorId}`, options);
   }
 }
 
-module.exports = Collaborators;
+export = Collaborators;

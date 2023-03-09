@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 const Paginate = require('./paginate');
 
@@ -8,9 +9,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/domains/certificates
  */
 class Certificates {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * List certificates for a domain in the account.
@@ -46,7 +45,7 @@ class Certificates {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listCertificates (accountId, domainId, options = {}) {
+  listCertificates (accountId, domainId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/certificates`, options);
   }
 
@@ -80,7 +79,7 @@ class Certificates {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allCertificates (accountId, domainId, options = {}) {
+  allCertificates (accountId, domainId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listCertificates, [accountId, domainId, options]);
   }
 
@@ -95,7 +94,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getCertificate (accountId, domainId, certificateId, options = {}) {
+  getCertificate (accountId, domainId, certificateId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/certificates/${certificateId}`, options);
   }
 
@@ -110,7 +109,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  downloadCertificate (accountId, domainId, certificateId, options = {}) {
+  downloadCertificate (accountId, domainId, certificateId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/certificates/${certificateId}/download`, options);
   }
 
@@ -125,7 +124,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getCertificatePrivateKey (accountId, domainId, certificateId, options = {}) {
+  getCertificatePrivateKey (accountId, domainId, certificateId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/domains/${domainId}/certificates/${certificateId}/private_key`, options);
   }
 
@@ -143,7 +142,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  purchaseLetsencryptCertificate (accountId, domainId, attributes = {}, options = {}) {
+  purchaseLetsencryptCertificate (accountId, domainId, attributes = {}, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/domains/${domainId}/certificates/letsencrypt`, attributes, options);
   }
 
@@ -161,7 +160,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  issueLetsencryptCertificate (accountId, domainId, certificatePurchaseId, options = {}) {
+  issueLetsencryptCertificate (accountId, domainId, certificatePurchaseId, options: RequestOptions = {}) {
     return this._client.post(
       `/${accountId}/domains/${domainId}/certificates/letsencrypt/${certificatePurchaseId}/issue`, null, options);
   }
@@ -180,7 +179,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  purchaseLetsencryptCertificateRenewal (accountId, domainId, certificateId, options = {}) {
+  purchaseLetsencryptCertificateRenewal (accountId, domainId, certificateId, options: RequestOptions = {}) {
     return this._client.post(
       `/${accountId}/domains/${domainId}/certificates/letsencrypt/${certificateId}/renewal`, null, options);
   }
@@ -200,7 +199,7 @@ class Certificates {
    * @param {Object} [options]
    * @return {Promise}
    */
-  issueLetsencryptCertificateRenewal (accountId, domainId, oldCertificateId, certificateRenewalId, options = {}) {
+  issueLetsencryptCertificateRenewal (accountId, domainId, oldCertificateId, certificateRenewalId, options: RequestOptions = {}) {
     return this._client.post(
       `/${accountId}/domains/${domainId}/certificates/` +
       `letsencrypt/${oldCertificateId}/renewals/${certificateRenewalId}/issue`,
@@ -208,4 +207,4 @@ class Certificates {
   }
 }
 
-module.exports = Certificates;
+export = Certificates;

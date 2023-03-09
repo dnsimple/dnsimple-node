@@ -1,6 +1,6 @@
-'use strict';
-
-const Paginate = require('./paginate');
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
+import Paginate = require('./paginate');
 
 /**
  * Provides access to the DNSimple Zone API.
@@ -8,9 +8,7 @@ const Paginate = require('./paginate');
  * @see https://developer.dnsimple.com/v2/zones/
  */
 class Zones {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Lists the zones in the account.
@@ -53,7 +51,7 @@ class Zones {
    * @param {string} [options.name_like] Filter zones where the name is like the given string
    * @return {Promise}
    */
-  listZones (accountId, options = {}) {
+  listZones (accountId, options: RequestOptions = {}): any {
     return this._client.get(`/${accountId}/zones`, options);
   }
 
@@ -94,7 +92,7 @@ class Zones {
    * @param {string} [options.name_like] Filter zones where the name is like the given string
    * @return {Promise}
    */
-  allZones (accountId, options = {}) {
+  allZones (accountId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listZones, [accountId, options]);
   }
 
@@ -108,7 +106,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getZone (accountId, zoneId, options = {}) {
+  getZone (accountId, zoneId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/zones/${zoneId}`, options);
   }
 
@@ -122,7 +120,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getZoneFile (accountId, zoneId, options = {}) {
+  getZoneFile (accountId, zoneId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/zones/${zoneId}/file`, options);
   }
 
@@ -136,7 +134,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  checkZoneDistribution (accountId, zoneId, options = {}) {
+  checkZoneDistribution (accountId, zoneId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/zones/${zoneId}/distribution`, options);
   }
 
@@ -151,7 +149,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  checkZoneRecordDistribution (accountId, zoneId, recordId, options = {}) {
+  checkZoneRecordDistribution (accountId, zoneId, recordId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/zones/${zoneId}/records/${recordId}/distribution`, options);
   }
 
@@ -189,7 +187,7 @@ class Zones {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  listZoneRecords (accountId, zoneId, options = {}) {
+  listZoneRecords (accountId, zoneId, options: RequestOptions = {}): any {
     return this._client.get(`/${accountId}/zones/${zoneId}/records`, options);
   }
 
@@ -223,7 +221,7 @@ class Zones {
    * @param {string} [options.sort] The sort definition in the form `key:direction`
    * @return {Promise}
    */
-  allZoneRecords (accountId, zoneId, options = {}) {
+  allZoneRecords (accountId, zoneId, options: RequestOptions = {}) {
     return new Paginate(this).paginate(this.listZoneRecords, [accountId, zoneId, options]);
   }
 
@@ -238,7 +236,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  getZoneRecord (accountId, zoneId, recordId, options = {}) {
+  getZoneRecord (accountId, zoneId, recordId, options: RequestOptions = {}) {
     return this._client.get(`/${accountId}/zones/${zoneId}/records/${recordId}`, options);
   }
 
@@ -253,7 +251,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  createZoneRecord (accountId, zoneId, attributes, options = {}) {
+  createZoneRecord (accountId, zoneId, attributes, options: RequestOptions = {}) {
     return this._client.post(`/${accountId}/zones/${zoneId}/records`, attributes, options);
   }
 
@@ -269,7 +267,7 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  updateZoneRecord (accountId, zoneId, recordId, attributes, options = {}) {
+  updateZoneRecord (accountId, zoneId, recordId, attributes, options: RequestOptions = {}) {
     return this._client.patch(`/${accountId}/zones/${zoneId}/records/${recordId}`, attributes, options);
   }
 
@@ -284,9 +282,9 @@ class Zones {
    * @param {Object} [options]
    * @return {Promise}
    */
-  deleteZoneRecord (accountId, zoneId, recordId, options = {}) {
+  deleteZoneRecord (accountId, zoneId, recordId, options: RequestOptions = {}) {
     return this._client.delete(`/${accountId}/zones/${zoneId}/records/${recordId}`, options);
   }
 }
 
-module.exports = Zones;
+export = Zones;

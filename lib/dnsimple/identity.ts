@@ -1,4 +1,5 @@
-'use strict';
+import type Client = require("./client");
+import type { RequestOptions } from "./request";
 
 /**
  * Provides access to the DNSimple Identity API.
@@ -6,9 +7,7 @@
  * @see https://developer.dnsimple.com/v2/identity
  */
 class Identity {
-  constructor (client) {
-    this._client = client;
-  }
+  constructor(private readonly _client: Client) {}
 
   /**
    * Gets the information about the current authenticated context.
@@ -18,9 +17,9 @@ class Identity {
    * @param {Object} [options]
    * @return {Promise}
    */
-  whoami (options = {}) {
+  whoami (options: RequestOptions = {}) {
     return this._client.get('/whoami', options);
   }
 }
 
-module.exports = Identity;
+export = Identity;
