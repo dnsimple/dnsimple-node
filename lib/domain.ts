@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class Domain {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Gets the DNSSEC status for an existing domain.
@@ -12,19 +12,19 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainDnssec = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ enabled: boolean; created_at: string; updated_at: string }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/dnssec`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -38,19 +38,19 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   enableDomainDnssec = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ enabled: boolean; created_at: string; updated_at: string }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/dnssec`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -64,19 +64,19 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   disableDomainDnssec = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/domains/${domain}/dnssec`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -90,14 +90,14 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by id.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by id.
    */
   listDomainDelegationSignerRecords = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -121,14 +121,14 @@ export default class Domain {
         "GET",
         `/${account}/domains/${domain}/ds_records`,
         null,
-        options
+        params
       );
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ) =>
-      paginate((page) => method(account, domain, { ...options, page } as any));
+      paginate((page) => method(account, domain, { ...params, page } as any));
     return method;
   })();
 
@@ -139,14 +139,14 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createDomainDelegationSignerRecord = (() => {
     const method = (
       account: number,
       domain: string,
       data: { digest: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -164,7 +164,7 @@ export default class Domain {
         "POST",
         `/${account}/domains/${domain}/ds_records`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -177,14 +177,14 @@ export default class Domain {
    * @param account The account id
    * @param domain The domain name or id
    * @param ds The delegation signer record id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainDelegationSignerRecord = (() => {
     const method = (
       account: number,
       domain: string,
       ds: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -202,7 +202,7 @@ export default class Domain {
         "GET",
         `/${account}/domains/${domain}/ds_records/${ds}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -215,20 +215,20 @@ export default class Domain {
    * @param account The account id
    * @param domain The domain name or id
    * @param ds The delegation signer record id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   deleteDomainDelegationSignerRecord = (() => {
     const method = (
       account: number,
       domain: string,
       ds: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/domains/${domain}/ds_records/${ds}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -242,14 +242,14 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by id.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by id.
    */
   listEmailForwards = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -272,14 +272,14 @@ export default class Domain {
         "GET",
         `/${account}/domains/${domain}/email_forwards`,
         null,
-        options
+        params
       );
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ) =>
-      paginate((page) => method(account, domain, { ...options, page } as any));
+      paginate((page) => method(account, domain, { ...params, page } as any));
     return method;
   })();
 
@@ -290,14 +290,14 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createEmailForward = (() => {
     const method = (
       account: number,
       domain: string,
       data: { alias_name: string; destination_email: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -314,7 +314,7 @@ export default class Domain {
         "POST",
         `/${account}/domains/${domain}/email_forwards`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -327,14 +327,14 @@ export default class Domain {
    * @param account The account id
    * @param domain The domain name or id
    * @param emailforward The email forward id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getEmailForward = (() => {
     const method = (
       account: number,
       domain: string,
       emailforward: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -351,7 +351,7 @@ export default class Domain {
         "GET",
         `/${account}/domains/${domain}/email_forwards/${emailforward}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -364,20 +364,20 @@ export default class Domain {
    * @param account The account id
    * @param domain The domain name or id
    * @param emailforward The email forward id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   deleteEmailForward = (() => {
     const method = (
       account: number,
       domain: string,
       emailforward: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/domains/${domain}/email_forwards/${emailforward}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -389,14 +389,14 @@ export default class Domain {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   initiateDomainPush = (() => {
     const method = (
       account: number,
       domain: string,
       data: { new_account_email: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -412,7 +412,7 @@ export default class Domain {
         "POST",
         `/${account}/domains/${domain}/pushes`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -425,12 +425,12 @@ export default class Domain {
    * GET /{account}/pushes
    *
    * @param account The account id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   listPushes = (() => {
     const method = (
       account: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -447,9 +447,9 @@ export default class Domain {
         total_entries: number;
         total_pages: number;
       };
-    }> => this._client.request("GET", `/${account}/pushes`, null, options);
-    method.paginate = (account: number, options: RequestOptions & {} = {}) =>
-      paginate((page) => method(account, { ...options, page } as any));
+    }> => this._client.request("GET", `/${account}/pushes`, null, params);
+    method.paginate = (account: number, params: QueryParams & {} = {}) =>
+      paginate((page) => method(account, { ...params, page } as any));
     return method;
   })();
 
@@ -460,16 +460,16 @@ export default class Domain {
    *
    * @param account The account id
    * @param push The push id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   acceptPush = (() => {
     const method = (
       account: number,
       push: number,
       data: { contact_id: number },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
-      this._client.request("POST", `/${account}/pushes/${push}`, data, options);
+      this._client.request("POST", `/${account}/pushes/${push}`, data, params);
     return method;
   })();
 
@@ -480,19 +480,19 @@ export default class Domain {
    *
    * @param account The account id
    * @param push The push id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   rejectPush = (() => {
     const method = (
       account: number,
       push: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/pushes/${push}`,
         null,
-        options
+        params
       );
     return method;
   })();

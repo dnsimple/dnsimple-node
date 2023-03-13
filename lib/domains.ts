@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class Domains {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Lists the domains in the account.
@@ -13,15 +13,15 @@ export default class Domains {
    * GET /{account}/domains
    *
    * @param account The account id
-   * @param options Query parameters
-   * @param options.name_like Only include results with a name field containing the given string
-   * @param options.registrant_id Only include results with the registrant_id field matching the given value
-   * @param options.sort Sort results. Default sorting is ascending by name.
+   * @param params Query parameters
+   * @param params.name_like Only include results with a name field containing the given string
+   * @param params.registrant_id Only include results with the registrant_id field matching the given value
+   * @param params.sort Sort results. Default sorting is ascending by name.
    */
   listDomains = (() => {
     const method = (
       account: number,
-      options: RequestOptions & {
+      params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
         sort?: string;
@@ -46,15 +46,15 @@ export default class Domains {
         total_entries: number;
         total_pages: number;
       };
-    }> => this._client.request("GET", `/${account}/domains`, null, options);
+    }> => this._client.request("GET", `/${account}/domains`, null, params);
     method.paginate = (
       account: number,
-      options: RequestOptions & {
+      params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
         sort?: string;
       } = {}
-    ) => paginate((page) => method(account, { ...options, page } as any));
+    ) => paginate((page) => method(account, { ...params, page } as any));
     return method;
   })();
 
@@ -64,13 +64,13 @@ export default class Domains {
    * POST /{account}/domains
    *
    * @param account The account id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createDomain = (() => {
     const method = (
       account: number,
       data: { name: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -85,7 +85,7 @@ export default class Domains {
         created_at: string;
         updated_at: string;
       };
-    }> => this._client.request("POST", `/${account}/domains`, data, options);
+    }> => this._client.request("POST", `/${account}/domains`, data, params);
     return method;
   })();
 
@@ -96,13 +96,13 @@ export default class Domains {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomain = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -122,7 +122,7 @@ export default class Domains {
         "GET",
         `/${account}/domains/${domain}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -134,19 +134,19 @@ export default class Domains {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   deleteDomain = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/domains/${domain}`,
         null,
-        options
+        params
       );
     return method;
   })();

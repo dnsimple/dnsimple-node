@@ -1,8 +1,8 @@
-import type Client from "./client";
-import type { RequestOptions } from "./request";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 
 export default class VanityNameServers {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Enables Vanity Name Servers for the domain.
@@ -13,22 +13,17 @@ export default class VanityNameServers {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   enableVanityNameServers = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{ id: number; name: string; ipv4: string; ipv6: string }>;
     }> =>
-      this._client.request(
-        "PUT",
-        `/${account}/vanity/${domain}`,
-        null,
-        options
-      );
+      this._client.request("PUT", `/${account}/vanity/${domain}`, null, params);
     return method;
   })();
 
@@ -41,19 +36,19 @@ export default class VanityNameServers {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   disableVanityNameServers = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/vanity/${domain}`,
         null,
-        options
+        params
       );
     return method;
   })();

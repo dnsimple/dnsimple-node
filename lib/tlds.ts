@@ -1,20 +1,20 @@
-import type Client from "./client";
-import type { RequestOptions } from "./request";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 
 export default class Tlds {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * ListsTLDs supported for registration or transfer.
    *
    * GET /tlds
    *
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by tld ascending.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by tld ascending.
    */
   listTlds = (() => {
     const method = (
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         tld: string;
@@ -27,7 +27,7 @@ export default class Tlds {
         transfer_enabled: boolean;
         dnssec_interface_type: string;
       }>;
-    }> => this._client.request("GET", `/tlds`, null, options);
+    }> => this._client.request("GET", `/tlds`, null, params);
     return method;
   })();
 
@@ -37,12 +37,12 @@ export default class Tlds {
    * GET /tlds/{tld}
    *
    * @param tld The TLD string
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getTld = (() => {
     const method = (
       tld: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         tld: string;
@@ -55,7 +55,7 @@ export default class Tlds {
         transfer_enabled: boolean;
         dnssec_interface_type: string;
       };
-    }> => this._client.request("GET", `/tlds/${tld}`, null, options);
+    }> => this._client.request("GET", `/tlds/${tld}`, null, params);
     return method;
   })();
 
@@ -67,12 +67,12 @@ export default class Tlds {
    * GET /tlds/{tld}/extended_attributes
    *
    * @param tld The TLD string
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getTldExtendedAttributes = (() => {
     const method = (
       tld: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
         name: string;
@@ -85,7 +85,7 @@ export default class Tlds {
         "GET",
         `/tlds/${tld}/extended_attributes`,
         null,
-        options
+        params
       );
     return method;
   })();

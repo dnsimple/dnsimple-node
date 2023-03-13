@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class Collaborators {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Lists collaborators for the domain.
@@ -14,13 +14,13 @@ export default class Collaborators {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   listDomainCollaborators = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -44,14 +44,14 @@ export default class Collaborators {
         "GET",
         `/${account}/domains/${domain}/collaborators`,
         null,
-        options
+        params
       );
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ) =>
-      paginate((page) => method(account, domain, { ...options, page } as any));
+      paginate((page) => method(account, domain, { ...params, page } as any));
     return method;
   })();
 
@@ -64,14 +64,14 @@ export default class Collaborators {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   addDomainCollaborator = (() => {
     const method = (
       account: number,
       domain: string,
       data: { email: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       id: number;
       domain_id: number;
@@ -87,7 +87,7 @@ export default class Collaborators {
         "POST",
         `/${account}/domains/${domain}/collaborators`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -100,20 +100,20 @@ export default class Collaborators {
    * @param account The account id
    * @param domain The domain name or id
    * @param collaborator The collaborator id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   removeDomainCollaborator = (() => {
     const method = (
       account: number,
       domain: string,
       collaborator: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/domains/${domain}/collaborators/${collaborator}`,
         null,
-        options
+        params
       );
     return method;
   })();

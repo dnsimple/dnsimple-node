@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class Services {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * List all available one-click services.
@@ -12,12 +12,12 @@ export default class Services {
    *
    * GET /services
    *
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by id ascending.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by id ascending.
    */
   listServices = (() => {
     const method = (
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -44,9 +44,9 @@ export default class Services {
         total_entries: number;
         total_pages: number;
       };
-    }> => this._client.request("GET", `/services`, null, options);
-    method.paginate = (options: RequestOptions & { sort?: string } = {}) =>
-      paginate((page) => method({ ...options, page } as any));
+    }> => this._client.request("GET", `/services`, null, params);
+    method.paginate = (params: QueryParams & { sort?: string } = {}) =>
+      paginate((page) => method({ ...params, page } as any));
     return method;
   })();
 
@@ -56,12 +56,12 @@ export default class Services {
    * GET /services/{service}
    *
    * @param service The service sid or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getService = (() => {
     const method = (
       service: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -82,7 +82,7 @@ export default class Services {
           password: boolean;
         }>;
       };
-    }> => this._client.request("GET", `/services/${service}`, null, options);
+    }> => this._client.request("GET", `/services/${service}`, null, params);
     return method;
   })();
 
@@ -95,13 +95,13 @@ export default class Services {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   listDomainAppliedServices = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -133,14 +133,14 @@ export default class Services {
         "GET",
         `/${account}/domains/${domain}/services`,
         null,
-        options
+        params
       );
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ) =>
-      paginate((page) => method(account, domain, { ...options, page } as any));
+      paginate((page) => method(account, domain, { ...params, page } as any));
     return method;
   })();
 
@@ -152,7 +152,7 @@ export default class Services {
    * @param account The account id
    * @param domain The domain name or id
    * @param service The service sid or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   applyServiceToDomain = (() => {
     const method = (
@@ -160,13 +160,13 @@ export default class Services {
       domain: string,
       service: string,
       data: {},
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/services/${service}`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -179,20 +179,20 @@ export default class Services {
    * @param account The account id
    * @param domain The domain name or id
    * @param service The service sid or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   unapplyServiceFromDomain = (() => {
     const method = (
       account: number,
       domain: string,
       service: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/domains/${domain}/services/${service}`,
         null,
-        options
+        params
       );
     return method;
   })();

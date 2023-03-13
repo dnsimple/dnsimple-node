@@ -1,8 +1,8 @@
-import type Client from "./client";
-import type { RequestOptions } from "./request";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 
 export default class Registrar {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Checks a domain name for availability.
@@ -11,13 +11,13 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   checkDomain = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: { domain: string; available: boolean; premium: boolean };
     }> =>
@@ -25,7 +25,7 @@ export default class Registrar {
         "GET",
         `/${account}/registrar/domains/${domain}/check`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -41,20 +41,20 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
-   * @param options.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
+   * @param params Query parameters
+   * @param params.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
    */
   getDomainPremiumPrice = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & { action?: string } = {}
+      params: QueryParams & { action?: string } = {}
     ): Promise<{ data: { premium_price: string; action: string } }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/premium_price`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -66,13 +66,13 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainPrices = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         domain: string;
@@ -86,7 +86,7 @@ export default class Registrar {
         "GET",
         `/${account}/registrar/domains/${domain}/prices`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -100,7 +100,7 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   registerDomain = (() => {
     const method = (
@@ -113,7 +113,7 @@ export default class Registrar {
         extended_attributes: {};
         premium_price: string;
       },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -131,7 +131,7 @@ export default class Registrar {
         "POST",
         `/${account}/registrar/domains/${domain}/registrations`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -144,14 +144,14 @@ export default class Registrar {
    * @param account The account id
    * @param domain The domain name or id
    * @param domainregistration The domain registration id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainRegistration = (() => {
     const method = (
       account: number,
       domain: string,
       domainregistration: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -169,7 +169,7 @@ export default class Registrar {
         "GET",
         `/${account}/registrar/domains/${domain}/registrations/${domainregistration}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -183,7 +183,7 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   transferDomain = (() => {
     const method = (
@@ -197,7 +197,7 @@ export default class Registrar {
         extended_attributes: {};
         premium_price: string;
       },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -215,7 +215,7 @@ export default class Registrar {
         "POST",
         `/${account}/registrar/domains/${domain}/transfers`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -228,14 +228,14 @@ export default class Registrar {
    * @param account The account id
    * @param domain The domain name or id
    * @param domaintransfer The domain transfer id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainTransfer = (() => {
     const method = (
       account: number,
       domain: string,
       domaintransfer: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -253,7 +253,7 @@ export default class Registrar {
         "GET",
         `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -266,14 +266,14 @@ export default class Registrar {
    * @param account The account id
    * @param domain The domain name or id
    * @param domaintransfer The domain transfer id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   cancelDomainTransfer = (() => {
     const method = (
       account: number,
       domain: string,
       domaintransfer: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -291,7 +291,7 @@ export default class Registrar {
         "DELETE",
         `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -305,14 +305,14 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   domainRenew = (() => {
     const method = (
       account: number,
       domain: string,
       data: { period: number; premium_price: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -327,7 +327,7 @@ export default class Registrar {
         "POST",
         `/${account}/registrar/domains/${domain}/renewals`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -340,14 +340,14 @@ export default class Registrar {
    * @param account The account id
    * @param domain The domain name or id
    * @param domainrenewal The domain renewal id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainRenewal = (() => {
     const method = (
       account: number,
       domain: string,
       domainrenewal: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -362,7 +362,7 @@ export default class Registrar {
         "GET",
         `/${account}/registrar/domains/${domain}/renewals/${domainrenewal}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -376,19 +376,19 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   authorizeDomainTransferOut = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "POST",
         `/${account}/registrar/domains/${domain}/authorize_transfer_out`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -400,19 +400,19 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getDomainDelegation = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ data: Array<string> }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/delegation`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -424,20 +424,20 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   changeDomainDelegation = (() => {
     const method = (
       account: number,
       domain: string,
       data: Array<string>,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ data: Array<string> }> =>
       this._client.request(
         "PUT",
         `/${account}/registrar/domains/${domain}/delegation`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -449,14 +449,14 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   changeDomainDelegationToVanity = (() => {
     const method = (
       account: number,
       domain: string,
       data: Array<string>,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -471,7 +471,7 @@ export default class Registrar {
         "PUT",
         `/${account}/registrar/domains/${domain}/delegation/vanity`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -483,19 +483,19 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   changeDomainDelegationFromVanity = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/registrar/domains/${domain}/delegation/vanity`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -507,19 +507,19 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   enableDomainAutoRenewal = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "PUT",
         `/${account}/registrar/domains/${domain}/auto_renewal`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -531,19 +531,19 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   disableDomainAutoRenewal = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/registrar/domains/${domain}/auto_renewal`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -555,13 +555,13 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getWhoisPrivacy = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -575,7 +575,7 @@ export default class Registrar {
         "GET",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -589,13 +589,13 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   enableWhoisPrivacy = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -609,7 +609,7 @@ export default class Registrar {
         "PUT",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -621,13 +621,13 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   disableWhoisPrivacy = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -641,7 +641,7 @@ export default class Registrar {
         "DELETE",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -655,13 +655,13 @@ export default class Registrar {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   renewWhoisPrivacy = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -678,7 +678,7 @@ export default class Registrar {
         "POST",
         `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
         null,
-        options
+        params
       );
     return method;
   })();

@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class Contacts {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * List contacts in the account.
@@ -13,13 +13,13 @@ export default class Contacts {
    * GET /{account}/contacts
    *
    * @param account The account id
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by id ascending.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by id ascending.
    */
   listContacts = (() => {
     const method = (
       account: number,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -47,11 +47,11 @@ export default class Contacts {
         total_entries: number;
         total_pages: number;
       };
-    }> => this._client.request("GET", `/${account}/contacts`, null, options);
+    }> => this._client.request("GET", `/${account}/contacts`, null, params);
     method.paginate = (
       account: number,
-      options: RequestOptions & { sort?: string } = {}
-    ) => paginate((page) => method(account, { ...options, page } as any));
+      params: QueryParams & { sort?: string } = {}
+    ) => paginate((page) => method(account, { ...params, page } as any));
     return method;
   })();
 
@@ -61,7 +61,7 @@ export default class Contacts {
    * POST /{account}/contacts
    *
    * @param account The account id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createContact = (() => {
     const method = (
@@ -82,9 +82,9 @@ export default class Contacts {
         organization_name: string;
         job_title: string;
       },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
-      this._client.request("POST", `/${account}/contacts`, data, options);
+      this._client.request("POST", `/${account}/contacts`, data, params);
     return method;
   })();
 
@@ -95,13 +95,13 @@ export default class Contacts {
    *
    * @param account The account id
    * @param contact The contact id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getContact = (() => {
     const method = (
       account: number,
       contact: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -128,7 +128,7 @@ export default class Contacts {
         "GET",
         `/${account}/contacts/${contact}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -140,7 +140,7 @@ export default class Contacts {
    *
    * @param account The account id
    * @param contact The contact id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   updateContact = (() => {
     const method = (
@@ -162,7 +162,7 @@ export default class Contacts {
         organization_name: string;
         job_title: string;
       },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -189,7 +189,7 @@ export default class Contacts {
         "PATCH",
         `/${account}/contacts/${contact}`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -201,19 +201,19 @@ export default class Contacts {
    *
    * @param account The account id
    * @param contact The contact id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   deleteContact = (() => {
     const method = (
       account: number,
       contact: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/contacts/${contact}`,
         null,
-        options
+        params
       );
     return method;
   })();

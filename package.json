@@ -22,12 +22,12 @@
   "engines": {
     "node": ">= v14.0.0"
   },
-  "main": "dist/dnsimple.js",
+  "main": "dist/lib/main.js",
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@types/node": "^18.14.6",
+    "@types/node": "14.x",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint-config-standard": "^17.0.0",
@@ -44,8 +44,10 @@
   },
   "license": "MIT",
   "scripts": {
-    "format": "prettier -w '**/*.{js,json,ts}'",
-    "format-check": "prettier --check '**/*.{js,json,ts}'",
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf dist",
+    "format": "prettier -w '*.{js,json}' 'lib/**/*.ts'",
+    "format-check": "prettier --check *.{js,json}' 'lib/**/*.ts'",
     "test": "mocha --bail --recursive"
   }
 }

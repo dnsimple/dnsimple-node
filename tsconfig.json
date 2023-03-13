@@ -10,10 +10,10 @@
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
     "isolatedModules": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "module": "CommonJS",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false, // TODO This is temporary while we migrate method parameter types to TypeScript.
+    "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -22,6 +22,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "dist",
+    "resolveJsonModule": true,
     "strict": true,
     "target": "ES6",
     "useUnknownInCatchVariables": false

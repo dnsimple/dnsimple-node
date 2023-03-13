@@ -1,19 +1,19 @@
-import type Client from "./client";
-import type { RequestOptions } from "./request";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 
 export default class Accounts {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Lists the accounts the current authenticated entity has access to.
    *
    * GET /accounts
    *
-   * @param options Query parameters
+   * @param params Query parameters
    */
   listAccounts = (() => {
     const method = (
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -22,7 +22,7 @@ export default class Accounts {
         created_at: string;
         updated_at: string;
       }>;
-    }> => this._client.request("GET", `/accounts`, null, options);
+    }> => this._client.request("GET", `/accounts`, null, params);
     return method;
   })();
 }

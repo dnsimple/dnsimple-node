@@ -1,8 +1,8 @@
-import type Client from "./client";
-import type { RequestOptions } from "./request";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 
 export default class Webhooks {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * List the webhooks in the account.
@@ -10,16 +10,16 @@ export default class Webhooks {
    * GET /{account}/webhooks
    *
    * @param account The account id
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by name ascending.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by name ascending.
    */
   listWebhooks = (() => {
     const method = (
       account: number,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{ id: number; url: string; suppressed_at: string }>;
-    }> => this._client.request("GET", `/${account}/webhooks`, null, options);
+    }> => this._client.request("GET", `/${account}/webhooks`, null, params);
     return method;
   })();
 
@@ -29,15 +29,15 @@ export default class Webhooks {
    * POST /{account}/webhooks
    *
    * @param account The account id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createWebhook = (() => {
     const method = (
       account: number,
       data: { url: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
-      this._client.request("POST", `/${account}/webhooks`, data, options);
+      this._client.request("POST", `/${account}/webhooks`, data, params);
     return method;
   })();
 
@@ -48,19 +48,19 @@ export default class Webhooks {
    *
    * @param account The account id
    * @param webhook The webhoook id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getWebhook = (() => {
     const method = (
       account: number,
       webhook: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
       this._client.request(
         "GET",
         `/${account}/webhooks/${webhook}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -72,19 +72,19 @@ export default class Webhooks {
    *
    * @param account The account id
    * @param webhook The webhoook id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   deleteWebhook = (() => {
     const method = (
       account: number,
       webhook: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/webhooks/${webhook}`,
         null,
-        options
+        params
       );
     return method;
   })();

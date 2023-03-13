@@ -1,19 +1,19 @@
-import type Client from "./client";
-import type { RequestOptions } from "./request";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 
 export default class Identity {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Retrieves the details about the current authenticated entity used to access the API.
    *
    * GET /whoami
    *
-   * @param options Query parameters
+   * @param params Query parameters
    */
   whoami = (() => {
     const method = (
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         account: {
@@ -30,7 +30,7 @@ export default class Identity {
           updated_at: string;
         };
       };
-    }> => this._client.request("GET", `/whoami`, null, options);
+    }> => this._client.request("GET", `/whoami`, null, params);
     return method;
   })();
 }

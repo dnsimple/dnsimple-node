@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class Certificates {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * Lists the certificates for a domain.
@@ -14,14 +14,14 @@ export default class Certificates {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is by id.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by id.
    */
   listCertificates = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -50,14 +50,14 @@ export default class Certificates {
         "GET",
         `/${account}/domains/${domain}/certificates`,
         null,
-        options
+        params
       );
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ) =>
-      paginate((page) => method(account, domain, { ...options, page } as any));
+      paginate((page) => method(account, domain, { ...params, page } as any));
     return method;
   })();
 
@@ -69,14 +69,14 @@ export default class Certificates {
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getCertificate = (() => {
     const method = (
       account: number,
       domain: string,
       certificate: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -99,7 +99,7 @@ export default class Certificates {
         "GET",
         `/${account}/domains/${domain}/certificates/${certificate}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -112,14 +112,14 @@ export default class Certificates {
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   downloadCertificate = (() => {
     const method = (
       account: number,
       domain: string,
       certificate: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: { server: string; root: string | null; chain: Array<string> };
     }> =>
@@ -127,7 +127,7 @@ export default class Certificates {
         "GET",
         `/${account}/domains/${domain}/certificates/${certificate}/download`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -140,20 +140,20 @@ export default class Certificates {
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getCertificatePrivateKey = (() => {
     const method = (
       account: number,
       domain: string,
       certificate: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{ data: { private_key: string } }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/certificates/${certificate}/private_key`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -165,7 +165,7 @@ export default class Certificates {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   purchaseLetsencryptCertificate = (() => {
     const method = (
@@ -177,7 +177,7 @@ export default class Certificates {
         alternate_names: Array<string>;
         signature_algorithm: string;
       },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -192,7 +192,7 @@ export default class Certificates {
         "POST",
         `/${account}/domains/${domain}/certificates/certificates/letsencrypt`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -205,14 +205,14 @@ export default class Certificates {
    * @param account The account id
    * @param domain The domain name or id
    * @param purchaseId The certificate purchase order id received by `purchaseLetsencryptCertificate`.
-   * @param options Query parameters
+   * @param params Query parameters
    */
   issueLetsencryptCertificate = (() => {
     const method = (
       account: number,
       domain: string,
       purchaseId: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -235,7 +235,7 @@ export default class Certificates {
         "POST",
         `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${purchaseId}/issue`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -248,7 +248,7 @@ export default class Certificates {
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   purchaseRenewalLetsencryptCertificate = (() => {
     const method = (
@@ -256,7 +256,7 @@ export default class Certificates {
       domain: string,
       certificate: number,
       data: { auto_renew: boolean; signature_algorithm: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -272,7 +272,7 @@ export default class Certificates {
         "POST",
         `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${certificate}/renewals`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -286,7 +286,7 @@ export default class Certificates {
    * @param domain The domain name or id
    * @param certificate The certificate id
    * @param renewalId The certificate renewal order id received by `purchaseRenewalLetsencryptCertificate`.
-   * @param options Query parameters
+   * @param params Query parameters
    */
   issueRenewalLetsencryptCertificate = (() => {
     const method = (
@@ -294,7 +294,7 @@ export default class Certificates {
       domain: string,
       certificate: number,
       renewalId: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -317,7 +317,7 @@ export default class Certificates {
         "POST",
         `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`,
         null,
-        options
+        params
       );
     return method;
   })();

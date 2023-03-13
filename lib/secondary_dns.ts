@@ -1,9 +1,9 @@
-import type Client from "./client";
+import type DNSimple from "./main";
+import type { QueryParams } from "./main";
 import paginate from "./paginate";
-import type { RequestOptions } from "./request";
 
 export default class SecondaryDns {
-  constructor(private readonly _client: Client) {}
+  constructor(private readonly _client: DNSimple) {}
 
   /**
    * List the primary servers in the account.
@@ -13,13 +13,13 @@ export default class SecondaryDns {
    * GET /{account}/secondary_dns/primaries
    *
    * @param account The account id
-   * @param options Query parameters
-   * @param options.sort Sort results. Default sorting is ascending by id.
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is ascending by id.
    */
   listPrimaryServers = (() => {
     const method = (
       account: number,
-      options: RequestOptions & { sort?: string } = {}
+      params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -42,12 +42,12 @@ export default class SecondaryDns {
         "GET",
         `/${account}/secondary_dns/primaries`,
         null,
-        options
+        params
       );
     method.paginate = (
       account: number,
-      options: RequestOptions & { sort?: string } = {}
-    ) => paginate((page) => method(account, { ...options, page } as any));
+      params: QueryParams & { sort?: string } = {}
+    ) => paginate((page) => method(account, { ...params, page } as any));
     return method;
   })();
 
@@ -57,13 +57,13 @@ export default class SecondaryDns {
    * POST /{account}/secondary_dns/primaries
    *
    * @param account The account id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createPrimaryServer = (() => {
     const method = (
       account: number,
       data: { name: string; ip: string; port: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -80,7 +80,7 @@ export default class SecondaryDns {
         "POST",
         `/${account}/secondary_dns/primaries`,
         data,
-        options
+        params
       );
     return method;
   })();
@@ -92,13 +92,13 @@ export default class SecondaryDns {
    *
    * @param account The account id
    * @param primaryserver The primary server id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   getPrimaryServer = (() => {
     const method = (
       account: number,
       primaryserver: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -115,7 +115,7 @@ export default class SecondaryDns {
         "GET",
         `/${account}/secondary_dns/primaries/${primaryserver}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -127,19 +127,19 @@ export default class SecondaryDns {
    *
    * @param account The account id
    * @param primaryserver The primary server id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   removePrimaryServer = (() => {
     const method = (
       account: number,
       primaryserver: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/secondary_dns/primaries/${primaryserver}`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -151,13 +151,13 @@ export default class SecondaryDns {
    *
    * @param account The account id
    * @param primaryserver The primary server id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   linkPrimaryServer = (() => {
     const method = (
       account: number,
       primaryserver: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -174,7 +174,7 @@ export default class SecondaryDns {
         "PUT",
         `/${account}/secondary_dns/primaries/${primaryserver}/link`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -186,13 +186,13 @@ export default class SecondaryDns {
    *
    * @param account The account id
    * @param primaryserver The primary server id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   unlinkPrimaryServer = (() => {
     const method = (
       account: number,
       primaryserver: number,
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -209,7 +209,7 @@ export default class SecondaryDns {
         "PUT",
         `/${account}/secondary_dns/primaries/${primaryserver}/unlink`,
         null,
-        options
+        params
       );
     return method;
   })();
@@ -220,13 +220,13 @@ export default class SecondaryDns {
    * POST /{account}/secondary_dns/zones
    *
    * @param account The account id
-   * @param options Query parameters
+   * @param params Query parameters
    */
   createSecondaryZone = (() => {
     const method = (
       account: number,
       data: { name: string },
-      options: RequestOptions & {} = {}
+      params: QueryParams & {} = {}
     ): Promise<{
       data: {
         id: number;
@@ -243,7 +243,7 @@ export default class SecondaryDns {
         "POST",
         `/${account}/secondary_dns/zones`,
         data,
-        options
+        params
       );
     return method;
   })();
