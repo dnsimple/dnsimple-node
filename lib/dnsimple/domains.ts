@@ -7,7 +7,6 @@ class Domains {
   /**
    * Lists the domains in the account.
    *
-   *
    * This API is paginated. Call `listDomains.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/domains
@@ -30,7 +29,7 @@ class Domains {
       data: Array<{
         id: number;
         account_id: number;
-        registrant_id: number;
+        registrant_id: number | null;
         name: string;
         unicode_name: string;
         state: string;
@@ -75,7 +74,7 @@ class Domains {
       data: {
         id: number;
         account_id: number;
-        registrant_id: number;
+        registrant_id: number | null;
         name: string;
         unicode_name: string;
         state: string;
@@ -107,7 +106,7 @@ class Domains {
       data: {
         id: number;
         account_id: number;
-        registrant_id: number;
+        registrant_id: number | null;
         name: string;
         unicode_name: string;
         state: string;

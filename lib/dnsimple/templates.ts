@@ -7,7 +7,6 @@ class Templates {
   /**
    * Lists the templates in the account.
    *
-   *
    * This API is paginated. Call `listTemplates.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/templates
@@ -171,7 +170,6 @@ class Templates {
   /**
    * Lists the records for a template.
    *
-   *
    * This API is paginated. Call `listTemplateRecords.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/templates/{template}/records
@@ -195,7 +193,7 @@ class Templates {
         name: string;
         content: string;
         ttl: number;
-        priority: number;
+        priority: number | null;
         type: string;
         created_at: string;
         updated_at: string;
@@ -248,7 +246,7 @@ class Templates {
         name: string;
         content: string;
         ttl: number;
-        priority: number;
+        priority: number | null;
         type: string;
         created_at: string;
         updated_at: string;
@@ -286,7 +284,7 @@ class Templates {
         name: string;
         content: string;
         ttl: number;
-        priority: number;
+        priority: number | null;
         type: string;
         created_at: string;
         updated_at: string;

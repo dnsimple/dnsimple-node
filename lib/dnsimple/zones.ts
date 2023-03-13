@@ -7,7 +7,6 @@ class Zones {
   /**
    * Lists the zones in the account.
    *
-   *
    * This API is paginated. Call `listZones.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/zones

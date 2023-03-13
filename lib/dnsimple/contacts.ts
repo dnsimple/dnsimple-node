@@ -7,7 +7,6 @@ class Contacts {
   /**
    * List contacts in the account.
    *
-   *
    * This API is paginated. Call `listContacts.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/contacts
@@ -75,14 +74,14 @@ class Contacts {
         first_name: string;
         last_name: string;
         address1: string;
-        address2: string;
+        address2: string | null;
         city: string;
         state_province: string;
         postal_code: string;
         country: string;
         email: string;
         phone: string;
-        fax: string;
+        fax: string | null;
         organization_name: string;
         job_title: string;
       },
@@ -155,14 +154,14 @@ class Contacts {
         first_name: string;
         last_name: string;
         address1: string;
-        address2: string;
+        address2: string | null;
         city: string;
         state_province: string;
         postal_code: string;
         country: string;
         email: string;
         phone: string;
-        fax: string;
+        fax: string | null;
         organization_name: string;
         job_title: string;
       },

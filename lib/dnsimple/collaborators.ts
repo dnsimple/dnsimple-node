@@ -7,7 +7,6 @@ class Collaborators {
   /**
    * Lists collaborators for the domain.
    *
-   *
    * This API is paginated. Call `listDomainCollaborators.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/domains/{domain}/collaborators

@@ -7,7 +7,6 @@ class Services {
   /**
    * List all available one-click services.
    *
-   *
    * This API is paginated. Call `listServices.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /services
@@ -93,7 +92,6 @@ class Services {
 
   /**
    * List services applied to a domain.
-   *
    *
    * This API is paginated. Call `listDomainAppliedServices.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *

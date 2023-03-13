@@ -7,7 +7,6 @@ class Certificates {
   /**
    * Lists the certificates for a domain.
    *
-   *
    * This API is paginated. Call `listCertificates.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/domains/{domain}/certificates
@@ -125,7 +124,7 @@ class Certificates {
       certificate: number,
       options: RequestOptions & {} = {}
     ): Promise<{
-      data: { server: string; root: string; chain: Array<string> };
+      data: { server: string; root: string | null; chain: Array<string> };
     }> =>
       this._client.request(
         "GET",

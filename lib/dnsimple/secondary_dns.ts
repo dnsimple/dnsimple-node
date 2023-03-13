@@ -7,7 +7,6 @@ class SecondaryDns {
   /**
    * List the primary servers in the account.
    *
-   *
    * This API is paginated. Call `listPrimaryServers.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/secondary_dns/primaries

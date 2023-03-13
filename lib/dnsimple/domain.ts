@@ -81,7 +81,6 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
   /**
    * Lists the DS records for the domain.
    *
-   *
    * This API is paginated. Call `listDomainDelegationSignerRecords.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
    * GET /{account}/domains/{domain}/ds_records
@@ -237,7 +236,6 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
 
   /**
    * Lists email forwards for the domain.
-   *
    *
    * This API is paginated. Call `listEmailForwards.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
@@ -426,7 +424,6 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
 
   /**
    * List pending pushes for the target account.
-   *
    *
    * This API is paginated. Call `listPushes.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
