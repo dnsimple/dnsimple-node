@@ -1,7 +1,7 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
 
-class Webhooks {
+export default class Webhooks {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -16,9 +16,7 @@ class Webhooks {
   listWebhooks = (() => {
     const method = (
       account: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{ id: number; url: string; suppressed_at: string }>;
     }> => this._client.request("GET", `/${account}/webhooks`, null, options);
@@ -91,4 +89,3 @@ class Webhooks {
     return method;
   })();
 }
-export = Webhooks;

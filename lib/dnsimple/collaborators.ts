@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class Collaborators {
+import paginate from "./paginate";
+
+export default class Collaborators {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -55,15 +56,16 @@ class Collaborators {
   })();
 
   /**
-     * Adds a collaborator to the domain.
-At the time of the add, a collaborator may or may not have a DNSimple account. In case the collaborator doesn't have a DNSimple account, the system will invite them to register to DNSimple first and then to accept the collaboration invitation. In the other case, they are automatically added to the domain as collaborator. They can decide to reject the invitation later.
-     *
-     * POST /{account}/domains/{domain}/collaborators
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Adds a collaborator to the domain.
+   *
+   * At the time of the add, a collaborator may or may not have a DNSimple account. In case the collaborator doesn't have a DNSimple account, the system will invite them to register to DNSimple first and then to accept the collaboration invitation. In the other case, they are automatically added to the domain as collaborator. They can decide to reject the invitation later.
+   *
+   * POST /{account}/domains/{domain}/collaborators
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   addDomainCollaborator = (() => {
     const method = (
       account: number,
@@ -116,4 +118,3 @@ At the time of the add, a collaborator may or may not have a DNSimple account. I
     return method;
   })();
 }
-export = Collaborators;

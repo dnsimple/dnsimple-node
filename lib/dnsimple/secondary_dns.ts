@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class SecondaryDns {
+import paginate from "./paginate";
+
+export default class SecondaryDns {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -18,9 +19,7 @@ class SecondaryDns {
   listPrimaryServers = (() => {
     const method = (
       account: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -47,9 +46,7 @@ class SecondaryDns {
       );
     method.paginate = (
       account: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ) => paginate((page) => method(account, { ...options, page } as any));
     return method;
   })();
@@ -251,4 +248,3 @@ class SecondaryDns {
     return method;
   })();
 }
-export = SecondaryDns;

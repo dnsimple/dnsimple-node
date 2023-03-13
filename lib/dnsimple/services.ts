@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class Services {
+import paginate from "./paginate";
+
+export default class Services {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -16,9 +17,7 @@ class Services {
    */
   listServices = (() => {
     const method = (
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -46,11 +45,8 @@ class Services {
         total_pages: number;
       };
     }> => this._client.request("GET", `/services`, null, options);
-    method.paginate = (
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
-    ) => paginate((page) => method({ ...options, page } as any));
+    method.paginate = (options: RequestOptions & { sort?: string } = {}) =>
+      paginate((page) => method({ ...options, page } as any));
     return method;
   })();
 
@@ -201,4 +197,3 @@ class Services {
     return method;
   })();
 }
-export = Services;

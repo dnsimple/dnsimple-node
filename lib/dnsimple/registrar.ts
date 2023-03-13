@@ -1,7 +1,7 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
 
-class Registrar {
+export default class Registrar {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -31,24 +31,24 @@ class Registrar {
   })();
 
   /**
-     * Deprecated in favor of getDomainPrices.
-Retrieves the premium price for a premium domain.
-Please note that a premium price can be different for registration, renewal, transfer. By default this endpoint returns the premium price for registration. If you need to check a different price, you should specify it with the action param.
-     *
-     * GET /{account}/registrar/domains/{domain}/premium_price
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     * @param options.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
-     */
+   * Deprecated in favor of getDomainPrices.
+   *
+   * Retrieves the premium price for a premium domain.
+   *
+   * Please note that a premium price can be different for registration, renewal, transfer. By default this endpoint returns the premium price for registration. If you need to check a different price, you should specify it with the action param.
+   *
+   * GET /{account}/registrar/domains/{domain}/premium_price
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   * @param options.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
+   */
   getDomainPremiumPrice = (() => {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        action?: string;
-      } = {}
+      options: RequestOptions & { action?: string } = {}
     ): Promise<{ data: { premium_price: string; action: string } }> =>
       this._client.request(
         "GET",
@@ -92,15 +92,16 @@ Please note that a premium price can be different for registration, renewal, tra
   })();
 
   /**
-     * Registers a domain name.
-Your account must be active for this command to complete successfully. You will be automatically charged the registration fee upon successful registration, so please be careful with this command.
-     *
-     * POST /{account}/registrar/domains/{domain}/registrations
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Registers a domain name.
+   *
+   * Your account must be active for this command to complete successfully. You will be automatically charged the registration fee upon successful registration, so please be careful with this command.
+   *
+   * POST /{account}/registrar/domains/{domain}/registrations
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   registerDomain = (() => {
     const method = (
       account: number,
@@ -174,15 +175,16 @@ Your account must be active for this command to complete successfully. You will 
   })();
 
   /**
-     * Transfers a domain name from another registrar.
-Your account must be active for this command to complete successfully. You will be automatically charged the 1-year transfer fee upon successful transfer, so please be careful with this command. The transfer may take anywhere from a few minutes up to 7 days.
-     *
-     * POST /{account}/registrar/domains/{domain}/transfers
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Transfers a domain name from another registrar.
+   *
+   * Your account must be active for this command to complete successfully. You will be automatically charged the 1-year transfer fee upon successful transfer, so please be careful with this command. The transfer may take anywhere from a few minutes up to 7 days.
+   *
+   * POST /{account}/registrar/domains/{domain}/transfers
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   transferDomain = (() => {
     const method = (
       account: number,
@@ -295,15 +297,16 @@ Your account must be active for this command to complete successfully. You will 
   })();
 
   /**
-     * Explicitly renews a domain, if the registry supports this function.
-Your account must be active for this command to complete successfully. You will be automatically charged the renewal fee upon successful renewal, so please be careful with this command.
-     *
-     * POST /{account}/registrar/domains/{domain}/renewals
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Explicitly renews a domain, if the registry supports this function.
+   *
+   * Your account must be active for this command to complete successfully. You will be automatically charged the renewal fee upon successful renewal, so please be careful with this command.
+   *
+   * POST /{account}/registrar/domains/{domain}/renewals
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   domainRenew = (() => {
     const method = (
       account: number,
@@ -365,15 +368,16 @@ Your account must be active for this command to complete successfully. You will 
   })();
 
   /**
-     * Prepares a domain for transferring out.
-This will unlock a domain and send the authorization code to the domain's administrative contact.
-     *
-     * POST /{account}/registrar/domains/{domain}/authorize_transfer_out
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Prepares a domain for transferring out.
+   *
+   * This will unlock a domain and send the authorization code to the domain's administrative contact.
+   *
+   * POST /{account}/registrar/domains/{domain}/authorize_transfer_out
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   authorizeDomainTransferOut = (() => {
     const method = (
       account: number,
@@ -577,15 +581,16 @@ This will unlock a domain and send the authorization code to the domain's admini
   })();
 
   /**
-     * Enables the WHOIS privacy for the domain.
-Note that if the WHOIS privacy is not purchased for the domain, enabling WHOIS privacy will cause the service to be purchased for a period of 1 year. If WHOIS privacy was previously purchased and disabled, then calling this will enable the WHOIS privacy.
-     *
-     * PUT /{account}/registrar/domains/{domain}/whois_privacy
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Enables the WHOIS privacy for the domain.
+   *
+   * Note that if the WHOIS privacy is not purchased for the domain, enabling WHOIS privacy will cause the service to be purchased for a period of 1 year. If WHOIS privacy was previously purchased and disabled, then calling this will enable the WHOIS privacy.
+   *
+   * PUT /{account}/registrar/domains/{domain}/whois_privacy
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   enableWhoisPrivacy = (() => {
     const method = (
       account: number,
@@ -642,15 +647,16 @@ Note that if the WHOIS privacy is not purchased for the domain, enabling WHOIS p
   })();
 
   /**
-     * Renews the WHOIS privacy for the domain.
-Note that if the WHOIS privacy was never purchased for the domain or if there is another renewal order in progress, renewing WHOIS privacy will return an error.
-     *
-     * POST /{account}/registrar/domains/{domain}/whois_privacy/renewals
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Renews the WHOIS privacy for the domain.
+   *
+   * Note that if the WHOIS privacy was never purchased for the domain or if there is another renewal order in progress, renewing WHOIS privacy will return an error.
+   *
+   * POST /{account}/registrar/domains/{domain}/whois_privacy/renewals
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   renewWhoisPrivacy = (() => {
     const method = (
       account: number,
@@ -677,4 +683,3 @@ Note that if the WHOIS privacy was never purchased for the domain or if there is
     return method;
   })();
 }
-export = Registrar;

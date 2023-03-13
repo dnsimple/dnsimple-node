@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class Certificates {
+import paginate from "./paginate";
+
+export default class Certificates {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -20,9 +21,7 @@ class Certificates {
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -56,9 +55,7 @@ class Certificates {
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ) =>
       paginate((page) => method(account, domain, { ...options, page } as any));
     return method;
@@ -325,4 +322,3 @@ class Certificates {
     return method;
   })();
 }
-export = Certificates;

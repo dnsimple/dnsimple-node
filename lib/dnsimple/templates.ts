@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class Templates {
+import paginate from "./paginate";
+
+export default class Templates {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -18,9 +19,7 @@ class Templates {
   listTemplates = (() => {
     const method = (
       account: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -40,9 +39,7 @@ class Templates {
     }> => this._client.request("GET", `/${account}/templates`, null, options);
     method.paginate = (
       account: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ) => paginate((page) => method(account, { ...options, page } as any));
     return method;
   })();
@@ -183,9 +180,7 @@ class Templates {
     const method = (
       account: number,
       template: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -214,9 +209,7 @@ class Templates {
     method.paginate = (
       account: number,
       template: number,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ) =>
       paginate((page) =>
         method(account, template, { ...options, page } as any)
@@ -351,4 +344,3 @@ class Templates {
     return method;
   })();
 }
-export = Templates;

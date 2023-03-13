@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class Domain {
+import paginate from "./paginate";
+
+export default class Domain {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -29,15 +30,16 @@ class Domain {
   })();
 
   /**
-     * Enables DNSSEC for the domain.
-It will enable signing of the zone. If the domain is registered with DNSimple, it will also add the DS record to the corresponding registry.
-     *
-     * POST /{account}/domains/{domain}/dnssec
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Enables DNSSEC for the domain.
+   *
+   * It will enable signing of the zone. If the domain is registered with DNSimple, it will also add the DS record to the corresponding registry.
+   *
+   * POST /{account}/domains/{domain}/dnssec
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   enableDomainDnssec = (() => {
     const method = (
       account: number,
@@ -54,15 +56,16 @@ It will enable signing of the zone. If the domain is registered with DNSimple, i
   })();
 
   /**
-     * Disables DNSSEC for the domain.
-It will disable signing of the zone. If the domain is registered with DNSimple, it will also remove the DS record at the registry corresponding to the disabled DNSSEC signing.
-     *
-     * DELETE /{account}/domains/{domain}/dnssec
-     *
-     * @param account The account id
-* @param domain The domain name or id
-     * @param options Query parameters
-     */
+   * Disables DNSSEC for the domain.
+   *
+   * It will disable signing of the zone. If the domain is registered with DNSimple, it will also remove the DS record at the registry corresponding to the disabled DNSSEC signing.
+   *
+   * DELETE /{account}/domains/{domain}/dnssec
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
   disableDomainDnssec = (() => {
     const method = (
       account: number,
@@ -94,9 +97,7 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -125,9 +126,7 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ) =>
       paginate((page) => method(account, domain, { ...options, page } as any));
     return method;
@@ -250,9 +249,7 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
     const method = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -280,9 +277,7 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
     method.paginate = (
       account: number,
       domain: string,
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ) =>
       paginate((page) => method(account, domain, { ...options, page } as any));
     return method;
@@ -502,4 +497,3 @@ It will disable signing of the zone. If the domain is registered with DNSimple, 
     return method;
   })();
 }
-export = Domain;

@@ -27,7 +27,7 @@ const versionedPath = (
  * The service-specific classes delegate to an instance of Client to handle
  * the calls to the DNSimple API.
  */
-class Client {
+export default class Client {
   constructor(private readonly _dnsimple: Dnsimple) {}
 
   request(method: string, path: string, data: any, options: RequestOptions) {
@@ -105,5 +105,3 @@ class Client {
     });
   }
 }
-
-export = Client;

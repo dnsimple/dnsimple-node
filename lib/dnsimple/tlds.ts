@@ -1,7 +1,7 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
 
-class Tlds {
+export default class Tlds {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -14,9 +14,7 @@ class Tlds {
    */
   listTlds = (() => {
     const method = (
-      options: RequestOptions & {
-        sort?: string;
-      } = {}
+      options: RequestOptions & { sort?: string } = {}
     ): Promise<{
       data: Array<{
         tld: string;
@@ -62,14 +60,15 @@ class Tlds {
   })();
 
   /**
-     * Lists a TLD extended attributes.
-Some TLDs require extended attributes when registering or transferring a domain. This API interface provides information on the extended attributes for any particular TLD. Extended attributes are extra TLD-specific attributes, required by the TLD registry to collect extra information about the registrant or legal agreements.
-     *
-     * GET /tlds/{tld}/extended_attributes
-     *
-     * @param tld The TLD string
-     * @param options Query parameters
-     */
+   * Lists a TLD extended attributes.
+   *
+   * Some TLDs require extended attributes when registering or transferring a domain. This API interface provides information on the extended attributes for any particular TLD. Extended attributes are extra TLD-specific attributes, required by the TLD registry to collect extra information about the registrant or legal agreements.
+   *
+   * GET /tlds/{tld}/extended_attributes
+   *
+   * @param tld The TLD string
+   * @param options Query parameters
+   */
   getTldExtendedAttributes = (() => {
     const method = (
       tld: string,
@@ -91,4 +90,3 @@ Some TLDs require extended attributes when registering or transferring a domain.
     return method;
   })();
 }
-export = Tlds;

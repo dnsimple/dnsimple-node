@@ -1,7 +1,7 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
 
-class Identity {
+export default class Identity {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -34,4 +34,3 @@ class Identity {
     return method;
   })();
 }
-export = Identity;

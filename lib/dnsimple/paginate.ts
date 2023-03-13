@@ -21,7 +21,7 @@
  * }
  * ```
  */
-async function* paginate<Item>(
+export default async function* paginate<Item>(
   fn: (page: number) => Promise<{
     data: ReadonlyArray<Item>;
     pagination: {
@@ -39,5 +39,3 @@ async function* paginate<Item>(
     page++;
   }
 }
-
-export = paginate;

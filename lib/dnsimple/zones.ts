@@ -1,7 +1,8 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import paginate = require("./paginate");
-class Zones {
+import paginate from "./paginate";
+
+export default class Zones {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -19,10 +20,7 @@ class Zones {
   listZones = (() => {
     const method = (
       account: number,
-      options: RequestOptions & {
-        name_like?: string;
-        sort?: string;
-      } = {}
+      options: RequestOptions & { name_like?: string; sort?: string } = {}
     ): Promise<{
       data: Array<{
         id: number;
@@ -43,10 +41,7 @@ class Zones {
     }> => this._client.request("GET", `/${account}/zones`, null, options);
     method.paginate = (
       account: number,
-      options: RequestOptions & {
-        name_like?: string;
-        sort?: string;
-      } = {}
+      options: RequestOptions & { name_like?: string; sort?: string } = {}
     ) => paginate((page) => method(account, { ...options, page } as any));
     return method;
   })();
@@ -405,4 +400,3 @@ class Zones {
     return method;
   })();
 }
-export = Zones;
