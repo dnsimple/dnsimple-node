@@ -1,8 +1,7 @@
-import type DNSimple from "./main";
-import type { QueryParams } from "./main";
-import paginate from "./paginate";
+import type { DNSimple, QueryParams } from "./main";
+import { paginate } from "./paginate";
 
-export default class Zones {
+export class Zones {
   constructor(private readonly _client: DNSimple) {}
 
   /**

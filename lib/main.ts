@@ -1,18 +1,18 @@
 import * as pkg from "../package.json";
-import Accounts from "./accounts";
-import Certificates from "./certificates";
-import Collaborators from "./collaborators";
-import Contacts from "./contacts";
-import Domains from "./domains";
-import Identity from "./identity";
-import OAuth from "./oauth";
-import Registrar from "./registrar";
-import Services from "./services";
-import Templates from "./templates";
-import Tlds from "./tlds";
-import VanityNameServers from "./vanity_name_servers";
-import Webhooks from "./webhooks";
-import Zones from "./zones";
+import { Accounts } from "./accounts";
+import { Certificates } from "./certificates";
+import { Collaborators } from "./collaborators";
+import { Contacts } from "./contacts";
+import { Domains } from "./domains";
+import { Identity } from "./identity";
+import { OAuth } from "./oauth";
+import { Registrar } from "./registrar";
+import { Services } from "./services";
+import { Templates } from "./templates";
+import { Tlds } from "./tlds";
+import { VanityNameServers } from "./vanity_name_servers";
+import { Webhooks } from "./webhooks";
+import { Zones } from "./zones";
 
 export type QueryParams = {
   [name: string]: string | boolean | number | null | undefined;
@@ -158,7 +158,7 @@ const getFetcherForPlatform = (): Fetcher => {
     });
 };
 
-export default class DNSimple {
+export class DNSimple {
   static VERSION = pkg.version;
   static DEFAULT_TIMEOUT = 120000;
   static DEFAULT_BASE_URL = "https://api.dnsimple.com";

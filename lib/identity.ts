@@ -1,7 +1,6 @@
-import type DNSimple from "./main";
-import type { QueryParams } from "./main";
+import type { DNSimple, QueryParams } from "./main";
 
-export default class Identity {
+export class Identity {
   constructor(private readonly _client: DNSimple) {}
 
   /**

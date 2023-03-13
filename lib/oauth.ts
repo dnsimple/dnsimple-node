@@ -1,12 +1,11 @@
-import type DNSimple from "./main";
-import { toQueryString } from "./main";
+import { DNSimple, toQueryString } from "./main";
 
 /**
  * Methods for working with OAuth token exchange.
  *
  * @see https://developer.dnsimple.com/v2/oauth
  */
-export default class OAuth {
+export class OAuth {
   constructor(private readonly _client: DNSimple) {}
 
   /**
@@ -42,12 +41,7 @@ export default class OAuth {
       redirect_uri: redirectUri,
     };
 
-    return this._client.request(
-      "POST",
-      "/oauth/access_token",
-      attributes,
-      {}
-    );
+    return this._client.request("POST", "/oauth/access_token", attributes, {});
   }
 
   /**

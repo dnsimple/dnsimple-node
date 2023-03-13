@@ -21,7 +21,7 @@
  * }
  * ```
  */
-export default async function* paginate<Item>(
+export async function* paginate<Item>(
   fn: (page: number) => Promise<{
     data: ReadonlyArray<Item>;
     pagination: {
