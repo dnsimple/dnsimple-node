@@ -1,6 +1,6 @@
-import type Dnsimple = require("../dnsimple");
-import https = require("https");
-import querystring = require("querystring");
+import type Dnsimple from "../dnsimple";
+import * as https from "node:https";
+import * as querystring from "node:querystring";
 import type { RequestOptions } from "./request";
 
 const versionedPath = (
@@ -30,6 +30,10 @@ const versionedPath = (
 export default class Client {
   constructor(private readonly _dnsimple: Dnsimple) {}
 
+  baseUrl() {
+    return this._dnsimple.baseUrl();
+  }
+
   request(method: string, path: string, data: any, options: RequestOptions) {
     const timeout = this._dnsimple.timeout;
     const headers = {
@@ -43,8 +47,8 @@ export default class Client {
     return new Promise<any>((resolve, reject) => {
       const req = https
         .request({
-          host: this._dnsimple.baseUrl().hostname,
-          port: this._dnsimple.baseUrl().port || 443,
+          host: this.baseUrl().hostname,
+          port: this.baseUrl().port || 443,
           path: versionedPath(path, options),
           method,
           headers,

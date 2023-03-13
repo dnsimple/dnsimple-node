@@ -1,13 +1,13 @@
-import type Client = require("./client");
+import type Client from "./client";
 import type { RequestOptions } from "./request";
-import querystring = require("querystring");
+import * as querystring from "node:querystring";
 
 /**
  * Methods for working with OAuth token exchange.
  *
  * @see https://developer.dnsimple.com/v2/oauth
  */
-class Oauth {
+export default class Oauth {
   constructor(private readonly _client: Client) {}
 
   /**
@@ -73,5 +73,3 @@ class Oauth {
     return url;
   }
 }
-
-export = Oauth;

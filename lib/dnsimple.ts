@@ -1,62 +1,45 @@
-import Accounts = require("./dnsimple/accounts");
-import Certificates = require("./dnsimple/certificates");
-import Client = require("./dnsimple/client");
-import Collaborators = require("./dnsimple/collaborators");
-import Contacts = require("./dnsimple/contacts");
-import Domains = require("./dnsimple/domains");
-import Identity = require("./dnsimple/identity");
-import Oauth = require("./dnsimple/oauth");
-import Registrar = require("./dnsimple/registrar");
-import Services = require("./dnsimple/services");
-import Templates = require("./dnsimple/templates");
-import Tlds = require("./dnsimple/tlds");
-import VanityNameServers = require("./dnsimple/vanity_name_servers");
-import Webhooks = require("./dnsimple/webhooks");
-import Zones = require("./dnsimple/zones");
+import Accounts from "./dnsimple/accounts";
+import Certificates from "./dnsimple/certificates";
+import Client from "./dnsimple/client";
+import Collaborators from "./dnsimple/collaborators";
+import Contacts from "./dnsimple/contacts";
+import Domains from "./dnsimple/domains";
+import Identity from "./dnsimple/identity";
+import Oauth from "./dnsimple/oauth";
+import Registrar from "./dnsimple/registrar";
+import Services from "./dnsimple/services";
+import Templates from "./dnsimple/templates";
+import Tlds from "./dnsimple/tlds";
+import VanityNameServers from "./dnsimple/vanity_name_servers";
+import Webhooks from "./dnsimple/webhooks";
+import Zones from "./dnsimple/zones";
 
-class Dnsimple {
+export default class Dnsimple {
   static VERSION = "6.2.0";
   static DEFAULT_TIMEOUT = 120000;
   static DEFAULT_BASE_URL = "https://api.dnsimple.com";
   static DEFAULT_USER_AGENT = `dnsimple-node/${Dnsimple.VERSION}`;
-  static services = {
-    accounts: Accounts,
-    certificates: Certificates,
-    collaborators: Collaborators,
-    contacts: Contacts,
-    domains: Domains,
-    identity: Identity,
-    oauth: Oauth,
-    registrar: Registrar,
-    services: Services,
-    templates: Templates,
-    tlds: Tlds,
-    vanityNameServers: VanityNameServers,
-    webhooks: Webhooks,
-    zones: Zones,
-  };
-  public accounts!: Accounts;
-  public certificates!: Certificates;
-  public collaborators!: Collaborators;
-  public contacts!: Contacts;
-  public domains!: Domains;
-  public identity!: Identity;
-  public oauth!: Oauth;
-  public registrar!: Registrar;
-  public services!: Services;
-  public templates!: Templates;
-  public tlds!: Tlds;
-  public vanityNameServers!: VanityNameServers;
-  public webhooks!: Webhooks;
-  public zones!: Zones;
 
   #accessToken?: string;
   #baseUrl!: URL;
   #userAgent!: string;
 
-  public VERSION = Dnsimple.VERSION;
-  public client = new Client(this);
   public timeout!: number;
+  public client = new Client(this);
+  public accounts = new Accounts(this.client);
+  public certificates = new Certificates(this.client);
+  public collaborators = new Collaborators(this.client);
+  public contacts = new Contacts(this.client);
+  public domains = new Domains(this.client);
+  public identity = new Identity(this.client);
+  public oauth = new Oauth(this.client);
+  public registrar = new Registrar(this.client);
+  public services = new Services(this.client);
+  public templates = new Templates(this.client);
+  public tlds = new Tlds(this.client);
+  public vanityNameServers = new VanityNameServers(this.client);
+  public webhooks = new Webhooks(this.client);
+  public zones = new Zones(this.client);
 
   constructor(attrs: {
     timeout?: number | null | undefined;
@@ -64,10 +47,6 @@ class Dnsimple {
     baseUrl?: string | null | undefined;
     userAgent?: string | null | undefined;
   }) {
-    for (const [name, cls] of Object.entries(Dnsimple.services)) {
-      (this as any)[name] = new cls(this.client);
-    }
-
     this.setTimeout(attrs.timeout);
     this.setAccessToken(attrs.accessToken);
     this.setBaseUrl(attrs.baseUrl);
@@ -106,5 +85,3 @@ class Dnsimple {
     }
   }
 }
-
-export = Dnsimple;
