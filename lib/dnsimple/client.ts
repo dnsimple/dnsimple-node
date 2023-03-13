@@ -1,6 +1,6 @@
-import type Dnsimple from "../dnsimple";
 import * as https from "node:https";
 import * as querystring from "node:querystring";
+import type Dnsimple from "../dnsimple";
 import type { RequestOptions } from "./request";
 
 const versionedPath = (

@@ -1,6 +1,6 @@
+import * as querystring from "node:querystring";
 import type Client from "./client";
 import type { RequestOptions } from "./request";
-import * as querystring from "node:querystring";
 
 /**
  * Methods for working with OAuth token exchange.
@@ -46,7 +46,12 @@ export default class Oauth {
       delete options["redirectUri"];
     }
 
-    return this._client.request("POST", "/oauth/access_token", attributes, options);
+    return this._client.request(
+      "POST",
+      "/oauth/access_token",
+      attributes,
+      options
+    );
   }
 
   /**

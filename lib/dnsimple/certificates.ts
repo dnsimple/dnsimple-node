@@ -1,6 +1,6 @@
 import type Client from "./client";
-import type { RequestOptions } from "./request";
 import paginate from "./paginate";
+import type { RequestOptions } from "./request";
 
 export default class Certificates {
   constructor(private readonly _client: Client) {}
