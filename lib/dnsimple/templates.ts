@@ -1,274 +1,356 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-
-const Paginate = require('./paginate');
-
-/**
- * Provides access to the DNSimple Templates API.
- *
- * @see https://developer.dnsimple.com/v2/templates
- */
+import paginate = require("./paginate");
 class Templates {
   constructor(private readonly _client: Client) {}
 
   /**
    * Lists the templates in the account.
    *
-   * @see https://developer.dnsimple.com/v2/templates/#list
    *
-   * @example List templates in the first page
-   * client.templates.listTemplates(1010).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * This API is paginated. Call `listTemplates.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
-   * @example List templates, provide a specific page
-   * client.templates.listTemplates(1010, {page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * GET /{account}/templates
    *
-   * @example List templates, provide a sorting policy
-   * client.templates.listTemplates(1010, {sort: 'name:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by id ascending.
    */
-  listTemplates (accountId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/templates`, options);
-  }
+  listTemplates = (() => {
+    const method = (
+      account: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        account_id: number;
+        name: string;
+        sid: string;
+        description: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> => this._client.request("GET", `/${account}/templates`, null, options);
+    method.paginate = (
+      account: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ) => paginate((page) => method(account, { ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * List ALL the templates in the account.
+   * Creates a template.
    *
-   * This method is similar to {#listTemplates}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * POST /{account}/templates
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all templates
-   * client.templates.allTemplates(1010).then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List all templates, provide a sorting policy
-   * client.templates.allTemplates(1010, {sort: 'name:asc'}).then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
    */
-  allTemplates (accountId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listTemplates, [accountId, options]);
-  }
+  createTemplate = (() => {
+    const method = (
+      account: number,
+      data: { sid: string; name: string; description: string },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        name: string;
+        sid: string;
+        description: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> => this._client.request("POST", `/${account}/templates`, data, options);
+    return method;
+  })();
 
   /**
-   * Get a specific template associated to an account using the template's ID.
+   * Retrieves the details of an existing template.
    *
-   * @see https://developer.dnsimple.com/v2/templates/#get
+   * GET /{account}/templates/{template}
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} contactId The template ID or short name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param template The template id
+   * @param options Query parameters
    */
-  getTemplate (accountId, templateId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/templates/${templateId}`, options);
-  }
+  getTemplate = (() => {
+    const method = (
+      account: number,
+      template: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        name: string;
+        sid: string;
+        description: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/templates/${template}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Create a template in the account.
+   * Updates the template details.
    *
-   * @see https://developer.dnsimple.com/v2/templates/#create
+   * PATCH /{account}/templates/{template}
    *
-   * @param {number} accountId The account ID
-   * @param {Object} attributes The template attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param template The template id
+   * @param options Query parameters
    */
-  createTemplate (accountId, attributes, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/templates`, attributes, options);
-  }
+  updateTemplate = (() => {
+    const method = (
+      account: number,
+      template: number,
+      data: { sid: string; name: string; description: string },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        name: string;
+        sid: string;
+        description: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "PATCH",
+        `/${account}/templates/${template}`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Update a template in the account.
+   * Permanently deletes a template.
    *
-   * @see https://developer.dnsimple.com/v2/templates/#update
+   * DELETE /{account}/templates/{template}
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} templateId The template ID or short name
-   * @param {Object} attributes The template attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param template The template id
+   * @param options Query parameters
    */
-  updateTemplate (accountId, templateId, attributes, options: RequestOptions = {}) {
-    return this._client.patch(`/${accountId}/templates/${templateId}`, attributes, options);
-  }
+  deleteTemplate = (() => {
+    const method = (
+      account: number,
+      template: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/templates/${template}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Delete a template from the account.
+   * Lists the records for a template.
    *
-   * @see https://developer.dnsimple.com/v2/templates/#delete
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} templateId The template ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * This API is paginated. Call `listTemplateRecords.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   *
+   * GET /{account}/templates/{template}/records
+   *
+   * @param account The account id
+   * @param template The template id
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by id ascending.
    */
-  deleteTemplate (accountId, templateId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/templates/${templateId}`, options);
-  }
+  listTemplateRecords = (() => {
+    const method = (
+      account: number,
+      template: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        template_id: number;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number;
+        type: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/templates/${template}/records`,
+        null,
+        options
+      );
+    method.paginate = (
+      account: number,
+      template: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ) =>
+      paginate((page) =>
+        method(account, template, { ...options, page } as any)
+      );
+    return method;
+  })();
 
   /**
-   * Apply a template from the account to the domain
+   * Creates a new template record.
    *
-   * @see https://developer.dnsimple.com/v2/domains/templates/#apply
+   * POST /{account}/templates/{template}/records
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} templateId The template ID or short name
-   * @param {number|string} domainId The domain ID or name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param template The template id
+   * @param options Query parameters
    */
-  applyTemplate (accountId, templateId, domainId, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/domains/${domainId}/templates/${templateId}`, null, options);
-  }
+  createTemplateRecord = (() => {
+    const method = (
+      account: number,
+      template: number,
+      data: {},
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        template_id: number;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number;
+        type: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/templates/${template}/records`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Lists the records in the template.
+   * Retrieves the details of an existing template record.
    *
-   * @see https://developer.dnsimple.com/v2/templates/records/#list
+   * GET /{account}/templates/{template}/records/{templaterecord}
    *
-   * @example List records in the template
-   * client.templates.listRecords(1010, 'alpha').then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List records in the template, provide a specific page
-   * client.templates.listRecords(1010, 'alpha' {page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List records in the template, provide a sorting policy
-   * client.templates.listRecords(1010, 'alpha', {sort: 'name:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} templateId The template ID or short name
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param template The template id
+   * @param templaterecord The template record id
+   * @param options Query parameters
    */
-  listTemplateRecords (accountId, templateId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/templates/${templateId}/records`, options);
-  }
+  getTemplateRecord = (() => {
+    const method = (
+      account: number,
+      template: number,
+      templaterecord: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        template_id: number;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number;
+        type: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/templates/${template}/records/${templaterecord}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * List ALL the records in the template.
+   * Permanently deletes a template record.
    *
-   * This method is similar to {#listRecords}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * DELETE /{account}/templates/{template}/records/{templaterecord}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all template records
-   * client.templates.allRecords(1010, 'example.com').then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List all template records, provide a sorting policy
-   * client.templates.allRecords(1010, 'example.com', {sort: 'name:asc'}).then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or numeric ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param template The template id
+   * @param templaterecord The template record id
+   * @param options Query parameters
    */
-  allTemplateRecords (accountId, domainId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listTemplateRecords, [accountId, domainId, options]);
-  }
+  deleteTemplateRecord = (() => {
+    const method = (
+      account: number,
+      template: number,
+      templaterecord: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/templates/${template}/records/${templaterecord}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get a specific record associated to a template using the record's ID.
+   * Applies a template to a domain.
    *
-   * @see https://developer.dnsimple.com/v2/templates/records/#get
+   * POST /{account}/domains/{domain}/templates/{template}
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} contactId The template ID or short name
-   * @param {number} recordId The record ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param template The template id
+   * @param options Query parameters
    */
-  getTemplateRecord (accountId, templateId, recordId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/templates/${templateId}/records/${recordId}`, options);
-  }
-
-  /**
-   * Create a record in the template.
-   *
-   * @see https://developer.dnsimple.com/v2/templates/records/#create
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} templateId The template ID or short name
-   * @param {Object} attributes The template attributes
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  createTemplateRecord (accountId, templateId, attributes, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/templates/${templateId}/records`, attributes, options);
-  }
-
-  /**
-   * Delete a record from the template.
-   *
-   * @see https://developer.dnsimple.com/v2/templates/records/#delete
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} templateId The template ID or short name
-   * @param {number} recordId The record ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  deleteTemplateRecord (accountId, templateId, recordId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/templates/${templateId}/records/${recordId}`, options);
-  }
+  applyTemplateToDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      template: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/templates/${template}`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Templates;

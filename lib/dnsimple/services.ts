@@ -1,198 +1,206 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-
-const Paginate = require('./paginate');
-
-/**
- * Provides access to the DNSimple one-click Services API.
- *
- * @see https://developer.dnsimple.com/v2/services
- */
+import paginate = require("./paginate");
 class Services {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Lists the available one-click services.
+   * List all available one-click services.
    *
-   * @see https://developer.dnsimple.com/v2/services/#list
    *
-   * @example List one-click services in the first page
-   * client.services.listServices().then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * This API is paginated. Call `listServices.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
-   * @example List one-click services, provide a specific page
-   * client.services.listServices({page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * GET /services
    *
-   * @example List one-click services, provide a sorting policy
-   * client.services.listServices({sort: 'name:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by id ascending.
    */
-  listServices (options: RequestOptions = {}) {
-    return this._client.get('/services', options);
-  }
+  listServices = (() => {
+    const method = (
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        name: string;
+        sid: string;
+        description: string;
+        setup_description: string | null;
+        requires_setup: boolean;
+        default_subdomain: string | null;
+        created_at: string;
+        updated_at: string;
+        settings: Array<{
+          name: string;
+          label: string;
+          append: string;
+          description: string;
+          example: string;
+          password: boolean;
+        }>;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> => this._client.request("GET", `/services`, null, options);
+    method.paginate = (
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ) => paginate((page) => method({ ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * Lists ALL available one-click services.
+   * Retrieves the details of a one-click service.
    *
-   * This method is similar to {#listServices}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * GET /services/{service}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List one-click services
-   * client.services.allServices().then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List one-click services, provide a sorting policy
-   * client.services.allServices({sort: 'name:asc'}).then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param service The service sid or id
+   * @param options Query parameters
    */
-  allServices (options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listServices, [options]);
-  }
+  getService = (() => {
+    const method = (
+      service: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        name: string;
+        sid: string;
+        description: string;
+        setup_description: string | null;
+        requires_setup: boolean;
+        default_subdomain: string | null;
+        created_at: string;
+        updated_at: string;
+        settings: Array<{
+          name: string;
+          label: string;
+          append: string;
+          description: string;
+          example: string;
+          password: boolean;
+        }>;
+      };
+    }> => this._client.request("GET", `/services/${service}`, null, options);
+    return method;
+  })();
 
   /**
-   * Get a specific service by ID.
+   * List services applied to a domain.
    *
-   * @see https://developer.dnsimple.com/v2/services/#get
    *
-   * @param {number} serviceId The service ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * This API is paginated. Call `listDomainAppliedServices.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   *
+   * GET /{account}/domains/{domain}/services
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  getService (serviceId, options: RequestOptions = {}) {
-    return this._client.get(`/services/${serviceId}`, options);
-  }
+  listDomainAppliedServices = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        name: string;
+        sid: string;
+        description: string;
+        setup_description: string | null;
+        requires_setup: boolean;
+        default_subdomain: string | null;
+        created_at: string;
+        updated_at: string;
+        settings: Array<{
+          name: string;
+          label: string;
+          append: string;
+          description: string;
+          example: string;
+          password: boolean;
+        }>;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/services`,
+        null,
+        options
+      );
+    method.paginate = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ) =>
+      paginate((page) => method(account, domain, { ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * Lists the one-click services applied to the domain.
+   * Applies a service to a domain.
    *
-   * @see https://developer.dnsimple.com/v2/services/domains/#applied
+   * POST /{account}/domains/{domain}/services/{service}
    *
-   * @example List applied one-click services for example.com
-   * client.services.appliedServices(1010, 'example.com').then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List applied one-click services for example.com, provide a specific page
-   * client.services.appliedServices(1010, 'example.com', {page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List applied one-click services for example.com, provide a sorting policy
-   * client.services.appliedServices(1010, 'example.com', {sort: 'email:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or ID.
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param service The service sid or id
+   * @param options Query parameters
    */
-  appliedServices (accountId, domainId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/domains/${domainId}/services`, options);
-  }
+  applyServiceToDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      service: string,
+      data: {},
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/services/${service}`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * List ALL the applied services in the domain.
+   * Unapplies a service from a domain.
    *
-   * This method is similar to {#appliedServices}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * DELETE /{account}/domains/{domain}/services/{service}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all applied services
-   * client.domains.allAppliedServices(1010, 'example.com').then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List all applied services, provide a sorting policy
-   * client.domains.allAppliedServices(1010, 'example.com', {sort: 'name:asc'}).then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or numeric ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param service The service sid or id
+   * @param options Query parameters
    */
-  allAppliedServices (accountId, domainId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.appliedServices, [accountId, domainId, options]);
-  }
-
-  /**
-   * Apply the given one-click service to the given domain.
-   *
-   * @see https://developer.dnsimple.com/v2/services/domains/#apply
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or ID.
-   * @param {number} serviceId The service ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  applyService (accountId, domainId, serviceId, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/domains/${domainId}/services/${serviceId}`, null, options);
-  }
-
-  /**
-   * Unapply the given one-click service from the given domain.
-   *
-   * @see https://developer.dnsimple.com/v2/services/domains/#unapply
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or ID.
-   * @param {number} serviceId The service ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  unapplyService (accountId, domainId, serviceId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/domains/${domainId}/services/${serviceId}`, options);
-  }
+  unapplyServiceFromDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      service: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/domains/${domain}/services/${service}`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Services;

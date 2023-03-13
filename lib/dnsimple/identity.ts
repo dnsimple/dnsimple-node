@@ -1,25 +1,37 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
 
-/**
- * Provides access to the DNSimple Identity API.
- *
- * @see https://developer.dnsimple.com/v2/identity
- */
 class Identity {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Gets the information about the current authenticated context.
+   * Retrieves the details about the current authenticated entity used to access the API.
    *
-   * @see https://developer.dnsimple.com/v2/identity/#whoami
+   * GET /whoami
    *
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param options Query parameters
    */
-  whoami (options: RequestOptions = {}) {
-    return this._client.get('/whoami', options);
-  }
+  whoami = (() => {
+    const method = (
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        account: {
+          id: number;
+          email: string;
+          plan_identifier: string;
+          created_at: string;
+          updated_at: string;
+        };
+        user: {
+          id: number;
+          email: string;
+          created_at: string;
+          updated_at: string;
+        };
+      };
+    }> => this._client.request("GET", `/whoami`, null, options);
+    return method;
+  })();
 }
-
 export = Identity;

@@ -1,210 +1,329 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-
-const Paginate = require('./paginate');
-
-/**
- * Provides access to the DNSimple Certificates API.
- *
- * @see https://developer.dnsimple.com/v2/domains/certificates
- */
+import paginate = require("./paginate");
 class Certificates {
   constructor(private readonly _client: Client) {}
 
   /**
-   * List certificates for a domain in the account.
+   * Lists the certificates for a domain.
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#listCertificates
    *
-   * @example List certificates in the first page
-   * client.certificates.listCertificates(1010, 'example.com').then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * This API is paginated. Call `listCertificates.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
-   * @example List certificates, provide a specific page
-   * client.certificates.listCertificates(1010, 'example.com', {page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * GET /{account}/domains/{domain}/certificates
    *
-   * @example List certificates, provide a sorting policy
-   * client.certificates.listCertificates(1010, 'example.com', {sort: 'email:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by id.
    */
-  listCertificates (accountId, domainId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/domains/${domainId}/certificates`, options);
-  }
+  listCertificates = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        domain_id: number;
+        contact_id: number;
+        name: string;
+        common_name: string;
+        years: number;
+        csr: string;
+        state: string;
+        auto_renew: boolean;
+        alternate_names: Array<string>;
+        authority_identifier: string;
+        created_at: string;
+        updated_at: string;
+        expires_at: string;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates`,
+        null,
+        options
+      );
+    method.paginate = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ) =>
+      paginate((page) => method(account, domain, { ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * List ALL the certificates for a domain in the account.
+   * Retrieves the details of an existing certificate.
    *
-   * This method is similar to {#listCertificates}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * GET /{account}/domains/{domain}/certificates/{certificate}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all certificates
-   * client.certificates.allCertificates(1010).then((response) => {
-   *   // use certificates list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List certificates, provide a sorting policy
-   * client.certificates.allCertificates(1010, {sort: 'name:asc'}).then((response) => {
-   *   // use certificates list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or numeric ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param certificate The certificate id
+   * @param options Query parameters
    */
-  allCertificates (accountId, domainId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listCertificates, [accountId, domainId, options]);
-  }
+  getCertificate = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        contact_id: number;
+        name: string;
+        common_name: string;
+        years: number;
+        csr: string;
+        state: string;
+        auto_renew: boolean;
+        alternate_names: Array<string>;
+        authority_identifier: string;
+        created_at: string;
+        updated_at: string;
+        expires_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates/${certificate}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get the details of a certificate.
+   * Gets the PEM-encoded certificate, along with the root certificate and intermediate chain.
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#getCertificate
+   * GET /{account}/domains/{domain}/certificates/{certificate}/download
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {number} certificateId The certificate ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param certificate The certificate id
+   * @param options Query parameters
    */
-  getCertificate (accountId, domainId, certificateId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/domains/${domainId}/certificates/${certificateId}`, options);
-  }
+  downloadCertificate = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: { server: string; root: string; chain: Array<string> };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates/${certificate}/download`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get the PEM-encoded certificate, along with the root certificate and intermediate chain.
+   * Gets the PEM-encoded certificate private key.
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#downloadCertificate
+   * GET /{account}/domains/{domain}/certificates/{certificate}/private_key
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {number} certificateId The certificate ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param certificate The certificate id
+   * @param options Query parameters
    */
-  downloadCertificate (accountId, domainId, certificateId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/domains/${domainId}/certificates/${certificateId}/download`, options);
-  }
+  getCertificatePrivateKey = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: { private_key: string } }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates/${certificate}/private_key`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get the PEM-encoded certificate private key.
+   * Orders a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate with DNSimple.
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#getCertificatePrivateKey
+   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt
    *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {number} certificateId The certificate ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  getCertificatePrivateKey (accountId, domainId, certificateId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/domains/${domainId}/certificates/${certificateId}/private_key`, options);
-  }
+  purchaseLetsencryptCertificate = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: {
+        auto_renew: boolean;
+        name: string;
+        alternate_names: Array<string>;
+        signature_algorithm: string;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        certificate_id: number;
+        state: string;
+        auto_renew: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/certificates/letsencrypt`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Purchase a Let's Encrypt certificate.
+   * Issues a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate ordered with DNSimple.
    *
-   * This method creates a new purchase order. The order ID should be used to
-   + request the issuance of the certificate using `#issueLetsencryptCertificate`.
+   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt/{purchaseId}/issue
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#purchaseLetsencryptCertificate
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {Object} attributes The attributes for the certificate.
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param purchaseId The certificate purchase order id received by `purchaseLetsencryptCertificate`.
+   * @param options Query parameters
    */
-  purchaseLetsencryptCertificate (accountId, domainId, attributes = {}, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/domains/${domainId}/certificates/letsencrypt`, attributes, options);
-  }
+  issueLetsencryptCertificate = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      purchaseId: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        contact_id: number;
+        name: string;
+        common_name: string;
+        years: number;
+        csr: string;
+        state: string;
+        auto_renew: boolean;
+        alternate_names: Array<string>;
+        authority_identifier: string;
+        created_at: string;
+        updated_at: string;
+        expires_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${purchaseId}/issue`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Issue a pending Let's Encrypt certificate order.
+   * Renews a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate ordered with DNSimple.
    *
-   * Note that the issuance process is async. A successful response means the issuance
-   + request has been successfully acknowledged and queued for processing.
+   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt/{certificate}/renewals
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#issueLetsencryptCertificate
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {number} certificatePurchaseId The certificate purchase identifier
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param certificate The certificate id
+   * @param options Query parameters
    */
-  issueLetsencryptCertificate (accountId, domainId, certificatePurchaseId, options: RequestOptions = {}) {
-    return this._client.post(
-      `/${accountId}/domains/${domainId}/certificates/letsencrypt/${certificatePurchaseId}/issue`, null, options);
-  }
+  purchaseRenewalLetsencryptCertificate = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      data: { auto_renew: boolean; signature_algorithm: string },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        old_certificate_id: number;
+        new_certificate_id: number;
+        state: string;
+        auto_renew: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${certificate}/renewals`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Purchase a Let's Encrypt certificate renewal.
+   * Issues a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate renewal ordered with DNSimple.
    *
-   * This method creates a new renewal order. The order ID should be used to
-   + request the issuance of the certificate using `#issueLetsencryptCertificateRenewal`.
+   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt/{certificate}/renewals/{renewalId}/issue
    *
-   * @see https://developer.dnsimple.com/v2/certificates/#purchaseRenewalLetsencryptCertificate
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {number} certificateId The certificate ID to renew
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param certificate The certificate id
+   * @param renewalId The certificate renewal order id received by `purchaseRenewalLetsencryptCertificate`.
+   * @param options Query parameters
    */
-  purchaseLetsencryptCertificateRenewal (accountId, domainId, certificateId, options: RequestOptions = {}) {
-    return this._client.post(
-      `/${accountId}/domains/${domainId}/certificates/letsencrypt/${certificateId}/renewal`, null, options);
-  }
-
-  /**
-   * Issue a pending Let's Encrypt certificate renewal order.
-   +
-   + Note that the issuance process is async. A successful response means the issuance
-   + request has been successfully acknowledged and queued for processing.
-   *
-   * @see https://developer.dnsimple.com/v2/certificates/#issueRenewalLetsencryptCertificate
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {number} oldCertificateId The certificate identifier
-   * @param {number} certificateRenewalId The certificate renewal order ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  issueLetsencryptCertificateRenewal (accountId, domainId, oldCertificateId, certificateRenewalId, options: RequestOptions = {}) {
-    return this._client.post(
-      `/${accountId}/domains/${domainId}/certificates/` +
-      `letsencrypt/${oldCertificateId}/renewals/${certificateRenewalId}/issue`,
-      null, options);
-  }
+  issueRenewalLetsencryptCertificate = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      renewalId: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        contact_id: number;
+        name: string;
+        common_name: string;
+        years: number;
+        csr: string;
+        state: string;
+        auto_renew: boolean;
+        alternate_names: Array<string>;
+        authority_identifier: string;
+        created_at: string;
+        updated_at: string;
+        expires_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Certificates;

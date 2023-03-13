@@ -36,20 +36,15 @@
     "lodash": ">=4.17.13",
     "mocha": "^10.0.0",
     "nock": "^13.0.0",
-    "semistandard": "^16.0.0",
+    "prettier": "^2.8.4",
     "sinon": "^15.0.1",
-    "snazzy": "^9.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "yaml": "^2.2.1"
   },
   "license": "MIT",
   "scripts": {
-    "test": "npm run lint && mocha --bail --recursive",
-    "lint": "semistandard --verbose | snazzy"
-  },
-  "semistandard": {
-    "globals": [
-      "describe",
-      "it"
-    ]
+    "format": "prettier -w '**/*.{js,json,ts}'",
+    "format-check": "prettier --check '**/*.{js,json,ts}'",
+    "test": "mocha --bail --recursive"
   }
 }

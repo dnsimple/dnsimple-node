@@ -1,96 +1,94 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
 
-/**
- * Provides access to the DNSimple Webhooks API.
- *
- * @see https://developer.dnsimple.com/v2/webhooks
- */
 class Webhooks {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Lists the webhooks in the account.
+   * List the webhooks in the account.
    *
-   * @see https://developer.dnsimple.com/v2/webhooks/#list
+   * GET /{account}/webhooks
    *
-   * @example List webhooks
-   * client.webhooks.listWebhooks(1010).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by name ascending.
    */
-  listWebhooks (accountId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/webhooks`, options);
-  }
+  listWebhooks = (() => {
+    const method = (
+      account: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{ id: number; url: string; suppressed_at: string }>;
+    }> => this._client.request("GET", `/${account}/webhooks`, null, options);
+    return method;
+  })();
 
   /**
-   * List ALL the templates in the account.
+   * Registers a webhook endpoint.
    *
-   * This method is similar to {#listWebhooks}, but instead of a Promise that emits the
-   * response, it returns a Promise that emits the item collection.
+   * POST /{account}/webhooks
    *
-   * @param {number} accountId The account ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
    */
-  allWebhooks (accountId, options: RequestOptions = {}) {
-    return new Promise((resolve, reject) => {
-      this.listWebhooks(accountId, options).then((response: any) => {
-        resolve(response.data);
-      }, (error) => {
-        reject(error);
-      });
-    });
-  }
+  createWebhook = (() => {
+    const method = (
+      account: number,
+      data: { url: string },
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
+      this._client.request("POST", `/${account}/webhooks`, data, options);
+    return method;
+  })();
 
   /**
-   * Get a specific webhook associated to an account using the webhook's ID.
+   * Retrieves the details of a registered webhook.
    *
-   * @see https://developer.dnsimple.com/v2/webhooks/#get
+   * GET /{account}/webhooks/{webhook}
    *
-   * @param {number} accountId The account ID
-   * @param {number} webhookId The webhook ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param webhook The webhoook id
+   * @param options Query parameters
    */
-  getWebhook (accountId, webhookId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/webhooks/${webhookId}`, options);
-  }
+  getWebhook = (() => {
+    const method = (
+      account: number,
+      webhook: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
+      this._client.request(
+        "GET",
+        `/${account}/webhooks/${webhook}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Create a webhook in the account.
+   * De-registers a webhook endpoint.
    *
-   * @see https://developer.dnsimple.com/v2/webhooks/#create
+   * DELETE /{account}/webhooks/{webhook}
    *
-   * @param {number} accountId The account ID
-   * @param {Object} attributes The webhook attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param webhook The webhoook id
+   * @param options Query parameters
    */
-  createWebhook (accountId, attributes, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/webhooks`, attributes, options);
-  }
-
-  /**
-   * Delete a webhook from the account.
-   *
-   * @see https://developer.dnsimple.com/v2/webhooks/#delete
-   *
-   * @param {number} accountId The account ID
-   * @param {number} webhookId The webhook ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-
-  deleteWebhook (accountId, webhookId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/webhooks/${webhookId}`, options);
-  }
+  deleteWebhook = (() => {
+    const method = (
+      account: number,
+      webhook: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/webhooks/${webhook}`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Webhooks;

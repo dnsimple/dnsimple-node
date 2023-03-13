@@ -1,7 +1,6 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-
-const querystring = require('querystring');
+import querystring = require("querystring");
 
 /**
  * Methods for working with OAuth token exchange.
@@ -24,12 +23,17 @@ class Oauth {
    * @param {string} [options.redirectUri] A redirect URI
    * @return {Promise}
    */
-  exchangeAuthorizationForToken (code, clientId, clientSecret, options: RequestOptions = {}) {
+  exchangeAuthorizationForToken(
+    code,
+    clientId,
+    clientSecret,
+    options: RequestOptions = {}
+  ) {
     const attributes: any = {
       code,
       client_id: clientId,
       client_secret: clientSecret,
-      grant_type: 'authorization_code'
+      grant_type: "authorization_code",
     };
 
     if (!(options["state"] === undefined)) {
@@ -42,7 +46,7 @@ class Oauth {
       delete options["redirectUri"];
     }
 
-    return this._client.post('/oauth/access_token', attributes, options);
+    return this._client.request("POST", "/oauth/access_token", attributes, options);
   }
 
   /**
@@ -57,11 +61,14 @@ class Oauth {
    * @param {string} [options.scope] The scope to request during authorization
    * @return {string} The URL to redirect the user to for authorization
    */
-  authorizeUrl (clientId, options: RequestOptions = {}) {
-    const siteUrl = this._client.baseUrl().href.replace('api.', '');
+  authorizeUrl(clientId, options: RequestOptions = {}) {
+    const siteUrl = this._client.baseUrl().href.replace("api.", "");
     let url = `${siteUrl}oauth/authorize`;
 
-    options = Object.assign(options, { client_id: clientId, response_type: 'code' });
+    options = Object.assign(options, {
+      client_id: clientId,
+      response_type: "code",
+    });
     url = `${url}?${querystring.stringify(options)}`;
     return url;
   }

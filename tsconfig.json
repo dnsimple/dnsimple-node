@@ -24,6 +24,6 @@
     "outDir": "dist",
     "strict": true,
     "target": "ES6",
-    "useUnknownInCatchVariables": false,
+    "useUnknownInCatchVariables": false
   }
 }

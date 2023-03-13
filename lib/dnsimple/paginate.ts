@@ -1,41 +1,43 @@
 /**
- * Class to handle pagination.
+ * Async generator function to assist with paginated APIs.
+ * Use this to iterate through individual items of a paginated API with ease.
+ * Provide a callback that makes the request with the provided page number, and this function will take care of calling the API and yielding the individual items, allowing continuous iteration of all items across all pages like a single list.
  *
- * It must be constructed by passing the invoker instance (i.e. the service that has the
- * list function in its methods).
+ * @example Iterate through all items of a paginated API:
+ * ```
+ * const client = new Dnsimple({});
+ * const paginated = paginate(page => client.certificates.listCertificates(1000, "bingo.pizza", { sort: "name:asc", page }));
+ * for await (const certificate of paginated) {
+ *   console.log("Certificate", certificate.name, "expires at", certificate.expires_at);
+ * }
+ * ```
+ *
+ * @example Most paginated API methods also have a helper submethod that will invoke this function automatically with the appropriate arguments:
+ * ```
+ * const client = new Dnsimple({});
+ * const paginated = client.certificates.listCertificates.paginate(1000, "bingo.pizza", { sort: "name:asc" });
+ * for await (const certificate of paginated) {
+ *   console.log("Certificate", certificate.name, "expires at", certificate.expires_at);
+ * }
+ * ```
  */
-class Paginate<Invoker> {
-  constructor (private readonly _invoker: Invoker) {}
-
-  /**
-   * Paginate through all resources using the given `listFunction`.
-   *
-   * Note that this method assumes that the `options` Object is the last item in the `args`
-   * Array (which is the standard practice throughout this library).
-   *
-   * @param {Function} listFunction The list function that will be called to retrieve each page
-   * @param {Array} args Array of arguments to pass to the list function.
-   * @return {Promise} A Promise that resolves to the full Array of items
-   */
-  async paginate<Item, Method extends (this: Invoker, ...args: any[]) => Promise<{
+async function* paginate<Item>(
+  fn: (page: number) => Promise<{
+    data: ReadonlyArray<Item>;
     pagination: {
-      total_pages: number,
-    },
-    data: Item[],
-  }>> (listFunction: Method, args: Parameters<Method>) {
-    const optionsWithPage = { ...args.at(-1)!, page: 1 };
-    const argsWithPage = [...args.slice(0, -1), optionsWithPage];
-    const items = Array<Item>();
-    while (true) {
-      const response = await listFunction.apply(this._invoker, argsWithPage as any);
-      items.push(...response.data);
-      if (optionsWithPage.page >= response.pagination.total_pages) {
-        break;
-      }
-      optionsWithPage.page++;
+      total_pages: number;
+    };
+  }>
+): AsyncGenerator<Item, any, any> {
+  let page = 1;
+  while (true) {
+    const res = await fn(page);
+    yield* res.data;
+    if (page >= res.pagination.total_pages) {
+      break;
     }
-    return items;
+    page++;
   }
 }
 
-export = Paginate;
+export = paginate;

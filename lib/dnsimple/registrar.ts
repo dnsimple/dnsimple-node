@@ -1,482 +1,680 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
 
-/**
- * Class providing access to the DNSimple Registrar API.
- *
- * @see https://developer.dnsimple.com/v2/registrar/
- */
 class Registrar {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Checks whether a domain is available for registration.
+   * Checks a domain name for availability.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#check
+   * GET /{account}/registrar/domains/{domain}/check
    *
-   * @example Check whether example.com is available
-   * client.registrar.checkDomain(1010, 'example.com').then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to check
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  checkDomain (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, 'check'), options);
-  }
+  checkDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: { domain: string; available: boolean; premium: boolean };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/check`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Gets the premium price for a domain.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#check
-   *
-   * @example Check whether example.com is available
-   * client.registrar.getDomainPremiumPrice(1010, 'example.com').then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to get the premium price on
-   * @param {Object} [options]
-   * @return {Promise}
-   * @deprecated Use "getDomainPrices" instead
-   */
-  getDomainPremiumPrice (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, 'premium_price'), options);
-  }
+     * Deprecated in favor of getDomainPrices.
+Retrieves the premium price for a premium domain.
+Please note that a premium price can be different for registration, renewal, transfer. By default this endpoint returns the premium price for registration. If you need to check a different price, you should specify it with the action param.
+     *
+     * GET /{account}/registrar/domains/{domain}/premium_price
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     * @param options.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
+     */
+  getDomainPremiumPrice = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {
+        action?: string;
+      } = {}
+    ): Promise<{ data: { premium_price: string; action: string } }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/premium_price`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get prices for a domain.
+   * Retrieve domain prices.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainPrices
+   * GET /{account}/registrar/domains/{domain}/prices
    *
-   * @example Check prices for example.com:
-   * client.registrar.getDomainPrices(1010, "example.com").then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name the domain name to find the prices
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  getDomainPrices (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, 'prices'), options);
-  }
+  getDomainPrices = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        domain: string;
+        premium: boolean;
+        registration_price: number;
+        renewal_price: number;
+        transfer_price: number;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/prices`,
+        null,
+        options
+      );
+    return method;
+  })();
+
+  /**
+     * Registers a domain name.
+Your account must be active for this command to complete successfully. You will be automatically charged the registration fee upon successful registration, so please be careful with this command.
+     *
+     * POST /{account}/registrar/domains/{domain}/registrations
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  registerDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: {
+        registrant_id: number;
+        whois_privacy: boolean;
+        auto_renew: boolean;
+        extended_attributes: {};
+        premium_price: string;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        registrant_id: number;
+        period: number;
+        state: string;
+        auto_renew: boolean;
+        whois_privacy: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/registrations`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
    * Retrieves the details of an existing domain registration.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainRegistration
+   * GET /{account}/registrar/domains/{domain}/registrations/{domainregistration}
    *
-   * @example Get registration 1234 for example.com:
-   * client.registrar.getDomainRegistration(1010, "example.com", 1234).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {number} domainRegistration The domain registration ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param domainregistration The domain registration id
+   * @param options Query parameters
    */
-  getDomainRegistration (accountId, domainName, domainRegistration, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, `registrations/${domainRegistration}`), options);
-  }
+  getDomainRegistration = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      domainregistration: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        registrant_id: number;
+        period: number;
+        state: string;
+        auto_renew: boolean;
+        whois_privacy: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/registrations/${domainregistration}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Retrieves the details of an existing domain renewal.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainRenewal
-   *
-   * @example Get renewal 1234 for example.com:
-   * client.registrar.getDomainRenewal(1010, "example.com", 1234).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {number} domainRenewal The domain registration ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  getDomainRenewal (accountId, domainName, domainRenewal, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, `renewals/${domainRenewal}`), options);
-  }
-
-  /**
-   * Registers a domain.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#register
-   *
-   * @example Initiate the registration of example.com using the contact 1234 as registrant,
-   *   and including whois privacy for the domain as well as auto-renewal
-   * var attributes = {registrant_id: 1234, private_whois: true, auto_renew: true};
-   * client.registrar.registerDomain(1010, 'example.com', attributes).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to register
-   * @param {Object} attributes Attributes of the registration
-   * @param {number} attributes.registrant_id The registrant ID number.
-   * @param {boolean} [attributes.private_whois] Set to true to enable whois privacy (additional charge)
-   * @param {boolean} [attributes.auto_renew] Set to true to automatically renew the domain
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  registerDomain (accountId, domainName, attributes, options: RequestOptions = {}) {
-    // Note: registrar_id is required, but no validation occurs here.
-    // In the ruby library this is validated.
-    return this._client.post(this._registrarPath(accountId, domainName, 'registrations'), attributes, options);
-  }
-
-  /**
-   * Renews a domain.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#renew
-   *
-   * @example Renew example.com for 3 years:
-   * client.registrar.renewDomain(1010, 'example.com', {period: 3}).then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to renew
-   * @param {Object} attributes Attributes of the renewal
-   * @param {number} [attributes.period] The number of years to renew (max 3, default 1)
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  renewDomain (accountId, domainName, attributes, options: RequestOptions = {}) {
-    return this._client.post(this._registrarPath(accountId, domainName, 'renewals'), attributes, options);
-  }
-
-  /**
-   * Starts the transfer of a domain to DNSimple.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#transfer
-   *
-   * @example Initiate the transfer for example.com using contact 1234 as registrant
-   * client.registrar.transferDomain(1010, 'example.com', {registrant_id: 1234}).then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to transfer
-   * @param {Object} attributes Attributes of the transfer
-   * @param {number} attributes.registrant_id The registrant ID number
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  transferDomain (accountId, domainName, attributes, options: RequestOptions = {}) {
-    // Note: registrar_id is required, but no validation occurs here.
-    // In the ruby library this is validated.
-    return this._client.post(this._registrarPath(accountId, domainName, 'transfers'), attributes, options);
-  }
+     * Transfers a domain name from another registrar.
+Your account must be active for this command to complete successfully. You will be automatically charged the 1-year transfer fee upon successful transfer, so please be careful with this command. The transfer may take anywhere from a few minutes up to 7 days.
+     *
+     * POST /{account}/registrar/domains/{domain}/transfers
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  transferDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: {
+        registrant_id: number;
+        auth_code: string;
+        whois_privacy: boolean;
+        auto_renew: boolean;
+        extended_attributes: {};
+        premium_price: string;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        registrant_id: number;
+        state: string;
+        auto_renew: boolean;
+        whois_privacy: boolean;
+        status_description: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/transfers`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
    * Retrieves the details of an existing domain transfer.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainTransfer
+   * GET /{account}/registrar/domains/{domain}/transfers/{domaintransfer}
    *
-   * @example Retrieve the transfer 42 for example.com
-   * client.registrar.getDomainTransfer(1010, 'example.com', 42).then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to transfer
-   * @param {number} domainTransferId The domain transfer ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param domaintransfer The domain transfer id
+   * @param options Query parameters
    */
-  getDomainTransfer (accountId, domainName, domainTransferId, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, `transfers/${domainTransferId}`), options);
-  }
+  getDomainTransfer = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      domaintransfer: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        registrant_id: number;
+        state: string;
+        auto_renew: boolean;
+        whois_privacy: boolean;
+        status_description: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
    * Cancels an in progress domain transfer.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#cancelDomainTransfer
+   * DELETE /{account}/registrar/domains/{domain}/transfers/{domaintransfer}
    *
-   * @example Cancel the transfer 42 for example.com
-   * client.registrar.cancelDomainTransfer(1010, 'example.com', 42).then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to transfer
-   * @param {number} domainTransferId The domain transfer ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param domaintransfer The domain transfer id
+   * @param options Query parameters
    */
-  cancelDomainTransfer (accountId, domainName, domainTransferId, options: RequestOptions = {}) {
-    return this._client.delete(this._registrarPath(accountId, domainName, `transfers/${domainTransferId}`), options);
-  }
+  cancelDomainTransfer = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      domaintransfer: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        registrant_id: number;
+        state: string;
+        auto_renew: boolean;
+        whois_privacy: boolean;
+        status_description: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Requests the transfer of a domain out of DNSimple.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#transfer-out
-   *
-   * @example Request the transfer of example.com out of DNSimple
-   * client.registrar.transferDomainOut(1010, 'example.com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name to transfer out
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  transferDomainOut (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.post(this._registrarPath(accountId, domainName, 'authorize_transfer_out'), null, options);
-  }
-
-  // Auto-renewal
-
-  /**
-   * @deprecated Use `enableDomainAutoRenewal`.
-   */
-  enableAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.put(this._registrarPath(accountId, domainName, 'auto_renewal'), null, options);
-  }
-
-  /**
-   * Enable auto renewal for the domain in the account.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/auto-renewal/
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  enableDomainAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.put(this._registrarPath(accountId, domainName, 'auto_renewal'), null, options);
-  }
+     * Explicitly renews a domain, if the registry supports this function.
+Your account must be active for this command to complete successfully. You will be automatically charged the renewal fee upon successful renewal, so please be careful with this command.
+     *
+     * POST /{account}/registrar/domains/{domain}/renewals
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  domainRenew = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: { period: number; premium_price: string },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        period: number;
+        state: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/renewals`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * @deprecated Use `disableDomainAutoRenewal`
+   * Retrieves the details of an existing domain renewal.
+   *
+   * GET /{account}/registrar/domains/{domain}/renewals/{domainrenewal}
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param domainrenewal The domain renewal id
+   * @param options Query parameters
    */
-  disableAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.delete(this._registrarPath(accountId, domainName, 'auto_renewal'), options);
-  }
+  getDomainRenewal = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      domainrenewal: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        period: number;
+        state: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/renewals/${domainrenewal}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Disable auto renewal for the domain in the account.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/auto-renewal/
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  disableDomainAutoRenewal (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.delete(this._registrarPath(accountId, domainName, 'auto_renewal'), options);
-  }
-
-  // Whois Privacy
-
-  /**
-   * Gets the whois privacy for the domain.
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#get
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  getWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, 'whois_privacy'), options);
-  }
+     * Prepares a domain for transferring out.
+This will unlock a domain and send the authorization code to the domain's administrative contact.
+     *
+     * POST /{account}/registrar/domains/{domain}/authorize_transfer_out
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  authorizeDomainTransferOut = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/authorize_transfer_out`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Enable whois privacy for the domain.
+   * Lists the name servers for the domain.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#enable
+   * GET /{account}/registrar/domains/{domain}/delegation
    *
-   * @example
-   * client.registrar.enableWhoisPrivacy(1010, 'example.com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  enableWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.put(this._registrarPath(accountId, domainName, 'whois_privacy'), null, options);
-  }
+  getDomainDelegation = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: Array<string> }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/delegation`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Disable whois privacy for the domain.
+   * Changes the domain name servers.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#disable
+   * PUT /{account}/registrar/domains/{domain}/delegation
    *
-   * @example
-   * client.registrar.disableWhoisPrivacy(1010, 'example.com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  disableWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.delete(this._registrarPath(accountId, domainName, 'whois_privacy'), options);
-  }
+  changeDomainDelegation = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: Array<string>,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: Array<string> }> =>
+      this._client.request(
+        "PUT",
+        `/${account}/registrar/domains/${domain}/delegation`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Renew whois privacy for the domain.
+   * Delegate a domain to vanity name servers.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#renew
+   * PUT /{account}/registrar/domains/{domain}/delegation/vanity
    *
-   * @example
-   * client.registrar.renewWhoisPrivacy(1010, 'example.com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  renewWhoisPrivacy (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.post(this._registrarPath(accountId, domainName, 'whois_privacy/renewals'), null, options);
-  }
-
-  // Domain Delegation
+  changeDomainDelegationToVanity = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: Array<string>,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        name: string;
+        ipv4: string;
+        ipv6: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+    }> =>
+      this._client.request(
+        "PUT",
+        `/${account}/registrar/domains/${domain}/delegation/vanity`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Lists name servers the domain is delegating to.
+   * De-delegate a domain from vanity name servers.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/delegation/#list
+   * DELETE /{account}/registrar/domains/{domain}/delegation/vanity
    *
-   * @example
-   * client.registrar.getDomainDelegation(1010, 'example.com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  getDomainDelegation (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.get(this._registrarPath(accountId, domainName, 'delegation'), options);
-  }
+  changeDomainDelegationFromVanity = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/registrar/domains/${domain}/delegation/vanity`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Change name servers the domain is delegating to.
+   * Enables auto renewal for the domain.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/delegation/#update
+   * PUT /{account}/registrar/domains/{domain}/auto_renewal
    *
-   * @example
-   * let nameServers = ['ns1.example.com','ns2.example.com'];
-   * client.registrar.changeDomainDelegation(1010, 'example.com', nameServers).then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Array} attributes The name servers to delegate to
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  changeDomainDelegation (accountId, domainName, attributes, options: RequestOptions = {}) {
-    return this._client.put(this._registrarPath(accountId, domainName, 'delegation'), attributes, options);
-  }
+  enableDomainAutoRenewal = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "PUT",
+        `/${account}/registrar/domains/${domain}/auto_renewal`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Enable vanity name servers for the domain.
+   * Disables auto renewal for the domain.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/delegation/#delegateToVanity
+   * DELETE /{account}/registrar/domains/{domain}/auto_renewal
    *
-   * @example
-   * let nameServers = ['ns1.example.com','ns2.example.com', 'ns3.example.com', 'ns4.example.com'];
-   * client.registrar.changeDomainDelegationToVanity(1010, 'example.com', nameServers).then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Array} attributes The name servers to use
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  changeDomainDelegationToVanity (accountId, domainName, attributes, options: RequestOptions = {}) {
-    return this._client.put(this._registrarPath(accountId, domainName, 'delegation/vanity'), attributes, options);
-  }
+  disableDomainAutoRenewal = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/registrar/domains/${domain}/auto_renewal`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Disable vanity name servers for the domain.
+   * Gets the whois privacy status for an existing domain.
    *
-   * @see https://developer.dnsimple.com/v2/registrar/delegation/#delegateFromVanity
+   * GET /{account}/registrar/domains/{domain}/whois_privacy
    *
-   * @example
-   * client.registrar.changeDomainDelegationFromVanity(1010, 'example.com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string} domainName The domain name
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  changeDomainDelegationFromVanity (accountId, domainName, options: RequestOptions = {}) {
-    return this._client.delete(this._registrarPath(accountId, domainName, 'delegation/vanity'), options);
-  }
+  getWhoisPrivacy = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        expires_on: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/whois_privacy`,
+        null,
+        options
+      );
+    return method;
+  })();
 
-  // Internal functions
+  /**
+     * Enables the WHOIS privacy for the domain.
+Note that if the WHOIS privacy is not purchased for the domain, enabling WHOIS privacy will cause the service to be purchased for a period of 1 year. If WHOIS privacy was previously purchased and disabled, then calling this will enable the WHOIS privacy.
+     *
+     * PUT /{account}/registrar/domains/{domain}/whois_privacy
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  enableWhoisPrivacy = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        expires_on: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "PUT",
+        `/${account}/registrar/domains/${domain}/whois_privacy`,
+        null,
+        options
+      );
+    return method;
+  })();
 
-  _registrarPath (accountId, domainName, resource) {
-    return `/${accountId}/registrar/domains/${domainName}/${resource}`;
-  }
+  /**
+   * Disables the WHOIS privacy for the domain.
+   *
+   * DELETE /{account}/registrar/domains/{domain}/whois_privacy
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
+   */
+  disableWhoisPrivacy = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        expires_on: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/registrar/domains/${domain}/whois_privacy`,
+        null,
+        options
+      );
+    return method;
+  })();
+
+  /**
+     * Renews the WHOIS privacy for the domain.
+Note that if the WHOIS privacy was never purchased for the domain or if there is another renewal order in progress, renewing WHOIS privacy will return an error.
+     *
+     * POST /{account}/registrar/domains/{domain}/whois_privacy/renewals
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  renewWhoisPrivacy = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        domain_id: number;
+        whois_privacy_id: number;
+        state: string;
+        enabled: boolean;
+        expires_on: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Registrar;

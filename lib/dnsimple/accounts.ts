@@ -1,25 +1,29 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
 
-/**
- * Provides access to the DNSimple Accounts API.
- *
- * @see https://developer.dnsimple.com/v2/accounts
- */
 class Accounts {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Lists the accounts the authenticated entity has access to.
+   * Lists the accounts the current authenticated entity has access to.
    *
-   * @see https://developer.dnsimple.com/v2/accounts#list
+   * GET /accounts
    *
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param options Query parameters
    */
-  listAccounts (options: RequestOptions = {}) {
-    return this._client.get('/accounts', options);
-  }
+  listAccounts = (() => {
+    const method = (
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        email: string;
+        plan_identifier: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+    }> => this._client.request("GET", `/accounts`, null, options);
+    return method;
+  })();
 }
-
 export = Accounts;

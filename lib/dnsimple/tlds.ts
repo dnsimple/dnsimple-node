@@ -1,122 +1,94 @@
 import type Client = require("./client");
-import Paginate = require("./paginate");
 import type { RequestOptions } from "./request";
 
-/**
- * Provides access to the DNSimple TLD API.
- *
- * @see https://developer.dnsimple.com/v2/tlds
- */
 class Tlds {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Lists the TLDs available for registration.
+   * ListsTLDs supported for registration or transfer.
    *
-   * @see https://developer.dnsimple.com/v2/tlds/#list
+   * GET /tlds
    *
-   * @example List TLDs in the first page
-   * client.tlds.listTlds().then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List TLDs, provide a specific page
-   * client.tlds.listTlds({page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List TLDs, provide a sorting policy
-  * client.tlds.listTlds({sort: 'tld:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by tld ascending.
    */
-  listTlds (options: RequestOptions = {}): any {
-    return this._client.get('/tlds', options);
-  }
+  listTlds = (() => {
+    const method = (
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        tld: string;
+        tld_type: number;
+        whois_privacy: boolean;
+        auto_renew_only: boolean;
+        idn: boolean;
+        registration_enabled: boolean;
+        renewal_enabled: boolean;
+        transfer_enabled: boolean;
+        dnssec_interface_type: string;
+      }>;
+    }> => this._client.request("GET", `/tlds`, null, options);
+    return method;
+  })();
 
   /**
-   * List ALL the TLDs available.
+   * Retrieves the details of a TLD.
    *
-   * This method is similar to {#listTlds}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * GET /tlds/{tld}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all TLDs
-   * client.tlds.allTlds().then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List all TLDs, provide a sorting policy
-   * client.tlds.allTlds({sort: 'name:asc'}).then((items) => {
-   *   // use items list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param tld The TLD string
+   * @param options Query parameters
    */
-  allTlds (options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listTlds, [options]);
-  }
+  getTld = (() => {
+    const method = (
+      tld: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        tld: string;
+        tld_type: number;
+        whois_privacy: boolean;
+        auto_renew_only: boolean;
+        idn: boolean;
+        registration_enabled: boolean;
+        renewal_enabled: boolean;
+        transfer_enabled: boolean;
+        dnssec_interface_type: string;
+      };
+    }> => this._client.request("GET", `/tlds/${tld}`, null, options);
+    return method;
+  })();
 
   /**
-   * Get details for a TLD.
-   *
-   * @see https://developer.dnsimple.com/v2/tlds/#get
-   *
-   * @example Get information on a specific TLD
-   * client.tlds.getTld('com').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {string} tld The TLD name
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  getTld (tld, options: RequestOptions = {}) {
-    return this._client.get(`/tlds/${tld}`, options);
-  }
-
-  /**
-   * Get extended attributes for a TLD.
-   *
-   * @see https://developer.dnsimple.com/v2/tlds/#extended-attributes
-   *
-   * @example Get extended attributes for a specific TLD
-   * client.tlds.getExtendedAttributes('uk').then((response) => {
-   *  // handle response
-   * }, (error) => {
-   *  // handle error
-   * });
-   *
-   * @param {string} tld The TLD name
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  getTldExtendedAttributes (tld, options: RequestOptions = {}) {
-    return this._client.get(`/tlds/${tld}/extended_attributes`, options);
-  }
+     * Lists a TLD extended attributes.
+Some TLDs require extended attributes when registering or transferring a domain. This API interface provides information on the extended attributes for any particular TLD. Extended attributes are extra TLD-specific attributes, required by the TLD registry to collect extra information about the registrant or legal agreements.
+     *
+     * GET /tlds/{tld}/extended_attributes
+     *
+     * @param tld The TLD string
+     * @param options Query parameters
+     */
+  getTldExtendedAttributes = (() => {
+    const method = (
+      tld: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: Array<{
+        name: string;
+        description: string;
+        required: boolean;
+        options: Array<{ title: string; value: string; description: string }>;
+      }>;
+    }> =>
+      this._client.request(
+        "GET",
+        `/tlds/${tld}/extended_attributes`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Tlds;

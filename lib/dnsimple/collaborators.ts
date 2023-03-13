@@ -1,82 +1,120 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-
-/**
- * Provides access to the DNSimple Collaborators API.
- *
- * @see https://developer.dnsimple.com/v2/domains/collaborators
- * @deprecated Use domains.collaborators
- */
+import paginate = require("./paginate");
 class Collaborators {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Lists the collaborators in the account attached to the given domain.
+   * Lists collaborators for the domain.
    *
-   * @see https://developer.dnsimple.com/v2/domains/collaborators/#list
    *
-   * @example List collaborators in the first page
-   * client.collaborators.listCollaborators(1010, 'example.com').then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * This API is paginated. Call `listDomainCollaborators.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
-   * @example List collaborators, provide a specific page
-   * client.collaborators.listCollaborators(1010, 'example.com', {page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * GET /{account}/domains/{domain}/collaborators
    *
-   * @example List collaborators, provide a sorting policy
-   * client.collaborators.listCollaborators(1010, 'example.com', {sort: 'email:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {number|string} domainId The domain identifier (name or numeric ID)
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param options Query parameters
    */
-  listCollaborators (accountId, domainId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/domains/${domainId}/collaborators`, options);
-  }
+  listDomainCollaborators = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        domain_id: number;
+        domain_name: string;
+        user_id: number;
+        user_email: string;
+        invitation: boolean;
+        created_at: string;
+        updated_at: string;
+        accepted_at: string;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/collaborators`,
+        null,
+        options
+      );
+    method.paginate = (
+      account: number,
+      domain: string,
+      options: RequestOptions & {} = {}
+    ) =>
+      paginate((page) => method(account, domain, { ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * Add a collaborator to the given domain.
-   *
-   * @see https://developer.dnsimple.com/v2/domains/collaborators/#add
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or ID.
-   * @param {Object} [collaborator]
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  addCollaborator (accountId, domainId, collaborator, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/domains/${domainId}/collaborators`, collaborator, options);
-  }
+     * Adds a collaborator to the domain.
+At the time of the add, a collaborator may or may not have a DNSimple account. In case the collaborator doesn't have a DNSimple account, the system will invite them to register to DNSimple first and then to accept the collaboration invitation. In the other case, they are automatically added to the domain as collaborator. They can decide to reject the invitation later.
+     *
+     * POST /{account}/domains/{domain}/collaborators
+     *
+     * @param account The account id
+* @param domain The domain name or id
+     * @param options Query parameters
+     */
+  addDomainCollaborator = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: { email: string },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      id: number;
+      domain_id: number;
+      domain_name: string;
+      user_id: number;
+      user_email: string;
+      invitation: boolean;
+      created_at: string;
+      updated_at: string;
+      accepted_at: string;
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/collaborators`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Remove a collaborator from the given domain.
+   * Removes a collaborator from the domain.
    *
-   * @see https://developer.dnsimple.com/v2/domains/collaborators/#delete
+   * DELETE /{account}/domains/{domain}/collaborators/{collaborator}
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} domainId The domain name or ID.
-   * @param {number} collaboratorId The collaborator ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param collaborator The collaborator id
+   * @param options Query parameters
    */
-  removeCollaborator (accountId, domainId, collaboratorId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/domains/${domainId}/collaborators/${collaboratorId}`, options);
-  }
+  removeDomainCollaborator = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      collaborator: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/domains/${domain}/collaborators/${collaborator}`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Collaborators;

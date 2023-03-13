@@ -1,141 +1,225 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-import Paginate = require('./paginate');
-
-/**
- * Provide access to the DNSimple Contacts API.
- *
- * @see https://developer.dnsimple.com/v2/contacts
- */
+import paginate = require("./paginate");
 class Contacts {
   constructor(private readonly _client: Client) {}
 
   /**
-   * Lists the contacts in the account.
+   * List contacts in the account.
    *
-   * @see https://developer.dnsimple.com/v2/contacts/#list
    *
-   * @example List contacts in the first page
-   * client.contacts.listContacts(1010).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * This API is paginated. Call `listContacts.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
-   * @example List contacts, provide a specific page
-   * client.contacts.listContacts(1010, {page: 2}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
+   * GET /{account}/contacts
    *
-   * @example List contacts, provide a sorting policy
-   * client.contacts.listContacts(1010, {sort: 'email:asc'}).then((response) => {
-   *   // handle response
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
+   * @param options.sort Sort results. Default sorting is by id ascending.
    */
-  listContacts (accountId, options: RequestOptions = {}): any {
-    return this._client.get(`/${accountId}/contacts`, options);
-  }
+  listContacts = (() => {
+    const method = (
+      account: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        account_id: number;
+        label: string;
+        first_name: string;
+        last_name: string;
+        organization_name: string;
+        job_title: string;
+        address1: string;
+        address2: string;
+        city: string;
+        state_province: string;
+        postal_code: string;
+        country: string;
+        phone: string;
+        fax: string;
+        email: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> => this._client.request("GET", `/${account}/contacts`, null, options);
+    method.paginate = (
+      account: number,
+      options: RequestOptions & {
+        sort?: string;
+      } = {}
+    ) => paginate((page) => method(account, { ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * List ALL the contacts in the account.
+   * Creates a contact.
    *
-   * This method is similar to {#listContacts}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * POST /{account}/contacts
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all contacts
-   * client.contacts.allContacts(1010).then((contacts) => {
-   *   // use contacts list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List contacts, provide a sorting policy
-   * client.contacts.allContacts(1010, {sort: 'name:asc'}).then((contacts) => {
-   *   // use contacts list
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
    */
-  allContacts (accountId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listContacts, [accountId, options]);
-  }
+  createContact = (() => {
+    const method = (
+      account: number,
+      data: {
+        label: string;
+        first_name: string;
+        last_name: string;
+        address1: string;
+        address2: string;
+        city: string;
+        state_province: string;
+        postal_code: string;
+        country: string;
+        email: string;
+        phone: string;
+        fax: string;
+        organization_name: string;
+        job_title: string;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request("POST", `/${account}/contacts`, data, options);
+    return method;
+  })();
 
   /**
-   * Get a specific contact associated to an account using the contact's ID.
+   * Retrieves the details of an existing contact.
    *
-   * @see https://developer.dnsimple.com/v2/contacts/#get
+   * GET /{account}/contacts/{contact}
    *
-   * @param {number} accountId The account ID
-   * @param {number} contactId The contact ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param contact The contact id
+   * @param options Query parameters
    */
-  getContact (accountId, contactId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/contacts/${contactId}`, options);
-  }
+  getContact = (() => {
+    const method = (
+      account: number,
+      contact: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        label: string;
+        first_name: string;
+        last_name: string;
+        organization_name: string;
+        job_title: string;
+        address1: string;
+        address2: string;
+        city: string;
+        state_province: string;
+        postal_code: string;
+        country: string;
+        phone: string;
+        fax: string;
+        email: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/contacts/${contact}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Create a contact in the account.
+   * Updates the contact details.
    *
-   * @see https://developer.dnsimple.com/v2/contacts/#create
+   * PATCH /{account}/contacts/{contact}
    *
-   * @param {number} accountId The account ID
-   * @param {Object} attributes The contact attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param contact The contact id
+   * @param options Query parameters
    */
-  createContact (accountId, attributes, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/contacts`, attributes, options);
-  }
+  updateContact = (() => {
+    const method = (
+      account: number,
+      contact: number,
+      data: {
+        label: string;
+        first_name: string;
+        last_name: string;
+        address1: string;
+        address2: string;
+        city: string;
+        state_province: string;
+        postal_code: string;
+        country: string;
+        email: string;
+        phone: string;
+        fax: string;
+        organization_name: string;
+        job_title: string;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        label: string;
+        first_name: string;
+        last_name: string;
+        organization_name: string;
+        job_title: string;
+        address1: string;
+        address2: string;
+        city: string;
+        state_province: string;
+        postal_code: string;
+        country: string;
+        phone: string;
+        fax: string;
+        email: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "PATCH",
+        `/${account}/contacts/${contact}`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Update a contact in the account.
+   * Permanently deletes a contact from the account.
    *
-   * @see https://developer.dnsimple.com/v2/contacts/#update
+   * DELETE /{account}/contacts/{contact}
    *
-   * @param {number} accountId The account ID
-   * @param {number} contactId The contact ID
-   * @param {Object} attributes The updated contact attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param contact The contact id
+   * @param options Query parameters
    */
-  updateContact (accountId, contactId, attributes, options: RequestOptions = {}) {
-    return this._client.patch(`/${accountId}/contacts/${contactId}`, attributes, options);
-  }
-
-  /**
-   * Delete a contact from the account.
-   *
-   * @see https://developer.dnsimple.com/v2/contacts/#delete
-   *
-   * @param {number} accountId The account ID
-   * @param {number} contactId The contact ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  deleteContact (accountId, contactId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/contacts/${contactId}`, options);
-  }
+  deleteContact = (() => {
+    const method = (
+      account: number,
+      contact: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/contacts/${contact}`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Contacts;

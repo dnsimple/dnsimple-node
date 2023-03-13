@@ -1,290 +1,409 @@
 import type Client = require("./client");
 import type { RequestOptions } from "./request";
-import Paginate = require('./paginate');
-
-/**
- * Provides access to the DNSimple Zone API.
- *
- * @see https://developer.dnsimple.com/v2/zones/
- */
+import paginate = require("./paginate");
 class Zones {
   constructor(private readonly _client: Client) {}
 
   /**
    * Lists the zones in the account.
    *
-   * @see https://developer.dnsimple.com/v2/zones/#list
    *
-   * @example List zones in the first page
-   * client.zones.listZones(1010).then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
+   * This API is paginated. Call `listZones.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
    *
-   * @example List zones, provide a specific page
-   * client.zones.listZones(1010, {page: 2}).then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
+   * GET /{account}/zones
    *
-   * @example List zones, provide a sorting policy
-   * client.zones.listZones(1010, {sort: 'name:asc'}).then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
-   *
-   * @example List zones, provide a filtering policy
-   * client.zones.listZones(1010, {name_like: 'example'}).then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @param {string} [options.name_like] Filter zones where the name is like the given string
-   * @return {Promise}
+   * @param account The account id
+   * @param options Query parameters
+   * @param options.name_like Only include results with a name field containing the given string
+   * @param options.sort Sort results. Default sorting is by name ascending.
    */
-  listZones (accountId, options: RequestOptions = {}): any {
-    return this._client.get(`/${accountId}/zones`, options);
-  }
+  listZones = (() => {
+    const method = (
+      account: number,
+      options: RequestOptions & {
+        name_like?: string;
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        account_id: number;
+        name: string;
+        reverse: boolean;
+        secondary: boolean;
+        last_transferred_at: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
+    }> => this._client.request("GET", `/${account}/zones`, null, options);
+    method.paginate = (
+      account: number,
+      options: RequestOptions & {
+        name_like?: string;
+        sort?: string;
+      } = {}
+    ) => paginate((page) => method(account, { ...options, page } as any));
+    return method;
+  })();
 
   /**
-   * List ALL the zones in the account.
+   * Retrieves the details of an existing zone.
    *
-   * This method is similar to {#listZones}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * GET /{account}/zones/{zone}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all zones
-   * client.zones.allZones(1010).then((items) => {
-   *   // use items
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List zones, provide a sorting policy
-   * client.zones.allZones(1010, {sort: 'name:asc'}).then((items) => {
-   *   // use items
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List zones, provide a filtering policy
-   * client.zones.allZones(1010, {name_like: 'example'}).then((items) => {
-   *   // use items
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @param {string} [options.name_like] Filter zones where the name is like the given string
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param options Query parameters
    */
-  allZones (accountId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listZones, [accountId, options]);
-  }
+  getZone = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        name: string;
+        reverse: boolean;
+        secondary: boolean;
+        last_transferred_at: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request("GET", `/${account}/zones/${zone}`, null, options);
+    return method;
+  })();
 
   /**
-   * Get a specific zone associated to an account using the zone's name or ID.
+   * Download the zonefile for an existing zone.
    *
-   * @see https://developer.dnsimple.com/v2/zones/#get
+   * GET /{account}/zones/{zone}/file
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param options Query parameters
    */
-  getZone (accountId, zoneId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/zones/${zoneId}`, options);
-  }
+  getZoneFile = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: { zone: string } }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/file`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get the zone file associated to an account using the zone's name or ID.
+   * Checks if a zone is fully distributed to all our name servers across the globe.
    *
-   * @see https://developer.dnsimple.com/v2/zones/#get-file
+   * GET /{account}/zones/{zone}/distribution
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param options Query parameters
    */
-  getZoneFile (accountId, zoneId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/zones/${zoneId}/file`, options);
-  }
+  checkZoneDistribution = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: { distributed: boolean } }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/distribution`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Checks if a zone change is fully distributed to all our nameservers of our regions.
+   * Updates the zone's NS records
    *
-   * @see https://developer.dnsimple.com/v2/zones/#checkZoneDistribution
+   * PUT /{account}/zones/{zone}/ns_records
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param options Query parameters
    */
-  checkZoneDistribution (accountId, zoneId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/zones/${zoneId}/distribution`, options);
-  }
+  updateZoneNsRecords = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      data: { ns_names: Array<string>; ns_set_ids: Array<number> },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        zone_id: string;
+        parent_id: number | null;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number | null;
+        type: string;
+        regions: Array<string>;
+        system_record: boolean;
+        created_at: string;
+        updated_at: string;
+      }>;
+    }> =>
+      this._client.request(
+        "PUT",
+        `/${account}/zones/${zone}/ns_records`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Checks if a zone record is fully distributed to all our nameservers of our regions.
+   * Lists the records for a zone.
    *
-   * @see https://developer.dnsimple.com/v2/zones/#checkZoneRecordDistribution
+   * GET /{account}/zones/{zone}/records
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {number} recordId The record ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param options Query parameters
+   * @param options.name_like Only include results with a name field containing the given string
+   * @param options.name Only include results with a name field exactly matching the given string
+   * @param options.type Only include results with a type field exactly matching the given string
+   * @param options.sort Sort results. Default sorting is by name ascending.
    */
-  checkZoneRecordDistribution (accountId, zoneId, recordId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/zones/${zoneId}/records/${recordId}/distribution`, options);
-  }
+  listZoneRecords = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      options: RequestOptions & {
+        name_like?: string;
+        name?: string;
+        type?: string;
+        sort?: string;
+      } = {}
+    ): Promise<{
+      data: Array<{
+        id: number;
+        zone_id: string;
+        parent_id: number | null;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number | null;
+        type: string;
+        regions: Array<string>;
+        system_record: boolean;
+        created_at: string;
+        updated_at: string;
+      }>;
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/records`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Lists the records in the zone.
+   * Creates a new zone record.
    *
-   * @see https://developer.dnsimple.com/v2/zones/records/#list
+   * POST /{account}/zones/{zone}/records
    *
-   * @example List records in zone, first page
-   * client.zones.listRecords(1010, 'example.com').then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
-   *
-   * @example List records in zone, provide a specific page
-   * client.zones.listRecords(1010, 'example.com', {page: 2}).then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
-   *
-   * @example List records in zone, provide a sorting policy
-   * client.zones.listRecords(1010, 'example.com', {sort: 'name:asc'}).then((response) => {
-   *   # handle response
-   * }, (error) => {
-   *   # handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {number} [options.page] The current page number
-   * @param {number} [options.per_page] The number of items per page
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param options Query parameters
    */
-  listZoneRecords (accountId, zoneId, options: RequestOptions = {}): any {
-    return this._client.get(`/${accountId}/zones/${zoneId}/records`, options);
-  }
+  createZoneRecord = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      data: {
+        name: string;
+        type: string;
+        content: string;
+        ttl: number;
+        priority: number;
+        regions: Array<string>;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        zone_id: string;
+        parent_id: number | null;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number | null;
+        type: string;
+        regions: Array<string>;
+        system_record: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "POST",
+        `/${account}/zones/${zone}/records`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * List ALL the records in the zone.
+   * Retrieves the details of an existing zone record.
    *
-   * This method is similar to {#listRecords}, but instead of returning the results of a
-   * specific page it iterates all the pages and returns the entire collection.
+   * GET /{account}/zones/{zone}/records/{zonerecord}
    *
-   * Please use this method carefully, as fetching the entire collection will increase the
-   * number of requests you send to the API server and you may eventually risk to hit the
-   * throttle limit.
-   *
-   * @example List all records
-   * client.zones.allZoneRecords(1010, 'example.com').then((items) => {
-   *   // use items
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @example List all records, provide a sorting policy
-   * client.zones.allZoneRecords(1010, 'example.com', {sort: 'name:asc'}).then((items) => {
-   *   // use items
-   * }, (error) => {
-   *   // handle error
-   * });
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {Object} [options] The filtering and sorting options
-   * @param {string} [options.sort] The sort definition in the form `key:direction`
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param zonerecord The zone record id
+   * @param options Query parameters
    */
-  allZoneRecords (accountId, zoneId, options: RequestOptions = {}) {
-    return new Paginate(this).paginate(this.listZoneRecords, [accountId, zoneId, options]);
-  }
+  getZoneRecord = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      zonerecord: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        zone_id: string;
+        parent_id: number | null;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number | null;
+        type: string;
+        regions: Array<string>;
+        system_record: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/records/${zonerecord}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Get a specific record associated to a zone using the zone's name or ID.
+   * Updates the zone record details.
    *
-   * @see https://developer.dnsimple.com/v2/zones/records/#get
+   * PATCH /{account}/zones/{zone}/records/{zonerecord}
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {number} recordId The record ID
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param zonerecord The zone record id
+   * @param options Query parameters
    */
-  getZoneRecord (accountId, zoneId, recordId, options: RequestOptions = {}) {
-    return this._client.get(`/${accountId}/zones/${zoneId}/records/${recordId}`, options);
-  }
+  updateZoneRecord = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      zonerecord: number,
+      data: {
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number;
+        regions: Array<string>;
+      },
+      options: RequestOptions & {} = {}
+    ): Promise<{
+      data: {
+        id: number;
+        zone_id: string;
+        parent_id: number | null;
+        name: string;
+        content: string;
+        ttl: number;
+        priority: number | null;
+        type: string;
+        regions: Array<string>;
+        system_record: boolean;
+        created_at: string;
+        updated_at: string;
+      };
+    }> =>
+      this._client.request(
+        "PATCH",
+        `/${account}/zones/${zone}/records/${zonerecord}`,
+        data,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Create a record in a zone.
+   * Permanently deletes a zone record.
    *
-   * @see https://developer.dnsimple.com/v2/zones/records/#create
+   * DELETE /{account}/zones/{zone}/records/{zonerecord}
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {Object} attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param zonerecord The zone record id
+   * @param options Query parameters
    */
-  createZoneRecord (accountId, zoneId, attributes, options: RequestOptions = {}) {
-    return this._client.post(`/${accountId}/zones/${zoneId}/records`, attributes, options);
-  }
+  deleteZoneRecord = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      zonerecord: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/zones/${zone}/records/${zonerecord}`,
+        null,
+        options
+      );
+    return method;
+  })();
 
   /**
-   * Update a record in a zone.
+   * Checks if a zone record is fully distributed to all our name servers across the globe.
    *
-   * @see https://developer.dnsimple.com/v2/zones/records/#update
+   * GET /{account}/zones/{zone}/records/{zonerecord}/distribution
    *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {number} recordId The record ID
-   * @param {Object} attributes
-   * @param {Object} [options]
-   * @return {Promise}
+   * @param account The account id
+   * @param zone The zone name
+   * @param zonerecord The zone record id
+   * @param options Query parameters
    */
-  updateZoneRecord (accountId, zoneId, recordId, attributes, options: RequestOptions = {}) {
-    return this._client.patch(`/${accountId}/zones/${zoneId}/records/${recordId}`, attributes, options);
-  }
-
-  /**
-   * Delete a record from a zone.
-   *
-   * @see https://developer.dnsimple.com/v2/zones/records/#delete
-   *
-   * @param {number} accountId The account ID
-   * @param {string|number} zoneId The zone name or numeric ID
-   * @param {number} recordId The record ID
-   * @param {Object} [options]
-   * @return {Promise}
-   */
-  deleteZoneRecord (accountId, zoneId, recordId, options: RequestOptions = {}) {
-    return this._client.delete(`/${accountId}/zones/${zoneId}/records/${recordId}`, options);
-  }
+  checkZoneRecordDistribution = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      zonerecord: number,
+      options: RequestOptions & {} = {}
+    ): Promise<{ data: { distributed: boolean } }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/records/${zonerecord}/distribution`,
+        null,
+        options
+      );
+    return method;
+  })();
 }
-
 export = Zones;
