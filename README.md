@@ -21,7 +21,7 @@ Alternatively, install the latest stable version from NPM with `npm install dnsi
 
 ## Usage
 
-This library is a Node.js client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/). TypeScript definitions are provided for all API method signatures and responses.
+This library is a Node.js client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/). TypeScript definitions are provided for all API method parameters and responses.
 
 Note that in all examples below, the `accessToken` must be an OAuth token as described in the [DNSimple API Access Token documentation](https://support.dnsimple.com/articles/api-access-token/).
 
