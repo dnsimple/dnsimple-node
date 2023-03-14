@@ -47,7 +47,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm i
       - run: npm run build
-      - run: npm format-check
+      - run: npm run format-check
       - run: npm test
 
   slack-workflow-status:
