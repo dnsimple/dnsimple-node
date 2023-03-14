@@ -77,19 +77,19 @@ export class Contacts {
       account: number,
       data: {
         label?: string;
-        first_name: string;
-        last_name: string;
-        address1: string;
-        address2: string | null;
-        city: string;
-        state_province: string;
-        postal_code: string;
-        country: string;
-        email: string;
-        phone: string;
-        fax: string | null;
-        organization_name: string;
-        job_title: string;
+        first_name?: string;
+        last_name?: string;
+        address1?: string;
+        address2?: string | null;
+        city?: string;
+        state_province?: string;
+        postal_code?: string;
+        country?: string;
+        email?: string;
+        phone?: string;
+        fax?: string | null;
+        organization_name?: string;
+        job_title?: string;
       },
       params: QueryParams & {} = {}
     ): Promise<{
@@ -177,19 +177,19 @@ export class Contacts {
       contact: number,
       data: {
         label?: string;
-        first_name: string;
-        last_name: string;
-        address1: string;
-        address2: string | null;
-        city: string;
-        state_province: string;
-        postal_code: string;
-        country: string;
-        email: string;
-        phone: string;
-        fax: string | null;
-        organization_name: string;
-        job_title: string;
+        first_name?: string;
+        last_name?: string;
+        address1?: string;
+        address2?: string | null;
+        city?: string;
+        state_province?: string;
+        postal_code?: string;
+        country?: string;
+        email?: string;
+        phone?: string;
+        fax?: string | null;
+        organization_name?: string;
+        job_title?: string;
       },
       params: QueryParams & {} = {}
     ): Promise<{

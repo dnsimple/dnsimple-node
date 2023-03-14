@@ -146,7 +146,7 @@ export class Zones {
     const method = (
       account: number,
       zone: string,
-      data: { ns_names: Array<string>; ns_set_ids: Array<number> },
+      data: { ns_names?: Array<string>; ns_set_ids?: Array<number> },
       params: QueryParams & {} = {}
     ): Promise<{
       data: Array<{
@@ -269,12 +269,12 @@ export class Zones {
       account: number,
       zone: string,
       data: {
-        name: string;
-        type: string;
-        content: string;
-        ttl: number;
-        priority: number;
-        regions: Array<string>;
+        name?: string;
+        type?: string;
+        content?: string;
+        ttl?: number;
+        priority?: number;
+        regions?: Array<string>;
       },
       params: QueryParams & {} = {}
     ): Promise<{
@@ -359,11 +359,11 @@ export class Zones {
       zone: string,
       zonerecord: number,
       data: {
-        name: string;
-        content: string;
-        ttl: number;
-        priority: number;
-        regions: Array<string>;
+        name?: string;
+        content?: string;
+        ttl?: number;
+        priority?: number;
+        regions?: Array<string>;
       },
       params: QueryParams & {} = {}
     ): Promise<{

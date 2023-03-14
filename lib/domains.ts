@@ -83,7 +83,7 @@ export class Domains {
   createDomain = (() => {
     const method = (
       account: number,
-      data: { name: string },
+      data: { name?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -243,7 +243,7 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { email: string },
+      data: { email?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -448,7 +448,7 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { digest: string },
+      data: { digest?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -610,7 +610,7 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { alias_name: string; destination_email: string },
+      data: { alias_name?: string; destination_email?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -709,7 +709,7 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { new_account_email: string },
+      data: { new_account_email?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -790,7 +790,7 @@ export class Domains {
     const method = (
       account: number,
       push: number,
-      data: { contact_id: number },
+      data: { contact_id?: number },
       params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request("POST", `/${account}/pushes/${push}`, data, params);

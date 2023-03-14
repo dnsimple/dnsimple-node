@@ -64,7 +64,7 @@ export class Templates {
   createTemplate = (() => {
     const method = (
       account: number,
-      data: { sid: string; name: string; description: string },
+      data: { sid?: string; name?: string; description?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -127,7 +127,7 @@ export class Templates {
     const method = (
       account: number,
       template: number | string,
-      data: { sid: string; name: string; description: string },
+      data: { sid?: string; name?: string; description?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {

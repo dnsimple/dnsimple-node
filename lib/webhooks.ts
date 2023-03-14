@@ -33,7 +33,7 @@ export class Webhooks {
   createWebhook = (() => {
     const method = (
       account: number,
-      data: { url: string },
+      data: { url?: string },
       params: QueryParams & {} = {}
     ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
       this._client.request("POST", `/${account}/webhooks`, data, params);

@@ -71,7 +71,7 @@ export class SecondaryDns {
   createPrimaryServer = (() => {
     const method = (
       account: number,
-      data: { name: string; ip: string; port: string },
+      data: { name?: string; ip?: string; port?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -234,7 +234,7 @@ export class SecondaryDns {
   createSecondaryZone = (() => {
     const method = (
       account: number,
-      data: { name: string },
+      data: { name?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {

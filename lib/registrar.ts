@@ -106,11 +106,11 @@ export class Registrar {
       account: number,
       domain: string,
       data: {
-        registrant_id: number;
-        whois_privacy: boolean;
-        auto_renew: boolean;
-        extended_attributes: {};
-        premium_price: string;
+        registrant_id?: number;
+        whois_privacy?: boolean;
+        auto_renew?: boolean;
+        extended_attributes?: {};
+        premium_price?: string;
       },
       params: QueryParams & {} = {}
     ): Promise<{
@@ -189,12 +189,12 @@ export class Registrar {
       account: number,
       domain: string,
       data: {
-        registrant_id: number;
-        auth_code: string;
-        whois_privacy: boolean;
-        auto_renew: boolean;
-        extended_attributes: {};
-        premium_price: string;
+        registrant_id?: number;
+        auth_code?: string;
+        whois_privacy?: boolean;
+        auto_renew?: boolean;
+        extended_attributes?: {};
+        premium_price?: string;
       },
       params: QueryParams & {} = {}
     ): Promise<{
@@ -310,7 +310,7 @@ export class Registrar {
     const method = (
       account: number,
       domain: string,
-      data: { period: number; premium_price: string },
+      data: { period?: number; premium_price?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
