@@ -7,7 +7,7 @@ export class Contacts {
   /**
    * List contacts in the account.
    *
-   * This API is paginated. Call `listContacts.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   * This API is paginated. Call `listContacts.iterateAll(account, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listContacts.collectAll(account, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/contacts
    *
@@ -47,10 +47,20 @@ export class Contacts {
         total_pages: number;
       };
     }> => this._client.request("GET", `/${account}/contacts`, null, params);
-    method.paginate = (
+    method.iterateAll = (
       account: number,
       params: QueryParams & { sort?: string } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      params: QueryParams & { sort?: string } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 

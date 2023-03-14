@@ -7,7 +7,7 @@ export class Zones {
   /**
    * Lists the zones in the account.
    *
-   * This API is paginated. Call `listZones.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   * This API is paginated. Call `listZones.iterateAll(account, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listZones.collectAll(account, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/zones
    *
@@ -38,10 +38,20 @@ export class Zones {
         total_pages: number;
       };
     }> => this._client.request("GET", `/${account}/zones`, null, params);
-    method.paginate = (
+    method.iterateAll = (
       account: number,
       params: QueryParams & { name_like?: string; sort?: string } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      params: QueryParams & { name_like?: string; sort?: string } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 

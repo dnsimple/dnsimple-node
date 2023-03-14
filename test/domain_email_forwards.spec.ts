@@ -4,9 +4,6 @@ import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
 
-const expect = require("chai").expect;
-const nock = require("nock");
-
 describe("domains", () => {
   describe("#listEmailForwards", () => {
     const accountId = 1010;

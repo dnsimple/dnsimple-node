@@ -7,7 +7,7 @@ export class Templates {
   /**
    * Lists the templates in the account.
    *
-   * This API is paginated. Call `listTemplates.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   * This API is paginated. Call `listTemplates.iterateAll(account, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listTemplates.collectAll(account, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/templates
    *
@@ -36,10 +36,20 @@ export class Templates {
         total_pages: number;
       };
     }> => this._client.request("GET", `/${account}/templates`, null, params);
-    method.paginate = (
+    method.iterateAll = (
       account: number,
       params: QueryParams & { sort?: string } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      params: QueryParams & { sort?: string } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 
@@ -166,7 +176,7 @@ export class Templates {
   /**
    * Lists the records for a template.
    *
-   * This API is paginated. Call `listTemplateRecords.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   * This API is paginated. Call `listTemplateRecords.iterateAll(account, template, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listTemplateRecords.collectAll(account, template, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/templates/{template}/records
    *
@@ -205,12 +215,23 @@ export class Templates {
         null,
         params
       );
-    method.paginate = (
+    method.iterateAll = (
       account: number,
       template: number,
       params: QueryParams & { sort?: string } = {}
     ) =>
       paginate((page) => method(account, template, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      template: number,
+      params: QueryParams & { sort?: string } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, template, params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 

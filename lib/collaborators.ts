@@ -7,7 +7,7 @@ export class Collaborators {
   /**
    * Lists collaborators for the domain.
    *
-   * This API is paginated. Call `listDomainCollaborators.paginate(...args)` to use the pagination helper and iterate individual items across pages; see {@link paginate} for more details and examples.
+   * This API is paginated. Call `listDomainCollaborators.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listDomainCollaborators.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/collaborators
    *
@@ -45,12 +45,23 @@ export class Collaborators {
         null,
         params
       );
-    method.paginate = (
+    method.iterateAll = (
       account: number,
       domain: string,
       params: QueryParams & {} = {}
     ) =>
       paginate((page) => method(account, domain, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, domain, params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 
