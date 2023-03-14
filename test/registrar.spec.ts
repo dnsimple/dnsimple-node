@@ -202,7 +202,7 @@ describe("registrar", () => {
     });
   });
 
-  describe("#domainRenew", () => {
+  describe("#renewDomain", () => {
     const fixture = loadFixture("renewDomain/success.http");
 
     it("produces a domain", (done) => {
@@ -212,11 +212,11 @@ describe("registrar", () => {
         .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.domainRenew(accountId, domainId, attributes).then(
+      dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(
         (response) => {
-          const domainRenewal = response.data;
-          expect(domainRenewal.id).to.eq(1);
-          expect(domainRenewal.state).to.eq("new");
+          const renewDomainal = response.data;
+          expect(renewDomainal.id).to.eq(1);
+          expect(renewDomainal.state).to.eq("new");
           done();
         },
         (error) => {
@@ -235,7 +235,7 @@ describe("registrar", () => {
           .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.domainRenew(accountId, domainId, attributes).then(
+        dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(
           (response) => {
             done("Expected error, but future resolved");
           },
@@ -373,7 +373,7 @@ describe("registrar", () => {
     });
   });
 
-  describe("#authorizeDomainTransferOut", () => {
+  describe("#transferDomainOut", () => {
     const fixture = loadFixture("authorizeDomainTransferOut/success.http");
 
     it("produces nothing", (done) => {
@@ -381,7 +381,7 @@ describe("registrar", () => {
         .post("/v2/1010/registrar/domains/example.com/authorize_transfer_out")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.authorizeDomainTransferOut(accountId, domainId).then(
+      dnsimple.registrar.transferDomainOut(accountId, domainId).then(
         (response) => {
           expect(response).to.eql({});
           done();

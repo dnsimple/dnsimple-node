@@ -5,7 +5,7 @@ import { createTestClient, loadFixture } from "./util";
 const dnsimple = createTestClient();
 
 describe("domain services", () => {
-  describe("#listDomainAppliedServices", () => {
+  describe("#applyService", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const fixture = loadFixture("appliedServices/success.http");
@@ -15,7 +15,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?page=1")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.listDomainAppliedServices(accountId, domainId, {
+      dnsimple.services.applyService(accountId, domainId, {
         page: 1,
       });
 
@@ -28,7 +28,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.listDomainAppliedServices(accountId, domainId, {
+      dnsimple.services.applyService(accountId, domainId, {
         foo: "bar",
       });
 
@@ -41,7 +41,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?sort=name%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.listDomainAppliedServices(accountId, domainId, {
+      dnsimple.services.applyService(accountId, domainId, {
         sort: "name:asc",
       });
 
@@ -54,7 +54,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.listDomainAppliedServices(accountId, domainId).then(
+      dnsimple.services.applyService(accountId, domainId).then(
         (response) => {
           const services = response.data;
           expect(services.length).to.eq(1);
@@ -68,7 +68,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#listDomainAppliedServices.collectAll", () => {
+  describe("#applyService.collectAll", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -88,7 +88,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.services.listDomainAppliedServices
+      dnsimple.services.applyService
         .collectAll(accountId, domainId)
         .then(
           (items) => {
@@ -107,7 +107,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#applyServiceToDomain", () => {
+  describe("#appliedServices", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
@@ -120,7 +120,7 @@ describe("domain services", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services
-        .applyServiceToDomain(accountId, domainId, serviceId, {})
+        .appliedServices(accountId, domainId, serviceId, {})
         .then(
           (response) => {
             expect(response).to.eql({});
@@ -133,7 +133,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#unapplyServiceFromDomain", () => {
+  describe("#unapplyService", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
@@ -146,7 +146,7 @@ describe("domain services", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.services
-        .unapplyServiceFromDomain(accountId, domainId, serviceId)
+        .unapplyService(accountId, domainId, serviceId)
         .then(
           (response) => {
             expect(response).to.eql({});

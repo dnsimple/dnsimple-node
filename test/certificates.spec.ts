@@ -331,7 +331,7 @@ describe("certificates", () => {
     });
   });
 
-  describe("#purchaseRenewalLetsencryptCertificate", () => {
+  describe("#purchaseLetsencryptCertificateRenewal", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
@@ -347,7 +347,7 @@ describe("certificates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates
-        .purchaseRenewalLetsencryptCertificate(
+        .purchaseLetsencryptCertificateRenewal(
           accountId,
           domainId,
           certificateId,
@@ -368,7 +368,7 @@ describe("certificates", () => {
     });
   });
 
-  describe("#issueRenewalLetsencryptCertificate", () => {
+  describe("#issueLetsencryptCertificateRenewal", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
@@ -386,7 +386,7 @@ describe("certificates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates
-        .issueRenewalLetsencryptCertificate(
+        .issueLetsencryptCertificateRenewal(
           accountId,
           domainId,
           certificateId,

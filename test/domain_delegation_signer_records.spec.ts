@@ -6,7 +6,7 @@ import { createTestClient, loadFixture } from "./util";
 const dnsimple = createTestClient();
 
 describe("domains", () => {
-  describe("#listDomainDelegationSignerRecords", () => {
+  describe("#listDelegationSignerRecords", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const fixture = loadFixture("listDelegationSignerRecords/success.http");
@@ -16,7 +16,7 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/ds_records?page=1")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomainDelegationSignerRecords(accountId, domainId, {
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
         page: 1,
       });
 
@@ -29,7 +29,7 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/ds_records?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomainDelegationSignerRecords(accountId, domainId, {
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
         foo: "bar",
       });
 
@@ -42,7 +42,7 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/ds_records?sort=from%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomainDelegationSignerRecords(accountId, domainId, {
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
         sort: "from:asc",
       });
 
@@ -56,7 +56,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains
-        .listDomainDelegationSignerRecords(accountId, domainId)
+        .listDelegationSignerRecords(accountId, domainId)
         .then(
           (response) => {
             const dsRecords = response.data;
@@ -75,7 +75,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains
-        .listDomainDelegationSignerRecords(accountId, domainId)
+        .listDelegationSignerRecords(accountId, domainId)
         .then(
           (response) => {
             const pagination = response.pagination;
@@ -90,7 +90,7 @@ describe("domains", () => {
     });
   });
 
-  describe("#listDomainDelegationSignerRecords.collectAll", () => {
+  describe("#listDelegationSignerRecords.collectAll", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -110,7 +110,7 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/ds_records?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.domains.listDomainDelegationSignerRecords
+      dnsimple.domains.listDelegationSignerRecords
         .collectAll(accountId, domainId)
         .then(
           (items) => {
@@ -129,7 +129,7 @@ describe("domains", () => {
     });
   });
 
-  describe("#getDomainDelegationSignerRecord", () => {
+  describe("#getDelegationSignerRecord", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const dsRecordId = 1;
@@ -141,7 +141,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains
-        .getDomainDelegationSignerRecord(accountId, domainId, dsRecordId)
+        .getDelegationSignerRecord(accountId, domainId, dsRecordId)
         .then(
           (response) => {
             const dsRecord = response.data;
@@ -171,7 +171,7 @@ describe("domains", () => {
 
       it("produces an error", (done) => {
         dnsimple.domains
-          .getDomainDelegationSignerRecord(accountId, domainId, 0)
+          .getDelegationSignerRecord(accountId, domainId, 0)
           .then(
             (response) => {
               done();
@@ -188,10 +188,10 @@ describe("domains", () => {
     });
   });
 
-  describe("#createDomainDelegationSignerRecord", () => {
+  describe("#createDelegationSignerRecord", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const attributes = { algorithm: "8" } as any;
+    const attributes = { algorithm: "8" };
     const fixture = loadFixture("createDelegationSignerRecord/created.http");
 
     it("builds the correct request", (done) => {
@@ -199,7 +199,7 @@ describe("domains", () => {
         .post("/v2/1010/domains/example.com/ds_records", attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.createDomainDelegationSignerRecord(
+      dnsimple.domains.createDelegationSignerRecord(
         accountId,
         domainId,
         attributes
@@ -215,7 +215,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains
-        .createDomainDelegationSignerRecord(accountId, domainId, attributes)
+        .createDelegationSignerRecord(accountId, domainId, attributes)
         .then(
           (response) => {
             const dsRecord = response.data;
@@ -229,7 +229,7 @@ describe("domains", () => {
     });
   });
 
-  describe("#deleteDomainDelegationSignerRecord", () => {
+  describe("#deleteDelegationSignerRecord", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const dsRecordId = 1;
@@ -241,7 +241,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains
-        .deleteDomainDelegationSignerRecord(accountId, domainId, dsRecordId)
+        .deleteDelegationSignerRecord(accountId, domainId, dsRecordId)
         .then(
           (response) => {
             expect(response).to.eql({});

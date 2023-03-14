@@ -448,7 +448,13 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { digest?: string },
+      data: {
+        algorithm?: string;
+        digest?: string;
+        digest_type?: string;
+        keytag?: string;
+        public_key?: string;
+      },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {

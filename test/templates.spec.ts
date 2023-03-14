@@ -281,7 +281,7 @@ describe("templates", () => {
     });
   });
 
-  describe("#applyTemplateToDomain", () => {
+  describe("#applyTemplate", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const templateId = 1;
@@ -293,7 +293,7 @@ describe("templates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates
-        .applyTemplateToDomain(accountId, domainId, templateId)
+        .applyTemplate(accountId, domainId, templateId)
         .then(
           (response) => {
             expect(response).to.eql({});

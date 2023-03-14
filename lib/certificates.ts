@@ -298,7 +298,7 @@ export class Certificates {
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
-   * @param renewalId The certificate renewal order id received by `purchaseRenewalLetsencryptCertificate`.
+   * @param renewalId The certificate renewal order id received by {@link Certificates.purchaseRenewalLetsencryptCertificate}.
    * @param params Query parameters
    */
   issueLetsencryptCertificateRenewal = (() => {

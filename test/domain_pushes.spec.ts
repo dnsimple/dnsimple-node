@@ -5,7 +5,7 @@ import { createTestClient, loadFixture } from "./util";
 const dnsimple = createTestClient();
 
 describe("domains", () => {
-  describe("#initiateDomainPush", () => {
+  describe("#initiatePush", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const attributes = { new_account_email: "jim@example.com" };
@@ -16,7 +16,7 @@ describe("domains", () => {
         .post("/v2/1010/domains/example.com/pushes", attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.initiateDomainPush(accountId, domainId, attributes);
+      dnsimple.domains.initiatePush(accountId, domainId, attributes);
 
       nock.isDone();
       done();
@@ -27,7 +27,7 @@ describe("domains", () => {
         .post("/v2/1010/domains/example.com/pushes")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.initiateDomainPush(accountId, domainId, attributes).then(
+      dnsimple.domains.initiatePush(accountId, domainId, attributes).then(
         (response) => {
           const push = response.data;
           expect(push.id).to.eq(1);

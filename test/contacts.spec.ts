@@ -183,7 +183,7 @@ describe("contacts", () => {
 
   describe("#createContact", () => {
     const accountId = 1010;
-    const attributes: any = { first_name: "John", last_name: "Smith" };
+    const attributes = { first_name: "John", last_name: "Smith" };
     const fixture = loadFixture("createContact/created.http");
 
     it("builds the correct request", (done) => {
@@ -265,7 +265,7 @@ describe("contacts", () => {
   describe("#updateContact", () => {
     const accountId = 1010;
     const contactId = 1;
-    const attributes = { last_name: "Buckminster" } as any;
+    const attributes = { last_name: "Buckminster" };
     const fixture = loadFixture("updateContact/success.http");
 
     it("builds the correct request", (done) => {
