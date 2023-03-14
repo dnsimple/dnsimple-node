@@ -114,4 +114,4 @@ The value you provide will be appended to the default `User-Agent` the client us
 
 ## License
 
-Copyright (c) 2016-2023 DNSimple Corporation. This is Free Software distributed under the MIT license.
+Copyright © 2016&ndash;2023 DNSimple Corporation. This is Free Software distributed under the MIT license.
