@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -160,9 +161,8 @@ describe("templates", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Not found");
-            expect(error.message).to.eq("Template `beta` not found");
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq("Template `beta` not found");
             done();
           }
         );
@@ -246,17 +246,15 @@ describe("templates", () => {
           .patch("/v2/1010/templates/0")
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.templates
-          .updateTemplate(accountId, templateId, attributes)
-          .then(
-            (response) => {
-              done();
-            },
-            (error) => {
-              expect(error).to.not.eq(null);
-              done();
-            }
-          );
+        dnsimple.templates.updateTemplate(accountId, 0, attributes).then(
+          (response) => {
+            done();
+          },
+          (error) => {
+            expect(error).to.be.instanceOf(NotFoundError);
+            done();
+          }
+        );
       });
     });
   });
@@ -476,9 +474,8 @@ describe("template records", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Not found");
-            expect(error.message).to.eq("Template `beta` not found");
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq("Template `beta` not found");
             done();
           }
         );
@@ -498,7 +495,7 @@ describe("template records", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).to.be.instanceOf(NotFoundError);
             done();
           }
         );

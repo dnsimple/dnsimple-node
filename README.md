@@ -43,9 +43,10 @@ const accountId = response.data.account.id;
 // List your domains
 const { data: domains } = await client.domains.listDomains(accountId);
 const { data: domains } = await client.domains.listDomains(accountId, { page: 3 });
-for await (const domain of client.domains.listDomains(accountId, { name_like: ".com" }).paginate()) {
+for await (const domain of client.domains.listDomains(accountId, { name_like: ".com" }).iterateAll()) {
   console.log(domain);
 }
+const domains = await client.domains.listDomains(accountId, { name_like: ".com" }).collectAll();
 
 // Create a domain
 const { data: createdDomain } = await client.domains.createDomain(accountId, { name: "example.com" });
@@ -61,6 +62,26 @@ TOKEN=[TOKEN VALUE GOES HERE] node test.js
 ```
 
 Take a look at [https://github.com/dnsimple/hello-domains-node](https://github.com/dnsimple/hello-domains-node) for an example app that authorizes via OAuth and displays your domain list.
+
+## Pagination
+
+There are helper submethods available on API methods that are paginated to assist with fetching items across all pages.
+
+For an API that returns a `paginate` property, you can use either the `iterateAll` or `collectAll` submethods:
+- **iterateAll**: return an asynchronous iterator of items that are returned from the API. When the last item on a page is iterated, the next page will be fetched. This continues until there are no more pages.
+- **collectAll**: fetch all pages and collect all the items in order into an array.
+
+Examples:
+
+```typescript
+// iterateAll
+for await (const certificate of client.certificates.listCertificates.iterateAll(1010, "bingo.pizza")) {
+  console.log(certificate);
+}
+// collectAll
+const certificates: Array<Certificate> = await client.certificates.listCertificates.collectAll(1010, "bingo.pizza");
+console.log(certificates.length);
+```
 
 ## Sandbox Environment
 
@@ -88,6 +109,8 @@ var client = require("dnsimple")({
   accessToken: process.env.TOKEN,
 });
 ```
+
+The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
 
 ## License
 

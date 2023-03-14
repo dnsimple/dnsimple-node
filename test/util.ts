@@ -1,6 +1,10 @@
+import * as chai from "chai";
+import * as chaiAsPromised from "chai-as-promised";
 import * as fs from "node:fs";
 import * as sinon from "sinon";
 import { DNSimple } from "../lib/main";
+
+chai.use(chaiAsPromised);
 
 export const getAccessToken = () => process.env["TOKEN"] ?? "bogus";
 

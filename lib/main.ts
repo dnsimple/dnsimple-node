@@ -18,17 +18,18 @@ export type QueryParams = {
 };
 
 export const toQueryString = (params: QueryParams) => {
-  let queryString = "";
+  const queryParams = [];
   for (const [name, value] of Object.entries(params)) {
     if (value == null || value === false) {
       continue;
     }
-    queryString += encodeURIComponent(name);
+    let queryString = encodeURIComponent(name);
     if (value !== true) {
       queryString += "=" + encodeURIComponent(value.toString());
     }
+    queryParams.push(queryString);
   }
-  return queryString;
+  return queryParams.join("&");
 };
 
 const versionedPath = (path: string, params: QueryParams) => {
@@ -83,6 +84,12 @@ export class ClientError extends RequestError {
   }
 }
 
+export class ServerError extends RequestError {
+  constructor(status: number, readonly data: any) {
+    super(status, "Server error");
+  }
+}
+
 /**
  * A function that makes an HTTP request. It's responsible for throwing {@link TimeoutError} and aborting the request on {@param params.timeout}.
  * It should return the response status and full body as a string. It should not throw on any status, even if 4xx or 5xx.
@@ -125,7 +132,7 @@ const getFetcherForPlatform = (): Fetcher => {
       }
     };
   }
-  const Buffer: typeof import("node:buffer").Buffer = require("node:buffer");
+  const { Buffer }: typeof import("node:buffer") = require("node:buffer");
   const https: typeof import("node:https") = require("node:https");
   return ({ url, method, headers, timeout, body }) =>
     new Promise((resolve, reject) => {
@@ -142,7 +149,7 @@ const getFetcherForPlatform = (): Fetcher => {
             .on("end", () =>
               resolve({
                 status: res.statusCode!,
-                body: Buffer.concat(chunks).join(""),
+                body: Buffer.concat(chunks).toString("utf-8"),
               })
             )
             .on("error", reject);
@@ -188,7 +195,7 @@ export class DNSimple {
     baseUrl = DNSimple.DEFAULT_BASE_URL,
     fetcher = getFetcherForPlatform(),
     timeout = DNSimple.DEFAULT_TIMEOUT,
-    userAgent = DNSimple.DEFAULT_USER_AGENT,
+    userAgent = "",
   }: {
     accessToken?: string;
     baseUrl?: string;
@@ -209,7 +216,7 @@ export class DNSimple {
       Authorization: `Bearer ${this.accessToken}`,
       Accept: "application/json",
       "Content-Type": "application/json",
-      "User-Agent": this.userAgent,
+      "User-Agent": `${this.userAgent} ${DNSimple.DEFAULT_USER_AGENT}`.trim(),
     };
     const { status, body: data } = await this.fetcher({
       url: this.baseUrl + versionedPath(path, params),
@@ -239,10 +246,8 @@ export class DNSimple {
     if (status >= 200 && status < 300) {
       return JSON.parse(data);
     }
-    // TODO This doesn't seem correct?
-    // TODO How are we handling 5xx?
-    if (status >= 400) {
-      return JSON.parse(data);
+    if (status >= 500) {
+      throw new ServerError(status, JSON.parse(data));
     }
     throw new Error(`Unsupported status code: ${status}`);
   }

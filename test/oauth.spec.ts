@@ -8,8 +8,8 @@ describe("oauth", () => {
   const clientId = "super-client";
   const clientSecret = "super-secret";
   const code = "super-code";
-  const state = "mysecretstate";
   const redirectUri = "https://great-app.com/oauth";
+  const state = "mysecretstate";
 
   describe("#exchangeAuthorizationForToken", () => {
     const fixture = loadFixture("oauthAccessToken/success.http");
@@ -21,15 +21,18 @@ describe("oauth", () => {
           client_secret: clientSecret,
           code,
           grant_type: "authorization_code",
+          redirect_uri: redirectUri,
+          state,
         })
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.oauth.exchangeAuthorizationForToken(
+      dnsimple.oauth.exchangeAuthorizationForToken({
         code,
         clientId,
         clientSecret,
-        { redirectUri, state }
-      );
+        redirectUri,
+        state,
+      });
 
       nock.isDone();
       done();
@@ -42,11 +45,16 @@ describe("oauth", () => {
           client_secret: clientSecret,
           code,
           grant_type: "authorization_code",
+          redirect_uri: redirectUri,
+          state,
         })
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.oauth
-        .exchangeAuthorizationForToken(code, clientId, clientSecret, {
+        .exchangeAuthorizationForToken({
+          code,
+          clientId,
+          clientSecret,
           redirectUri,
           state,
         })
@@ -81,13 +89,13 @@ describe("oauth", () => {
           })
           .reply(fixture.statusCode, fixture.body);
 
-        const options = { state, redirectUri };
-        dnsimple.oauth.exchangeAuthorizationForToken(
+        dnsimple.oauth.exchangeAuthorizationForToken({
           code,
           clientId,
           clientSecret,
-          options
-        );
+          state,
+          redirectUri,
+        });
 
         nock.isDone();
         done();
@@ -98,10 +106,14 @@ describe("oauth", () => {
   describe("#authorizeUrl", () => {
     it("builds the correct url", () => {
       const authorizeUrl = new URL(
-        dnsimple.oauth.authorizeUrl("great-app", { redirectUri, state })
+        dnsimple.oauth.authorizeUrl({
+          clientId: "great-app",
+          redirectUri,
+          state,
+        })
       );
       const expectedUrl = new URL(
-        "https://dnsimple.com/oauth/authorize?client_id=great-app&response_type=code"
+        "https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate"
       );
 
       expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);

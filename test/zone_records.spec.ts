@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -182,9 +183,8 @@ describe("zone records", () => {
             done("Error expected but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Not found");
-            expect(error.message).to.eq("Record `0` not found");
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq("Record `0` not found");
             done();
           }
         );
@@ -272,7 +272,7 @@ describe("zone records", () => {
     describe("when the record does not exist", () => {
       const fixture = loadFixture("notfound-record.http");
       nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/records/" + recordId, attributes)
+        .patch("/v2/1010/zones/example.com/records/" + recordId, attributes)
         .reply(fixture.statusCode, fixture.body);
 
       it("produces an error", (done) => {
@@ -283,7 +283,7 @@ describe("zone records", () => {
               done();
             },
             (error) => {
-              expect(error).to.not.eq(null);
+              expect(error).to.be.instanceOf(NotFoundError);
               done();
             }
           );
@@ -336,7 +336,7 @@ describe("zone records", () => {
             done("Error expected but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).to.be.instanceOf(NotFoundError);
             done();
           }
         );

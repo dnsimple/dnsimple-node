@@ -14,15 +14,15 @@ describe("accounts", () => {
         .reply(fixture.statusCode, fixture.body);
 
       await expect(dnsimple.accounts.listAccounts()).to.eventually.deep.equal({
-        data: {
-          accounts: [
-            {
-              id: 123,
-              email: "john@example.com",
-              plan_identifier: "dnsimple-personal",
-            },
-          ],
-        },
+        data: [
+          {
+            id: 123,
+            email: "john@example.com",
+            plan_identifier: "dnsimple-personal",
+            created_at: "2011-09-11T17:15:58Z",
+            updated_at: "2016-06-03T15:02:26Z",
+          },
+        ],
       });
     });
   });

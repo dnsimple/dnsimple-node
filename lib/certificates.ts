@@ -171,7 +171,7 @@ export class Certificates {
   /**
    * Orders a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate with DNSimple.
    *
-   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt
+   * POST /{account}/domains/{domain}/certificates/letsencrypt
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -200,7 +200,7 @@ export class Certificates {
     }> =>
       this._client.request(
         "POST",
-        `/${account}/domains/${domain}/certificates/certificates/letsencrypt`,
+        `/${account}/domains/${domain}/certificates/letsencrypt`,
         data,
         params
       );
@@ -210,7 +210,7 @@ export class Certificates {
   /**
    * Issues a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate ordered with DNSimple.
    *
-   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt/{purchaseId}/issue
+   * POST /{account}/domains/{domain}/certificates/letsencrypt/{purchaseId}/issue
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -243,7 +243,7 @@ export class Certificates {
     }> =>
       this._client.request(
         "POST",
-        `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${purchaseId}/issue`,
+        `/${account}/domains/${domain}/certificates/letsencrypt/${purchaseId}/issue`,
         null,
         params
       );
@@ -253,7 +253,7 @@ export class Certificates {
   /**
    * Renews a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate ordered with DNSimple.
    *
-   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt/{certificate}/renewals
+   * POST /{account}/domains/{domain}/certificates/letsencrypt/{certificate}/renewals
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -280,7 +280,7 @@ export class Certificates {
     }> =>
       this._client.request(
         "POST",
-        `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${certificate}/renewals`,
+        `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals`,
         data,
         params
       );
@@ -290,7 +290,7 @@ export class Certificates {
   /**
    * Issues a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate renewal ordered with DNSimple.
    *
-   * POST /{account}/domains/{domain}/certificates/certificates/letsencrypt/{certificate}/renewals/{renewalId}/issue
+   * POST /{account}/domains/{domain}/certificates/letsencrypt/{certificate}/renewals/{renewalId}/issue
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -325,7 +325,7 @@ export class Certificates {
     }> =>
       this._client.request(
         "POST",
-        `/${account}/domains/${domain}/certificates/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`,
+        `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`,
         null,
         params
       );

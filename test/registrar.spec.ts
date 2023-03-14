@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { ClientError } from "../lib/main";
 import { createTestClient, loadFixture, stubRequest } from "./util";
 
 const dnsimple = createTestClient();
@@ -70,9 +71,8 @@ describe("registrar", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Bad request");
-            expect(error.message).to.eq(
+            expect(error).to.be.instanceOf(ClientError);
+            expect(error.data.message).to.eq(
               "`example.com` is not a premium domain for registration"
             );
             done();
@@ -121,9 +121,8 @@ describe("registrar", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Bad request");
-            expect(error.message).to.eq("TLD .PINEAPPLE is not supported");
+            expect(error).to.be.instanceOf(ClientError);
+            expect(error.data.message).to.eq("TLD .PINEAPPLE is not supported");
             done();
           }
         );

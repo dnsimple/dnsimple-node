@@ -13,35 +13,33 @@ export class OAuth {
    * that is used to authenticate API calls.
    *
    * @see https://developer.dnsimple.com/v2/oauth
-   * @param code The code returned from the authorize URL
-   * @param clientId The OAuth application client ID
-   * @param clientSecret The OAuth application client secret
-   * @param options
-   * @param options.state The random state used when authorizing
-   * @param options.redirectUri A redirect URI
+   * @param attributes
+   * @param attributes.code The code returned from the authorize URL
+   * @param attributes.clientId The OAuth application client ID
+   * @param attributes.clientSecret The OAuth application client secret
+   * @param attributes.state The random state used when authorizing
+   * @param attributes.redirectUri A redirect URI
    */
-  exchangeAuthorizationForToken(
-    code: string,
-    clientId: string,
-    clientSecret: string,
-    {
-      redirectUri,
-      state,
-    }: {
-      state: string;
-      redirectUri: string;
-    }
-  ) {
-    const attributes = {
-      code,
-      client_id: clientId,
-      client_secret: clientSecret,
-      grant_type: "authorization_code",
-      state,
-      redirect_uri: redirectUri,
-    };
-
-    return this._client.request("POST", "/oauth/access_token", attributes, {});
+  exchangeAuthorizationForToken(attributes: {
+    code: string;
+    clientId: string;
+    clientSecret: string;
+    state: string;
+    redirectUri: string;
+  }) {
+    return this._client.request(
+      "POST",
+      "/oauth/access_token",
+      {
+        client_id: attributes.clientId,
+        client_secret: attributes.clientSecret,
+        code: attributes.code,
+        grant_type: "authorization_code",
+        redirect_uri: attributes.redirectUri,
+        state: attributes.state,
+      },
+      {}
+    );
   }
 
   /**
@@ -49,27 +47,25 @@ export class OAuth {
    *
    * @see https://developer.dnsimple.com/v2/oauth/
    *
-   * @param clientId The client ID provided when the application was registered with DNSimple.
-   * @param options At minimum the state option is required
-   * @param options.state A random string to protect against CSRF
-   * @param options.redirectUri The URL to redirect to after authorizing
-   * @param options.scope The scope to request during authorization
+   * @param attributes At minimum the state option is required
+   * @param attributes.clientId The client ID provided when the application was registered with DNSimple.
+   * @param attributes.state A random string to protect against CSRF
+   * @param attributes.redirectUri The URL to redirect to after authorizing
+   * @param attributes.scope The scope to request during authorization
    * @return The URL to redirect the user to for authorization
    */
-  authorizeUrl(
-    clientId: string,
-    options: {
-      state: string;
-      redirectUri?: string;
-      scope?: string;
-    }
-  ) {
+  authorizeUrl(attributes: {
+    clientId: string;
+    state: string;
+    redirectUri?: string;
+    scope?: string;
+  }) {
     const siteUrl = this._client.baseUrl.replace("api.", "");
     return `${siteUrl}/oauth/authorize?${toQueryString({
-      state: options.state,
-      redirectUri: options.redirectUri,
-      scope: options.scope,
-      client_id: clientId,
+      state: attributes.state,
+      redirect_uri: attributes.redirectUri,
+      scope: attributes.scope,
+      client_id: attributes.clientId,
       response_type: "code",
     })}`;
   }

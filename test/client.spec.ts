@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { ClientError, MethodNotAllowedError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -17,8 +18,8 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error.message).to.eq("Validation failed");
-          expect(error.errors.email).to.include("can't be blank");
+          expect(error).to.be.instanceOf(ClientError);
+          expect(error.data.errors.email).to.include("can't be blank");
           done();
         }
       );
@@ -37,7 +38,7 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error.startsWith("Unexpected token")).to.eq(true);
+          expect(error).instanceOf(SyntaxError);
           done();
         }
       );
@@ -56,7 +57,7 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error.startsWith("Unexpected token")).to.eq(true);
+          expect(error).to.be.instanceOf(SyntaxError);
           done();
         }
       );
@@ -75,7 +76,7 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error.description).to.eq("Method not allowed");
+          expect(error).to.be.instanceOf(MethodNotAllowedError);
           done();
         }
       );

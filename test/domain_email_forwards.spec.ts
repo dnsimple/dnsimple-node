@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -164,9 +165,8 @@ describe("domains", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Not found");
-            expect(error.message).to.eq("Email forward `0` not found");
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq("Email forward `0` not found");
             done();
           }
         );

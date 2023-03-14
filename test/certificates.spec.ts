@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -169,8 +170,8 @@ describe("certificates", () => {
           },
           (error) => {
             expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Not found");
-            expect(error.message).to.eq("Certificate `0` not found");
+            expect(error).to.be.an.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq("Certificate `0` not found");
             done();
           }
         );
@@ -341,7 +342,7 @@ describe("certificates", () => {
     it("purchases a certificate renewal", (done) => {
       nock("https://api.dnsimple.com")
         .post(
-          `/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewal`
+          `/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals`
         )
         .reply(fixture.statusCode, fixture.body);
 

@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -107,9 +108,8 @@ describe("webhooks", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error.description).to.eq("Not found");
-            expect(error.message).to.eq("Webhook `0` not found");
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq("Webhook `0` not found");
             done();
           }
         );
@@ -175,7 +175,7 @@ describe("webhooks", () => {
     describe("when the webhook does not exist", () => {
       const fixture = loadFixture("notfound-webhook.http");
       nock("https://api.dnsimple.com")
-        .get("/v2/1010/webhooks/0")
+        .delete("/v2/1010/webhooks/0")
         .reply(fixture.statusCode, fixture.body);
 
       it("produces an error", (done) => {
@@ -184,7 +184,7 @@ describe("webhooks", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).to.be.instanceOf(NotFoundError);
             done();
           }
         );

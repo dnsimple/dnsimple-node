@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
+import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -40,7 +41,7 @@ describe("registrar auto renewal", () => {
             done("Expected error but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).to.be.instanceOf(NotFoundError);
             done();
           }
         );
@@ -80,7 +81,7 @@ describe("registrar auto renewal", () => {
             done("Expected error but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).to.be.instanceOf(NotFoundError);
             done();
           }
         );
