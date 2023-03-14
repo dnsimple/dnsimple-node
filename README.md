@@ -1,6 +1,6 @@
-# DNSimple Node.JS Client
+# DNSimple Node.js Client
 
-A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
+A Node.js client for the [DNSimple API v2](https://developer.dnsimple.com/v2/) with TypeScript definitions.
 
 [![Build Status](https://travis-ci.com/dnsimple/dnsimple-node.svg?branch=main)](https://travis-ci.com/dnsimple/dnsimple-node)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/standard/semistandard)
@@ -9,13 +9,13 @@ A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
 ## Requirements
 
-The dnsimple-node package requires Node.js 14.0.0 or higher.
+The [dnsimple-node](https://npmjs.org/package/dnsimple-node) package requires Node.js 14.0.0 or higher.
 
 You must also have an activated DNSimple account to access the DNSimple API.
 
 ## Installation
 
-You can install this package directly from the github repo with `npm install dnsimple/dnsimple-node`.
+You can install this package directly from the GitHub repo with `npm install dnsimple/dnsimple-node`.
 
 Alternatively, install the latest stable version from NPM with `npm install dnsimple`.
 
@@ -27,10 +27,10 @@ Note that in all examples below, the `accessToken` must be an OAuth token as des
 
 All client methods that call out to the DNSimple API are async and will return a Promise. The examples below demonstrate basic usage.
 
-```typescript
-import { DNSimple } from "dnsimple";
-// Or use this if not using TypeScript:
-// const { DNSimple } = require("dnsimple");
+```js
+const { DNSimple } = require("dnsimple");
+// Or use this if you're using TypeScript:
+// import { DNSimple } from "dnsimple";
 
 const client = new DNSimple({
   accessToken: process.env.TOKEN,
@@ -38,15 +38,12 @@ const client = new DNSimple({
 
 // Fetch your details
 const response = await client.identity.whoami();
+// All responses have a `data` property if there's response data.
 const accountId = response.data.account.id;
 
 // List your domains
-const { data: domains } = await client.domains.listDomains(accountId);
-const { data: domains } = await client.domains.listDomains(accountId, { page: 3 });
-for await (const domain of client.domains.listDomains(accountId, { name_like: ".com" }).iterateAll()) {
-  console.log(domain);
-}
-const domains = await client.domains.listDomains(accountId, { name_like: ".com" }).collectAll();
+const { data: domains1 } = await client.domains.listDomains(accountId);
+const { data: domains3 } = await client.domains.listDomains(accountId, { page: 3 });
 
 // Create a domain
 const { data: createdDomain } = await client.domains.createDomain(accountId, { name: "example.com" });
@@ -89,7 +86,7 @@ console.log(certificates.length);
 
 We highly recommend testing against our [sandbox environment](https://developer.dnsimple.com/sandbox/) before using our production environment. This will allow you to avoid real purchases, live charges on your credit card, and reduce the chance of your running up against rate limits.
 
-The client supports both the production and sandbox environment. To switch to sandbox pass the sandbox API host using the `base_url` option when you construct the client:
+The client supports both the production and sandbox environment. To switch to sandbox pass the sandbox API host using the `baseUrl` property when you construct the client:
 
 ```javascript
 const { DNSimple } = require("dnsimple");
@@ -106,7 +103,8 @@ You will need to ensure that you are using an access token created in the sandbo
 You customize the `User-Agent` header for the calls made to the DNSimple API:
 
 ```javascript
-var client = require("dnsimple")({
+const DNSimple = require("dnsimple");
+const client = new DNSimple({
   userAgent: "my-app",
   accessToken: process.env.TOKEN,
 });
@@ -116,4 +114,4 @@ The value you provide will be appended to the default `User-Agent` the client us
 
 ## License
 
-Copyright (c) 2016-2022 DNSimple Corporation. This is Free Software distributed under the MIT license.
+Copyright (c) 2016-2023 DNSimple Corporation. This is Free Software distributed under the MIT license.
