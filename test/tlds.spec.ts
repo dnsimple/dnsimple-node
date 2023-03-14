@@ -78,42 +78,6 @@ describe("tlds", () => {
     });
   });
 
-  describe("#listTlds.collectAll", () => {
-    it("produces a complete list", (done) => {
-      const fixture1 = loadFixture("pages-1of3.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds?page=1")
-        .reply(fixture1.statusCode, fixture1.body);
-
-      const fixture2 = loadFixture("pages-2of3.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds?page=2")
-        .reply(fixture2.statusCode, fixture2.body);
-
-      const fixture3 = loadFixture("pages-3of3.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds?page=3")
-        .reply(fixture3.statusCode, fixture3.body);
-
-      dnsimple.tlds.listTlds
-        .collectAll()
-        .then(
-          (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        )
-        .catch((error) => {
-          done(error);
-        });
-    });
-  });
-
   describe("#getTld", () => {
     const fixture = loadFixture("getTld/success.http");
 

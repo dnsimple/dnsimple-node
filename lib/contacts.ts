@@ -92,8 +92,28 @@ export class Contacts {
         job_title: string;
       },
       params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request("POST", `/${account}/contacts`, data, params);
+    ): Promise<{
+      data: {
+        id: number;
+        account_id: number;
+        label: string;
+        first_name: string;
+        last_name: string;
+        organization_name: string;
+        job_title: string;
+        address1: string;
+        address2: string;
+        city: string;
+        state_province: string;
+        postal_code: string;
+        country: string;
+        phone: string;
+        fax: string;
+        email: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }> => this._client.request("POST", `/${account}/contacts`, data, params);
     return method;
   })();
 

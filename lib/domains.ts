@@ -246,15 +246,17 @@ export class Domains {
       data: { email: string },
       params: QueryParams & {} = {}
     ): Promise<{
-      id: number;
-      domain_id: number;
-      domain_name: string;
-      user_id: number;
-      user_email: string;
-      invitation: boolean;
-      created_at: string;
-      updated_at: string;
-      accepted_at: string;
+      data: {
+        id: number;
+        domain_id: number;
+        domain_name: string;
+        user_id: number;
+        user_email: string;
+        invitation: boolean;
+        created_at: string;
+        updated_at: string;
+        accepted_at: string;
+      };
     }> =>
       this._client.request(
         "POST",
@@ -305,7 +307,9 @@ export class Domains {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{ enabled: boolean; created_at: string; updated_at: string }> =>
+    ): Promise<{
+      data: { enabled: boolean; created_at: string; updated_at: string };
+    }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/dnssec`,
@@ -331,7 +335,9 @@ export class Domains {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{ enabled: boolean; created_at: string; updated_at: string }> =>
+    ): Promise<{
+      data: { enabled: boolean; created_at: string; updated_at: string };
+    }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/dnssec`,

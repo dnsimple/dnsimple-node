@@ -295,7 +295,7 @@ describe("templates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates
-        .applyTemplateToDomain(accountId, templateId, domainId)
+        .applyTemplateToDomain(accountId, domainId, templateId)
         .then(
           (response) => {
             expect(response).to.eql({});
@@ -334,7 +334,7 @@ describe("template records", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.templates.listTemplateRecords(accountId, templateId, {
-        query: { foo: "bar" },
+        foo: "bar",
       });
 
       nock.isDone();

@@ -86,13 +86,13 @@ export class Templates {
    * GET /{account}/templates/{template}
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param params Query parameters
    */
   getTemplate = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -120,13 +120,13 @@ export class Templates {
    * PATCH /{account}/templates/{template}
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param params Query parameters
    */
   updateTemplate = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       data: { sid: string; name: string; description: string },
       params: QueryParams & {} = {}
     ): Promise<{
@@ -155,13 +155,13 @@ export class Templates {
    * DELETE /{account}/templates/{template}
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param params Query parameters
    */
   deleteTemplate = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
@@ -181,14 +181,14 @@ export class Templates {
    * GET /{account}/templates/{template}/records
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by id ascending.
    */
   listTemplateRecords = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       params: QueryParams & { sort?: string } = {}
     ): Promise<{
       data: Array<{
@@ -217,13 +217,13 @@ export class Templates {
       );
     method.iterateAll = (
       account: number,
-      template: number,
+      template: number | string,
       params: QueryParams & { sort?: string } = {}
     ) =>
       paginate((page) => method(account, template, { ...params, page } as any));
     method.collectAll = async (
       account: number,
-      template: number,
+      template: number | string,
       params: QueryParams & { sort?: string } = {}
     ) => {
       const items = [];
@@ -241,13 +241,13 @@ export class Templates {
    * POST /{account}/templates/{template}/records
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param params Query parameters
    */
   createTemplateRecord = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       data: {},
       params: QueryParams & {} = {}
     ): Promise<{
@@ -278,14 +278,14 @@ export class Templates {
    * GET /{account}/templates/{template}/records/{templaterecord}
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param templaterecord The template record id
    * @param params Query parameters
    */
   getTemplateRecord = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       templaterecord: number,
       params: QueryParams & {} = {}
     ): Promise<{
@@ -316,14 +316,14 @@ export class Templates {
    * DELETE /{account}/templates/{template}/records/{templaterecord}
    *
    * @param account The account id
-   * @param template The template id
+   * @param template The template id or short name
    * @param templaterecord The template record id
    * @param params Query parameters
    */
   deleteTemplateRecord = (() => {
     const method = (
       account: number,
-      template: number,
+      template: number | string,
       templaterecord: number,
       params: QueryParams & {} = {}
     ): Promise<{}> =>
@@ -343,14 +343,14 @@ export class Templates {
    *
    * @param account The account id
    * @param domain The domain name or id
-   * @param template The template id
+   * @param template The template id or short name
    * @param params Query parameters
    */
   applyTemplateToDomain = (() => {
     const method = (
       account: number,
       domain: string,
-      template: number,
+      template: number | string,
       params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(

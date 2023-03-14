@@ -24,6 +24,7 @@ export class Tlds {
         whois_privacy: boolean;
         auto_renew_only: boolean;
         idn: boolean;
+        minimum_registration: number;
         registration_enabled: boolean;
         renewal_enabled: boolean;
         transfer_enabled: boolean;
@@ -69,6 +70,7 @@ export class Tlds {
         whois_privacy: boolean;
         auto_renew_only: boolean;
         idn: boolean;
+        minimum_registration: number;
         registration_enabled: boolean;
         renewal_enabled: boolean;
         transfer_enabled: boolean;

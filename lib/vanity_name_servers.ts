@@ -20,7 +20,14 @@ export class VanityNameServers {
       domain: string,
       params: QueryParams & {} = {}
     ): Promise<{
-      data: Array<{ id: number; name: string; ipv4: string; ipv6: string }>;
+      data: Array<{
+        id: number;
+        name: string;
+        ipv4: string;
+        ipv6: string;
+        created_at: string;
+        updated_at: string;
+      }>;
     }> =>
       this._client.request("PUT", `/${account}/vanity/${domain}`, null, params);
     return method;

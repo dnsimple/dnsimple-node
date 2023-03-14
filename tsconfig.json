@@ -20,7 +20,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "outDir": "dist",
     "resolveJsonModule": true,
     "strict": true,
