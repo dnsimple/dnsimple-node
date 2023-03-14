@@ -36,7 +36,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
-        expires_at: string;
+        expires_on: string;
       }>;
       pagination: {
         current_page: number;
@@ -102,7 +102,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
-        expires_at: string;
+        expires_on: string;
       };
     }> =>
       this._client.request(
@@ -182,10 +182,10 @@ export class Certificates {
       account: number,
       domain: string,
       data: {
-        auto_renew: boolean;
-        name: string;
-        alternate_names: Array<string>;
-        signature_algorithm: string;
+        auto_renew?: boolean;
+        name?: string;
+        alternate_names?: Array<string>;
+        signature_algorithm?: string;
       },
       params: QueryParams & {} = {}
     ): Promise<{
@@ -238,7 +238,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
-        expires_at: string;
+        expires_on: string;
       };
     }> =>
       this._client.request(
@@ -265,7 +265,7 @@ export class Certificates {
       account: number,
       domain: string,
       certificate: number,
-      data: { auto_renew: boolean; signature_algorithm: string },
+      data: { auto_renew?: boolean; signature_algorithm?: string },
       params: QueryParams & {} = {}
     ): Promise<{
       data: {
@@ -320,7 +320,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
-        expires_at: string;
+        expires_on: string;
       };
     }> =>
       this._client.request(

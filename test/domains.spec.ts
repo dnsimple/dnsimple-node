@@ -25,7 +25,7 @@ describe("domains", () => {
         .get("/v2/1010/domains?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listDomains(accountId, { query: { foo: "bar" } });
+      dnsimple.domains.listDomains(accountId, { foo: "bar" });
 
       nock.isDone();
       done();
@@ -48,7 +48,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDomains(accountId, {
-        filter: { name_like: "example" },
+        name_like: "example",
       });
 
       nock.isDone();
@@ -93,7 +93,7 @@ describe("domains", () => {
     });
   });
 
-  describe("#allDomains", () => {
+  describe("#listDomains.collectAll", () => {
     const accountId = 1010;
 
     it("produces a complete list", (done) => {
@@ -112,8 +112,8 @@ describe("domains", () => {
         .get("/v2/1010/domains?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.domains
-        .allDomains(accountId)
+      dnsimple.domains.listDomains
+        .collectAll(accountId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);
@@ -170,7 +170,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       it("produces an error", (done) => {
-        dnsimple.domains.getDomain(accountId, 0).then(
+        dnsimple.domains.getDomain(accountId, "0").then(
           (response) => {
             done();
           },

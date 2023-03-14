@@ -4,9 +4,6 @@ import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
 
-const expect = require("chai").expect;
-const nock = require("nock");
-
 describe("services", () => {
   describe("#listServices", () => {
     const fixture = loadFixture("listServices/success.http");
@@ -27,7 +24,7 @@ describe("services", () => {
         .get("/v2/services?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.listServices({ query: { foo: "bar" } });
+      dnsimple.services.listServices({ foo: "bar" });
 
       nock.isDone();
       done();
@@ -82,7 +79,7 @@ describe("services", () => {
     });
   });
 
-  describe("#allServices", () => {
+  describe("#listServices.collectAll", () => {
     it("produces a complete list", (done) => {
       const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
@@ -99,8 +96,8 @@ describe("services", () => {
         .get("/v2/services?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.services
-        .allServices()
+      dnsimple.services.listServices
+        .collectAll()
         .then(
           (items) => {
             expect(items.length).to.eq(5);
@@ -119,7 +116,7 @@ describe("services", () => {
   });
 
   describe("#getService", () => {
-    const serviceId = 1;
+    const serviceId = "1";
     const fixture = loadFixture("getService/success.http");
 
     it("produces a service", (done) => {

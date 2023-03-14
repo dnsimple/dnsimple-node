@@ -76,7 +76,7 @@ export class Contacts {
     const method = (
       account: number,
       data: {
-        label: string;
+        label?: string;
         first_name: string;
         last_name: string;
         address1: string;
@@ -156,7 +156,7 @@ export class Contacts {
       account: number,
       contact: number,
       data: {
-        label: string;
+        label?: string;
         first_name: string;
         last_name: string;
         address1: string;

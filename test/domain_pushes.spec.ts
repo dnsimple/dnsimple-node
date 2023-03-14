@@ -4,11 +4,8 @@ import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
 
-const expect = require("chai").expect;
-const nock = require("nock");
-
 describe("domains", () => {
-  describe("#initiatePush", () => {
+  describe("#initiateDomainPush", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const attributes = { new_account_email: "jim@example.com" };
@@ -19,7 +16,7 @@ describe("domains", () => {
         .post("/v2/1010/domains/example.com/pushes", attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.initiatePush(accountId, domainId, attributes);
+      dnsimple.domains.initiateDomainPush(accountId, domainId, attributes);
 
       nock.isDone();
       done();
@@ -30,7 +27,7 @@ describe("domains", () => {
         .post("/v2/1010/domains/example.com/pushes")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.initiatePush(accountId, domainId, attributes).then(
+      dnsimple.domains.initiateDomainPush(accountId, domainId, attributes).then(
         (response) => {
           const push = response.data;
           expect(push.id).to.eq(1);
@@ -73,7 +70,7 @@ describe("domains", () => {
 
   describe("#acceptPush", () => {
     const accountId = 1010;
-    const pushId = "200";
+    const pushId = 200;
     const attributes = { contact_id: 1 };
     const fixture = loadFixture("acceptPush/success.http");
 
@@ -107,7 +104,7 @@ describe("domains", () => {
 
   describe("#rejectPush", () => {
     const accountId = 1010;
-    const pushId = "200";
+    const pushId = 200;
     const fixture = loadFixture("rejectPush/success.http");
 
     it("builds the correct request", (done) => {

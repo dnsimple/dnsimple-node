@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import * as nock from "nock";
-import * as querystring from "node:querystring";
 import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -9,6 +8,8 @@ describe("oauth", () => {
   const clientId = "super-client";
   const clientSecret = "super-secret";
   const code = "super-code";
+  const state = "mysecretstate";
+  const redirectUri = "https://great-app.com/oauth";
 
   describe("#exchangeAuthorizationForToken", () => {
     const fixture = loadFixture("oauthAccessToken/success.http");
@@ -26,7 +27,8 @@ describe("oauth", () => {
       dnsimple.oauth.exchangeAuthorizationForToken(
         code,
         clientId,
-        clientSecret
+        clientSecret,
+        { redirectUri, state }
       );
 
       nock.isDone();
@@ -44,7 +46,10 @@ describe("oauth", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.oauth
-        .exchangeAuthorizationForToken(code, clientId, clientSecret)
+        .exchangeAuthorizationForToken(code, clientId, clientSecret, {
+          redirectUri,
+          state,
+        })
         .then(
           (response) => {
             expect(response.access_token).to.eq(
@@ -92,34 +97,17 @@ describe("oauth", () => {
 
   describe("#authorizeUrl", () => {
     it("builds the correct url", () => {
-      const authorizeUrl = new URL(dnsimple.oauth.authorizeUrl("great-app"));
+      const authorizeUrl = new URL(
+        dnsimple.oauth.authorizeUrl("great-app", { redirectUri, state })
+      );
       const expectedUrl = new URL(
         "https://dnsimple.com/oauth/authorize?client_id=great-app&response_type=code"
       );
 
       expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
       expect(authorizeUrl.host).to.eq(expectedUrl.host);
-      expect(querystring.parse(authorizeUrl.query)).to.deep.equal(
-        querystring.parse(expectedUrl.query)
-      );
-    });
-
-    it("exposes the options in the query string", () => {
-      let authorizeUrl = dnsimple.oauth.authorizeUrl("great-app", {
-        secret: "1",
-        redirect_uri: "http://example.com",
-      });
-      authorizeUrl = new URL(authorizeUrl);
-
-      let expectedUrl = "https://dnsimple.com/oauth/authorize";
-      expectedUrl +=
-        "?client_id=great-app&secret=1&redirect_uri=http://example.com&response_type=code";
-      expectedUrl = new URL(expectedUrl);
-
-      expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
-      expect(authorizeUrl.host).to.eq(expectedUrl.host);
-      expect(querystring.parse(authorizeUrl.query)).to.deep.equal(
-        querystring.parse(expectedUrl.query)
+      expect(Object.fromEntries(authorizeUrl.searchParams)).to.deep.equal(
+        Object.fromEntries(expectedUrl.searchParams)
       );
     });
   });

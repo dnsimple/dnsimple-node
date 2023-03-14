@@ -34,7 +34,7 @@ export class Services {
           append: string;
           description: string;
           example: string;
-          password: boolean;
+          password?: boolean;
         }>;
       }>;
       pagination: {
@@ -87,7 +87,7 @@ export class Services {
           append: string;
           description: string;
           example: string;
-          password: boolean;
+          password?: boolean;
         }>;
       };
     }> => this._client.request("GET", `/services/${service}`, null, params);
@@ -127,7 +127,7 @@ export class Services {
           append: string;
           description: string;
           example: string;
-          password: boolean;
+          password?: boolean;
         }>;
       }>;
       pagination: {

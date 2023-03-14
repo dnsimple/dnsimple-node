@@ -5,7 +5,7 @@ import { createTestClient, loadFixture } from "./util";
 const dnsimple = createTestClient();
 
 describe("collaborators", () => {
-  describe("#listCollaborators", () => {
+  describe("#listDomainCollaborators", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const fixture = loadFixture("listCollaborators/success.http");
@@ -15,7 +15,9 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators?page=1")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listCollaborators(accountId, domainId, { page: 1 });
+      dnsimple.domains.listDomainCollaborators(accountId, domainId, {
+        page: 1,
+      });
 
       nock.isDone();
       done();
@@ -26,8 +28,8 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listCollaborators(accountId, domainId, {
-        query: { foo: "bar" },
+      dnsimple.domains.listDomainCollaborators(accountId, domainId, {
+        foo: "bar",
       });
 
       nock.isDone();
@@ -39,7 +41,7 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listCollaborators(accountId, domainId).then(
+      dnsimple.domains.listDomainCollaborators(accountId, domainId).then(
         (response) => {
           const collaborators = response.data;
           expect(collaborators.length).to.eq(2);
@@ -59,7 +61,7 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.listCollaborators(accountId, domainId).then(
+      dnsimple.domains.listDomainCollaborators(accountId, domainId).then(
         (response) => {
           const pagination = response.pagination;
           expect(pagination).to.not.eq(null);
@@ -73,7 +75,7 @@ describe("collaborators", () => {
     });
   });
 
-  describe("#addCollaborator", () => {
+  describe("#addDomainCollaborator", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const collaborator = {
@@ -87,24 +89,26 @@ describe("collaborators", () => {
         .post("/v2/1010/domains/example.com/collaborators")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains.addCollaborator(accountId, domainId, collaborator).then(
-        (response) => {
-          const data = response.data;
-          expect(data.id).to.eql(100);
-          expect(data.invitation).to.eql(false);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      dnsimple.domains
+        .addDomainCollaborator(accountId, domainId, collaborator)
+        .then(
+          (response) => {
+            const data = response.data;
+            expect(data.id).to.eql(100);
+            expect(data.invitation).to.eql(false);
+            done();
+          },
+          (error) => {
+            done(error);
+          }
+        );
     });
   });
 
   describe("#removeCollaborator", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const collaboratorId = "100";
+    const collaboratorId = 100;
 
     it("produces nothing", (done) => {
       const fixture = loadFixture("removeCollaborator/success.http");
@@ -114,7 +118,7 @@ describe("collaborators", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains
-        .removeCollaborator(accountId, domainId, collaboratorId)
+        .removeDomainCollaborator(accountId, domainId, collaboratorId)
         .then(
           (response) => {
             expect(response).to.eql({});

@@ -48,7 +48,7 @@ describe("contacts", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.contacts.listContacts(accountId, {
-        filter: { first_name_like: "example" },
+        first_name_like: "example",
       });
 
       nock.isDone();
@@ -97,7 +97,7 @@ describe("contacts", () => {
     });
   });
 
-  describe("#allContacts", () => {
+  describe("#listContacts.collectAll", () => {
     const accountId = 1010;
 
     it("produces a complete list", (done) => {
@@ -116,8 +116,8 @@ describe("contacts", () => {
         .get("/v2/1010/contacts?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.contacts
-        .allContacts(accountId)
+      dnsimple.contacts.listContacts
+        .collectAll(accountId)
         .then(
           (contacts) => {
             expect(contacts.length).to.eq(5);
@@ -168,7 +168,7 @@ describe("contacts", () => {
           .get("/v2/1010/contacts/0")
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.contacts.getContact(accountId, "0").then(
+        dnsimple.contacts.getContact(accountId, 0).then(
           (response) => {
             done("Error expected but future resolved");
           },
@@ -185,7 +185,7 @@ describe("contacts", () => {
 
   describe("#createContact", () => {
     const accountId = 1010;
-    const attributes = { first_name: "John", last_name: "Smith" };
+    const attributes: any = { first_name: "John", last_name: "Smith" };
     const fixture = loadFixture("createContact/created.http");
 
     it("builds the correct request", (done) => {
@@ -267,7 +267,7 @@ describe("contacts", () => {
   describe("#updateContact", () => {
     const accountId = 1010;
     const contactId = 1;
-    const attributes = { last_name: "Buckminster" };
+    const attributes = { last_name: "Buckminster" } as any;
     const fixture = loadFixture("updateContact/success.http");
 
     it("builds the correct request", (done) => {
@@ -305,7 +305,7 @@ describe("contacts", () => {
         .reply(fixture.statusCode, fixture.body);
 
       it("produces an error", (done) => {
-        dnsimple.contacts.updateContact(accountId, "0", attributes).then(
+        dnsimple.contacts.updateContact(accountId, 0, attributes).then(
           (response) => {
             done("Expected error but future resolved");
           },

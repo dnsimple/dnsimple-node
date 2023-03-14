@@ -1,10 +1,13 @@
 import type { DNSimple, QueryParams } from "./main";
+import { paginate } from "./paginate";
 
 export class Tlds {
   constructor(private readonly _client: DNSimple) {}
 
   /**
-   * ListsTLDs supported for registration or transfer.
+   * Lists TLDs supported for registration or transfer.
+   *
+   * This API is paginated. Call `listTlds.iterateAll(params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listTlds.collectAll(params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /tlds
    *
@@ -26,7 +29,24 @@ export class Tlds {
         transfer_enabled: boolean;
         dnssec_interface_type: string;
       }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
     }> => this._client.request("GET", `/tlds`, null, params);
+    method.iterateAll = (params: QueryParams & { sort?: string } = {}) =>
+      paginate((page) => method({ ...params, page } as any));
+    method.collectAll = async (
+      params: QueryParams & { sort?: string } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 

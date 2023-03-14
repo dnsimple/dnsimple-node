@@ -565,6 +565,7 @@ export class Registrar {
       data: {
         id: number;
         domain_id: number;
+        enabled: boolean;
         expires_on: string;
         created_at: string;
         updated_at: string;
@@ -599,6 +600,7 @@ export class Registrar {
       data: {
         id: number;
         domain_id: number;
+        enabled: boolean;
         expires_on: string;
         created_at: string;
         updated_at: string;
@@ -631,6 +633,7 @@ export class Registrar {
       data: {
         id: number;
         domain_id: number;
+        enabled: boolean;
         expires_on: string;
         created_at: string;
         updated_at: string;

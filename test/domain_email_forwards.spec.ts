@@ -27,7 +27,7 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listEmailForwards(accountId, domainId, {
-        query: { foo: "bar" },
+        foo: "bar",
       });
 
       nock.isDone();
@@ -83,7 +83,7 @@ describe("domains", () => {
     });
   });
 
-  describe("#allEmailForwards", () => {
+  describe("#listEmailForwards.collectAll", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -103,8 +103,8 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/email_forwards?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.domains
-        .allEmailForwards(accountId, domainId)
+      dnsimple.domains.listEmailForwards
+        .collectAll(accountId, domainId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);
@@ -177,7 +177,7 @@ describe("domains", () => {
   describe("#createEmailForward", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const attributes = { from: "jim" };
+    const attributes = { from: "jim" } as any;
     const fixture = loadFixture("createEmailForward/created.http");
 
     it("builds the correct request", (done) => {

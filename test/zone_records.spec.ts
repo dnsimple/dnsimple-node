@@ -27,7 +27,7 @@ describe("zone records", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZoneRecords(accountId, zoneId, {
-        query: { foo: "bar" },
+        foo: "bar",
       });
 
       nock.isDone();
@@ -51,7 +51,7 @@ describe("zone records", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.listZoneRecords(accountId, zoneId, {
-        filter: { name_like: "example" },
+        name_like: "example",
       });
 
       nock.isDone();
@@ -106,7 +106,7 @@ describe("zone records", () => {
     });
   });
 
-  describe("#allZoneRecords", () => {
+  describe("#listZoneRecords.collectAll", () => {
     const accountId = 1010;
     const zoneId = "example.com";
 
@@ -126,8 +126,8 @@ describe("zone records", () => {
         .get("/v2/1010/zones/example.com/records?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.zones
-        .allZoneRecords(accountId, zoneId)
+      dnsimple.zones.listZoneRecords
+        .collectAll(accountId, zoneId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);
@@ -177,7 +177,7 @@ describe("zone records", () => {
         .reply(fixture.statusCode, fixture.body);
 
       it("produces an error", (done) => {
-        dnsimple.zones.getZoneRecord(accountId, zoneId, "0").then(
+        dnsimple.zones.getZoneRecord(accountId, zoneId, 0).then(
           (response) => {
             done("Error expected but future resolved");
           },
@@ -195,7 +195,12 @@ describe("zone records", () => {
   describe("#createZoneRecord", () => {
     const accountId = 1010;
     const zoneId = "example.com";
-    const attributes = { name: "", type: "A", ttl: 3600, content: "1.2.3.4" };
+    const attributes = {
+      name: "",
+      type: "A",
+      ttl: 3600,
+      content: "1.2.3.4",
+    } as any;
     const fixture = loadFixture("createZoneRecord/created.http");
 
     it("builds the correct request", (done) => {
@@ -231,7 +236,7 @@ describe("zone records", () => {
     const accountId = 1010;
     const zoneId = "example.com";
     const recordId = 64784;
-    const attributes = { content: "127.0.0.1" };
+    const attributes = { content: "127.0.0.1" } as any;
     const fixture = loadFixture("updateZoneRecord/success.http");
 
     it("builds the correct request", (done) => {

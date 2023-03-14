@@ -25,7 +25,7 @@ describe("zones", () => {
         .get("/v2/1010/zones?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listZones(accountId, { query: { foo: "bar" } });
+      dnsimple.zones.listZones(accountId, { foo: "bar" });
 
       nock.isDone();
       done();
@@ -47,7 +47,7 @@ describe("zones", () => {
         .get("/v2/1010/zones?name_like=example")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listZones(accountId, { filter: { name_like: "example" } });
+      dnsimple.zones.listZones(accountId, { name_like: "example" });
 
       nock.isDone();
       done();
@@ -91,7 +91,7 @@ describe("zones", () => {
     });
   });
 
-  describe("#allZones", () => {
+  describe("#listZones.collectAll", () => {
     const accountId = 1010;
 
     it("produces a complete list", (done) => {
@@ -110,8 +110,8 @@ describe("zones", () => {
         .get("/v2/1010/zones?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.zones
-        .allZones(accountId)
+      dnsimple.zones.listZones
+        .collectAll(accountId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);

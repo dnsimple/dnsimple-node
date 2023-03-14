@@ -25,7 +25,7 @@ describe("templates", () => {
         .get("/v2/1010/templates?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.listTemplates(accountId, { query: { foo: "bar" } });
+      dnsimple.templates.listTemplates(accountId, { foo: "bar" });
 
       nock.isDone();
       done();
@@ -80,7 +80,7 @@ describe("templates", () => {
     });
   });
 
-  describe("#allTemplates", () => {
+  describe("#listTemplates.collectAll", () => {
     const accountId = 1010;
 
     it("produces a complete list", (done) => {
@@ -99,8 +99,8 @@ describe("templates", () => {
         .get("/v2/1010/templates?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.templates
-        .allTemplates(accountId)
+      dnsimple.templates.listTemplates
+        .collectAll(accountId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);
@@ -172,7 +172,7 @@ describe("templates", () => {
 
   describe("#createTemplate", () => {
     const accountId = 1010;
-    const attributes = { name: "Beta" };
+    const attributes = { name: "Beta" } as any;
     const fixture = loadFixture("createTemplate/created.http");
 
     it("builds the correct request", (done) => {
@@ -207,7 +207,7 @@ describe("templates", () => {
   describe("#updateTemplate", () => {
     const accountId = 1010;
     const templateId = 1;
-    const attributes = { name: "Alpha" };
+    const attributes = { name: "Alpha" } as any;
     const fixture = loadFixture("updateTemplate/success.http");
 
     it("builds the correct request", (done) => {
@@ -283,7 +283,7 @@ describe("templates", () => {
     });
   });
 
-  describe("#applyTemplate", () => {
+  describe("#applyTemplateToDomain", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const templateId = 1;
@@ -294,15 +294,17 @@ describe("templates", () => {
         .post("/v2/1010/domains/example.com/templates/1")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates.applyTemplate(accountId, templateId, domainId).then(
-        (response) => {
-          expect(response).to.eql({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      dnsimple.templates
+        .applyTemplateToDomain(accountId, templateId, domainId)
+        .then(
+          (response) => {
+            expect(response).to.eql({});
+            done();
+          },
+          (error) => {
+            done(error);
+          }
+        );
     });
   });
 });
@@ -388,7 +390,7 @@ describe("template records", () => {
     });
   });
 
-  describe("#allRecords", () => {
+  describe("#listTemplateRecords.collectAll", () => {
     const accountId = 1010;
     const templateId = 1;
 
@@ -408,8 +410,8 @@ describe("template records", () => {
         .get("/v2/1010/templates/1/records?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.templates
-        .allTemplateRecords(accountId, templateId)
+      dnsimple.templates.listTemplateRecords
+        .collectAll(accountId, templateId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);

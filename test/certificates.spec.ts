@@ -86,7 +86,7 @@ describe("certificates", () => {
     });
   });
 
-  describe("#allCertificates", () => {
+  describe("#listCertificates.collectAll", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -106,8 +106,8 @@ describe("certificates", () => {
         .get("/v2/1010/domains/example.com/certificates?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.certificates
-        .allCertificates(accountId, domainId)
+      dnsimple.certificates.listCertificates
+        .collectAll(accountId, domainId)
         .then(
           (certificates) => {
             expect(certificates.length).to.eq(5);
@@ -288,7 +288,7 @@ describe("certificates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates
-        .purchaseLetsencryptCertificate(accountId, domainId)
+        .purchaseLetsencryptCertificate(accountId, domainId, {})
         .then(
           (response) => {
             const certificate = response.data;
@@ -330,7 +330,7 @@ describe("certificates", () => {
     });
   });
 
-  describe("#purchaseLetsencryptCertificateRenewal", () => {
+  describe("#purchaseRenewalLetsencryptCertificate", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
@@ -346,10 +346,11 @@ describe("certificates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates
-        .purchaseLetsencryptCertificateRenewal(
+        .purchaseRenewalLetsencryptCertificate(
           accountId,
           domainId,
-          certificateId
+          certificateId,
+          {}
         )
         .then(
           (response) => {
@@ -366,7 +367,7 @@ describe("certificates", () => {
     });
   });
 
-  describe("#issueLetsencryptCertificateRenewal", () => {
+  describe("#issueRenewalLetsencryptCertificate", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
@@ -384,7 +385,7 @@ describe("certificates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates
-        .issueLetsencryptCertificateRenewal(
+        .issueRenewalLetsencryptCertificate(
           accountId,
           domainId,
           certificateId,

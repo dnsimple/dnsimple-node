@@ -156,7 +156,7 @@ export class Zones {
         name: string;
         content: string;
         ttl: number;
-        priority: number | null;
+        priority?: number | null;
         type: string;
         regions: Array<string>;
         system_record: boolean;
@@ -175,6 +175,8 @@ export class Zones {
 
   /**
    * Lists the records for a zone.
+   *
+   * This API is paginated. Call `listZoneRecords.iterateAll(account, zone, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listZoneRecords.collectAll(account, zone, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/zones/{zone}/records
    *
@@ -204,13 +206,19 @@ export class Zones {
         name: string;
         content: string;
         ttl: number;
-        priority: number | null;
+        priority?: number | null;
         type: string;
         regions: Array<string>;
         system_record: boolean;
         created_at: string;
         updated_at: string;
       }>;
+      pagination: {
+        current_page: number;
+        per_page: number;
+        total_entries: number;
+        total_pages: number;
+      };
     }> =>
       this._client.request(
         "GET",
@@ -218,6 +226,32 @@ export class Zones {
         null,
         params
       );
+    method.iterateAll = (
+      account: number,
+      zone: string,
+      params: QueryParams & {
+        name_like?: string;
+        name?: string;
+        type?: string;
+        sort?: string;
+      } = {}
+    ) => paginate((page) => method(account, zone, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      zone: string,
+      params: QueryParams & {
+        name_like?: string;
+        name?: string;
+        type?: string;
+        sort?: string;
+      } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, zone, params)) {
+        items.push(item);
+      }
+      return items;
+    };
     return method;
   })();
 
@@ -251,7 +285,7 @@ export class Zones {
         name: string;
         content: string;
         ttl: number;
-        priority: number | null;
+        priority?: number | null;
         type: string;
         regions: Array<string>;
         system_record: boolean;
@@ -292,7 +326,7 @@ export class Zones {
         name: string;
         content: string;
         ttl: number;
-        priority: number | null;
+        priority?: number | null;
         type: string;
         regions: Array<string>;
         system_record: boolean;
@@ -340,7 +374,7 @@ export class Zones {
         name: string;
         content: string;
         ttl: number;
-        priority: number | null;
+        priority?: number | null;
         type: string;
         regions: Array<string>;
         system_record: boolean;

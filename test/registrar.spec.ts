@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, loadFixture, stubRequest } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -134,8 +134,8 @@ describe("registrar", () => {
   describe("#getDomainRegistration", () => {
     it("calls the correct method", (done) => {
       // TODO Use shared global client and remove `done()` call once all other tests migrate away from testing fixture responses.
-      const dnsimple = testUtils.createTestClient();
-      const stub = testUtils.stubRequest(dnsimple);
+      const dnsimple = createTestClient();
+      const stub = stubRequest(dnsimple);
 
       const options = {};
       dnsimple.registrar.getDomainRegistration(
@@ -159,8 +159,8 @@ describe("registrar", () => {
   describe("#getDomainRenewal", () => {
     it("calls the correct method", (done) => {
       // TODO Use shared global client and remove `done()` call once all other tests migrate away from testing fixture responses.
-      const dnsimple = testUtils.createTestClient();
-      const stub = testUtils.stubRequest(dnsimple);
+      const dnsimple = createTestClient();
+      const stub = stubRequest(dnsimple);
 
       const options = {};
       dnsimple.registrar.getDomainRenewal(1023, "example.com", 1694, options);
@@ -180,7 +180,7 @@ describe("registrar", () => {
     const fixture = loadFixture("registerDomain/success.http");
 
     it("produces a domain", (done) => {
-      const attributes = { registrant_id: "10" };
+      const attributes = { registrant_id: "10" } as any;
 
       nock("https://api.dnsimple.com")
         .post(
@@ -203,17 +203,17 @@ describe("registrar", () => {
     });
   });
 
-  describe("#renewDomain", () => {
+  describe("#domainRenew", () => {
     const fixture = loadFixture("renewDomain/success.http");
 
     it("produces a domain", (done) => {
-      const attributes = { period: "3" };
+      const attributes = { period: "3" } as any;
 
       nock("https://api.dnsimple.com")
         .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(
+      dnsimple.registrar.domainRenew(accountId, domainId, attributes).then(
         (response) => {
           const domainRenewal = response.data;
           expect(domainRenewal.id).to.eq(1);
@@ -230,13 +230,13 @@ describe("registrar", () => {
       const fixture = loadFixture("renewDomain/error-tooearly.http");
 
       it("results in an error", (done) => {
-        const attributes = {};
+        const attributes = {} as any;
 
         nock("https://api.dnsimple.com")
           .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(
+        dnsimple.registrar.domainRenew(accountId, domainId, attributes).then(
           (response) => {
             done("Expected error, but future resolved");
           },
@@ -250,7 +250,7 @@ describe("registrar", () => {
   });
 
   describe("#transferDomain", () => {
-    const attributes = { registrant_id: "10", auth_code: "x1y2z3" };
+    const attributes = { registrant_id: "10", auth_code: "x1y2z3" } as any;
 
     it("produces a domain", (done) => {
       const fixture = loadFixture("transferDomain/success.http");
@@ -295,7 +295,7 @@ describe("registrar", () => {
       const fixture = loadFixture("transferDomain/error-missing-authcode.http");
 
       it("results in an error", (done) => {
-        const attributes = { registrant_id: "10" };
+        const attributes = { registrant_id: "10" } as any;
 
         nock("https://api.dnsimple.com")
           .post("/v2/1010/registrar/domains/example.com/transfers", attributes)
@@ -374,7 +374,7 @@ describe("registrar", () => {
     });
   });
 
-  describe("#transferDomainOut", () => {
+  describe("#authorizeDomainTransferOut", () => {
     const fixture = loadFixture("authorizeDomainTransferOut/success.http");
 
     it("produces nothing", (done) => {
@@ -382,7 +382,7 @@ describe("registrar", () => {
         .post("/v2/1010/registrar/domains/example.com/authorize_transfer_out")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar.transferDomainOut(accountId, domainId).then(
+      dnsimple.registrar.authorizeDomainTransferOut(accountId, domainId).then(
         (response) => {
           expect(response).to.eql({});
           done();

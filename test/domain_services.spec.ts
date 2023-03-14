@@ -4,11 +4,8 @@ import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
 
-const expect = require("chai").expect;
-const nock = require("nock");
-
 describe("domain services", () => {
-  describe("#appliedServices", () => {
+  describe("#listDomainAppliedServices", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const fixture = loadFixture("appliedServices/success.http");
@@ -18,7 +15,9 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?page=1")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.appliedServices(accountId, domainId, { page: 1 });
+      dnsimple.services.listDomainAppliedServices(accountId, domainId, {
+        page: 1,
+      });
 
       nock.isDone();
       done();
@@ -29,8 +28,8 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.appliedServices(accountId, domainId, {
-        query: { foo: "bar" },
+      dnsimple.services.listDomainAppliedServices(accountId, domainId, {
+        foo: "bar",
       });
 
       nock.isDone();
@@ -42,7 +41,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?sort=name%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.appliedServices(accountId, domainId, {
+      dnsimple.services.listDomainAppliedServices(accountId, domainId, {
         sort: "name:asc",
       });
 
@@ -55,7 +54,7 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.appliedServices(accountId, domainId).then(
+      dnsimple.services.listDomainAppliedServices(accountId, domainId).then(
         (response) => {
           const services = response.data;
           expect(services.length).to.eq(1);
@@ -69,7 +68,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#allAppliedServices", () => {
+  describe("#listDomainAppliedServices.collectAll", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -89,8 +88,8 @@ describe("domain services", () => {
         .get("/v2/1010/domains/example.com/services?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.services
-        .allAppliedServices(accountId, domainId)
+      dnsimple.services.listDomainAppliedServices
+        .collectAll(accountId, domainId)
         .then(
           (items) => {
             expect(items.length).to.eq(5);
@@ -108,7 +107,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#applyService", () => {
+  describe("#applyServiceToDomain", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
@@ -120,19 +119,21 @@ describe("domain services", () => {
         .post("/v2/1010/domains/example.com/services/name")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.applyService(accountId, domainId, serviceId).then(
-        (response) => {
-          expect(response).to.eql({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      dnsimple.services
+        .applyServiceToDomain(accountId, domainId, serviceId, {})
+        .then(
+          (response) => {
+            expect(response).to.eql({});
+            done();
+          },
+          (error) => {
+            done(error);
+          }
+        );
     });
   });
 
-  describe("#unapplyService", () => {
+  describe("#unapplyServiceFromDomain", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
@@ -144,15 +145,17 @@ describe("domain services", () => {
         .delete("/v2/1010/domains/example.com/services/name")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.unapplyService(accountId, domainId, serviceId).then(
-        (response) => {
-          expect(response).to.eql({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      dnsimple.services
+        .unapplyServiceFromDomain(accountId, domainId, serviceId)
+        .then(
+          (response) => {
+            expect(response).to.eql({});
+            done();
+          },
+          (error) => {
+            done(error);
+          }
+        );
     });
   });
 });

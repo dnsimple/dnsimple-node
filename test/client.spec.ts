@@ -32,7 +32,7 @@ describe("response handling", () => {
         .get("/v2/success-with-malformed-json")
         .reply(fixture.statusCode, fixture.body);
 
-      new Client(dnsimple).get("/success-with-malformed-json", {}).then(
+      dnsimple.request("GET", "/success-with-malformed-json", null, {}).then(
         (response) => {
           done("Expected error but promise resolved");
         },
@@ -51,7 +51,7 @@ describe("response handling", () => {
         .get("/v2/badgateway")
         .reply(fixture.statusCode, fixture.body);
 
-      new Client(dnsimple).get("/badgateway", {}).then(
+      dnsimple.request("GET", "/badgateway", null, {}).then(
         (response) => {
           done("Expected error but promise resolved");
         },
@@ -70,7 +70,7 @@ describe("response handling", () => {
         .get("/v2/method-not-allowed")
         .reply(fixture.statusCode, fixture.body);
 
-      new Client(dnsimple).get("/method-not-allowed", {}).then(
+      dnsimple.request("GET", "/method-not-allowed", null, {}).then(
         (response) => {
           done("Expected error but promise resolved");
         },

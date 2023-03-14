@@ -1,7 +1,6 @@
 import * as pkg from "../package.json";
 import { Accounts } from "./accounts";
 import { Certificates } from "./certificates";
-import { Collaborators } from "./collaborators";
 import { Contacts } from "./contacts";
 import { Domains } from "./domains";
 import { Identity } from "./identity";
@@ -172,7 +171,6 @@ export class DNSimple {
 
   readonly accounts = new Accounts(this);
   readonly certificates = new Certificates(this);
-  readonly collaborators = new Collaborators(this);
   readonly contacts = new Contacts(this);
   readonly domains = new Domains(this);
   readonly identity = new Identity(this);

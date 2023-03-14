@@ -24,7 +24,7 @@ describe("tlds", () => {
         .get("/v2/tlds?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.tlds.listTlds({ query: { foo: "bar" } });
+      dnsimple.tlds.listTlds({ foo: "bar" });
 
       nock.isDone();
       done();
@@ -78,7 +78,7 @@ describe("tlds", () => {
     });
   });
 
-  describe("#allTlds", () => {
+  describe("#listTlds.collectAll", () => {
     it("produces a complete list", (done) => {
       const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
@@ -95,8 +95,8 @@ describe("tlds", () => {
         .get("/v2/tlds?page=3")
         .reply(fixture3.statusCode, fixture3.body);
 
-      dnsimple.tlds
-        .allTlds()
+      dnsimple.tlds.listTlds
+        .collectAll()
         .then(
           (items) => {
             expect(items.length).to.eq(5);

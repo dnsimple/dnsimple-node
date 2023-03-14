@@ -4,9 +4,6 @@ import { createTestClient, loadFixture } from "./util";
 
 const dnsimple = createTestClient();
 
-const expect = require("chai").expect;
-const nock = require("nock");
-
 describe("webhooks", () => {
   describe("#listWebhooks", () => {
     const accountId = 1010;
@@ -17,7 +14,7 @@ describe("webhooks", () => {
         .get("/v2/1010/webhooks?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.webhooks.listWebhooks(accountId, { query: { foo: "bar" } });
+      dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
 
       nock.isDone();
       done();
@@ -42,7 +39,7 @@ describe("webhooks", () => {
     });
   });
 
-  describe("#allWebhooks", () => {
+  describe("#listWebhooks", () => {
     const accountId = 1010;
     const fixture = loadFixture("listWebhooks/success.http");
 
@@ -51,7 +48,7 @@ describe("webhooks", () => {
         .get("/v2/1010/webhooks?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.webhooks.allWebhooks(accountId, { query: { foo: "bar" } });
+      dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
 
       nock.isDone();
       done();
@@ -62,8 +59,8 @@ describe("webhooks", () => {
         .get("/v2/1010/webhooks")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.webhooks.allWebhooks(accountId).then(
-        (items) => {
+      dnsimple.webhooks.listWebhooks(accountId).then(
+        ({ data: items }) => {
           expect(items.length).to.eq(2);
           expect(items[0].id).to.eq(1);
           done();
@@ -77,7 +74,7 @@ describe("webhooks", () => {
 
   describe("#getWebhook", () => {
     const accountId = 1010;
-    const webhookId = "1";
+    const webhookId = 1;
     const fixture = loadFixture("getWebhook/success.http");
 
     it("produces a webhook", (done) => {
