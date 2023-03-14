@@ -68,7 +68,9 @@ Take a look at [https://github.com/dnsimple/hello-domains-node](https://github.c
 There are helper submethods available on API methods that are paginated to assist with fetching items across all pages.
 
 For an API that returns a `paginate` property, you can use either the `iterateAll` or `collectAll` submethods:
+
 - **iterateAll**: return an asynchronous iterator of items that are returned from the API. When the last item on a page is iterated, the next page will be fetched. This continues until there are no more pages.
+
 - **collectAll**: fetch all pages and collect all the items in order into an array.
 
 Examples:
