@@ -1,19 +1,15 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("vanity name servers", () => {
-  const accountId = "1010";
+  const accountId = 1010;
   const domainId = "example.com";
 
   describe("#enableVanityNameServers", () => {
-    const fixture = testUtils.fixture("enableVanityNameServers/success.http");
+    const fixture = loadFixture("enableVanityNameServers/success.http");
 
     it("produces a list of name servers", (done) => {
       nock("https://api.dnsimple.com")
@@ -45,7 +41,7 @@ describe("vanity name servers", () => {
   });
 
   describe("#disableVanityNameServers", () => {
-    const fixture = testUtils.fixture("disableVanityNameServers/success.http");
+    const fixture = loadFixture("disableVanityNameServers/success.http");
 
     it("produces nothing", (done) => {
       nock("https://api.dnsimple.com")

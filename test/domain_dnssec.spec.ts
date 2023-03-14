@@ -1,18 +1,14 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("domains", () => {
   describe("#enableDnssec", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("enableDnssec/success.http");
+    const fixture = loadFixture("enableDnssec/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -44,9 +40,9 @@ describe("domains", () => {
   });
 
   describe("#disableDnssec", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("disableDnssec/success.http");
+    const fixture = loadFixture("disableDnssec/success.http");
 
     it("produces nothing", (done) => {
       nock("https://api.dnsimple.com")
@@ -66,9 +62,9 @@ describe("domains", () => {
   });
 
   describe("#getDnssec", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("getDnssec/success.http");
+    const fixture = loadFixture("getDnssec/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")

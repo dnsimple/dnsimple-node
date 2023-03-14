@@ -1,20 +1,14 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("domains", () => {
   describe("#listDelegationSignerRecords", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture(
-      "listDelegationSignerRecords/success.http"
-    );
+    const fixture = loadFixture("listDelegationSignerRecords/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -92,21 +86,21 @@ describe("domains", () => {
   });
 
   describe("#allDelegationSignerRecords", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -131,10 +125,10 @@ describe("domains", () => {
   });
 
   describe("#getDelegationSignerRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const dsRecordId = 1;
-    const fixture = testUtils.fixture("getDelegationSignerRecord/success.http");
+    const fixture = loadFixture("getDelegationSignerRecord/success.http");
 
     it("produces a delegation signer record", (done) => {
       nock("https://api.dnsimple.com")
@@ -165,7 +159,7 @@ describe("domains", () => {
     });
 
     describe("when the delegation signer record does not exist", () => {
-      const fixture = testUtils.fixture("notfound-delegationSignerRecord.http");
+      const fixture = loadFixture("notfound-delegationSignerRecord.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records/0")
         .reply(fixture.statusCode, fixture.body);
@@ -189,12 +183,10 @@ describe("domains", () => {
   });
 
   describe("#createDelegationSignerRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const attributes = { algorithm: "8" };
-    const fixture = testUtils.fixture(
-      "createDelegationSignerRecord/created.http"
-    );
+    const fixture = loadFixture("createDelegationSignerRecord/created.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -232,12 +224,10 @@ describe("domains", () => {
   });
 
   describe("#deleteDelegationSignerRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const dsRecordId = 1;
-    const fixture = testUtils.fixture(
-      "deleteDelegationSignerRecord/success.http"
-    );
+    const fixture = loadFixture("deleteDelegationSignerRecord/success.http");
 
     it("produces nothing", (done) => {
       nock("https://api.dnsimple.com")

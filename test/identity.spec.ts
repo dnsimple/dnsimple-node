@@ -1,15 +1,12 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("identity", () => {
   describe("#whoami when authenticated as account", () => {
-    const fixture = testUtils.fixture("whoami/success-account.http");
+    const fixture = loadFixture("whoami/success-account.http");
     nock("https://api.dnsimple.com")
       .get("/v2/whoami")
       .reply(fixture.statusCode, fixture.body);
@@ -31,7 +28,7 @@ describe("identity", () => {
   });
 
   describe("#whoami when authenticated as user", () => {
-    const fixture = testUtils.fixture("whoami/success-user.http");
+    const fixture = loadFixture("whoami/success-user.http");
     nock("https://api.dnsimple.com")
       .get("/v2/whoami")
       .reply(fixture.statusCode, fixture.body);

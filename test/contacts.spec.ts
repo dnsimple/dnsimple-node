@@ -1,17 +1,13 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("contacts", () => {
   describe("#listContacts", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("listContacts/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("listContacts/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -29,7 +25,7 @@ describe("contacts", () => {
         .get("/v2/1010/contacts?foo=bar")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId, { query: { foo: "bar" } });
+      dnsimple.contacts.listContacts(accountId, { foo: "bar" });
 
       nock.isDone();
       done();
@@ -63,6 +59,8 @@ describe("contacts", () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/contacts")
         .reply(fixture.statusCode, fixture.body);
+
+      expect(dnsimple.contacts.listContacts(accountId));
 
       dnsimple.contacts.listContacts(accountId).then(
         (response) => {
@@ -100,20 +98,20 @@ describe("contacts", () => {
   });
 
   describe("#allContacts", () => {
-    const accountId = "1010";
+    const accountId = 1010;
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/contacts?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/contacts?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/contacts?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -138,10 +136,10 @@ describe("contacts", () => {
   });
 
   describe("#getContact", () => {
-    const accountId = "1010";
+    const accountId = 1010;
 
     it("produces a contact", (done) => {
-      const fixture = testUtils.fixture("getContact/success.http");
+      const fixture = loadFixture("getContact/success.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/contacts/1")
         .reply(fixture.statusCode, fixture.body);
@@ -165,7 +163,7 @@ describe("contacts", () => {
 
     describe("when the contact does not exist", () => {
       it("produces an error", (done) => {
-        const fixture = testUtils.fixture("notfound-contact.http");
+        const fixture = loadFixture("notfound-contact.http");
         nock("https://api.dnsimple.com")
           .get("/v2/1010/contacts/0")
           .reply(fixture.statusCode, fixture.body);
@@ -186,9 +184,9 @@ describe("contacts", () => {
   });
 
   describe("#createContact", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const attributes = { first_name: "John", last_name: "Smith" };
-    const fixture = testUtils.fixture("createContact/created.http");
+    const fixture = loadFixture("createContact/created.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -223,9 +221,7 @@ describe("contacts", () => {
     });
 
     it("includes validation errors coming from the API", async () => {
-      const fixture = testUtils.fixture(
-        "createContact/error-validation-errors.http"
-      );
+      const fixture = loadFixture("createContact/error-validation-errors.http");
 
       nock("https://api.dnsimple.com")
         .post("/v2/1010/contacts", attributes)
@@ -269,10 +265,10 @@ describe("contacts", () => {
   });
 
   describe("#updateContact", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const contactId = 1;
     const attributes = { last_name: "Buckminster" };
-    const fixture = testUtils.fixture("updateContact/success.http");
+    const fixture = loadFixture("updateContact/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -303,7 +299,7 @@ describe("contacts", () => {
     });
 
     describe("when the contact does not exist", () => {
-      const fixture = testUtils.fixture("notfound-contact.http");
+      const fixture = loadFixture("notfound-contact.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/contacts/0", attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -323,9 +319,9 @@ describe("contacts", () => {
   });
 
   describe("#deleteContact", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const contactId = 1;
-    const fixture = testUtils.fixture("deleteContact/success.http");
+    const fixture = loadFixture("deleteContact/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -356,12 +352,12 @@ describe("contacts", () => {
 
     describe("when the contact does not exist", () => {
       it("produces an error", (done) => {
-        const fixture = testUtils.fixture("notfound-contact.http");
+        const fixture = loadFixture("notfound-contact.http");
         nock("https://api.dnsimple.com")
           .delete("/v2/1010/contacts/0")
           .reply(fixture.statusCode, fixture.body);
 
-        dnsimple.contacts.deleteContact(accountId, "0").then(
+        dnsimple.contacts.deleteContact(accountId, 0).then(
           (response) => {
             done("Error expected but future resolved");
           },

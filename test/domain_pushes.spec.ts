@@ -1,19 +1,18 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
+const dnsimple = createTestClient();
 
 const expect = require("chai").expect;
 const nock = require("nock");
 
 describe("domains", () => {
   describe("#initiatePush", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const attributes = { new_account_email: "jim@example.com" };
-    const fixture = testUtils.fixture("initiatePush/success.http");
+    const fixture = loadFixture("initiatePush/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -51,8 +50,8 @@ describe("domains", () => {
   });
 
   describe("#listPushes", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("listPushes/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("listPushes/success.http");
 
     it("produces an pushes list", (done) => {
       nock("https://api.dnsimple.com")
@@ -73,10 +72,10 @@ describe("domains", () => {
   });
 
   describe("#acceptPush", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const pushId = "200";
     const attributes = { contact_id: 1 };
-    const fixture = testUtils.fixture("acceptPush/success.http");
+    const fixture = loadFixture("acceptPush/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -107,9 +106,9 @@ describe("domains", () => {
   });
 
   describe("#rejectPush", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const pushId = "200";
-    const fixture = testUtils.fixture("rejectPush/success.http");
+    const fixture = loadFixture("rejectPush/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")

@@ -1,18 +1,16 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = testUtils.createTestClient();
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("registrar", () => {
-  const accountId = "1010";
+  const accountId = 1010;
   const domainId = "example.com";
 
   describe("#checkDomain", () => {
     const domainId = "ruby.codes";
-    const fixture = testUtils.fixture("checkDomain/success.http");
+    const fixture = loadFixture("checkDomain/success.http");
 
     it("produces a check result", (done) => {
       nock("https://api.dnsimple.com")
@@ -37,7 +35,7 @@ describe("registrar", () => {
   describe("#getDomainPremiumPrice", () => {
     describe("when the domain has a premium price", () => {
       const domainId = "ruby.codes";
-      const fixture = testUtils.fixture("getDomainPremiumPrice/success.http");
+      const fixture = loadFixture("getDomainPremiumPrice/success.http");
 
       it("produces a premium price result", (done) => {
         nock("https://api.dnsimple.com")
@@ -60,7 +58,7 @@ describe("registrar", () => {
 
     describe("when the domain is not a premium domain", () => {
       const domainId = "example.com";
-      const fixture = testUtils.fixture("getDomainPremiumPrice/failure.http");
+      const fixture = loadFixture("getDomainPremiumPrice/failure.http");
 
       it("produces an error", (done) => {
         nock("https://api.dnsimple.com")
@@ -86,7 +84,7 @@ describe("registrar", () => {
 
   describe("#getDomainPrices", () => {
     describe("when the TLD is supported", () => {
-      const fixture = testUtils.fixture("getDomainPrices/success.http");
+      const fixture = loadFixture("getDomainPrices/success.http");
 
       it("produces a domain prices result", (done) => {
         nock("https://api.dnsimple.com")
@@ -111,7 +109,7 @@ describe("registrar", () => {
     });
 
     describe("when the TLD is not available", () => {
-      const fixture = testUtils.fixture("getDomainPrices/failure.http");
+      const fixture = loadFixture("getDomainPrices/failure.http");
 
       it("produces an error", (done) => {
         nock("https://api.dnsimple.com")
@@ -179,7 +177,7 @@ describe("registrar", () => {
   });
 
   describe("#registerDomain", () => {
-    const fixture = testUtils.fixture("registerDomain/success.http");
+    const fixture = loadFixture("registerDomain/success.http");
 
     it("produces a domain", (done) => {
       const attributes = { registrant_id: "10" };
@@ -206,7 +204,7 @@ describe("registrar", () => {
   });
 
   describe("#renewDomain", () => {
-    const fixture = testUtils.fixture("renewDomain/success.http");
+    const fixture = loadFixture("renewDomain/success.http");
 
     it("produces a domain", (done) => {
       const attributes = { period: "3" };
@@ -229,7 +227,7 @@ describe("registrar", () => {
     });
 
     describe("when it is too soon for the domain to be renewed", () => {
-      const fixture = testUtils.fixture("renewDomain/error-tooearly.http");
+      const fixture = loadFixture("renewDomain/error-tooearly.http");
 
       it("results in an error", (done) => {
         const attributes = {};
@@ -255,7 +253,7 @@ describe("registrar", () => {
     const attributes = { registrant_id: "10", auth_code: "x1y2z3" };
 
     it("produces a domain", (done) => {
-      const fixture = testUtils.fixture("transferDomain/success.http");
+      const fixture = loadFixture("transferDomain/success.http");
       nock("https://api.dnsimple.com")
         .post("/v2/1010/registrar/domains/example.com/transfers", attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -274,7 +272,7 @@ describe("registrar", () => {
     });
 
     describe("when the domain is already in DNSimple", () => {
-      const fixture = testUtils.fixture("transferDomain/error-indnsimple.http");
+      const fixture = loadFixture("transferDomain/error-indnsimple.http");
 
       it("results in an error", (done) => {
         nock("https://api.dnsimple.com")
@@ -294,9 +292,7 @@ describe("registrar", () => {
     });
 
     describe("when authcode was not provided and is required by the TLD", () => {
-      const fixture = testUtils.fixture(
-        "transferDomain/error-missing-authcode.http"
-      );
+      const fixture = loadFixture("transferDomain/error-missing-authcode.http");
 
       it("results in an error", (done) => {
         const attributes = { registrant_id: "10" };
@@ -319,7 +315,7 @@ describe("registrar", () => {
   });
 
   describe("#getDomainTransfer", () => {
-    const fixture = testUtils.fixture("getDomainTransfer/success.http");
+    const fixture = loadFixture("getDomainTransfer/success.http");
 
     it("retrieves a domain transfer", (done) => {
       nock("https://api.dnsimple.com")
@@ -350,7 +346,7 @@ describe("registrar", () => {
   });
 
   describe("#cancelDomainTransfer", () => {
-    const fixture = testUtils.fixture("cancelDomainTransfer/success.http");
+    const fixture = loadFixture("cancelDomainTransfer/success.http");
 
     it("cancels a domain transfer", (done) => {
       nock("https://api.dnsimple.com")
@@ -379,9 +375,7 @@ describe("registrar", () => {
   });
 
   describe("#transferDomainOut", () => {
-    const fixture = testUtils.fixture(
-      "authorizeDomainTransferOut/success.http"
-    );
+    const fixture = loadFixture("authorizeDomainTransferOut/success.http");
 
     it("produces nothing", (done) => {
       nock("https://api.dnsimple.com")

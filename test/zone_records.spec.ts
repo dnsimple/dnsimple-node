@@ -1,18 +1,14 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("zone records", () => {
   describe("#listZoneRecords", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const zoneId = "example.com";
-    const fixture = testUtils.fixture("listZoneRecords/success.http");
+    const fixture = loadFixture("listZoneRecords/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -111,21 +107,21 @@ describe("zone records", () => {
   });
 
   describe("#allZoneRecords", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const zoneId = "example.com";
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -150,9 +146,9 @@ describe("zone records", () => {
   });
 
   describe("#getZoneRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const zoneId = "example.com";
-    const fixture = testUtils.fixture("getZoneRecord/success.http");
+    const fixture = loadFixture("getZoneRecord/success.http");
 
     it("produces a record", (done) => {
       nock("https://api.dnsimple.com")
@@ -175,7 +171,7 @@ describe("zone records", () => {
     });
 
     describe("when the record does not exist", () => {
-      const fixture = testUtils.fixture("notfound-record.http");
+      const fixture = loadFixture("notfound-record.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records/0")
         .reply(fixture.statusCode, fixture.body);
@@ -197,10 +193,10 @@ describe("zone records", () => {
   });
 
   describe("#createZoneRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const zoneId = "example.com";
     const attributes = { name: "", type: "A", ttl: 3600, content: "1.2.3.4" };
-    const fixture = testUtils.fixture("createZoneRecord/created.http");
+    const fixture = loadFixture("createZoneRecord/created.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -232,11 +228,11 @@ describe("zone records", () => {
   });
 
   describe("#updateZoneRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const zoneId = "example.com";
     const recordId = 64784;
     const attributes = { content: "127.0.0.1" };
-    const fixture = testUtils.fixture("updateZoneRecord/success.http");
+    const fixture = loadFixture("updateZoneRecord/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -269,7 +265,7 @@ describe("zone records", () => {
     });
 
     describe("when the record does not exist", () => {
-      const fixture = testUtils.fixture("notfound-record.http");
+      const fixture = loadFixture("notfound-record.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records/" + recordId, attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -291,10 +287,10 @@ describe("zone records", () => {
   });
 
   describe("#deleteZoneRecord", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const zoneId = "example.com";
     const recordId = 64784;
-    const fixture = testUtils.fixture("deleteZoneRecord/success.http");
+    const fixture = loadFixture("deleteZoneRecord/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -325,7 +321,7 @@ describe("zone records", () => {
 
     describe("when the record does not exist", () => {
       it("produces an error", (done) => {
-        const fixture = testUtils.fixture("notfound-record.http");
+        const fixture = loadFixture("notfound-record.http");
         nock("https://api.dnsimple.com")
           .delete("/v2/1010/zones/example.com/records/" + recordId)
           .reply(fixture.statusCode, fixture.body);

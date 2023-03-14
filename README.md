@@ -9,7 +9,7 @@ A Node.JS client for the [DNSimple API v2](https://developer.dnsimple.com/v2/).
 
 ## Requirements
 
-The dnsimple-node package requires node 14.0.0 or higher.
+The dnsimple-node package requires Node.js 14.0.0 or higher.
 
 You must also have an activated DNSimple account to access the DNSimple API.
 
@@ -21,53 +21,37 @@ Alternatively, install the latest stable version from NPM with `npm install dnsi
 
 ## Usage
 
-This library is a nodejs client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/).
+This library is a Node.js client you can use to interact with the [DNSimple API v2](https://developer.dnsimple.com/v2/). TypeScript definitions are provided for all API method signatures and responses.
 
 Note that in all examples below, the `accessToken` must be an OAuth token as described in the [DNSimple API Access Token documentation](https://support.dnsimple.com/articles/api-access-token/).
 
-The DNSimple nodejs library uses promises exclusively, thus all client calls that call out to the DNSimple API will return a Promise. The examples below demonstrate basic usage.
+All client methods that call out to the DNSimple API are async and will return a Promise. The examples below demonstrate basic usage.
 
-```javascript
-"use strict";
+```typescript
+import { DNSimple } from "dnsimple";
+// Or use this if not using TypeScript:
+// const { DNSimple } = require("dnsimple");
 
-var client = require("dnsimple")({
+const client = new DNSimple({
   accessToken: process.env.TOKEN,
 });
 
 // Fetch your details
-client.identity.whoami().then((response) => {
-  console.log(response.data);
-}, (error) => {
-  console.log(error);
-});
+const response = await client.identity.whoami();
+const accountId = response.data.account.id;
 
 // List your domains
-var accountId = "1010";
-client.domains.listDomains(accountId).then((response) => {
-  console.log(response.data);
-}, (error) => {
-  console.log(error);
-});
-
-client.domains.listDomains(accountId, { page: 3 }).then((response) => {
-  console.log(response.data);
-}, (error) => {
-  console.log(error);
-});
+const { data: domains } = await client.domains.listDomains(accountId);
+const { data: domains } = await client.domains.listDomains(accountId, { page: 3 });
+for await (const domain of client.domains.listDomains(accountId, { name_like: ".com" }).paginate()) {
+  console.log(domain);
+}
 
 // Create a domain
-client.domains.createDomain(accountId, { name: "example.com" }).then((response) => {
-  console.log(response.data);
-}, (error) => {
-  console.log(error);
-});
+const { data: createdDomain } = await client.domains.createDomain(accountId, { name: "example.com" });
 
 // Get a domain
-client.domains.getDomain(accountId, "example.com").then((response) => {
-  console.log(response.data);
-}, (error) => {
-  console.log(error);
-});
+const { data: domain } = await client.domains.getDomain(accountId, "example.com");
 ```
 
 To be run like this:
@@ -85,8 +69,9 @@ We highly recommend testing against our [sandbox environment](https://developer.
 The client supports both the production and sandbox environment. To switch to sandbox pass the sandbox API host using the `base_url` option when you construct the client:
 
 ```javascript
-var client = require('dnsimple')({
-  baseUrl: 'https://api.sandbox.dnsimple.com',
+const { DNSimple } = require("dnsimple");
+const client = new DNSimple({
+  baseUrl: "https://api.sandbox.dnsimple.com",
   accessToken: process.env.TOKEN,
 });
 ```
@@ -98,13 +83,11 @@ You will need to ensure that you are using an access token created in the sandbo
 You customize the `User-Agent` header for the calls made to the DNSimple API:
 
 ```javascript
-var client = require('dnsimple')({
-  user_agent: 'my-app',
+var client = require("dnsimple")({
+  userAgent: "my-app",
   accessToken: process.env.TOKEN,
 });
 ```
-
-The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
 
 ## License
 

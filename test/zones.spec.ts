@@ -1,17 +1,13 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("zones", () => {
   describe("#listZones", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("listZones/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("listZones/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -96,20 +92,20 @@ describe("zones", () => {
   });
 
   describe("#allZones", () => {
-    const accountId = "1010";
+    const accountId = 1010;
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -134,8 +130,8 @@ describe("zones", () => {
   });
 
   describe("#getZone", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("getZone/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("getZone/success.http");
 
     it("produces a zone", (done) => {
       nock("https://api.dnsimple.com")
@@ -160,7 +156,7 @@ describe("zones", () => {
     });
 
     describe("when the zone does not exist", () => {
-      const fixture = testUtils.fixture("notfound-zone.http");
+      const fixture = loadFixture("notfound-zone.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com")
         .reply(fixture.statusCode, fixture.body);
@@ -182,8 +178,8 @@ describe("zones", () => {
   });
 
   describe("#getZoneFile", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("getZoneFile/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("getZoneFile/success.http");
 
     it("produces a zone file", (done) => {
       nock("https://api.dnsimple.com")
@@ -203,7 +199,7 @@ describe("zones", () => {
     });
 
     describe("when the zone file does not exist", () => {
-      const fixture = testUtils.fixture("notfound-zone.http");
+      const fixture = loadFixture("notfound-zone.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/file")
         .reply(fixture.statusCode, fixture.body);
@@ -223,8 +219,8 @@ describe("zones", () => {
   });
 
   describe("#checkZoneDistribution", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("checkZoneDistribution/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("checkZoneDistribution/success.http");
 
     it("returns true when the zone is fully distributed", (done) => {
       nock("https://api.dnsimple.com")
@@ -244,7 +240,7 @@ describe("zones", () => {
     });
 
     describe("returns false when the zone is not fully distributed", () => {
-      const fixture = testUtils.fixture("checkZoneDistribution/failure.http");
+      const fixture = loadFixture("checkZoneDistribution/failure.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/distribution")
@@ -264,7 +260,7 @@ describe("zones", () => {
     });
 
     describe("returns an error when the server was not able to complete the check", () => {
-      const fixture = testUtils.fixture("checkZoneDistribution/error.http");
+      const fixture = loadFixture("checkZoneDistribution/error.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/distribution")
@@ -284,7 +280,7 @@ describe("zones", () => {
     });
 
     describe("when the zone does not exist", () => {
-      const fixture = testUtils.fixture("notfound-zone.http");
+      const fixture = loadFixture("notfound-zone.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/distribution")
@@ -305,11 +301,9 @@ describe("zones", () => {
   });
 
   describe("#checkZoneRecordDistribution", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const recordId = 1;
-    const fixture = testUtils.fixture(
-      "checkZoneRecordDistribution/success.http"
-    );
+    const fixture = loadFixture("checkZoneRecordDistribution/success.http");
 
     it("returns true when the zone record is fully distributed", (done) => {
       nock("https://api.dnsimple.com")
@@ -331,9 +325,7 @@ describe("zones", () => {
     });
 
     describe("returns false when the zone record is not fully distributed", () => {
-      const fixture = testUtils.fixture(
-        "checkZoneRecordDistribution/failure.http"
-      );
+      const fixture = loadFixture("checkZoneRecordDistribution/failure.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records/1/distribution")
@@ -355,9 +347,7 @@ describe("zones", () => {
     });
 
     describe("returns an error when the server was not able to complete the check", () => {
-      const fixture = testUtils.fixture(
-        "checkZoneRecordDistribution/error.http"
-      );
+      const fixture = loadFixture("checkZoneRecordDistribution/error.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records/1/distribution")
@@ -379,7 +369,7 @@ describe("zones", () => {
     });
 
     describe("when the zone does not exist", () => {
-      const fixture = testUtils.fixture("notfound-zone.http");
+      const fixture = loadFixture("notfound-zone.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records/1/distribution")
@@ -401,7 +391,7 @@ describe("zones", () => {
     });
 
     describe("when the zone record does not exist", () => {
-      const fixture = testUtils.fixture("notfound-record.http");
+      const fixture = loadFixture("notfound-record.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example.com/records/1/distribution")

@@ -1,16 +1,15 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
+const dnsimple = createTestClient();
 
 const expect = require("chai").expect;
 const nock = require("nock");
 
 describe("services", () => {
   describe("#listServices", () => {
-    const fixture = testUtils.fixture("listServices/success.http");
+    const fixture = loadFixture("listServices/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -85,17 +84,17 @@ describe("services", () => {
 
   describe("#allServices", () => {
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/services?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/services?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/services?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -121,7 +120,7 @@ describe("services", () => {
 
   describe("#getService", () => {
     const serviceId = 1;
-    const fixture = testUtils.fixture("getService/success.http");
+    const fixture = loadFixture("getService/success.http");
 
     it("produces a service", (done) => {
       nock("https://api.dnsimple.com")

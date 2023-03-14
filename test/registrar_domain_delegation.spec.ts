@@ -1,19 +1,15 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("domain delegation", () => {
-  const accountId = "1010";
+  const accountId = 1010;
   const domainId = "example.com";
 
   describe("#getDomainDelegation", () => {
-    const fixture = testUtils.fixture("getDomainDelegation/success.http");
+    const fixture = loadFixture("getDomainDelegation/success.http");
 
     it("produces a name server list", (done) => {
       nock("https://api.dnsimple.com")
@@ -47,7 +43,7 @@ describe("domain delegation", () => {
     ];
 
     it("produces a name server list", (done) => {
-      const fixture = testUtils.fixture("changeDomainDelegation/success.http");
+      const fixture = loadFixture("changeDomainDelegation/success.http");
       nock("https://api.dnsimple.com")
         .put("/v2/1010/registrar/domains/example.com/delegation", attributes)
         .reply(fixture.statusCode, fixture.body);
@@ -76,7 +72,7 @@ describe("domain delegation", () => {
     const attributes = ["ns1.example.com", "ns2.example.com"];
 
     it("produces a name server list", (done) => {
-      const fixture = testUtils.fixture(
+      const fixture = loadFixture(
         "changeDomainDelegationToVanity/success.http"
       );
       nock("https://api.dnsimple.com")
@@ -103,7 +99,7 @@ describe("domain delegation", () => {
 
   describe("#changeDomainDelegationFromVanity", () => {
     it("produces nothing", (done) => {
-      const fixture = testUtils.fixture(
+      const fixture = loadFixture(
         "changeDomainDelegationFromVanity/success.http"
       );
       nock("https://api.dnsimple.com")

@@ -1,18 +1,14 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("collaborators", () => {
   describe("#listCollaborators", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("listCollaborators/success.http");
+    const fixture = loadFixture("listCollaborators/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -78,14 +74,14 @@ describe("collaborators", () => {
   });
 
   describe("#addCollaborator", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const collaborator = {
       email: "existing-user@example.com",
     };
 
     it("produces a response", (done) => {
-      const fixture = testUtils.fixture("addCollaborator/success.http");
+      const fixture = loadFixture("addCollaborator/success.http");
 
       nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/collaborators")
@@ -106,12 +102,12 @@ describe("collaborators", () => {
   });
 
   describe("#removeCollaborator", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const collaboratorId = "100";
 
     it("produces nothing", (done) => {
-      const fixture = testUtils.fixture("removeCollaborator/success.http");
+      const fixture = loadFixture("removeCollaborator/success.http");
 
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/domains/example.com/collaborators/100")

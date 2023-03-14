@@ -1,18 +1,17 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
+const dnsimple = createTestClient();
 
 const expect = require("chai").expect;
 const nock = require("nock");
 
 describe("domains", () => {
   describe("#listEmailForwards", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("listEmailForwards/success.http");
+    const fixture = loadFixture("listEmailForwards/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -88,21 +87,21 @@ describe("domains", () => {
   });
 
   describe("#allEmailForwards", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/email_forwards?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/email_forwards?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/email_forwards?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -127,10 +126,10 @@ describe("domains", () => {
   });
 
   describe("#getEmailForward", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const emailForwardId = 41872;
-    const fixture = testUtils.fixture("getEmailForward/success.http");
+    const fixture = loadFixture("getEmailForward/success.http");
 
     it("produces an email forward", (done) => {
       nock("https://api.dnsimple.com")
@@ -157,7 +156,7 @@ describe("domains", () => {
     });
 
     describe("when the email forward does not exist", () => {
-      const fixture = testUtils.fixture("notfound-emailforward.http");
+      const fixture = loadFixture("notfound-emailforward.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/email_forwards/0")
         .reply(fixture.statusCode, fixture.body);
@@ -179,10 +178,10 @@ describe("domains", () => {
   });
 
   describe("#createEmailForward", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const attributes = { from: "jim" };
-    const fixture = testUtils.fixture("createEmailForward/created.http");
+    const fixture = loadFixture("createEmailForward/created.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -214,10 +213,10 @@ describe("domains", () => {
   });
 
   describe("#deleteEmailForward", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const emailForwardId = 1;
-    const fixture = testUtils.fixture("deleteEmailForward/success.http");
+    const fixture = loadFixture("deleteEmailForward/success.http");
 
     it("produces nothing", (done) => {
       nock("https://api.dnsimple.com")

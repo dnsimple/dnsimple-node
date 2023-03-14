@@ -1,24 +1,18 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const Client = require("../../lib/dnsimple/client");
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("response handling", () => {
   describe("a 400 error", () => {
     it("includes the error message from the server", (done) => {
-      const fixture = testUtils.fixture("validation-error.http");
+      const fixture = loadFixture("validation-error.http");
       nock("https://api.dnsimple.com")
         .post("/v2/validation-error", {})
         .reply(fixture.statusCode, fixture.body);
 
-      new Client(dnsimple).post("/validation-error", {}, {}).then(
+      dnsimple.request("POST", "/validation-error", {}, {}).then(
         (response) => {
           done("Expected error but promise resolved");
         },
@@ -33,7 +27,7 @@ describe("response handling", () => {
 
   describe("a 200 response with malformed json", () => {
     it("produces a JSON parse error", (done) => {
-      const fixture = testUtils.fixture("success-with-malformed-json.http");
+      const fixture = loadFixture("success-with-malformed-json.http");
       nock("https://api.dnsimple.com")
         .get("/v2/success-with-malformed-json")
         .reply(fixture.statusCode, fixture.body);
@@ -52,7 +46,7 @@ describe("response handling", () => {
 
   describe("an error response with HTML content", () => {
     it("produces a JSON parse error", (done) => {
-      const fixture = testUtils.fixture("badgateway.http");
+      const fixture = loadFixture("badgateway.http");
       nock("https://api.dnsimple.com")
         .get("/v2/badgateway")
         .reply(fixture.statusCode, fixture.body);
@@ -71,7 +65,7 @@ describe("response handling", () => {
 
   describe("a 405 error", () => {
     it("results in a rejected promise", (done) => {
-      const fixture = testUtils.fixture("method-not-allowed.http");
+      const fixture = loadFixture("method-not-allowed.http");
       nock("https://api.dnsimple.com")
         .get("/v2/method-not-allowed")
         .reply(fixture.statusCode, fixture.body);

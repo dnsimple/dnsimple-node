@@ -1,14 +1,9 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import * as querystring from "node:querystring";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
-
-const querystring = require("querystring");
+const dnsimple = createTestClient();
 
 describe("oauth", () => {
   const clientId = "super-client";
@@ -16,7 +11,7 @@ describe("oauth", () => {
   const code = "super-code";
 
   describe("#exchangeAuthorizationForToken", () => {
-    const fixture = testUtils.fixture("oauthAccessToken/success.http");
+    const fixture = loadFixture("oauthAccessToken/success.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")

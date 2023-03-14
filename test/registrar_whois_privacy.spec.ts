@@ -1,19 +1,15 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("whois privacy", () => {
-  const accountId = "1010";
+  const accountId = 1010;
   const domainId = "example.com";
 
   describe("#getWhoisPrivacy", () => {
-    const fixture = testUtils.fixture("getWhoisPrivacy/success.http");
+    const fixture = loadFixture("getWhoisPrivacy/success.http");
 
     it("produces a whois privacy", (done) => {
       nock("https://api.dnsimple.com")
@@ -40,7 +36,7 @@ describe("whois privacy", () => {
 
   describe("#enableWhoisPrivacy", () => {
     describe("when whois privacy is already purchased", () => {
-      const fixture = testUtils.fixture("enableWhoisPrivacy/success.http");
+      const fixture = loadFixture("enableWhoisPrivacy/success.http");
 
       it("produces a whois privacy", (done) => {
         nock("https://api.dnsimple.com")
@@ -62,7 +58,7 @@ describe("whois privacy", () => {
     });
 
     describe("when whois privacy is newly purchased", () => {
-      const fixture = testUtils.fixture("enableWhoisPrivacy/created.http");
+      const fixture = loadFixture("enableWhoisPrivacy/created.http");
 
       it("produces a whois privacy", (done) => {
         nock("https://api.dnsimple.com")
@@ -85,7 +81,7 @@ describe("whois privacy", () => {
   });
 
   describe("#disableWhoisPrivacy", () => {
-    const fixture = testUtils.fixture("disableWhoisPrivacy/success.http");
+    const fixture = loadFixture("disableWhoisPrivacy/success.http");
 
     it("produces a whois privacy", (done) => {
       nock("https://api.dnsimple.com")
@@ -107,7 +103,7 @@ describe("whois privacy", () => {
   });
 
   describe("#renewWhoisPrivacy", () => {
-    const fixture = testUtils.fixture("renewWhoisPrivacy/success.http");
+    const fixture = loadFixture("renewWhoisPrivacy/success.http");
 
     it("produces a whois privacy renewal", (done) => {
       nock("https://api.dnsimple.com")

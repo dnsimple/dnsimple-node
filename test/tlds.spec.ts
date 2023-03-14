@@ -1,16 +1,12 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("tlds", () => {
   describe("#listTlds", () => {
-    const fixture = testUtils.fixture("listTlds/success.http");
+    const fixture = loadFixture("listTlds/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -84,17 +80,17 @@ describe("tlds", () => {
 
   describe("#allTlds", () => {
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/tlds?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/tlds?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/tlds?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -119,7 +115,7 @@ describe("tlds", () => {
   });
 
   describe("#getTld", () => {
-    const fixture = testUtils.fixture("getTld/success.http");
+    const fixture = loadFixture("getTld/success.http");
 
     it("produces a tld", (done) => {
       nock("https://api.dnsimple.com")
@@ -150,9 +146,7 @@ describe("tlds", () => {
 
   describe("#getTldExtendedAttributes", () => {
     it("produces a collection of extended attributes", (done) => {
-      const fixture = testUtils.fixture(
-        "getTldExtendedAttributes/success.http"
-      );
+      const fixture = loadFixture("getTldExtendedAttributes/success.http");
 
       nock("https://api.dnsimple.com")
         .get("/v2/tlds/uk/extended_attributes")
@@ -182,7 +176,7 @@ describe("tlds", () => {
     });
 
     describe("when there are no extended attributes for a TLD", () => {
-      const fixture = testUtils.fixture(
+      const fixture = loadFixture(
         "getTldExtendedAttributes/success-noattributes.http"
       );
 

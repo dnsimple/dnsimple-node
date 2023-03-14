@@ -1,19 +1,15 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("registrar auto renewal", () => {
-  const accountId = "1010";
+  const accountId = 1010;
   const domainId = "example.com";
 
   describe("#enableDomainAutoRenewal", () => {
-    const fixture = testUtils.fixture("enableDomainAutoRenewal/success.http");
+    const fixture = loadFixture("enableDomainAutoRenewal/success.http");
 
     it("produces an empty result", (done) => {
       nock("https://api.dnsimple.com")
@@ -33,7 +29,7 @@ describe("registrar auto renewal", () => {
 
     describe("when the domain does not exist", () => {
       it("results in an error", (done) => {
-        const fixture = testUtils.fixture("notfound-domain.http");
+        const fixture = loadFixture("notfound-domain.http");
 
         nock("https://api.dnsimple.com")
           .put("/v2/1010/registrar/domains/example.com/auto_renewal")
@@ -53,7 +49,7 @@ describe("registrar auto renewal", () => {
   });
 
   describe("#disableDomainAutoRenewal", () => {
-    const fixture = testUtils.fixture("disableDomainAutoRenewal/success.http");
+    const fixture = loadFixture("disableDomainAutoRenewal/success.http");
 
     it("produces an empty result", (done) => {
       nock("https://api.dnsimple.com")
@@ -73,7 +69,7 @@ describe("registrar auto renewal", () => {
 
     describe("when the domain does not exist", () => {
       it("results in an error", (done) => {
-        const fixture = testUtils.fixture("notfound-domain.http");
+        const fixture = loadFixture("notfound-domain.http");
 
         nock("https://api.dnsimple.com")
           .delete("/v2/1010/registrar/domains/example.com/auto_renewal")

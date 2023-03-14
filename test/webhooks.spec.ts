@@ -1,17 +1,16 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
+const dnsimple = createTestClient();
 
 const expect = require("chai").expect;
 const nock = require("nock");
 
 describe("webhooks", () => {
   describe("#listWebhooks", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("listWebhooks/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("listWebhooks/success.http");
 
     it("supports extra request options", (done) => {
       nock("https://api.dnsimple.com")
@@ -44,8 +43,8 @@ describe("webhooks", () => {
   });
 
   describe("#allWebhooks", () => {
-    const accountId = "1010";
-    const fixture = testUtils.fixture("listWebhooks/success.http");
+    const accountId = 1010;
+    const fixture = loadFixture("listWebhooks/success.http");
 
     it("supports extra request options", (done) => {
       nock("https://api.dnsimple.com")
@@ -77,9 +76,9 @@ describe("webhooks", () => {
   });
 
   describe("#getWebhook", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const webhookId = "1";
-    const fixture = testUtils.fixture("getWebhook/success.http");
+    const fixture = loadFixture("getWebhook/success.http");
 
     it("produces a webhook", (done) => {
       nock("https://api.dnsimple.com")
@@ -100,7 +99,7 @@ describe("webhooks", () => {
     });
 
     describe("when the webhook does not exist", () => {
-      const fixture = testUtils.fixture("notfound-webhook.http");
+      const fixture = loadFixture("notfound-webhook.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks/0")
         .reply(fixture.statusCode, fixture.body);
@@ -122,9 +121,9 @@ describe("webhooks", () => {
   });
 
   describe("#createWebhook", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const attributes = { url: "https://some-site.com" };
-    const fixture = testUtils.fixture("createWebhook/created.http");
+    const fixture = loadFixture("createWebhook/created.http");
 
     it("builds the correct request", (done) => {
       nock("https://api.dnsimple.com")
@@ -156,11 +155,11 @@ describe("webhooks", () => {
   });
 
   describe("#deleteWebhook", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const webhookId = 1;
 
     it("produces nothing", (done) => {
-      const fixture = testUtils.fixture("deleteWebhook/success.http");
+      const fixture = loadFixture("deleteWebhook/success.http");
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/webhooks/1")
         .reply(fixture.statusCode, fixture.body);
@@ -177,7 +176,7 @@ describe("webhooks", () => {
     });
 
     describe("when the webhook does not exist", () => {
-      const fixture = testUtils.fixture("notfound-webhook.http");
+      const fixture = loadFixture("notfound-webhook.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks/0")
         .reply(fixture.statusCode, fixture.body);

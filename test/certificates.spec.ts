@@ -1,18 +1,14 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
-
-const expect = require("chai").expect;
-const nock = require("nock");
+const dnsimple = createTestClient();
 
 describe("certificates", () => {
   describe("#listCertificates", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("listCertificates/success.http");
+    const fixture = loadFixture("listCertificates/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -31,7 +27,7 @@ describe("certificates", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId, {
-        query: { foo: "bar" },
+        foo: "bar",
       });
 
       nock.isDone();
@@ -91,21 +87,21 @@ describe("certificates", () => {
   });
 
   describe("#allCertificates", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/certificates?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/certificates?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/certificates?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -130,10 +126,10 @@ describe("certificates", () => {
   });
 
   describe("#getCertificate", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 1;
-    const fixture = testUtils.fixture("getCertificate/success.http");
+    const fixture = loadFixture("getCertificate/success.http");
 
     it("produces a certificate", (done) => {
       nock("https://api.dnsimple.com")
@@ -161,7 +157,7 @@ describe("certificates", () => {
     });
 
     describe("when the certificate does not exist", () => {
-      const fixture = testUtils.fixture("notfound-certificate.http");
+      const fixture = loadFixture("notfound-certificate.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/certificates/0")
         .reply(fixture.statusCode, fixture.body);
@@ -183,10 +179,10 @@ describe("certificates", () => {
   });
 
   describe("#downloadCertificate", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 1;
-    const fixture = testUtils.fixture("downloadCertificate/success.http");
+    const fixture = loadFixture("downloadCertificate/success.http");
 
     it("produces a certificate", (done) => {
       nock("https://api.dnsimple.com")
@@ -213,7 +209,7 @@ describe("certificates", () => {
     });
 
     describe("when the certificate does not exist", () => {
-      const fixture = testUtils.fixture("notfound-certificate.http");
+      const fixture = loadFixture("notfound-certificate.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/certificates/0/download")
         .reply(fixture.statusCode, fixture.body);
@@ -233,10 +229,10 @@ describe("certificates", () => {
   });
 
   describe("#getCertificatePrivateKey", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 1;
-    const fixture = testUtils.fixture("getCertificatePrivateKey/success.http");
+    const fixture = loadFixture("getCertificatePrivateKey/success.http");
 
     it("produces a certificate", (done) => {
       nock("https://api.dnsimple.com")
@@ -260,7 +256,7 @@ describe("certificates", () => {
     });
 
     describe("when the certificate does not exist", () => {
-      const fixture = testUtils.fixture("notfound-certificate.http");
+      const fixture = loadFixture("notfound-certificate.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/certificates/0/private_key")
         .reply(fixture.statusCode, fixture.body);
@@ -282,11 +278,9 @@ describe("certificates", () => {
   });
 
   describe("#purchaseLetsencryptCertificate", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture(
-      "purchaseLetsencryptCertificate/success.http"
-    );
+    const fixture = loadFixture("purchaseLetsencryptCertificate/success.http");
 
     it("purchases a certificate", (done) => {
       nock("https://api.dnsimple.com")
@@ -309,12 +303,10 @@ describe("certificates", () => {
   });
 
   describe("#issueLetsencryptCertificate", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
-    const fixture = testUtils.fixture(
-      "issueLetsencryptCertificate/success.http"
-    );
+    const fixture = loadFixture("issueLetsencryptCertificate/success.http");
 
     it("issues a certificate", (done) => {
       nock("https://api.dnsimple.com")
@@ -339,10 +331,10 @@ describe("certificates", () => {
   });
 
   describe("#purchaseLetsencryptCertificateRenewal", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
-    const fixture = testUtils.fixture(
+    const fixture = loadFixture(
       "purchaseRenewalLetsencryptCertificate/success.http"
     );
 
@@ -375,12 +367,12 @@ describe("certificates", () => {
   });
 
   describe("#issueLetsencryptCertificateRenewal", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const certificateId = 101967;
     const certificateRenewalId = 65082;
     const newCertificateId = 101972;
-    const fixture = testUtils.fixture(
+    const fixture = loadFixture(
       "issueRenewalLetsencryptCertificate/success.http"
     );
 

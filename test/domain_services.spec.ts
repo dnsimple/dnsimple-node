@@ -1,18 +1,17 @@
-"use strict";
+import { expect } from "chai";
+import * as nock from "nock";
+import { createTestClient, loadFixture } from "./util";
 
-const testUtils = require("../testUtils");
-const dnsimple = require("../../lib/dnsimple")({
-  accessToken: testUtils.getAccessToken(),
-});
+const dnsimple = createTestClient();
 
 const expect = require("chai").expect;
 const nock = require("nock");
 
 describe("domain services", () => {
   describe("#appliedServices", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
-    const fixture = testUtils.fixture("appliedServices/success.http");
+    const fixture = loadFixture("appliedServices/success.http");
 
     it("supports pagination", (done) => {
       nock("https://api.dnsimple.com")
@@ -71,21 +70,21 @@ describe("domain services", () => {
   });
 
   describe("#allAppliedServices", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
 
     it("produces a complete list", (done) => {
-      const fixture1 = testUtils.fixture("pages-1of3.http");
+      const fixture1 = loadFixture("pages-1of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/services?page=1")
         .reply(fixture1.statusCode, fixture1.body);
 
-      const fixture2 = testUtils.fixture("pages-2of3.http");
+      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/services?page=2")
         .reply(fixture2.statusCode, fixture2.body);
 
-      const fixture3 = testUtils.fixture("pages-3of3.http");
+      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/services?page=3")
         .reply(fixture3.statusCode, fixture3.body);
@@ -110,12 +109,12 @@ describe("domain services", () => {
   });
 
   describe("#applyService", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
 
     it("produces nothing", (done) => {
-      const fixture = testUtils.fixture("applyService/success.http");
+      const fixture = loadFixture("applyService/success.http");
 
       nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/services/name")
@@ -134,12 +133,12 @@ describe("domain services", () => {
   });
 
   describe("#unapplyService", () => {
-    const accountId = "1010";
+    const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
 
     it("produces nothing", (done) => {
-      const fixture = testUtils.fixture("unapplyService/success.http");
+      const fixture = loadFixture("unapplyService/success.http");
 
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/domains/example.com/services/name")
