@@ -11,6 +11,8 @@ export class Domains {
    *
    * GET /{account}/domains
    *
+   * @see https://developer.dnsimple.com/v2/domains/#listDomains
+   *
    * @param account The account id
    * @param params Query parameters
    * @param params.name_like Only include results with a name field containing the given string
@@ -77,6 +79,8 @@ export class Domains {
    *
    * POST /{account}/domains
    *
+   * @see https://developer.dnsimple.com/v2/domains/#createDomain
+   *
    * @param account The account id
    * @param params Query parameters
    */
@@ -108,6 +112,8 @@ export class Domains {
    * Retrieves the details of an existing domain.
    *
    * GET /{account}/domains/{domain}
+   *
+   * @see https://developer.dnsimple.com/v2/domains/#getDomain
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -148,6 +154,8 @@ export class Domains {
    *
    * DELETE /{account}/domains/{domain}
    *
+   * @see https://developer.dnsimple.com/v2/domains/#deleteDomain
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -173,6 +181,8 @@ export class Domains {
    * This API is paginated. Call `listCollaborators.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listCollaborators.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/collaborators
+   *
+   * @see https://developer.dnsimple.com/v2/domains/collaborators/#listDomainCollaborators
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -235,6 +245,8 @@ export class Domains {
    *
    * POST /{account}/domains/{domain}/collaborators
    *
+   * @see https://developer.dnsimple.com/v2/domains/collaborators/#addDomainCollaborator
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -272,6 +284,8 @@ export class Domains {
    *
    * DELETE /{account}/domains/{domain}/collaborators/{collaborator}
    *
+   * @see https://developer.dnsimple.com/v2/domains/collaborators/#removeDomainCollaborator
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param collaborator The collaborator id
@@ -297,6 +311,8 @@ export class Domains {
    * Gets the DNSSEC status for an existing domain.
    *
    * GET /{account}/domains/{domain}/dnssec
+   *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#getDomainDnssec
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -326,6 +342,8 @@ export class Domains {
    *
    * POST /{account}/domains/{domain}/dnssec
    *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#enableDomainDnssec
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -354,6 +372,8 @@ export class Domains {
    *
    * DELETE /{account}/domains/{domain}/dnssec
    *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#disableDomainDnssec
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -379,6 +399,8 @@ export class Domains {
    * This API is paginated. Call `listDelegationSignerRecords.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listDelegationSignerRecords.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/ds_records
+   *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#listDomainDelegationSignerRecords
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -440,6 +462,8 @@ export class Domains {
    *
    * POST /{account}/domains/{domain}/ds_records
    *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#createDomainDelegationSignerRecord
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -483,6 +507,8 @@ export class Domains {
    *
    * GET /{account}/domains/{domain}/ds_records/{ds}
    *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#getDomainDelegationSignerRecord
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param ds The delegation signer record id
@@ -521,6 +547,8 @@ export class Domains {
    *
    * DELETE /{account}/domains/{domain}/ds_records/{ds}
    *
+   * @see https://developer.dnsimple.com/v2/domains/dnssec/#deleteDomainDelegationSignerRecord
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param ds The delegation signer record id
@@ -548,6 +576,8 @@ export class Domains {
    * This API is paginated. Call `listEmailForwards.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listEmailForwards.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/email_forwards
+   *
+   * @see https://developer.dnsimple.com/v2/domains/email-forwards/#listEmailForwards
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -608,6 +638,8 @@ export class Domains {
    *
    * POST /{account}/domains/{domain}/email_forwards
    *
+   * @see https://developer.dnsimple.com/v2/domains/email-forwards/#createEmailForward
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -643,6 +675,8 @@ export class Domains {
    * Retrieves the details of an existing email forward.
    *
    * GET /{account}/domains/{domain}/email_forwards/{emailforward}
+   *
+   * @see https://developer.dnsimple.com/v2/domains/email-forwards/#getEmailForward
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -681,6 +715,8 @@ export class Domains {
    *
    * DELETE /{account}/domains/{domain}/email_forwards/{emailforward}
    *
+   * @see https://developer.dnsimple.com/v2/domains/email-forwards/#deleteEmailForward
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param emailforward The email forward id
@@ -706,6 +742,8 @@ export class Domains {
    * Initiates a pust of a domain to another DNSimple account.
    *
    * POST /{account}/domains/{domain}/pushes
+   *
+   * @see https://developer.dnsimple.com/v2/domains/pushes/#initiateDomainPush
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -743,6 +781,8 @@ export class Domains {
    * This API is paginated. Call `listPushes.iterateAll(account, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listPushes.collectAll(account, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/pushes
+   *
+   * @see https://developer.dnsimple.com/v2/domains/pushes/#listPushes
    *
    * @param account The account id
    * @param params Query parameters
@@ -788,6 +828,8 @@ export class Domains {
    *
    * POST /{account}/pushes/{push}
    *
+   * @see https://developer.dnsimple.com/v2/domains/pushes/#acceptPush
+   *
    * @param account The account id
    * @param push The push id
    * @param params Query parameters
@@ -807,6 +849,8 @@ export class Domains {
    * Rejects a push to the target account.
    *
    * DELETE /{account}/pushes/{push}
+   *
+   * @see https://developer.dnsimple.com/v2/domains/pushes/#rejectPush
    *
    * @param account The account id
    * @param push The push id

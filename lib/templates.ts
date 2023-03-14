@@ -11,6 +11,8 @@ export class Templates {
    *
    * GET /{account}/templates
    *
+   * @see https://developer.dnsimple.com/v2/templates/#listTemplates
+   *
    * @param account The account id
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by id ascending.
@@ -58,6 +60,8 @@ export class Templates {
    *
    * POST /{account}/templates
    *
+   * @see https://developer.dnsimple.com/v2/templates/#createTemplate
+   *
    * @param account The account id
    * @param params Query parameters
    */
@@ -84,6 +88,8 @@ export class Templates {
    * Retrieves the details of an existing template.
    *
    * GET /{account}/templates/{template}
+   *
+   * @see https://developer.dnsimple.com/v2/templates/#getTemplate
    *
    * @param account The account id
    * @param template The template id or short name
@@ -118,6 +124,8 @@ export class Templates {
    * Updates the template details.
    *
    * PATCH /{account}/templates/{template}
+   *
+   * @see https://developer.dnsimple.com/v2/templates/#updateTemplate
    *
    * @param account The account id
    * @param template The template id or short name
@@ -154,6 +162,8 @@ export class Templates {
    *
    * DELETE /{account}/templates/{template}
    *
+   * @see https://developer.dnsimple.com/v2/templates/#deleteTemplate
+   *
    * @param account The account id
    * @param template The template id or short name
    * @param params Query parameters
@@ -179,6 +189,8 @@ export class Templates {
    * This API is paginated. Call `listTemplateRecords.iterateAll(account, template, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listTemplateRecords.collectAll(account, template, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/templates/{template}/records
+   *
+   * @see https://developer.dnsimple.com/v2/templates/#listTemplateRecords
    *
    * @param account The account id
    * @param template The template id or short name
@@ -240,6 +252,8 @@ export class Templates {
    *
    * POST /{account}/templates/{template}/records
    *
+   * @see https://developer.dnsimple.com/v2/templates/#createTemplateRecord
+   *
    * @param account The account id
    * @param template The template id or short name
    * @param params Query parameters
@@ -276,6 +290,8 @@ export class Templates {
    * Retrieves the details of an existing template record.
    *
    * GET /{account}/templates/{template}/records/{templaterecord}
+   *
+   * @see https://developer.dnsimple.com/v2/templates/#getTemplateRecord
    *
    * @param account The account id
    * @param template The template id or short name
@@ -315,6 +331,8 @@ export class Templates {
    *
    * DELETE /{account}/templates/{template}/records/{templaterecord}
    *
+   * @see https://developer.dnsimple.com/v2/templates/#deleteTemplateRecord
+   *
    * @param account The account id
    * @param template The template id or short name
    * @param templaterecord The template record id
@@ -340,6 +358,8 @@ export class Templates {
    * Applies a template to a domain.
    *
    * POST /{account}/domains/{domain}/templates/{template}
+   *
+   * @see https://developer.dnsimple.com/v2/templates/#applyTemplateToDomain
    *
    * @param account The account id
    * @param domain The domain name or id

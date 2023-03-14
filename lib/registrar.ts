@@ -8,6 +8,8 @@ export class Registrar {
    *
    * GET /{account}/registrar/domains/{domain}/check
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#checkDomain
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -38,6 +40,8 @@ export class Registrar {
    *
    * GET /{account}/registrar/domains/{domain}/premium_price
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainPremiumPrice
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -62,6 +66,8 @@ export class Registrar {
    * Retrieve domain prices.
    *
    * GET /{account}/registrar/domains/{domain}/prices
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainPrices
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -96,6 +102,8 @@ export class Registrar {
    * Your account must be active for this command to complete successfully. You will be automatically charged the registration fee upon successful registration, so please be careful with this command.
    *
    * POST /{account}/registrar/domains/{domain}/registrations
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#registerDomain
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -140,6 +148,8 @@ export class Registrar {
    *
    * GET /{account}/registrar/domains/{domain}/registrations/{domainregistration}
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainRegistration
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param domainregistration The domain registration id
@@ -179,6 +189,8 @@ export class Registrar {
    * Your account must be active for this command to complete successfully. You will be automatically charged the 1-year transfer fee upon successful transfer, so please be careful with this command. The transfer may take anywhere from a few minutes up to 7 days.
    *
    * POST /{account}/registrar/domains/{domain}/transfers
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#transferDomain
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -224,6 +236,8 @@ export class Registrar {
    *
    * GET /{account}/registrar/domains/{domain}/transfers/{domaintransfer}
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainTransfer
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param domaintransfer The domain transfer id
@@ -261,6 +275,8 @@ export class Registrar {
    * Cancels an in progress domain transfer.
    *
    * DELETE /{account}/registrar/domains/{domain}/transfers/{domaintransfer}
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#cancelDomainTransfer
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -302,6 +318,8 @@ export class Registrar {
    *
    * POST /{account}/registrar/domains/{domain}/renewals
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#domainRenew
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -335,6 +353,8 @@ export class Registrar {
    * Retrieves the details of an existing domain renewal.
    *
    * GET /{account}/registrar/domains/{domain}/renewals/{domainrenewal}
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainRenewal
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -373,6 +393,8 @@ export class Registrar {
    *
    * POST /{account}/registrar/domains/{domain}/authorize_transfer_out
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#authorizeDomainTransferOut
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -396,6 +418,8 @@ export class Registrar {
    * Lists the name servers for the domain.
    *
    * GET /{account}/registrar/domains/{domain}/delegation
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/delegation/#getDomainDelegation
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -421,6 +445,8 @@ export class Registrar {
    *
    * PUT /{account}/registrar/domains/{domain}/delegation
    *
+   * @see https://developer.dnsimple.com/v2/registrar/delegation/#changeDomainDelegation
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -445,6 +471,8 @@ export class Registrar {
    * Delegate a domain to vanity name servers.
    *
    * PUT /{account}/registrar/domains/{domain}/delegation/vanity
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/delegation/#changeDomainDelegationToVanity
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -480,6 +508,8 @@ export class Registrar {
    *
    * DELETE /{account}/registrar/domains/{domain}/delegation/vanity
    *
+   * @see https://developer.dnsimple.com/v2/registrar/delegation/#changeDomainDelegationFromVanity
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -503,6 +533,8 @@ export class Registrar {
    * Enables auto renewal for the domain.
    *
    * PUT /{account}/registrar/domains/{domain}/auto_renewal
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#enableDomainAutoRenewal
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -528,6 +560,8 @@ export class Registrar {
    *
    * DELETE /{account}/registrar/domains/{domain}/auto_renewal
    *
+   * @see https://developer.dnsimple.com/v2/registrar/#disableDomainAutoRenewal
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -551,6 +585,8 @@ export class Registrar {
    * Gets the whois privacy status for an existing domain.
    *
    * GET /{account}/registrar/domains/{domain}/whois_privacy
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#getWhoisPrivacy
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -587,6 +623,8 @@ export class Registrar {
    *
    * PUT /{account}/registrar/domains/{domain}/whois_privacy
    *
+   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#enableWhoisPrivacy
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -619,6 +657,8 @@ export class Registrar {
    * Disables the WHOIS privacy for the domain.
    *
    * DELETE /{account}/registrar/domains/{domain}/whois_privacy
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#disableWhoisPrivacy
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -654,6 +694,8 @@ export class Registrar {
    * Note that if the WHOIS privacy was never purchased for the domain or if there is another renewal order in progress, renewing WHOIS privacy will return an error.
    *
    * POST /{account}/registrar/domains/{domain}/whois_privacy/renewals
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#renewWhoisPrivacy
    *
    * @param account The account id
    * @param domain The domain name or id

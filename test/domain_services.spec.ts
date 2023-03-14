@@ -145,17 +145,15 @@ describe("domain services", () => {
         .delete("/v2/1010/domains/example.com/services/name")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services
-        .unapplyService(accountId, domainId, serviceId)
-        .then(
-          (response) => {
-            expect(response).to.eql({});
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.services.unapplyService(accountId, domainId, serviceId).then(
+        (response) => {
+          expect(response).to.eql({});
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
   });
 });

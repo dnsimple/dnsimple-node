@@ -11,6 +11,8 @@ export class SecondaryDns {
    *
    * GET /{account}/secondary_dns/primaries
    *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#listPrimaryServers
+   *
    * @param account The account id
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is ascending by id.
@@ -65,6 +67,8 @@ export class SecondaryDns {
    *
    * POST /{account}/secondary_dns/primaries
    *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#createPrimaryServer
+   *
    * @param account The account id
    * @param params Query parameters
    */
@@ -98,6 +102,8 @@ export class SecondaryDns {
    * Retrieves the details of an existing primary server.
    *
    * GET /{account}/secondary_dns/primaries/{primaryserver}
+   *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#getPrimaryServer
    *
    * @param account The account id
    * @param primaryserver The primary server id
@@ -134,6 +140,8 @@ export class SecondaryDns {
    *
    * DELETE /{account}/secondary_dns/primaries/{primaryserver}
    *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#removePrimaryServer
+   *
    * @param account The account id
    * @param primaryserver The primary server id
    * @param params Query parameters
@@ -157,6 +165,8 @@ export class SecondaryDns {
    * Link the primary server to a secondary zone.
    *
    * PUT /{account}/secondary_dns/primaries/{primaryserver}/link
+   *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#linkPrimaryServer
    *
    * @param account The account id
    * @param primaryserver The primary server id
@@ -193,6 +203,8 @@ export class SecondaryDns {
    *
    * PUT /{account}/secondary_dns/primaries/{primaryserver}/unlink
    *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#unlinkPrimaryServer
+   *
    * @param account The account id
    * @param primaryserver The primary server id
    * @param params Query parameters
@@ -227,6 +239,8 @@ export class SecondaryDns {
    * Creates a secondary zone into the account.
    *
    * POST /{account}/secondary_dns/zones
+   *
+   * @see https://developer.dnsimple.com/v2/secondary-dns/#createSecondaryZone
    *
    * @param account The account id
    * @param params Query parameters

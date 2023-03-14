@@ -10,6 +10,8 @@ export class VanityNameServers {
    *
    * PUT /{account}/vanity/{domain}
    *
+   * @see https://developer.dnsimple.com/v2/vanity/#enableVanityNameServers
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -39,6 +41,8 @@ export class VanityNameServers {
    * This method removes the A and AAAA records required for the domain to provide vanity name servers, but it does not change the delegation for the domain. To change the delegation for domains to vanity name servers use the endpoints to Delegate to Vanity Name Servers or Dedelegate from Vanity Name Servers.
    *
    * DELETE /{account}/vanity/{domain}
+   *
+   * @see https://developer.dnsimple.com/v2/vanity/#disableVanityNameServers
    *
    * @param account The account id
    * @param domain The domain name or id

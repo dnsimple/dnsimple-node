@@ -89,19 +89,17 @@ describe("collaborators", () => {
         .post("/v2/1010/domains/example.com/collaborators")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains
-        .addCollaborator(accountId, domainId, collaborator)
-        .then(
-          (response) => {
-            const data = response.data;
-            expect(data.id).to.eql(100);
-            expect(data.invitation).to.eql(false);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.domains.addCollaborator(accountId, domainId, collaborator).then(
+        (response) => {
+          const data = response.data;
+          expect(data.id).to.eql(100);
+          expect(data.invitation).to.eql(false);
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
   });
 

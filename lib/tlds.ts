@@ -11,6 +11,8 @@ export class Tlds {
    *
    * GET /tlds
    *
+   * @see https://developer.dnsimple.com/v2/tlds/#listTlds
+   *
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by tld ascending.
    */
@@ -56,6 +58,8 @@ export class Tlds {
    *
    * GET /tlds/{tld}
    *
+   * @see https://developer.dnsimple.com/v2/tlds/#getTld
+   *
    * @param tld The TLD string
    * @param params Query parameters
    */
@@ -86,6 +90,8 @@ export class Tlds {
    * Some TLDs require extended attributes when registering or transferring a domain. This API interface provides information on the extended attributes for any particular TLD. Extended attributes are extra TLD-specific attributes, required by the TLD registry to collect extra information about the registrant or legal agreements.
    *
    * GET /tlds/{tld}/extended_attributes
+   *
+   * @see https://developer.dnsimple.com/v2/tlds/#getTldExtendedAttributes
    *
    * @param tld The TLD string
    * @param params Query parameters

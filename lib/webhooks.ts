@@ -8,6 +8,8 @@ export class Webhooks {
    *
    * GET /{account}/webhooks
    *
+   * @see https://developer.dnsimple.com/v2/webhooks/webhooks/#listWebhooks
+   *
    * @param account The account id
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by name ascending.
@@ -27,6 +29,8 @@ export class Webhooks {
    *
    * POST /{account}/webhooks
    *
+   * @see https://developer.dnsimple.com/v2/webhooks/webhooks/#createWebhook
+   *
    * @param account The account id
    * @param params Query parameters
    */
@@ -44,6 +48,8 @@ export class Webhooks {
    * Retrieves the details of a registered webhook.
    *
    * GET /{account}/webhooks/{webhook}
+   *
+   * @see https://developer.dnsimple.com/v2/webhooks/webhooks/#getWebhook
    *
    * @param account The account id
    * @param webhook The webhoook id
@@ -68,6 +74,8 @@ export class Webhooks {
    * De-registers a webhook endpoint.
    *
    * DELETE /{account}/webhooks/{webhook}
+   *
+   * @see https://developer.dnsimple.com/v2/webhooks/webhooks/#deleteWebhook
    *
    * @param account The account id
    * @param webhook The webhoook id

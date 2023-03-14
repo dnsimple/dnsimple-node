@@ -292,17 +292,15 @@ describe("templates", () => {
         .post("/v2/1010/domains/example.com/templates/1")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.templates
-        .applyTemplate(accountId, domainId, templateId)
-        .then(
-          (response) => {
-            expect(response).to.eql({});
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.templates.applyTemplate(accountId, domainId, templateId).then(
+        (response) => {
+          expect(response).to.eql({});
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
   });
 });

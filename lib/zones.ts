@@ -11,6 +11,8 @@ export class Zones {
    *
    * GET /{account}/zones
    *
+   * @see https://developer.dnsimple.com/v2/zones/#listZones
+   *
    * @param account The account id
    * @param params Query parameters
    * @param params.name_like Only include results with a name field containing the given string
@@ -60,6 +62,8 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}
    *
+   * @see https://developer.dnsimple.com/v2/zones/#getZone
+   *
    * @param account The account id
    * @param zone The zone name
    * @param params Query parameters
@@ -90,6 +94,8 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}/file
    *
+   * @see https://developer.dnsimple.com/v2/zones/#getZoneFile
+   *
    * @param account The account id
    * @param zone The zone name
    * @param params Query parameters
@@ -114,6 +120,8 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}/distribution
    *
+   * @see https://developer.dnsimple.com/v2/zones/#checkZoneDistribution
+   *
    * @param account The account id
    * @param zone The zone name
    * @param params Query parameters
@@ -137,6 +145,8 @@ export class Zones {
    * Updates the zone's NS records
    *
    * PUT /{account}/zones/{zone}/ns_records
+   *
+   * @see https://developer.dnsimple.com/v2/zones/#updateZoneNsRecords
    *
    * @param account The account id
    * @param zone The zone name
@@ -179,6 +189,8 @@ export class Zones {
    * This API is paginated. Call `listZoneRecords.iterateAll(account, zone, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listZoneRecords.collectAll(account, zone, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/zones/{zone}/records
+   *
+   * @see https://developer.dnsimple.com/v2/zones/#listZoneRecords
    *
    * @param account The account id
    * @param zone The zone name
@@ -260,6 +272,8 @@ export class Zones {
    *
    * POST /{account}/zones/{zone}/records
    *
+   * @see https://developer.dnsimple.com/v2/zones/#createZoneRecord
+   *
    * @param account The account id
    * @param zone The zone name
    * @param params Query parameters
@@ -307,6 +321,8 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}/records/{zonerecord}
    *
+   * @see https://developer.dnsimple.com/v2/zones/#getZoneRecord
+   *
    * @param account The account id
    * @param zone The zone name
    * @param zonerecord The zone record id
@@ -347,6 +363,8 @@ export class Zones {
    * Updates the zone record details.
    *
    * PATCH /{account}/zones/{zone}/records/{zonerecord}
+   *
+   * @see https://developer.dnsimple.com/v2/zones/#updateZoneRecord
    *
    * @param account The account id
    * @param zone The zone name
@@ -396,6 +414,8 @@ export class Zones {
    *
    * DELETE /{account}/zones/{zone}/records/{zonerecord}
    *
+   * @see https://developer.dnsimple.com/v2/zones/#deleteZoneRecord
+   *
    * @param account The account id
    * @param zone The zone name
    * @param zonerecord The zone record id
@@ -421,6 +441,8 @@ export class Zones {
    * Checks if a zone record is fully distributed to all our name servers across the globe.
    *
    * GET /{account}/zones/{zone}/records/{zonerecord}/distribution
+   *
+   * @see https://developer.dnsimple.com/v2/zones/#checkZoneRecordDistribution
    *
    * @param account The account id
    * @param zone The zone name

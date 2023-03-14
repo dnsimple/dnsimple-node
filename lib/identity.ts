@@ -8,6 +8,8 @@ export class Identity {
    *
    * GET /whoami
    *
+   * @see https://developer.dnsimple.com/v2/identity/#whoami
+   *
    * @param params Query parameters
    */
   whoami = (() => {

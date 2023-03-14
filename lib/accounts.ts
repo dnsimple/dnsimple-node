@@ -8,6 +8,8 @@ export class Accounts {
    *
    * GET /accounts
    *
+   * @see https://developer.dnsimple.com/v2/accounts/#listAccounts
+   *
    * @param params Query parameters
    */
   listAccounts = (() => {

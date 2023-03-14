@@ -55,18 +55,16 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/ds_records")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains
-        .listDelegationSignerRecords(accountId, domainId)
-        .then(
-          (response) => {
-            const dsRecords = response.data;
-            expect(dsRecords.length).to.eq(1);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(
+        (response) => {
+          const dsRecords = response.data;
+          expect(dsRecords.length).to.eq(1);
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
 
     it("exposes the pagination info", (done) => {
@@ -74,19 +72,17 @@ describe("domains", () => {
         .get("/v2/1010/domains/example.com/ds_records")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.domains
-        .listDelegationSignerRecords(accountId, domainId)
-        .then(
-          (response) => {
-            const pagination = response.pagination;
-            expect(pagination).to.not.eq(null);
-            expect(pagination.current_page).to.eq(1);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(
+        (response) => {
+          const pagination = response.pagination;
+          expect(pagination).to.not.eq(null);
+          expect(pagination.current_page).to.eq(1);
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
   });
 
@@ -170,20 +166,18 @@ describe("domains", () => {
         .reply(fixture.statusCode, fixture.body);
 
       it("produces an error", (done) => {
-        dnsimple.domains
-          .getDelegationSignerRecord(accountId, domainId, 0)
-          .then(
-            (response) => {
-              done();
-            },
-            (error) => {
-              expect(error).to.be.instanceOf(NotFoundError);
-              expect(error.data.message).to.eq(
-                "Delegation signer record `0` not found"
-              );
-              done();
-            }
-          );
+        dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0).then(
+          (response) => {
+            done();
+          },
+          (error) => {
+            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error.data.message).to.eq(
+              "Delegation signer record `0` not found"
+            );
+            done();
+          }
+        );
       });
     });
   });

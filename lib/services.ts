@@ -11,6 +11,8 @@ export class Services {
    *
    * GET /services
    *
+   * @see https://developer.dnsimple.com/v2/services/#listServices
+   *
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by id ascending.
    */
@@ -63,6 +65,8 @@ export class Services {
    *
    * GET /services/{service}
    *
+   * @see https://developer.dnsimple.com/v2/services/#getService
+   *
    * @param service The service sid or id
    * @param params Query parameters
    */
@@ -100,6 +104,8 @@ export class Services {
    * This API is paginated. Call `applyService.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await applyService.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/services
+   *
+   * @see https://developer.dnsimple.com/v2/services/#listDomainAppliedServices
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -168,6 +174,8 @@ export class Services {
    *
    * POST /{account}/domains/{domain}/services/{service}
    *
+   * @see https://developer.dnsimple.com/v2/services/#applyServiceToDomain
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param service The service sid or id
@@ -194,6 +202,8 @@ export class Services {
    * Unapplies a service from a domain.
    *
    * DELETE /{account}/domains/{domain}/services/{service}
+   *
+   * @see https://developer.dnsimple.com/v2/services/#unapplyServiceFromDomain
    *
    * @param account The account id
    * @param domain The domain name or id

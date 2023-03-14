@@ -11,6 +11,8 @@ export class Certificates {
    *
    * GET /{account}/domains/{domain}/certificates
    *
+   * @see https://developer.dnsimple.com/v2/certificates/#listCertificates
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
@@ -77,6 +79,8 @@ export class Certificates {
    *
    * GET /{account}/domains/{domain}/certificates/{certificate}
    *
+   * @see https://developer.dnsimple.com/v2/certificates/#getCertificate
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
@@ -121,6 +125,8 @@ export class Certificates {
    *
    * GET /{account}/domains/{domain}/certificates/{certificate}/download
    *
+   * @see https://developer.dnsimple.com/v2/certificates/#downloadCertificate
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
@@ -149,6 +155,8 @@ export class Certificates {
    *
    * GET /{account}/domains/{domain}/certificates/{certificate}/private_key
    *
+   * @see https://developer.dnsimple.com/v2/certificates/#getCertificatePrivateKey
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
@@ -174,6 +182,8 @@ export class Certificates {
    * Orders a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate with DNSimple.
    *
    * POST /{account}/domains/{domain}/certificates/letsencrypt
+   *
+   * @see https://developer.dnsimple.com/v2/certificates/#purchaseLetsencryptCertificate
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -213,6 +223,8 @@ export class Certificates {
    * Issues a [Let's Encrypt](https://dnsimple.com/letsencrypt) certificate ordered with DNSimple.
    *
    * POST /{account}/domains/{domain}/certificates/letsencrypt/{purchaseId}/issue
+   *
+   * @see https://developer.dnsimple.com/v2/certificates/#issueLetsencryptCertificate
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -258,6 +270,8 @@ export class Certificates {
    *
    * POST /{account}/domains/{domain}/certificates/letsencrypt/{certificate}/renewals
    *
+   * @see https://developer.dnsimple.com/v2/certificates/#purchaseRenewalLetsencryptCertificate
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
@@ -295,10 +309,12 @@ export class Certificates {
    *
    * POST /{account}/domains/{domain}/certificates/letsencrypt/{certificate}/renewals/{renewalId}/issue
    *
+   * @see https://developer.dnsimple.com/v2/certificates/#issueRenewalLetsencryptCertificate
+   *
    * @param account The account id
    * @param domain The domain name or id
    * @param certificate The certificate id
-   * @param renewalId The certificate renewal order id received by {@link Certificates.purchaseRenewalLetsencryptCertificate}.
+   * @param renewalId The certificate renewal order id received by `purchaseRenewalLetsencryptCertificate`.
    * @param params Query parameters
    */
   issueLetsencryptCertificateRenewal = (() => {

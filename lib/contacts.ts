@@ -11,6 +11,8 @@ export class Contacts {
    *
    * GET /{account}/contacts
    *
+   * @see https://developer.dnsimple.com/v2/contacts/#listContacts
+   *
    * @param account The account id
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by id ascending.
@@ -69,6 +71,8 @@ export class Contacts {
    *
    * POST /{account}/contacts
    *
+   * @see https://developer.dnsimple.com/v2/contacts/#createContact
+   *
    * @param account The account id
    * @param params Query parameters
    */
@@ -122,6 +126,8 @@ export class Contacts {
    *
    * GET /{account}/contacts/{contact}
    *
+   * @see https://developer.dnsimple.com/v2/contacts/#getContact
+   *
    * @param account The account id
    * @param contact The contact id
    * @param params Query parameters
@@ -166,6 +172,8 @@ export class Contacts {
    * Updates the contact details.
    *
    * PATCH /{account}/contacts/{contact}
+   *
+   * @see https://developer.dnsimple.com/v2/contacts/#updateContact
    *
    * @param account The account id
    * @param contact The contact id
@@ -227,6 +235,8 @@ export class Contacts {
    * Permanently deletes a contact from the account.
    *
    * DELETE /{account}/contacts/{contact}
+   *
+   * @see https://developer.dnsimple.com/v2/contacts/#deleteContact
    *
    * @param account The account id
    * @param contact The contact id
