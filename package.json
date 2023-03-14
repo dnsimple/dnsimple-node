@@ -50,7 +50,7 @@
     "build": "npm run clean && tsc",
     "clean": "rm -rf dist",
     "format": "prettier -w '*.{js,json}' '{lib,test}/**/*.ts'",
-    "format-check": "prettier --check *.{js,json}' '{lib,test}/**/*.ts'",
+    "format-check": "prettier --check '*.{js,json}' '{lib,test}/**/*.ts'",
     "test": "mocha --require ts-node/register --bail --recursive test/**/*.spec.ts"
   }
 }
