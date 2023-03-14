@@ -170,7 +170,7 @@ export class Domains {
   /**
    * Lists collaborators for the domain.
    *
-   * This API is paginated. Call `listDomainCollaborators.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listDomainCollaborators.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
+   * This API is paginated. Call `listCollaborators.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listCollaborators.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/collaborators
    *
@@ -178,7 +178,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  listDomainCollaborators = (() => {
+  listCollaborators = (() => {
     const method = (
       account: number,
       domain: string,
@@ -239,7 +239,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  addDomainCollaborator = (() => {
+  addCollaborator = (() => {
     const method = (
       account: number,
       domain: string,
@@ -277,7 +277,7 @@ export class Domains {
    * @param collaborator The collaborator id
    * @param params Query parameters
    */
-  removeDomainCollaborator = (() => {
+  removeCollaborator = (() => {
     const method = (
       account: number,
       domain: string,
@@ -302,7 +302,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  getDomainDnssec = (() => {
+  getDnssec = (() => {
     const method = (
       account: number,
       domain: string,
@@ -330,7 +330,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  enableDomainDnssec = (() => {
+  enableDnssec = (() => {
     const method = (
       account: number,
       domain: string,
@@ -358,7 +358,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  disableDomainDnssec = (() => {
+  disableDnssec = (() => {
     const method = (
       account: number,
       domain: string,
@@ -376,7 +376,7 @@ export class Domains {
   /**
    * Lists the DS records for the domain.
    *
-   * This API is paginated. Call `listDomainDelegationSignerRecords.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listDomainDelegationSignerRecords.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
+   * This API is paginated. Call `listDelegationSignerRecords.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listDelegationSignerRecords.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/ds_records
    *
@@ -385,7 +385,7 @@ export class Domains {
    * @param params Query parameters
    * @param params.sort Sort results. Default sorting is by id.
    */
-  listDomainDelegationSignerRecords = (() => {
+  listDelegationSignerRecords = (() => {
     const method = (
       account: number,
       domain: string,
@@ -444,7 +444,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  createDomainDelegationSignerRecord = (() => {
+  createDelegationSignerRecord = (() => {
     const method = (
       account: number,
       domain: string,
@@ -482,7 +482,7 @@ export class Domains {
    * @param ds The delegation signer record id
    * @param params Query parameters
    */
-  getDomainDelegationSignerRecord = (() => {
+  getDelegationSignerRecord = (() => {
     const method = (
       account: number,
       domain: string,
@@ -520,7 +520,7 @@ export class Domains {
    * @param ds The delegation signer record id
    * @param params Query parameters
    */
-  deleteDomainDelegationSignerRecord = (() => {
+  deleteDelegationSignerRecord = (() => {
     const method = (
       account: number,
       domain: string,
@@ -705,7 +705,7 @@ export class Domains {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  initiateDomainPush = (() => {
+  initiatePush = (() => {
     const method = (
       account: number,
       domain: string,

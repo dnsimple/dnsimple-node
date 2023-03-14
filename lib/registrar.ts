@@ -306,7 +306,7 @@ export class Registrar {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  domainRenew = (() => {
+  renewDomain = (() => {
     const method = (
       account: number,
       domain: string,
@@ -377,7 +377,7 @@ export class Registrar {
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  authorizeDomainTransferOut = (() => {
+  transferDomainOut = (() => {
     const method = (
       account: number,
       domain: string,

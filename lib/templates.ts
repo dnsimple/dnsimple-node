@@ -346,7 +346,7 @@ export class Templates {
    * @param template The template id or short name
    * @param params Query parameters
    */
-  applyTemplateToDomain = (() => {
+  applyTemplate = (() => {
     const method = (
       account: number,
       domain: string,

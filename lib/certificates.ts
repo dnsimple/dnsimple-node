@@ -36,6 +36,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
+        expires_at: string;
         expires_on: string;
       }>;
       pagination: {
@@ -102,6 +103,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
+        expires_at: string;
         expires_on: string;
       };
     }> =>
@@ -238,6 +240,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
+        expires_at: string;
         expires_on: string;
       };
     }> =>
@@ -260,7 +263,7 @@ export class Certificates {
    * @param certificate The certificate id
    * @param params Query parameters
    */
-  purchaseRenewalLetsencryptCertificate = (() => {
+  purchaseLetsencryptCertificateRenewal = (() => {
     const method = (
       account: number,
       domain: string,
@@ -298,7 +301,7 @@ export class Certificates {
    * @param renewalId The certificate renewal order id received by `purchaseRenewalLetsencryptCertificate`.
    * @param params Query parameters
    */
-  issueRenewalLetsencryptCertificate = (() => {
+  issueLetsencryptCertificateRenewal = (() => {
     const method = (
       account: number,
       domain: string,
@@ -320,6 +323,7 @@ export class Certificates {
         authority_identifier: string;
         created_at: string;
         updated_at: string;
+        expires_at: string;
         expires_on: string;
       };
     }> =>
