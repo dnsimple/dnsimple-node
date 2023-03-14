@@ -85,16 +85,6 @@ const certificates: Array<Certificate> = await client.certificates.listCertifica
 console.log(certificates.length);
 ```
 
-Error type hierarchy:
-- TimeoutError
-- RequestError
-  - AuthenticationError
-  - NotFoundError
-  - MethodNotAllowedError
-  - TooManyRequestsError
-  - ClientError
-  - ServerError
-
 ## Sandbox Environment
 
 We highly recommend testing against our [sandbox environment](https://developer.dnsimple.com/sandbox/) before using our production environment. This will allow you to avoid real purchases, live charges on your credit card, and reduce the chance of your running up against rate limits.
