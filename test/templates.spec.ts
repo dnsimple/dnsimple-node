@@ -172,7 +172,7 @@ describe("templates", () => {
 
   describe("#createTemplate", () => {
     const accountId = 1010;
-    const attributes = { name: "Beta" } as any;
+    const attributes = { name: "Beta" };
     const fixture = loadFixture("createTemplate/created.http");
 
     it("builds the correct request", (done) => {
@@ -207,7 +207,7 @@ describe("templates", () => {
   describe("#updateTemplate", () => {
     const accountId = 1010;
     const templateId = 1;
-    const attributes = { name: "Alpha" } as any;
+    const attributes = { name: "Alpha" };
     const fixture = loadFixture("updateTemplate/success.http");
 
     it("builds the correct request", (done) => {

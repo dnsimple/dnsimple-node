@@ -179,7 +179,7 @@ describe("registrar", () => {
     const fixture = loadFixture("registerDomain/success.http");
 
     it("produces a domain", (done) => {
-      const attributes = { registrant_id: "10" } as any;
+      const attributes = { registrant_id: 10 };
 
       nock("https://api.dnsimple.com")
         .post(
@@ -206,7 +206,7 @@ describe("registrar", () => {
     const fixture = loadFixture("renewDomain/success.http");
 
     it("produces a domain", (done) => {
-      const attributes = { period: "3" } as any;
+      const attributes = { period: 3 };
 
       nock("https://api.dnsimple.com")
         .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
@@ -229,7 +229,7 @@ describe("registrar", () => {
       const fixture = loadFixture("renewDomain/error-tooearly.http");
 
       it("results in an error", (done) => {
-        const attributes = {} as any;
+        const attributes = {};
 
         nock("https://api.dnsimple.com")
           .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
@@ -249,7 +249,7 @@ describe("registrar", () => {
   });
 
   describe("#transferDomain", () => {
-    const attributes = { registrant_id: "10", auth_code: "x1y2z3" } as any;
+    const attributes = { registrant_id: 10, auth_code: "x1y2z3" };
 
     it("produces a domain", (done) => {
       const fixture = loadFixture("transferDomain/success.http");
@@ -294,7 +294,7 @@ describe("registrar", () => {
       const fixture = loadFixture("transferDomain/error-missing-authcode.http");
 
       it("results in an error", (done) => {
-        const attributes = { registrant_id: "10" } as any;
+        const attributes = { registrant_id: 10 };
 
         nock("https://api.dnsimple.com")
           .post("/v2/1010/registrar/domains/example.com/transfers", attributes)

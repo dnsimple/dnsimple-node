@@ -200,7 +200,7 @@ describe("zone records", () => {
       type: "A",
       ttl: 3600,
       content: "1.2.3.4",
-    } as any;
+    };
     const fixture = loadFixture("createZoneRecord/created.http");
 
     it("builds the correct request", (done) => {
@@ -236,7 +236,7 @@ describe("zone records", () => {
     const accountId = 1010;
     const zoneId = "example.com";
     const recordId = 64784;
-    const attributes = { content: "127.0.0.1" } as any;
+    const attributes = { content: "127.0.0.1" };
     const fixture = loadFixture("updateZoneRecord/success.http");
 
     it("builds the correct request", (done) => {

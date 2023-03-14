@@ -177,7 +177,7 @@ describe("domains", () => {
   describe("#createEmailForward", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const attributes = { from: "jim" } as any;
+    const attributes = { alias_name: "jim" };
     const fixture = loadFixture("createEmailForward/created.http");
 
     it("builds the correct request", (done) => {
