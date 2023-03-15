@@ -24,7 +24,7 @@ const certificates: Array<Certificate> = await client.certificates.listCertifica
 console.log(certificates.length);
 ```
 
-These general methods replace custom helper methods per API, so these methods are no longer available:
+These general methods replace custom helper methods per API, so the following methods are no longer available:
 
 - `Certificates.allCertificates`
 - `Contacts.allContacts`
