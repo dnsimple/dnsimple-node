@@ -103,7 +103,7 @@ You will need to ensure that you are using an access token created in the sandbo
 You customize the `User-Agent` header for the calls made to the DNSimple API:
 
 ```javascript
-const DNSimple = require("dnsimple");
+const { DNSimple } = require("dnsimple");
 const client = new DNSimple({
   userAgent: "my-app",
   accessToken: process.env.TOKEN,
