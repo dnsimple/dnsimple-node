@@ -1,0 +1,30 @@
+{
+  "include": ["lib/**/*.ts", "test/**/*.ts"],
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": false,
+    "alwaysStrict": true,
+    "declaration": true,
+    "esModuleInterop": false,
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": true,
+    "importsNotUsedAsValues": "error",
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
+    "module": "CommonJS",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "ES6",
+    "useUnknownInCatchVariables": false
+  }
+}

@@ -1,5 +1,21 @@
 # Changelog
 
+## Release 7.0.0
+
+This is a major change that brings TypeScript support as well as many quality-of-life improvements and internal improvements. For details on important changes and how to migrate, see [UPGRADE.md](./UPGRADE.md). For the full breakdown of all changes in detail, see the PR (dnsimple/dnsimple-node#170). Here are the major noteworthy changes:
+
+- All method parameters and return types are now typed by TypeScript. This means that usages can be checked and bugs can be detected before runtime, and text editors and IDEs can now provide automatic completions and hints on all of DNSimple's APIs easily and accurately.
+
+- Request errors are now full JS classes that allow more type-safe and ergonomic error handling.
+
+- The client has no dependencies on Node.js libraries and can also run in the browser, which we will work towards creating builds for in the future. The HTTP requester is now abstract and varies depending on the platform (browser or Node.js), and can also be replaced with custom logic, such as other libraries, retry strategies, intercepting and mutating, or logging and tracing.
+
+- All paginated API methods have helper submethods that provide an async iterator or array of all items across all pages effortlessly, transparently fetching each page request in the background. Use the new async iterator method for efficient retrieval that doesn't make requests until necessary, or use the array method to quickly fetch all values into a familar Array object with its methods. Both are also fully typed by TypeScript.
+
+- All exports are now named and written in ESM syntax, which allows for future migration to the new standard that has better browser and tooling support. The output JS still uses CommonJS syntax for compatibility with most of today's programs (including Node.js and Webpack).
+
+Not all changes have been listed here. For more details, view the PR (dnsimple/dnsimple-node#170) and [UPGRADE.md](./UPGRADE.md).
+
 ## Release 6.2.0
 
 - NEW: Add support for getDomainRegistration and getDomainRenewal Registrar APIs (dnsimple/dnsimple-node#169)
