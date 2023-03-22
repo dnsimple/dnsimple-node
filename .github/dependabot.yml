@@ -10,6 +10,9 @@ updates:
     labels:
       - task
       - dependencies
+    ignore:
+      # We pin @types/node to our minimum supported Node.js version.
+      - dependency-name: '@types/node'
 
   - package-ecosystem: "github-actions"
     directory: "/"
