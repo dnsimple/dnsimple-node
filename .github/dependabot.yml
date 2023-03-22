@@ -13,6 +13,8 @@ updates:
     ignore:
       # We pin @types/node to our minimum supported Node.js version.
       - dependency-name: '@types/node'
+      # We only bump this when we want to use newer TypeScript language features in our codebase for development. This does not impact end users as the distributed package contains compiled JavaScript, not TypeScript.
+      - dependency-name: 'typescript'
 
   - package-ecosystem: "github-actions"
     directory: "/"
