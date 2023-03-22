@@ -1,6 +1,6 @@
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
-import * as fs from "node:fs";
+import * as fs from "fs";
 import * as sinon from "sinon";
 import { DNSimple } from "../lib/main";
 
