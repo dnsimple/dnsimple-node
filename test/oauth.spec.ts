@@ -116,10 +116,18 @@ describe("oauth", () => {
         "https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate"
       );
 
+      const searchParamsToObj = (params: URLSearchParams) => {
+        const obj: { [name: string]: any } = {};
+        params.forEach((val, key) => {
+          obj[key] = val;
+        });
+        return obj;
+      };
+
       expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
       expect(authorizeUrl.host).to.eq(expectedUrl.host);
-      expect(Object.fromEntries(authorizeUrl.searchParams)).to.deep.equal(
-        Object.fromEntries(expectedUrl.searchParams)
+      expect(searchParamsToObj(authorizeUrl.searchParams)).to.deep.equal(
+        searchParamsToObj(expectedUrl.searchParams)
       );
     });
   });

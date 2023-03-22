@@ -132,16 +132,16 @@ const getFetcherForPlatform = (): Fetcher => {
       }
     };
   }
-  const { Buffer }: typeof import("node:buffer") = require("node:buffer");
-  const https: typeof import("node:https") = require("node:https");
+  const { Buffer }: typeof import("buffer") = require("buffer");
+  const https: typeof import("https") = require("https");
   return ({ url, method, headers, timeout, body }) =>
     new Promise((resolve, reject) => {
-      const req = https
-        .request(url, {
-          method,
-          headers,
-          timeout,
-        })
+      const req = https.request(url, {
+        method,
+        headers,
+        timeout,
+      });
+      req
         .on("response", (res) => {
           const chunks = Array<Buffer>();
           res
