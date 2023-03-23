@@ -32,10 +32,10 @@ describe("services", () => {
 
     it("supports sorting", (done) => {
       nock("https://api.dnsimple.com")
-        .get("/v2/services?sort=name%3Aasc")
+        .get("/v2/services?sort=sid%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.services.listServices({ sort: "name:asc" });
+      dnsimple.services.listServices({ sort: "sid:asc" });
 
       nock.isDone();
       done();

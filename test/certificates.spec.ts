@@ -37,11 +37,11 @@ describe("certificates", () => {
 
     it("supports sorting", (done) => {
       nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?sort=expires_on%3Aasc")
+        .get("/v2/1010/domains/example.com/certificates?sort=expiration%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.certificates.listCertificates(accountId, domainId, {
-        sort: "expires_on:asc",
+        sort: "expiration:asc",
       });
 
       nock.isDone();

@@ -34,10 +34,10 @@ describe("contacts", () => {
 
     it("supports sorting", (done) => {
       nock("https://api.dnsimple.com")
-        .get("/v2/1010/contacts?sort=first_name%3Aasc")
+        .get("/v2/1010/contacts?sort=label%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.contacts.listContacts(accountId, { sort: "first_name:asc" });
+      dnsimple.contacts.listContacts(accountId, { sort: "label:asc" });
 
       nock.isDone();
       done();
