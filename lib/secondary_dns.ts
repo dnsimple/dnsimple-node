@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class SecondaryDns {
   constructor(private readonly _client: DNSimple) {}
@@ -21,7 +21,9 @@ export class SecondaryDns {
   listPrimaryServers = (() => {
     const method = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+      } = {}
     ): Promise<{
       data: Array<types.PrimaryServer>;
       pagination: types.Pagination;
@@ -34,11 +36,15 @@ export class SecondaryDns {
       );
     method.iterateAll = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+      } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, params)) {

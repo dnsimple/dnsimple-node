@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Templates {
   constructor(private readonly _client: DNSimple) {}
@@ -21,16 +21,40 @@ export class Templates {
   listTemplates = (() => {
     const method = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "sid:asc"
+          | "sid:desc";
+      } = {}
     ): Promise<{ data: Array<types.Template>; pagination: types.Pagination }> =>
       this._client.request("GET", `/${account}/templates`, null, params);
     method.iterateAll = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "sid:asc"
+          | "sid:desc";
+      } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "sid:asc"
+          | "sid:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, params)) {
@@ -158,7 +182,17 @@ export class Templates {
     const method = (
       account: number,
       template: number | string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "content:asc"
+          | "content:desc"
+          | "type:asc"
+          | "type:desc";
+      } = {}
     ): Promise<{
       data: Array<types.TemplateRecord>;
       pagination: types.Pagination;
@@ -172,13 +206,33 @@ export class Templates {
     method.iterateAll = (
       account: number,
       template: number | string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "content:asc"
+          | "content:desc"
+          | "type:asc"
+          | "type:desc";
+      } = {}
     ) =>
       paginate((page) => method(account, template, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       template: number | string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "content:asc"
+          | "content:desc"
+          | "type:asc"
+          | "type:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, template, params)) {

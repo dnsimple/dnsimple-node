@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Tlds {
   constructor(private readonly _client: DNSimple) {}
@@ -19,13 +19,14 @@ export class Tlds {
    */
   listTlds = (() => {
     const method = (
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}
     ): Promise<{ data: Array<types.TLD>; pagination: types.Pagination }> =>
       this._client.request("GET", `/tlds`, null, params);
-    method.iterateAll = (params: QueryParams & { sort?: string } = {}) =>
-      paginate((page) => method({ ...params, page } as any));
+    method.iterateAll = (
+      params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}
+    ) => paginate((page) => method({ ...params, page } as any));
     method.collectAll = async (
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(params)) {

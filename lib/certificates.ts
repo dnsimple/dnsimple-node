@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Certificates {
   constructor(private readonly _client: DNSimple) {}
@@ -23,7 +23,15 @@ export class Certificates {
     const method = (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "common_name:asc"
+          | "common_name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
+      } = {}
     ): Promise<{
       data: Array<types.Certificate>;
       pagination: types.Pagination;
@@ -37,13 +45,29 @@ export class Certificates {
     method.iterateAll = (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "common_name:asc"
+          | "common_name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
+      } = {}
     ) =>
       paginate((page) => method(account, domain, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "common_name:asc"
+          | "common_name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, domain, params)) {

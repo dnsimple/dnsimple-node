@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Zones {
   constructor(private readonly _client: DNSimple) {}
@@ -22,16 +22,25 @@ export class Zones {
   listZones = (() => {
     const method = (
       account: number,
-      params: QueryParams & { name_like?: string; sort?: string } = {}
+      params: QueryParams & {
+        name_like?: string;
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+      } = {}
     ): Promise<{ data: Array<types.Zone>; pagination: types.Pagination }> =>
       this._client.request("GET", `/${account}/zones`, null, params);
     method.iterateAll = (
       account: number,
-      params: QueryParams & { name_like?: string; sort?: string } = {}
+      params: QueryParams & {
+        name_like?: string;
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+      } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
       account: number,
-      params: QueryParams & { name_like?: string; sort?: string } = {}
+      params: QueryParams & {
+        name_like?: string;
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, params)) {
@@ -167,7 +176,15 @@ export class Zones {
         name_like?: string;
         name?: string;
         type?: string;
-        sort?: string;
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "content:asc"
+          | "content:desc"
+          | "type:asc"
+          | "type:desc";
       } = {}
     ): Promise<{
       data: Array<types.ZoneRecord>;
@@ -186,7 +203,15 @@ export class Zones {
         name_like?: string;
         name?: string;
         type?: string;
-        sort?: string;
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "content:asc"
+          | "content:desc"
+          | "type:asc"
+          | "type:desc";
       } = {}
     ) => paginate((page) => method(account, zone, { ...params, page } as any));
     method.collectAll = async (
@@ -196,7 +221,15 @@ export class Zones {
         name_like?: string;
         name?: string;
         type?: string;
-        sort?: string;
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "content:asc"
+          | "content:desc"
+          | "type:asc"
+          | "type:desc";
       } = {}
     ) => {
       const items = [];
@@ -225,11 +258,11 @@ export class Zones {
       zone: string,
       data: Partial<{
         name: string;
-        type: string;
+        type: types.ZoneRecordType;
         content: string;
         ttl: number;
         priority: number;
-        regions: Array<string>;
+        regions: Array<types.ZoneRecordRegion>;
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>
@@ -292,7 +325,7 @@ export class Zones {
         content: string;
         ttl: number;
         priority: number;
-        regions: Array<string>;
+        regions: Array<types.ZoneRecordRegion>;
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>

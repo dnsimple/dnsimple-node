@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Domains {
   constructor(private readonly _client: DNSimple) {}
@@ -26,7 +26,13 @@ export class Domains {
       params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
-        sort?: string;
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
       } = {}
     ): Promise<{ data: Array<types.Domain>; pagination: types.Pagination }> =>
       this._client.request("GET", `/${account}/domains`, null, params);
@@ -35,7 +41,13 @@ export class Domains {
       params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
-        sort?: string;
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
       } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
@@ -43,7 +55,13 @@ export class Domains {
       params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
-        sort?: string;
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "name:asc"
+          | "name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
       } = {}
     ) => {
       const items = [];
@@ -332,7 +350,9 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "created_at:asc" | "created_at:desc";
+      } = {}
     ): Promise<{
       data: Array<types.DelegationSigner>;
       pagination: types.Pagination;
@@ -346,13 +366,17 @@ export class Domains {
     method.iterateAll = (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "created_at:asc" | "created_at:desc";
+      } = {}
     ) =>
       paginate((page) => method(account, domain, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "created_at:asc" | "created_at:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, domain, params)) {
@@ -470,7 +494,15 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "from:asc"
+          | "from:desc"
+          | "to:asc"
+          | "to:desc";
+      } = {}
     ): Promise<{
       data: Array<types.EmailForward>;
       pagination: types.Pagination;
@@ -484,13 +516,29 @@ export class Domains {
     method.iterateAll = (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "from:asc"
+          | "from:desc"
+          | "to:asc"
+          | "to:desc";
+      } = {}
     ) =>
       paginate((page) => method(account, domain, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       domain: string,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "from:asc"
+          | "from:desc"
+          | "to:asc"
+          | "to:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, domain, params)) {

@@ -1,5 +1,5 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
+import type * as types from "./types";
 
 export class Accounts {
   constructor(private readonly _client: DNSimple) {}

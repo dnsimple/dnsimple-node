@@ -1,6 +1,6 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Services {
   constructor(private readonly _client: DNSimple) {}
@@ -19,13 +19,20 @@ export class Services {
    */
   listServices = (() => {
     const method = (
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "sid:asc" | "sid:desc";
+      } = {}
     ): Promise<{ data: Array<types.Service>; pagination: types.Pagination }> =>
       this._client.request("GET", `/services`, null, params);
-    method.iterateAll = (params: QueryParams & { sort?: string } = {}) =>
-      paginate((page) => method({ ...params, page } as any));
+    method.iterateAll = (
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "sid:asc" | "sid:desc";
+      } = {}
+    ) => paginate((page) => method({ ...params, page } as any));
     method.collectAll = async (
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc" | "sid:asc" | "sid:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(params)) {

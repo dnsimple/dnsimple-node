@@ -1,5 +1,5 @@
-import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
+import type * as types from "./types";
 
 export class Webhooks {
   constructor(private readonly _client: DNSimple) {}
@@ -18,7 +18,7 @@ export class Webhooks {
   listWebhooks = (() => {
     const method = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & { sort?: "id:asc" | "id:desc" } = {}
     ): Promise<{ data: Array<types.Webhook> }> =>
       this._client.request("GET", `/${account}/webhooks`, null, params);
     return method;

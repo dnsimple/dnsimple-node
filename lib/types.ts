@@ -21,7 +21,7 @@ export type Domain = {
   registrant_id: number | null;
   name: string;
   unicode_name: string;
-  state: string;
+  state: "hosted" | "registered" | "expired";
   auto_renew: boolean;
   private_whois: boolean;
   expires_at: NullableDateTime;
@@ -96,10 +96,20 @@ export type Certificate = {
   common_name: string;
   years: number;
   csr: string;
-  state: string;
+  state:
+    | "new"
+    | "purchased"
+    | "configured"
+    | "submitted"
+    | "issued"
+    | "rejected"
+    | "refunded"
+    | "cancelled"
+    | "requesting"
+    | "failed";
   auto_renew: boolean;
   alternate_names: Array<string>;
-  authority_identifier: string;
+  authority_identifier: "comodo" | "rapidssl" | "letsencrypt";
   created_at: string;
   updated_at: string;
   expires_at: string;
@@ -117,7 +127,17 @@ export type CertificatePrivateKey = { private_key: string };
 export type LetsencryptCertificatePurchase = {
   id: number;
   certificate_id: number;
-  state: string;
+  state:
+    | "new"
+    | "purchased"
+    | "configured"
+    | "submitted"
+    | "issued"
+    | "rejected"
+    | "refunded"
+    | "cancelled"
+    | "requesting"
+    | "failed";
   auto_renew: boolean;
   created_at: string;
   updated_at: string;
@@ -127,15 +147,17 @@ export type LetsencryptCertificateRenewal = {
   id: number;
   old_certificate_id: number;
   new_certificate_id: number;
-  state: string;
+  state: "cancelled" | "new" | "renewing" | "renewed" | "failed";
   auto_renew: boolean;
   created_at: string;
   updated_at: string;
 };
 
+export type TLDType = 1 | 2 | 3;
+
 export type TLD = {
   tld: string;
-  tld_type: number;
+  tld_type: TLDType;
   whois_privacy: boolean;
   auto_renew_only: boolean;
   idn: boolean;
@@ -143,7 +165,7 @@ export type TLD = {
   registration_enabled: boolean;
   renewal_enabled: boolean;
   transfer_enabled: boolean;
-  dnssec_interface_type: string;
+  dnssec_interface_type: "ds" | "key";
 };
 
 export type ExtendedAttributeOption = {
@@ -180,7 +202,7 @@ export type DomainRegistration = {
   domain_id: number;
   registrant_id: number;
   period: number;
-  state: string;
+  state: "cancelled" | "new" | "registering" | "registered" | "failed";
   auto_renew: boolean;
   whois_privacy: boolean;
   created_at: string;
@@ -191,7 +213,7 @@ export type DomainTransfer = {
   id: number;
   domain_id: number;
   registrant_id: number;
-  state: string;
+  state: "cancelled" | "new" | "transferring" | "transferred" | "failed";
   auto_renew: boolean;
   whois_privacy: boolean;
   status_description: string;
@@ -203,7 +225,7 @@ export type DomainRenewal = {
   id: number;
   domain_id: number;
   period: number;
-  state: string;
+  state: "cancelled" | "new" | "renewing" | "renewed" | "failed";
   created_at: string;
   updated_at: string;
 };
@@ -263,6 +285,38 @@ export type ZoneFile = { zone: string };
 
 export type ZoneDistribution = { distributed: boolean };
 
+export type ZoneRecordType =
+  | "A"
+  | "AAAA"
+  | "ALIAS"
+  | "CAA"
+  | "CNAME"
+  | "DNSKEY"
+  | "DS"
+  | "HINFO"
+  | "MX"
+  | "NAPTR"
+  | "NS"
+  | "POOL"
+  | "PTR"
+  | "SOA"
+  | "SPF"
+  | "SRV"
+  | "SSHFP"
+  | "TXT"
+  | "URL";
+
+export type ZoneRecordRegion =
+  | "global"
+  | "SV1"
+  | "ORD"
+  | "IAD"
+  | "AMS"
+  | "TKO"
+  | "SYD"
+  | "CDG"
+  | "FRA";
+
 export type ZoneRecord = {
   id: number;
   zone_id: string;
@@ -271,8 +325,8 @@ export type ZoneRecord = {
   content: string;
   ttl: number;
   priority?: number | null;
-  type: string;
-  regions: Array<string>;
+  type: ZoneRecordType;
+  regions: Array<ZoneRecordRegion>;
   system_record: boolean;
   created_at: string;
   updated_at: string;
@@ -331,6 +385,27 @@ export type Template = {
   updated_at: string;
 };
 
+export type TemplateRecordType =
+  | "A"
+  | "AAAA"
+  | "ALIAS"
+  | "CAA"
+  | "CNAME"
+  | "DNSKEY"
+  | "DS"
+  | "HINFO"
+  | "MX"
+  | "NAPTR"
+  | "NS"
+  | "POOL"
+  | "PTR"
+  | "SOA"
+  | "SPF"
+  | "SRV"
+  | "SSHFP"
+  | "TXT"
+  | "URL";
+
 export type TemplateRecord = {
   id: number;
   template_id: number;
@@ -338,7 +413,7 @@ export type TemplateRecord = {
   content: string;
   ttl: number;
   priority: number | null;
-  type: string;
+  type: TemplateRecordType;
   created_at: string;
   updated_at: string;
 };
