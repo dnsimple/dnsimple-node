@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 
 export class Webhooks {
@@ -18,9 +19,8 @@ export class Webhooks {
     const method = (
       account: number,
       params: QueryParams & { sort?: string } = {}
-    ): Promise<{
-      data: Array<{ id: number; url: string; suppressed_at: string }>;
-    }> => this._client.request("GET", `/${account}/webhooks`, null, params);
+    ): Promise<{ data: Array<types.Webhook> }> =>
+      this._client.request("GET", `/${account}/webhooks`, null, params);
     return method;
   })();
 
@@ -37,9 +37,9 @@ export class Webhooks {
   createWebhook = (() => {
     const method = (
       account: number,
-      data: { url?: string },
+      data: Partial<{ url: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
+    ): Promise<{ data: types.Webhook }> =>
       this._client.request("POST", `/${account}/webhooks`, data, params);
     return method;
   })();
@@ -60,7 +60,7 @@ export class Webhooks {
       account: number,
       webhook: number,
       params: QueryParams & {} = {}
-    ): Promise<{ data: { id: number; url: string; suppressed_at: string } }> =>
+    ): Promise<{ data: types.Webhook }> =>
       this._client.request(
         "GET",
         `/${account}/webhooks/${webhook}`,

@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -22,24 +23,8 @@ export class Zones {
     const method = (
       account: number,
       params: QueryParams & { name_like?: string; sort?: string } = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        account_id: number;
-        name: string;
-        reverse: boolean;
-        secondary: boolean;
-        last_transferred_at: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/${account}/zones`, null, params);
+    ): Promise<{ data: Array<types.Zone>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/${account}/zones`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & { name_like?: string; sort?: string } = {}
@@ -73,18 +58,7 @@ export class Zones {
       account: number,
       zone: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        reverse: boolean;
-        secondary: boolean;
-        last_transferred_at: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Zone }> =>
       this._client.request("GET", `/${account}/zones/${zone}`, null, params);
     return method;
   })();
@@ -105,7 +79,7 @@ export class Zones {
       account: number,
       zone: string,
       params: QueryParams & {} = {}
-    ): Promise<{ data: { zone: string } }> =>
+    ): Promise<{ data: types.ZoneFile }> =>
       this._client.request(
         "GET",
         `/${account}/zones/${zone}/file`,
@@ -131,7 +105,7 @@ export class Zones {
       account: number,
       zone: string,
       params: QueryParams & {} = {}
-    ): Promise<{ data: { distributed: boolean } }> =>
+    ): Promise<{ data: types.ZoneDistribution }> =>
       this._client.request(
         "GET",
         `/${account}/zones/${zone}/distribution`,
@@ -156,24 +130,9 @@ export class Zones {
     const method = (
       account: number,
       zone: string,
-      data: { ns_names?: Array<string>; ns_set_ids?: Array<number> },
+      data: Partial<{ ns_names: Array<string>; ns_set_ids: Array<number> }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        zone_id: string;
-        parent_id: number | null;
-        name: string;
-        content: string;
-        ttl: number;
-        priority?: number | null;
-        type: string;
-        regions: Array<string>;
-        system_record: boolean;
-        created_at: string;
-        updated_at: string;
-      }>;
-    }> =>
+    ): Promise<{ data: Array<types.ZoneRecord> }> =>
       this._client.request(
         "PUT",
         `/${account}/zones/${zone}/ns_records`,
@@ -211,26 +170,8 @@ export class Zones {
         sort?: string;
       } = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        zone_id: string;
-        parent_id: number | null;
-        name: string;
-        content: string;
-        ttl: number;
-        priority?: number | null;
-        type: string;
-        regions: Array<string>;
-        system_record: boolean;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.ZoneRecord>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -282,31 +223,16 @@ export class Zones {
     const method = (
       account: number,
       zone: string,
-      data: {
-        name?: string;
-        type?: string;
-        content?: string;
-        ttl?: number;
-        priority?: number;
-        regions?: Array<string>;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        zone_id: string;
-        parent_id: number | null;
+      data: Partial<{
         name: string;
+        type: string;
         content: string;
         ttl: number;
-        priority?: number | null;
-        type: string;
+        priority: number;
         regions: Array<string>;
-        system_record: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.ZoneRecord }> =>
       this._client.request(
         "POST",
         `/${account}/zones/${zone}/records`,
@@ -334,22 +260,7 @@ export class Zones {
       zone: string,
       zonerecord: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        zone_id: string;
-        parent_id: number | null;
-        name: string;
-        content: string;
-        ttl: number;
-        priority?: number | null;
-        type: string;
-        regions: Array<string>;
-        system_record: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.ZoneRecord }> =>
       this._client.request(
         "GET",
         `/${account}/zones/${zone}/records/${zonerecord}`,
@@ -376,30 +287,15 @@ export class Zones {
       account: number,
       zone: string,
       zonerecord: number,
-      data: {
-        name?: string;
-        content?: string;
-        ttl?: number;
-        priority?: number;
-        regions?: Array<string>;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        zone_id: string;
-        parent_id: number | null;
+      data: Partial<{
         name: string;
         content: string;
         ttl: number;
-        priority?: number | null;
-        type: string;
+        priority: number;
         regions: Array<string>;
-        system_record: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.ZoneRecord }> =>
       this._client.request(
         "PATCH",
         `/${account}/zones/${zone}/records/${zonerecord}`,
@@ -455,7 +351,7 @@ export class Zones {
       zone: string,
       zonerecord: number,
       params: QueryParams & {} = {}
-    ): Promise<{ data: { distributed: boolean } }> =>
+    ): Promise<{ data: types.ZoneDistribution }> =>
       this._client.request(
         "GET",
         `/${account}/zones/${zone}/records/${zonerecord}/distribution`,

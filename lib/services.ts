@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -19,33 +20,8 @@ export class Services {
   listServices = (() => {
     const method = (
       params: QueryParams & { sort?: string } = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        name: string;
-        sid: string;
-        description: string;
-        setup_description: string | null;
-        requires_setup: boolean;
-        default_subdomain: string | null;
-        created_at: string;
-        updated_at: string;
-        settings: Array<{
-          name: string;
-          label: string;
-          append: string;
-          description: string;
-          example: string;
-          password?: boolean;
-        }>;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/services`, null, params);
+    ): Promise<{ data: Array<types.Service>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/services`, null, params);
     method.iterateAll = (params: QueryParams & { sort?: string } = {}) =>
       paginate((page) => method({ ...params, page } as any));
     method.collectAll = async (
@@ -74,27 +50,8 @@ export class Services {
     const method = (
       service: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        name: string;
-        sid: string;
-        description: string;
-        setup_description: string | null;
-        requires_setup: boolean;
-        default_subdomain: string | null;
-        created_at: string;
-        updated_at: string;
-        settings: Array<{
-          name: string;
-          label: string;
-          append: string;
-          description: string;
-          example: string;
-          password?: boolean;
-        }>;
-      };
-    }> => this._client.request("GET", `/services/${service}`, null, params);
+    ): Promise<{ data: types.Service }> =>
+      this._client.request("GET", `/services/${service}`, null, params);
     return method;
   })();
 
@@ -116,33 +73,7 @@ export class Services {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        name: string;
-        sid: string;
-        description: string;
-        setup_description: string | null;
-        requires_setup: boolean;
-        default_subdomain: string | null;
-        created_at: string;
-        updated_at: string;
-        settings: Array<{
-          name: string;
-          label: string;
-          append: string;
-          description: string;
-          example: string;
-          password?: boolean;
-        }>;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> =>
+    ): Promise<{ data: Array<types.Service>; pagination: types.Pagination }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/services`,
@@ -186,7 +117,7 @@ export class Services {
       account: number,
       domain: string,
       service: string,
-      data: {},
+      data: Partial<{}>,
       params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(

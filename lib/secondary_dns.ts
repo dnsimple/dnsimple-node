@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -22,22 +23,8 @@ export class SecondaryDns {
       account: number,
       params: QueryParams & { sort?: string } = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        account_id: number;
-        name: string;
-        ip: string;
-        port: number;
-        linked_secondary_zones: Array<string>;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.PrimaryServer>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -75,20 +62,9 @@ export class SecondaryDns {
   createPrimaryServer = (() => {
     const method = (
       account: number,
-      data: { name?: string; ip?: string; port?: string },
+      data: Partial<{ name: string; ip: string; port: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        ip: string;
-        port: number;
-        linked_secondary_zones: Array<string>;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.PrimaryServer }> =>
       this._client.request(
         "POST",
         `/${account}/secondary_dns/primaries`,
@@ -114,18 +90,7 @@ export class SecondaryDns {
       account: number,
       primaryserver: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        ip: string;
-        port: number;
-        linked_secondary_zones: Array<string>;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.PrimaryServer }> =>
       this._client.request(
         "GET",
         `/${account}/secondary_dns/primaries/${primaryserver}`,
@@ -177,18 +142,7 @@ export class SecondaryDns {
       account: number,
       primaryserver: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        ip: string;
-        port: number;
-        linked_secondary_zones: Array<string>;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.PrimaryServer }> =>
       this._client.request(
         "PUT",
         `/${account}/secondary_dns/primaries/${primaryserver}/link`,
@@ -214,18 +168,7 @@ export class SecondaryDns {
       account: number,
       primaryserver: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        ip: string;
-        port: number;
-        linked_secondary_zones: Array<string>;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.PrimaryServer }> =>
       this._client.request(
         "PUT",
         `/${account}/secondary_dns/primaries/${primaryserver}/unlink`,
@@ -248,20 +191,9 @@ export class SecondaryDns {
   createSecondaryZone = (() => {
     const method = (
       account: number,
-      data: { name?: string },
+      data: Partial<{ name: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        reverse: boolean;
-        secondary: boolean;
-        last_transferred_at: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Zone }> =>
       this._client.request(
         "POST",
         `/${account}/secondary_dns/zones`,

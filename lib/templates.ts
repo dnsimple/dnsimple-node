@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -21,23 +22,8 @@ export class Templates {
     const method = (
       account: number,
       params: QueryParams & { sort?: string } = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        account_id: number;
-        name: string;
-        sid: string;
-        description: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/${account}/templates`, null, params);
+    ): Promise<{ data: Array<types.Template>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/${account}/templates`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & { sort?: string } = {}
@@ -68,19 +54,10 @@ export class Templates {
   createTemplate = (() => {
     const method = (
       account: number,
-      data: { sid?: string; name?: string; description?: string },
+      data: Partial<{ sid: string; name: string; description: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        sid: string;
-        description: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> => this._client.request("POST", `/${account}/templates`, data, params);
+    ): Promise<{ data: types.Template }> =>
+      this._client.request("POST", `/${account}/templates`, data, params);
     return method;
   })();
 
@@ -100,17 +77,7 @@ export class Templates {
       account: number,
       template: number | string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        sid: string;
-        description: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Template }> =>
       this._client.request(
         "GET",
         `/${account}/templates/${template}`,
@@ -135,19 +102,9 @@ export class Templates {
     const method = (
       account: number,
       template: number | string,
-      data: { sid?: string; name?: string; description?: string },
+      data: Partial<{ sid: string; name: string; description: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        name: string;
-        sid: string;
-        description: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Template }> =>
       this._client.request(
         "PATCH",
         `/${account}/templates/${template}`,
@@ -203,23 +160,8 @@ export class Templates {
       template: number | string,
       params: QueryParams & { sort?: string } = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        template_id: number;
-        name: string;
-        content: string;
-        ttl: number;
-        priority: number | null;
-        type: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.TemplateRecord>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -262,21 +204,9 @@ export class Templates {
     const method = (
       account: number,
       template: number | string,
-      data: {},
+      data: Partial<{}>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        template_id: number;
-        name: string;
-        content: string;
-        ttl: number;
-        priority: number | null;
-        type: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.TemplateRecord }> =>
       this._client.request(
         "POST",
         `/${account}/templates/${template}/records`,
@@ -304,19 +234,7 @@ export class Templates {
       template: number | string,
       templaterecord: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        template_id: number;
-        name: string;
-        content: string;
-        ttl: number;
-        priority: number | null;
-        type: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.TemplateRecord }> =>
       this._client.request(
         "GET",
         `/${account}/templates/${template}/records/${templaterecord}`,

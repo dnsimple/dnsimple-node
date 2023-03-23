@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -19,26 +20,8 @@ export class Tlds {
   listTlds = (() => {
     const method = (
       params: QueryParams & { sort?: string } = {}
-    ): Promise<{
-      data: Array<{
-        tld: string;
-        tld_type: number;
-        whois_privacy: boolean;
-        auto_renew_only: boolean;
-        idn: boolean;
-        minimum_registration: number;
-        registration_enabled: boolean;
-        renewal_enabled: boolean;
-        transfer_enabled: boolean;
-        dnssec_interface_type: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/tlds`, null, params);
+    ): Promise<{ data: Array<types.TLD>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/tlds`, null, params);
     method.iterateAll = (params: QueryParams & { sort?: string } = {}) =>
       paginate((page) => method({ ...params, page } as any));
     method.collectAll = async (
@@ -67,20 +50,8 @@ export class Tlds {
     const method = (
       tld: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        tld: string;
-        tld_type: number;
-        whois_privacy: boolean;
-        auto_renew_only: boolean;
-        idn: boolean;
-        minimum_registration: number;
-        registration_enabled: boolean;
-        renewal_enabled: boolean;
-        transfer_enabled: boolean;
-        dnssec_interface_type: string;
-      };
-    }> => this._client.request("GET", `/tlds/${tld}`, null, params);
+    ): Promise<{ data: types.TLD }> =>
+      this._client.request("GET", `/tlds/${tld}`, null, params);
     return method;
   })();
 
@@ -100,14 +71,7 @@ export class Tlds {
     const method = (
       tld: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        name: string;
-        description: string;
-        required: boolean;
-        options: Array<{ title: string; value: string; description: string }>;
-      }>;
-    }> =>
+    ): Promise<{ data: Array<types.ExtendedAttribute> }> =>
       this._client.request(
         "GET",
         `/tlds/${tld}/extended_attributes`,

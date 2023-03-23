@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -24,29 +25,8 @@ export class Certificates {
       domain: string,
       params: QueryParams & { sort?: string } = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        domain_id: number;
-        contact_id: number;
-        name: string;
-        common_name: string;
-        years: number;
-        csr: string;
-        state: string;
-        auto_renew: boolean;
-        alternate_names: Array<string>;
-        authority_identifier: string;
-        created_at: string;
-        updated_at: string;
-        expires_at: string;
-        expires_on: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.Certificate>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -92,25 +72,7 @@ export class Certificates {
       domain: string,
       certificate: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        contact_id: number;
-        name: string;
-        common_name: string;
-        years: number;
-        csr: string;
-        state: string;
-        auto_renew: boolean;
-        alternate_names: Array<string>;
-        authority_identifier: string;
-        created_at: string;
-        updated_at: string;
-        expires_at: string;
-        expires_on: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Certificate }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/certificates/${certificate}`,
@@ -138,9 +100,7 @@ export class Certificates {
       domain: string,
       certificate: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: { server: string; root: string | null; chain: Array<string> };
-    }> =>
+    ): Promise<{ data: types.CertificateDownload }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/certificates/${certificate}/download`,
@@ -168,7 +128,7 @@ export class Certificates {
       domain: string,
       certificate: number,
       params: QueryParams & {} = {}
-    ): Promise<{ data: { private_key: string } }> =>
+    ): Promise<{ data: types.CertificatePrivateKey }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/certificates/${certificate}/private_key`,
@@ -193,23 +153,14 @@ export class Certificates {
     const method = (
       account: number,
       domain: string,
-      data: {
+      data: Partial<{
         auto_renew?: boolean;
         name?: string;
         alternate_names?: Array<string>;
         signature_algorithm?: string;
-      },
+      }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        certificate_id: number;
-        state: string;
-        auto_renew: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.LetsencryptCertificatePurchase }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/certificates/letsencrypt`,
@@ -237,25 +188,7 @@ export class Certificates {
       domain: string,
       purchaseId: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        contact_id: number;
-        name: string;
-        common_name: string;
-        years: number;
-        csr: string;
-        state: string;
-        auto_renew: boolean;
-        alternate_names: Array<string>;
-        authority_identifier: string;
-        created_at: string;
-        updated_at: string;
-        expires_at: string;
-        expires_on: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Certificate }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/certificates/letsencrypt/${purchaseId}/issue`,
@@ -282,19 +215,9 @@ export class Certificates {
       account: number,
       domain: string,
       certificate: number,
-      data: { auto_renew?: boolean; signature_algorithm?: string },
+      data: Partial<{ auto_renew?: boolean; signature_algorithm?: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        old_certificate_id: number;
-        new_certificate_id: number;
-        state: string;
-        auto_renew: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.LetsencryptCertificateRenewal }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals`,
@@ -324,25 +247,7 @@ export class Certificates {
       certificate: number,
       renewalId: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        contact_id: number;
-        name: string;
-        common_name: string;
-        years: number;
-        csr: string;
-        state: string;
-        auto_renew: boolean;
-        alternate_names: Array<string>;
-        authority_identifier: string;
-        created_at: string;
-        updated_at: string;
-        expires_at: string;
-        expires_on: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Certificate }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`,

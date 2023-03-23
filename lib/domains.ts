@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 
@@ -27,28 +28,8 @@ export class Domains {
         registrant_id?: number;
         sort?: string;
       } = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        account_id: number;
-        registrant_id: number | null;
-        name: string;
-        unicode_name: string;
-        state: string;
-        auto_renew: boolean;
-        private_whois: boolean;
-        expires_at: string | null;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/${account}/domains`, null, params);
+    ): Promise<{ data: Array<types.Domain>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/${account}/domains`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & {
@@ -87,24 +68,10 @@ export class Domains {
   createDomain = (() => {
     const method = (
       account: number,
-      data: { name?: string },
+      data: Partial<{ name: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        registrant_id: number | null;
-        name: string;
-        unicode_name: string;
-        state: string;
-        auto_renew: boolean;
-        private_whois: boolean;
-        expires_at: string | null;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> => this._client.request("POST", `/${account}/domains`, data, params);
+    ): Promise<{ data: types.Domain }> =>
+      this._client.request("POST", `/${account}/domains`, data, params);
     return method;
   })();
 
@@ -124,22 +91,7 @@ export class Domains {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        registrant_id: number | null;
-        name: string;
-        unicode_name: string;
-        state: string;
-        auto_renew: boolean;
-        private_whois: boolean;
-        expires_at: string | null;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Domain }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}`,
@@ -194,23 +146,8 @@ export class Domains {
       domain: string,
       params: QueryParams & {} = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        domain_id: number;
-        domain_name: string;
-        user_id: number;
-        user_email: string;
-        invitation: boolean;
-        created_at: string;
-        updated_at: string;
-        accepted_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.Collaborator>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -255,21 +192,9 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { email?: string },
+      data: Partial<{ email: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        domain_name: string;
-        user_id: number;
-        user_email: string;
-        invitation: boolean;
-        created_at: string;
-        updated_at: string;
-        accepted_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Collaborator }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/collaborators`,
@@ -323,9 +248,7 @@ export class Domains {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: { enabled: boolean; created_at: string; updated_at: string };
-    }> =>
+    ): Promise<{ data: types.DNSSEC }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/dnssec`,
@@ -353,9 +276,7 @@ export class Domains {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: { enabled: boolean; created_at: string; updated_at: string };
-    }> =>
+    ): Promise<{ data: types.DNSSEC }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/dnssec`,
@@ -413,23 +334,8 @@ export class Domains {
       domain: string,
       params: QueryParams & { sort?: string } = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        domain_id: number;
-        algorithm: string;
-        digest: string;
-        digest_type: string;
-        keytag: string;
-        public_key: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.DelegationSigner>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -472,27 +378,15 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: {
-        algorithm?: string;
-        digest?: string;
-        digest_type?: string;
-        keytag?: string;
-        public_key?: string;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
+      data: Partial<{
         algorithm: string;
         digest: string;
         digest_type: string;
         keytag: string;
         public_key: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DelegationSigner }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/ds_records`,
@@ -520,19 +414,7 @@ export class Domains {
       domain: string,
       ds: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        algorithm: string;
-        digest: string;
-        digest_type: string;
-        keytag: string;
-        public_key: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.DelegationSigner }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/ds_records/${ds}`,
@@ -590,22 +472,8 @@ export class Domains {
       domain: string,
       params: QueryParams & { sort?: string } = {}
     ): Promise<{
-      data: Array<{
-        id: number;
-        domain_id: number;
-        alias_email: string;
-        destination_email: string;
-        from: string;
-        to: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
+      data: Array<types.EmailForward>;
+      pagination: types.Pagination;
     }> =>
       this._client.request(
         "GET",
@@ -648,20 +516,9 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { alias_name?: string; destination_email?: string },
+      data: Partial<{ alias_name: string; destination_email: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        alias_email: string;
-        destination_email: string;
-        from: string;
-        to: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.EmailForward }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/email_forwards`,
@@ -689,18 +546,7 @@ export class Domains {
       domain: string,
       emailforward: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        alias_email: string;
-        destination_email: string;
-        from: string;
-        to: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.EmailForward }> =>
       this._client.request(
         "GET",
         `/${account}/domains/${domain}/email_forwards/${emailforward}`,
@@ -753,19 +599,9 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: { new_account_email?: string },
+      data: Partial<{ new_account_email: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        contact_id: number;
-        account_id: number;
-        created_at: string;
-        updated_at: string;
-        accepted_at: string | null;
-      };
-    }> =>
+    ): Promise<{ data: types.Push }> =>
       this._client.request(
         "POST",
         `/${account}/domains/${domain}/pushes`,
@@ -791,23 +627,8 @@ export class Domains {
     const method = (
       account: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        domain_id: number;
-        contact_id: number;
-        account_id: number;
-        created_at: string;
-        updated_at: string;
-        accepted_at: string | null;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/${account}/pushes`, null, params);
+    ): Promise<{ data: Array<types.Push>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/${account}/pushes`, null, params);
     method.iterateAll = (account: number, params: QueryParams & {} = {}) =>
       paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
@@ -838,7 +659,7 @@ export class Domains {
     const method = (
       account: number,
       push: number,
-      data: { contact_id?: number },
+      data: Partial<{ contact_id: number }>,
       params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request("POST", `/${account}/pushes/${push}`, data, params);

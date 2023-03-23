@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 
 export class VanityNameServers {
@@ -21,16 +22,7 @@ export class VanityNameServers {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        name: string;
-        ipv4: string;
-        ipv6: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-    }> =>
+    ): Promise<{ data: Array<types.VanityNameServer> }> =>
       this._client.request("PUT", `/${account}/vanity/${domain}`, null, params);
     return method;
   })();

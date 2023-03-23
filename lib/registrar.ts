@@ -1,3 +1,4 @@
+import type * as types from "./types";
 import type { DNSimple, QueryParams } from "./main";
 
 export class Registrar {
@@ -19,9 +20,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: { domain: string; available: boolean; premium: boolean };
-    }> =>
+    ): Promise<{ data: types.DomainCheckResult }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/check`,
@@ -52,7 +51,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & { action?: string } = {}
-    ): Promise<{ data: { premium_price: string; action: string } }> =>
+    ): Promise<{ data: types.DomainPremiumPrice }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/premium_price`,
@@ -78,15 +77,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        domain: string;
-        premium: boolean;
-        registration_price: number;
-        renewal_price: number;
-        transfer_price: number;
-      };
-    }> =>
+    ): Promise<{ data: types.DomainPrices }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/prices`,
@@ -113,27 +104,15 @@ export class Registrar {
     const method = (
       account: number,
       domain: string,
-      data: {
-        registrant_id?: number;
-        whois_privacy?: boolean;
-        auto_renew?: boolean;
-        extended_attributes?: {};
-        premium_price?: string;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
+      data: Partial<{
         registrant_id: number;
-        period: number;
-        state: string;
-        auto_renew: boolean;
         whois_privacy: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+        auto_renew: boolean;
+        extended_attributes: {};
+        premium_price: string;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainRegistration }> =>
       this._client.request(
         "POST",
         `/${account}/registrar/domains/${domain}/registrations`,
@@ -161,19 +140,7 @@ export class Registrar {
       domain: string,
       domainregistration: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        registrant_id: number;
-        period: number;
-        state: string;
-        auto_renew: boolean;
-        whois_privacy: boolean;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.DomainRegistration }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/registrations/${domainregistration}`,
@@ -200,28 +167,16 @@ export class Registrar {
     const method = (
       account: number,
       domain: string,
-      data: {
-        registrant_id?: number;
-        auth_code?: string;
-        whois_privacy?: boolean;
-        auto_renew?: boolean;
-        extended_attributes?: {};
-        premium_price?: string;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
+      data: Partial<{
         registrant_id: number;
-        state: string;
-        auto_renew: boolean;
+        auth_code: string;
         whois_privacy: boolean;
-        status_description: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+        auto_renew: boolean;
+        extended_attributes: {};
+        premium_price: string;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainTransfer }> =>
       this._client.request(
         "POST",
         `/${account}/registrar/domains/${domain}/transfers`,
@@ -249,19 +204,7 @@ export class Registrar {
       domain: string,
       domaintransfer: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        registrant_id: number;
-        state: string;
-        auto_renew: boolean;
-        whois_privacy: boolean;
-        status_description: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.DomainTransfer }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
@@ -289,19 +232,7 @@ export class Registrar {
       domain: string,
       domaintransfer: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        registrant_id: number;
-        state: string;
-        auto_renew: boolean;
-        whois_privacy: boolean;
-        status_description: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.DomainTransfer }> =>
       this._client.request(
         "DELETE",
         `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
@@ -328,18 +259,9 @@ export class Registrar {
     const method = (
       account: number,
       domain: string,
-      data: { period?: number; premium_price?: string },
+      data: Partial<{ period: number; premium_price: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        period: number;
-        state: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.DomainRenewal }> =>
       this._client.request(
         "POST",
         `/${account}/registrar/domains/${domain}/renewals`,
@@ -367,16 +289,7 @@ export class Registrar {
       domain: string,
       domainrenewal: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        period: number;
-        state: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.DomainRenewal }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/renewals/${domainrenewal}`,
@@ -455,7 +368,7 @@ export class Registrar {
     const method = (
       account: number,
       domain: string,
-      data: Array<string>,
+      data: Partial<Array<string>>,
       params: QueryParams & {} = {}
     ): Promise<{ data: Array<string> }> =>
       this._client.request(
@@ -482,18 +395,9 @@ export class Registrar {
     const method = (
       account: number,
       domain: string,
-      data: Array<string>,
+      data: Partial<Array<string>>,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        name: string;
-        ipv4: string;
-        ipv6: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-    }> =>
+    ): Promise<{ data: Array<types.NameServer> }> =>
       this._client.request(
         "PUT",
         `/${account}/registrar/domains/${domain}/delegation/vanity`,
@@ -597,16 +501,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        enabled: boolean;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.WhoisPrivacy }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
@@ -634,16 +529,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        enabled: boolean;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.WhoisPrivacy }> =>
       this._client.request(
         "PUT",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
@@ -669,16 +555,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        enabled: boolean;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.WhoisPrivacy }> =>
       this._client.request(
         "DELETE",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
@@ -706,18 +583,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        domain_id: number;
-        whois_privacy_id: number;
-        state: string;
-        enabled: boolean;
-        expires_on: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.WhoisPrivacyRenewal }> =>
       this._client.request(
         "POST",
         `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
