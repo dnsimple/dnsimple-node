@@ -39,11 +39,11 @@ describe("domains", () => {
 
     it("supports sorting", (done) => {
       nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/ds_records?sort=from%3Aasc")
+        .get("/v2/1010/domains/example.com/ds_records?sort=created_at%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
-        sort: "from:asc",
+        sort: "created_at:asc",
       });
 
       nock.isDone();

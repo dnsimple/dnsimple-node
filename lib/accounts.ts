@@ -1,4 +1,5 @@
 import type { DNSimple, QueryParams } from "./main";
+import type * as types from "./types";
 
 export class Accounts {
   constructor(private readonly _client: DNSimple) {}
@@ -15,15 +16,8 @@ export class Accounts {
   listAccounts = (() => {
     const method = (
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        email: string;
-        plan_identifier: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-    }> => this._client.request("GET", `/accounts`, null, params);
+    ): Promise<{ data: Array<types.Account> }> =>
+      this._client.request("GET", `/accounts`, null, params);
     return method;
   })();
 }

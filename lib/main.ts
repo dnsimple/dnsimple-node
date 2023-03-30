@@ -13,6 +13,8 @@ import { VanityNameServers } from "./vanity_name_servers";
 import { Webhooks } from "./webhooks";
 import { Zones } from "./zones";
 
+export * from "./types";
+
 export type QueryParams = {
   [name: string]: string | boolean | number | null | undefined;
 };

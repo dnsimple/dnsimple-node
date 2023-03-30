@@ -197,7 +197,7 @@ describe("zone records", () => {
     const zoneId = "example.com";
     const attributes = {
       name: "",
-      type: "A",
+      type: "A" as const,
       ttl: 3600,
       content: "1.2.3.4",
     };

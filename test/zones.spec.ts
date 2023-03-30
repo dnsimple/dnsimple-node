@@ -34,10 +34,10 @@ describe("zones", () => {
 
     it("supports sorting", (done) => {
       nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones?sort=expires_on%3Aasc")
+        .get("/v2/1010/zones?sort=name%3Aasc")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.listZones(accountId, { sort: "expires_on:asc" });
+      dnsimple.zones.listZones(accountId, { sort: "name:asc" });
 
       nock.isDone();
       done();

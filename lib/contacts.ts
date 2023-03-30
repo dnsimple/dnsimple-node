@@ -1,5 +1,6 @@
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
+import type * as types from "./types";
 
 export class Contacts {
   constructor(private readonly _client: DNSimple) {}
@@ -20,42 +21,40 @@ export class Contacts {
   listContacts = (() => {
     const method = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
-    ): Promise<{
-      data: Array<{
-        id: number;
-        account_id: number;
-        label: string;
-        first_name: string;
-        last_name: string;
-        organization_name: string;
-        job_title: string;
-        address1: string;
-        address2: string;
-        city: string;
-        state_province: string;
-        postal_code: string;
-        country: string;
-        phone: string;
-        fax: string;
-        email: string;
-        created_at: string;
-        updated_at: string;
-      }>;
-      pagination: {
-        current_page: number;
-        per_page: number;
-        total_entries: number;
-        total_pages: number;
-      };
-    }> => this._client.request("GET", `/${account}/contacts`, null, params);
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "label:asc"
+          | "label:desc"
+          | "email:asc"
+          | "email:desc";
+      } = {}
+    ): Promise<{ data: Array<types.Contact>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/${account}/contacts`, null, params);
     method.iterateAll = (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "label:asc"
+          | "label:desc"
+          | "email:asc"
+          | "email:desc";
+      } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
       account: number,
-      params: QueryParams & { sort?: string } = {}
+      params: QueryParams & {
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "label:asc"
+          | "label:desc"
+          | "email:asc"
+          | "email:desc";
+      } = {}
     ) => {
       const items = [];
       for await (const item of method.iterateAll(account, params)) {
@@ -79,45 +78,25 @@ export class Contacts {
   createContact = (() => {
     const method = (
       account: number,
-      data: {
+      data: Partial<{
         label?: string;
-        first_name?: string;
-        last_name?: string;
-        address1?: string;
-        address2?: string | null;
-        city?: string;
-        state_province?: string;
-        postal_code?: string;
-        country?: string;
-        email?: string;
-        phone?: string;
-        fax?: string | null;
-        organization_name?: string;
-        job_title?: string;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        label: string;
         first_name: string;
         last_name: string;
-        organization_name: string;
-        job_title: string;
         address1: string;
-        address2: string;
+        address2: string | null;
         city: string;
         state_province: string;
         postal_code: string;
         country: string;
-        phone: string;
-        fax: string;
         email: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> => this._client.request("POST", `/${account}/contacts`, data, params);
+        phone: string;
+        fax: string | null;
+        organization_name: string;
+        job_title: string;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Contact }> =>
+      this._client.request("POST", `/${account}/contacts`, data, params);
     return method;
   })();
 
@@ -137,28 +116,7 @@ export class Contacts {
       account: number,
       contact: number,
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        label: string;
-        first_name: string;
-        last_name: string;
-        organization_name: string;
-        job_title: string;
-        address1: string;
-        address2: string;
-        city: string;
-        state_province: string;
-        postal_code: string;
-        country: string;
-        phone: string;
-        fax: string;
-        email: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+    ): Promise<{ data: types.Contact }> =>
       this._client.request(
         "GET",
         `/${account}/contacts/${contact}`,
@@ -183,45 +141,24 @@ export class Contacts {
     const method = (
       account: number,
       contact: number,
-      data: {
+      data: Partial<{
         label?: string;
-        first_name?: string;
-        last_name?: string;
-        address1?: string;
-        address2?: string | null;
-        city?: string;
-        state_province?: string;
-        postal_code?: string;
-        country?: string;
-        email?: string;
-        phone?: string;
-        fax?: string | null;
-        organization_name?: string;
-        job_title?: string;
-      },
-      params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        id: number;
-        account_id: number;
-        label: string;
         first_name: string;
         last_name: string;
-        organization_name: string;
-        job_title: string;
         address1: string;
-        address2: string;
+        address2: string | null;
         city: string;
         state_province: string;
         postal_code: string;
         country: string;
-        phone: string;
-        fax: string;
         email: string;
-        created_at: string;
-        updated_at: string;
-      };
-    }> =>
+        phone: string;
+        fax: string | null;
+        organization_name: string;
+        job_title: string;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Contact }> =>
       this._client.request(
         "PATCH",
         `/${account}/contacts/${contact}`,

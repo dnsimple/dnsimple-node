@@ -1,4 +1,5 @@
 import type { DNSimple, QueryParams } from "./main";
+import type * as types from "./types";
 
 export class Identity {
   constructor(private readonly _client: DNSimple) {}
@@ -15,23 +16,8 @@ export class Identity {
   whoami = (() => {
     const method = (
       params: QueryParams & {} = {}
-    ): Promise<{
-      data: {
-        account: {
-          id: number;
-          email: string;
-          plan_identifier: string;
-          created_at: string;
-          updated_at: string;
-        };
-        user: {
-          id: number;
-          email: string;
-          created_at: string;
-          updated_at: string;
-        };
-      };
-    }> => this._client.request("GET", `/whoami`, null, params);
+    ): Promise<{ data: { account: types.Account; user: types.User } }> =>
+      this._client.request("GET", `/whoami`, null, params);
     return method;
   })();
 }
