@@ -7,6 +7,10 @@ FEATURES
 - Most TypeScript types have been named and exported, instead of being inline anonymous types that are hard to reference and use. (dnsimple/dnsimple-node#175)
 - Enum type values are now declared, instead of a generic `string` or `number`, allowing for better type checking and autocomplete. (dnsimple/dnsimple-node#175)
 
+NOTES
+
+- As enums are now typed, incorrect or unknown values will be rejected by the TypeScript type checker. Instead of strings, the types are unions of valid constant string values. `as const` can be used to make TypeScript infer a literal string as a constant string type.
+
 ## 7.0.0
 
 This is a major change that brings TypeScript support as well as many quality-of-life improvements and internal improvements. For details on important changes and how to migrate, see [UPGRADE.md](./UPGRADE.md). For the full breakdown of all changes in detail, see the PR (dnsimple/dnsimple-node#170). Here are the major noteworthy changes:
