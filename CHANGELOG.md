@@ -2,6 +2,8 @@
 
 ## main
 
+## 7.1.0
+
 FEATURES
 
 - Most TypeScript types have been named and exported, instead of being inline anonymous types that are hard to reference and use. (dnsimple/dnsimple-node#175)
