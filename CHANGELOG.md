@@ -2,7 +2,7 @@
 
 ## main
 
-## 7.1.1 (Unreleased)
+## 7.1.1
 
 FEATURES:
 

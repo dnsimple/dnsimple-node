@@ -1,6 +1,6 @@
 {
   "name": "dnsimple",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "description": "A Node.JS client for the DNSimple API.",
   "keywords": [
     "dnsimple",
