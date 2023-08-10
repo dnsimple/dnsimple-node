@@ -2,6 +2,13 @@
 
 ## main
 
+## 7.1.1 (Unreleased)
+
+FEATURES:
+
+- NEW: Added `Zones.activateDns` to activate DNS services (resolution) for a zone. (dnsimple/dnsimple-node#180)
+- NEW: Added `Zones.deactivateDns` to deactivate DNS services (resolution) for a zone. (dnsimple/dnsimple-node#180)
+
 ## 7.1.0
 
 FEATURES
