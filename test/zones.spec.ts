@@ -6,6 +6,60 @@ import { createTestClient, loadFixture } from "./util";
 const dnsimple = createTestClient();
 
 describe("zones", () => {
+  describe("#activateDns", () => {
+    const accountId = 1010;
+    const fixture = loadFixture("activateZoneService/success.http");
+
+    it("produces a zone", (done) => {
+      nock("https://api.dnsimple.com")
+        .put("/v2/1010/zones/example.com")
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.zones.activateDns(accountId, "example.com").then(
+        (response) => {
+          const zone = response.data;
+          expect(zone.id).to.eq(1);
+          expect(zone.account_id).to.eq(1010);
+          expect(zone.name).to.eq("example.com");
+          expect(zone.reverse).to.eq(false);
+          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
+          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
+    });
+  });
+
+  describe("#deactivateDns", () => {
+    const accountId = 1010;
+    const fixture = loadFixture("deactivateZoneService/success.http");
+
+    it("produces a zone", (done) => {
+      nock("https://api.dnsimple.com")
+        .delete("/v2/1010/zones/example.com")
+        .reply(fixture.statusCode, fixture.body);
+
+      dnsimple.zones.activateDns(accountId, "example.com").then(
+        (response) => {
+          const zone = response.data;
+          expect(zone.id).to.eq(1);
+          expect(zone.account_id).to.eq(1010);
+          expect(zone.name).to.eq("example.com");
+          expect(zone.reverse).to.eq(false);
+          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
+          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
+    });
+  });
+
   describe("#listZones", () => {
     const accountId = 1010;
     const fixture = loadFixture("listZones/success.http");
