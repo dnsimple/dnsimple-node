@@ -42,7 +42,7 @@ describe("zones", () => {
         .delete("/v2/1010/zones/example.com")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.zones.activateDns(accountId, "example.com").then(
+      dnsimple.zones.deactivateDns(accountId, "example.com").then(
         (response) => {
           const zone = response.data;
           expect(zone.id).to.eq(1);
