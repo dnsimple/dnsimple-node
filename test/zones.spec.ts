@@ -12,7 +12,7 @@ describe("zones", () => {
 
     it("produces a zone", (done) => {
       nock("https://api.dnsimple.com")
-        .put("/v2/1010/zones/example.com")
+        .put("/v2/1010/zones/example.com/activation")
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.activateDns(accountId, "example.com").then(
@@ -39,7 +39,7 @@ describe("zones", () => {
 
     it("produces a zone", (done) => {
       nock("https://api.dnsimple.com")
-        .delete("/v2/1010/zones/example.com")
+        .delete("/v2/1010/zones/example.com/activation")
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.zones.deactivateDns(accountId, "example.com").then(
