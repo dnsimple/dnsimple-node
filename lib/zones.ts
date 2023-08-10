@@ -21,7 +21,12 @@ export class Zones {
       zone: string,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.Zone }> =>
-      this._client.request("PUT", `/${account}/zones/${zone}/activation`, null, params);
+      this._client.request(
+        "PUT",
+        `/${account}/zones/${zone}/activation`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -41,7 +46,12 @@ export class Zones {
       zone: string,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.Zone }> =>
-      this._client.request("DELETE", `/${account}/zones/${zone}/activation`, null, params);
+      this._client.request(
+        "DELETE",
+        `/${account}/zones/${zone}/activation`,
+        null,
+        params
+      );
     return method;
   })();
 
