@@ -608,9 +608,9 @@ export class Registrar {
     const method = (
       account: number,
       change: {
-        domain_id: string,
-        contact_id: string,
-        extended_attributes: Record<string, string>,
+        domain_id: string;
+        contact_id: string;
+        extended_attributes: Record<string, string>;
       },
       params: QueryParams & {} = {}
     ): Promise<{ data: types.RegistrantChange }> =>
@@ -618,7 +618,7 @@ export class Registrar {
         "POST",
         `/${account}/registrar/registrant_changes`,
         change,
-        params,
+        params
       );
     return method;
   })();
