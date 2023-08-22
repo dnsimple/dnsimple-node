@@ -259,6 +259,20 @@ export type WhoisPrivacyRenewal = {
   updated_at: string;
 };
 
+export type RegistrantChange = {
+  id: number,
+  type: number,
+  account_id: number,
+  contact_id: number,
+  domain_id: number,
+  state: string,
+  extended_attributes: Record<string, string>,
+  registry_owner_change: boolean,
+  irt_lock_lifted_by: string,
+  created_at: string,
+  updated_at: string,
+};
+
 export type PrimaryServer = {
   id: number;
   account_id: number;

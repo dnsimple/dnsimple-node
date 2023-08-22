@@ -592,4 +592,34 @@ export class Registrar {
       );
     return method;
   })();
+
+  /**
+   * Starts a registrant change.
+   *
+   * POST /{account}/registrar/registrant_changes
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#createRegistrantChange
+   *
+   * @param account The account id
+   * @param change The change details
+   * @param params Query parameters
+   */
+  createRegistrantChange = (() => {
+    const method = (
+      account: number,
+      change: {
+        domain_id: string,
+        contact_id: string,
+        extended_attributes: Record<string, string>,
+      },
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.RegistrantChange }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/registrant_changes`,
+        change,
+        params,
+      );
+    return method;
+  })();
 }
