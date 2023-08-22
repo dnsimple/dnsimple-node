@@ -2,6 +2,12 @@
 
 ## main
 
+## 7.1.2 (Unreleased)
+
+FEATURES:
+
+- NEW: Added `Registrar.createRegistrantChange` to start a registrant change. (dnsimple/dnsimple-node#181)
+
 ## 7.1.1
 
 FEATURES:
