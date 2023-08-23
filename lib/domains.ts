@@ -76,6 +76,10 @@ export class Domains {
   /**
    * Creates a domain and the corresponding zone into the account.
    *
+   * When creating a domain using Solo or Teams subscription, the DNS services
+   * for the zone will be automatically enabled and this will be charged on your
+   * following subscription renewal invoices.
+   *
    * POST /{account}/domains
    *
    * @see https://developer.dnsimple.com/v2/domains/#createDomain

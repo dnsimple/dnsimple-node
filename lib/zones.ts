@@ -6,56 +6,6 @@ export class Zones {
   constructor(private readonly _client: DNSimple) {}
 
   /**
-   * Activate DNS resolution for the zone in the account.
-   *
-   * PUT /{account}/zones/{zone}/activation
-   *
-   * @see https://developer.dnsimple.com/v2/zones/#activateZoneService
-   *
-   * @param account The account id
-   * @param zone The zone name
-   */
-  activateDns = (() => {
-    const method = (
-      account: number,
-      zone: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Zone }> =>
-      this._client.request(
-        "PUT",
-        `/${account}/zones/${zone}/activation`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
-   * Deativate DNS resolution for the zone in the account.
-   *
-   * DELETE /{account}/zones/{zone}/activation
-   *
-   * @see https://developer.dnsimple.com/v2/zones/#deactivateZoneService
-   *
-   * @param account The account id
-   * @param zone The zone name
-   */
-  deactivateDns = (() => {
-    const method = (
-      account: number,
-      zone: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Zone }> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/zones/${zone}/activation`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
    * Lists the zones in the account.
    *
    * This API is paginated. Call `listZones.iterateAll(account, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listZones.collectAll(account, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
@@ -310,9 +260,10 @@ export class Zones {
         name: string;
         type: types.ZoneRecordType;
         content: string;
-        ttl: number;
+        ttl: types.TTL;
         priority: number;
         regions: Array<types.ZoneRecordRegion>;
+        integrated_zones: Array<number>;
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>
@@ -373,9 +324,10 @@ export class Zones {
       data: Partial<{
         name: string;
         content: string;
-        ttl: number;
+        ttl: types.TTL;
         priority: number;
         regions: Array<types.ZoneRecordRegion>;
+        integrated_zones: Array<number>;
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>
@@ -405,12 +357,13 @@ export class Zones {
       account: number,
       zone: string,
       zonerecord: number,
+      data: Partial<{ integrated_zones: Array<number> }>,
       params: QueryParams & {} = {}
     ): Promise<{}> =>
       this._client.request(
         "DELETE",
         `/${account}/zones/${zone}/records/${zonerecord}`,
-        null,
+        data,
         params
       );
     return method;
@@ -438,6 +391,64 @@ export class Zones {
       this._client.request(
         "GET",
         `/${account}/zones/${zone}/records/${zonerecord}/distribution`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Activate DNS services for the zone.
+   *
+   * Under Solo and Teams plans, active zones are charged when renewing your subscription to
+   * DNSimple
+   *
+   * PUT /{account}/zones/{zone}/activation
+   *
+   * @see https://developer.dnsimple.com/v2/zones/#activateZoneService
+   *
+   * @param account The account id
+   * @param zone The zone name
+   * @param params Query parameters
+   */
+  activateDns = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Zone }> =>
+      this._client.request(
+        "PUT",
+        `/${account}/zones/${zone}/activation`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Deactivates DNS services for the zone.
+   *
+   * Under Solo and Teams plans, active zones are charged when renewing your subscription to
+   * DNSimple
+   *
+   * DELETE /{account}/zones/{zone}/activation
+   *
+   * @see https://developer.dnsimple.com/v2/zones/#deactivateZoneService
+   *
+   * @param account The account id
+   * @param zone The zone name
+   * @param params Query parameters
+   */
+  deactivateDns = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Zone }> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/zones/${zone}/activation`,
         null,
         params
       );

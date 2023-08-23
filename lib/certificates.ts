@@ -178,10 +178,10 @@ export class Certificates {
       account: number,
       domain: string,
       data: Partial<{
-        auto_renew?: boolean;
-        name?: string;
-        alternate_names?: Array<string>;
-        signature_algorithm?: string;
+        auto_renew: boolean;
+        name: string;
+        alternate_names: Array<string>;
+        signature_algorithm: string;
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.LetsencryptCertificatePurchase }> =>
@@ -239,7 +239,7 @@ export class Certificates {
       account: number,
       domain: string,
       certificate: number,
-      data: Partial<{ auto_renew?: boolean; signature_algorithm?: string }>,
+      data: Partial<{ auto_renew: boolean; signature_algorithm: string }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.LetsencryptCertificateRenewal }> =>
       this._client.request(

@@ -79,18 +79,18 @@ export class Contacts {
     const method = (
       account: number,
       data: Partial<{
-        label?: string;
+        label: string;
         first_name: string;
         last_name: string;
         address1: string;
-        address2: string | null;
+        address2: string;
         city: string;
         state_province: string;
         postal_code: string;
         country: string;
         email: string;
         phone: string;
-        fax: string | null;
+        fax: string;
         organization_name: string;
         job_title: string;
       }>,
@@ -142,18 +142,18 @@ export class Contacts {
       account: number,
       contact: number,
       data: Partial<{
-        label?: string;
+        label: string;
         first_name: string;
         last_name: string;
         address1: string;
-        address2: string | null;
+        address2: string;
         city: string;
         state_province: string;
         postal_code: string;
         country: string;
         email: string;
         phone: string;
-        fax: string | null;
+        fax: string;
         organization_name: string;
         job_title: string;
       }>,

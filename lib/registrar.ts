@@ -1,4 +1,5 @@
 import type { DNSimple, QueryParams } from "./main";
+import { paginate } from "./paginate";
 import type * as types from "./types";
 
 export class Registrar {
@@ -92,6 +93,10 @@ export class Registrar {
    *
    * Your account must be active for this command to complete successfully. You will be automatically charged the registration fee upon successful registration, so please be careful with this command.
    *
+   * When registering a domain using Solo or Teams subscription, the DNS services
+   * for the zone will be automatically enabled and this will be charged on your
+   * following subscription renewal invoices.
+   *
    * POST /{account}/registrar/domains/{domain}/registrations
    *
    * @see https://developer.dnsimple.com/v2/registrar/#registerDomain
@@ -154,6 +159,10 @@ export class Registrar {
    * Transfers a domain name from another registrar.
    *
    * Your account must be active for this command to complete successfully. You will be automatically charged the 1-year transfer fee upon successful transfer, so please be careful with this command. The transfer may take anywhere from a few minutes up to 7 days.
+   *
+   * When transfering a domain using Solo or Teams subscription, the DNS services
+   * for the zone will be automatically enabled and this will be charged on your
+   * following subscription renewal invoices.
    *
    * POST /{account}/registrar/domains/{domain}/transfers
    *
@@ -343,7 +352,7 @@ export class Registrar {
       account: number,
       domain: string,
       params: QueryParams & {} = {}
-    ): Promise<{ data: Array<string> }> =>
+    ): Promise<{ data: Array<types.DomainNameServer> }> =>
       this._client.request(
         "GET",
         `/${account}/registrar/domains/${domain}/delegation`,
@@ -370,7 +379,7 @@ export class Registrar {
       domain: string,
       data: Partial<Array<string>>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: Array<string> }> =>
+    ): Promise<{ data: Array<types.DomainNameServer> }> =>
       this._client.request(
         "PUT",
         `/${account}/registrar/domains/${domain}/delegation`,
@@ -587,6 +596,177 @@ export class Registrar {
       this._client.request(
         "POST",
         `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * List registrant changes in the account.
+   *
+   * This API is paginated. Call `listRegistrantChanges.iterateAll(account, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listRegistrantChanges.collectAll(account, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
+   *
+   * GET /{account}/registrar/registrant_changes
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#listRegistrantChanges
+   *
+   * @param account The account id
+   * @param params Query parameters
+   * @param params.sort Sort results. Default sorting is by id.
+   * @param params.state Only include results with a state field exactly matching the given string
+   * @param params.domain_id Only include results with a domain_id field exactly matching the given string
+   * @param params.contact_id Only include results with a contact_id field exactly matching the given string
+   */
+  listRegistrantChanges = (() => {
+    const method = (
+      account: number,
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc";
+        state?: "new" | "pending" | "completed" | "cancelling" | "cancelled";
+        domain_id?: string;
+        contact_id?: string;
+      } = {}
+    ): Promise<{
+      data: Array<types.RegistrantChange>;
+      pagination: types.Pagination;
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/registrant_changes`,
+        null,
+        params
+      );
+    method.iterateAll = (
+      account: number,
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc";
+        state?: "new" | "pending" | "completed" | "cancelling" | "cancelled";
+        domain_id?: string;
+        contact_id?: string;
+      } = {}
+    ) => paginate((page) => method(account, { ...params, page } as any));
+    method.collectAll = async (
+      account: number,
+      params: QueryParams & {
+        sort?: "id:asc" | "id:desc";
+        state?: "new" | "pending" | "completed" | "cancelling" | "cancelled";
+        domain_id?: string;
+        contact_id?: string;
+      } = {}
+    ) => {
+      const items = [];
+      for await (const item of method.iterateAll(account, params)) {
+        items.push(item);
+      }
+      return items;
+    };
+    return method;
+  })();
+
+  /**
+   * Start registrant change.
+   *
+   * POST /{account}/registrar/registrant_changes
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#createRegistrantChange
+   *
+   * @param account The account id
+   * @param params Query parameters
+   */
+  createRegistrantChange = (() => {
+    const method = (
+      account: number,
+      data: Partial<{
+        domain_id: string | number;
+        contact_id: string | number;
+        extended_attributes: types.TradeExtendedAttributes;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.RegistrantChange }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/registrant_changes`,
+        data,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Retrieves the requirements of a registrant change.
+   *
+   * POST /{account}/registrar/registrant_changes/check
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#checkRegistrantChange
+   *
+   * @param account The account id
+   * @param params Query parameters
+   */
+  checkRegistrantChange = (() => {
+    const method = (
+      account: number,
+      data: Partial<{
+        domain_id: string | number;
+        contact_id: string | number;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.RegistrantChangeCheck }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/registrant_changes/check`,
+        data,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Retrieves the details of an existing registrant change.
+   *
+   * GET /{account}/registrar/registrant_changes/{registrantchange}
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#getRegistrantChange
+   *
+   * @param account The account id
+   * @param registrantchange The registrant change id
+   * @param params Query parameters
+   */
+  getRegistrantChange = (() => {
+    const method = (
+      account: number,
+      registrantchange: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.RegistrantChange }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/registrant_changes/${registrantchange}`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Cancel an ongoing registrant change from the account.
+   *
+   * DELETE /{account}/registrar/registrant_changes/{registrantchange}
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#deleteRegistrantChange
+   *
+   * @param account The account id
+   * @param registrantchange The registrant change id
+   * @param params Query parameters
+   */
+  deleteRegistrantChange = (() => {
+    const method = (
+      account: number,
+      registrantchange: number,
+      params: QueryParams & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/registrar/registrant_changes/${registrantchange}`,
         null,
         params
       );

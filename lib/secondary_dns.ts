@@ -187,6 +187,10 @@ export class SecondaryDns {
   /**
    * Creates a secondary zone into the account.
    *
+   * When creating a secondary zone using Solo or Teams subscription, the DNS
+   * services for the zone will be automatically enabled and this will be charged
+   * on your following subscription renewal invoices.
+   *
    * POST /{account}/secondary_dns/zones
    *
    * @see https://developer.dnsimple.com/v2/secondary-dns/#createSecondaryZone
