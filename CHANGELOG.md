@@ -6,7 +6,7 @@
 
 FEATURES:
 
-- NEW: Added `Registrar.createRegistrantChange` to start a registrant change. (dnsimple/dnsimple-node#181)
+- NEW: Added `listRegistrantChanges`, `createRegistrantChange`, `checkRegistrantChange`, `getRegistrantChange`, and `deleteRegistrantChange` APIs to manage registrant changes. (dnsimple/dnsimple-node#181)
 
 ## 7.1.1
 

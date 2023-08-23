@@ -594,8 +594,6 @@ export class Registrar {
     return method;
   })();
 
-
-
   /**
    * List registrant changes in the account.
    *
