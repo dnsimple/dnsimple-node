@@ -246,7 +246,7 @@ export class DNSimple {
       return {};
     }
     if (status >= 200 && status < 300) {
-      return JSON.parse(data);
+      return !data ? {} : JSON.parse(data);
     }
     if (status >= 500) {
       throw new ServerError(status, JSON.parse(data));

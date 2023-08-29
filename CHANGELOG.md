@@ -2,6 +2,12 @@
 
 ## main
 
+## 7.2.0 (Unreleased)
+
+FEATURES:
+
+- NEW: Added `listRegistrantChanges`, `createRegistrantChange`, `checkRegistrantChange`, `getRegistrantChange`, and `deleteRegistrantChange` APIs to manage registrant changes. (dnsimple/dnsimple-node#181)
+
 ## 7.1.1
 
 FEATURES:
