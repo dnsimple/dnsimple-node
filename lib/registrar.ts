@@ -764,4 +764,82 @@ export class Registrar {
       );
     return method;
   })();
+
+  /**
+   * Gets the transfer lock status for a domain.
+   *
+   * GET /{account}/registrar/domains/{domain}/transfer_lock
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainTransferLock
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param params Query parameters
+   */
+  getDomainTransferLock = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainTransferLock }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/transfer_lock`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Locks the domain to prevent unauthorized transfers.
+   *
+   * POST /{account}/registrar/domains/{domain}/transfer_lock
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#enableDomainTransferLock
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param params Query parameters
+   */
+  enableDomainTransferLock = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainTransferLock }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/transfer_lock`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Unlocks the domain to allow domain transfers.
+   *
+   * DELETE /{account}/registrar/domains/{domain}/transfer_lock
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#disableDomainTransferLock
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param params Query parameters
+   */
+  disableDomainTransferLock = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainTransferLock }> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/registrar/domains/${domain}/transfer_lock`,
+        null,
+        params
+      );
+    return method;
+  })();
 }
