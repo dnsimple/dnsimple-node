@@ -15,19 +15,17 @@ describe("domain transfer lock", () => {
         .get("/v2/1010/registrar/domains/101/transfer_lock")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar
-        .getDomainTransferLock(accountId, "101")
-        .then(
-          ({ data }) => {
-            expect(data).to.deep.eq({
-              enabled: true,
-            });
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.registrar.getDomainTransferLock(accountId, "101").then(
+        ({ data }) => {
+          expect(data).to.deep.eq({
+            enabled: true,
+          });
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
   });
 
@@ -39,19 +37,17 @@ describe("domain transfer lock", () => {
         .post("/v2/1010/registrar/domains/101/transfer_lock")
         .reply(fixture.statusCode, fixture.body);
 
-      dnsimple.registrar
-        .enableDomainTransferLock(accountId, "101")
-        .then(
-          ({ data }) => {
-            expect(data).to.deep.eq({
-              enabled: true,
-            });
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      dnsimple.registrar.enableDomainTransferLock(accountId, "101").then(
+        ({ data }) => {
+          expect(data).to.deep.eq({
+            enabled: true,
+          });
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
     });
   });
 
@@ -64,7 +60,7 @@ describe("domain transfer lock", () => {
         .reply(fixture.statusCode, fixture.body);
 
       dnsimple.registrar.disableDomainTransferLock(accountId, "101").then(
-        ({data}) => {
+        ({ data }) => {
           expect(data).to.deep.eq({
             enabled: false,
           });
