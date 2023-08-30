@@ -7,6 +7,7 @@
 FEATURES:
 
 - NEW: Added `listRegistrantChanges`, `createRegistrantChange`, `checkRegistrantChange`, `getRegistrantChange`, and `deleteRegistrantChange` APIs to manage registrant changes. (dnsimple/dnsimple-node#181)
+- NEW: Added `getDomainTransferLock`, `enableDomainTransferLock`, `disableDomainTransferLock` APIs to manage domain transfer locks. (dnsimple/dnsimple-node#183)
 
 ## 7.1.1
 
