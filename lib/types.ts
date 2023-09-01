@@ -448,3 +448,5 @@ export type RegistrantChangeCheck = {
   extended_attributes: Array<ExtendedAttribute>;
   registry_owner_change: boolean;
 };
+
+export type DomainTransferLock = { enabled: boolean };
