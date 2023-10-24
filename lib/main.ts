@@ -1,5 +1,6 @@
 import * as pkg from "../package.json";
 import { Accounts } from "./accounts";
+import { Billing } from "./billing";
 import { Certificates } from "./certificates";
 import { Contacts } from "./contacts";
 import { Domains } from "./domains";
@@ -179,6 +180,7 @@ export class DNSimple {
   userAgent: string;
 
   readonly accounts = new Accounts(this);
+  readonly billing = new Billing(this);
   readonly certificates = new Certificates(this);
   readonly contacts = new Contacts(this);
   readonly domains = new Domains(this);
