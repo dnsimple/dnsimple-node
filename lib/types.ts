@@ -27,9 +27,9 @@ export type Charge = {
 export type ChargeItem = {
   description: string;
   amount: string;
-  product_id: number;
+  product_id: number | string | null;
   product_type: string;
-  product_reference: string;
+  product_reference: string | null;
 };
 
 export type Domain = {
