@@ -2,6 +2,12 @@
 
 ## main
 
+## 7.3.0 (unreleased)
+
+FEATURES:
+
+- NEW: Added `Billing.listCharges` to retrieve the list of billing charges for an account. (#189)
+
 ## 7.2.0
 
 FEATURES:

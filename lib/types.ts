@@ -15,6 +15,23 @@ export type User = {
 
 export type NullableDateTime = string | null;
 
+export type Charge = {
+  invoiced_at: string;
+  total_amount: string;
+  balance_amount: string;
+  reference: string;
+  state: "collected" | "refunded";
+  items: Array<ChargeItem>;
+};
+
+export type ChargeItem = {
+  description: string;
+  amount: string;
+  product_id: number | string | null;
+  product_type: string;
+  product_reference: string | null;
+};
+
 export type Domain = {
   id: number;
   account_id: number;
