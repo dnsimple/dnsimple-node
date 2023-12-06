@@ -47,7 +47,10 @@ const versionedPath = (path: string, params: QueryParams) => {
 export class TimeoutError extends Error {}
 
 export class RequestError extends Error {
-  constructor(readonly status: number, description: string) {
+  constructor(
+    readonly status: number,
+    description: string
+  ) {
     super(description);
   }
 }
@@ -77,7 +80,10 @@ export class TooManyRequestsError extends RequestError {
 }
 
 export class ClientError extends RequestError {
-  constructor(status: number, readonly data: any) {
+  constructor(
+    status: number,
+    readonly data: any
+  ) {
     super(status, "Bad request");
   }
 
@@ -88,7 +94,10 @@ export class ClientError extends RequestError {
 }
 
 export class ServerError extends RequestError {
-  constructor(status: number, readonly data: any) {
+  constructor(
+    status: number,
+    readonly data: any
+  ) {
     super(status, "Server error");
   }
 }
