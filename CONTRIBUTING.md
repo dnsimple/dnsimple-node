@@ -31,8 +31,7 @@ The following instructions uses `$VERSION` as a placeholder, where `$VERSION` is
 
     ```json
     {
-      "name": "dnsimple",
-      "version": "$VERSION"
+      "version": "$VERSION",
     }
     ```
 

@@ -2,11 +2,25 @@
 
 ## main
 
-## 7.2.0 (unreleased)
+## 7.3.0 (unreleased)
 
 FEATURES:
 
 - NEW: Added `Billing.listCharges` to retrieve the list of billing charges for an account. (#189)
+
+## 7.2.0
+
+FEATURES:
+
+- NEW: Added `listRegistrantChanges`, `createRegistrantChange`, `checkRegistrantChange`, `getRegistrantChange`, and `deleteRegistrantChange` APIs to manage registrant changes. (dnsimple/dnsimple-node#181)
+- NEW: Added `getDomainTransferLock`, `enableDomainTransferLock`, `disableDomainTransferLock` APIs to manage domain transfer locks. (dnsimple/dnsimple-node#183)
+
+## 7.1.1
+
+FEATURES:
+
+- NEW: Added `Zones.activateDns` to activate DNS services (resolution) for a zone. (dnsimple/dnsimple-node#180)
+- NEW: Added `Zones.deactivateDns` to deactivate DNS services (resolution) for a zone. (dnsimple/dnsimple-node#180)
 
 ## 7.1.0
 
