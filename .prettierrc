@@ -1,0 +1,8 @@
+{
+  "bracketSpacing": true,
+  "insertPragma": false,
+  "proseWrap": "always",
+  "quoteProps": "as-needed",
+  "requirePragma": false,
+  "trailingComma": "es5"
+}

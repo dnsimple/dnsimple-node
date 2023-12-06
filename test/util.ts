@@ -45,8 +45,8 @@ export const loadFixture = (path: string) => {
       statusCode === 204
         ? null
         : headers["Content-Type"] === "application/json"
-        ? JSON.parse(lines.join("\n"))
-        : lines.join("\n"),
+          ? JSON.parse(lines.join("\n"))
+          : lines.join("\n"),
   };
 
   return fixture;
