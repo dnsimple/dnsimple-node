@@ -294,6 +294,7 @@ export type Zone = {
   reverse: boolean;
   secondary: boolean;
   last_transferred_at: string;
+  active: boolean;
   created_at: string;
   updated_at: string;
 };
