@@ -200,6 +200,9 @@ describe("zones", () => {
           expect(zone.account_id).to.eq(1010);
           expect(zone.name).to.eq("example-alpha.com");
           expect(zone.reverse).to.eq(false);
+          expect(zone.secondary).to.eq(false);
+          expect(zone.last_transferred_at).to.eq(null);
+          expect(zone.active).to.eq(true);
           expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
           expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
           done();
