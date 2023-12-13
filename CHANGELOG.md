@@ -2,6 +2,10 @@
 
 ## main
 
+ENHANCEMENTS:
+
+- NEW: Added `Secondary`, `LastTransferredAt`, `Active` to `Zone` (dnsimple/dnsimple-node)
+
 ## 7.3.0
 
 FEATURES:
