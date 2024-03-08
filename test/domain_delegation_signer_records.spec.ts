@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -58,7 +57,7 @@ describe("domains", () => {
       dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(
         (response) => {
           const dsRecords = response.data;
-          expect(dsRecords.length).to.eq(1);
+          expect(dsRecords.length).toBe(1);
           done();
         },
         (error) => {
@@ -75,8 +74,8 @@ describe("domains", () => {
       dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -110,9 +109,9 @@ describe("domains", () => {
         .collectAll(accountId, domainId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -141,16 +140,14 @@ describe("domains", () => {
         .then(
           (response) => {
             const dsRecord = response.data;
-            expect(dsRecord.id).to.eq(24);
-            expect(dsRecord.algorithm).to.eq("8");
-            expect(dsRecord.digest).to.eq(
-              "C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F"
-            );
-            expect(dsRecord.digest_type).to.eq("2");
-            expect(dsRecord.keytag).to.eq("44620");
-            expect(dsRecord.public_key).to.eq(null);
-            expect(dsRecord.created_at).to.eq("2017-03-03T13:49:58Z");
-            expect(dsRecord.updated_at).to.eq("2017-03-03T13:49:58Z");
+            expect(dsRecord.id).toBe(24);
+            expect(dsRecord.algorithm).toBe("8");
+            expect(dsRecord.digest).toBe("C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F");
+            expect(dsRecord.digest_type).toBe("2");
+            expect(dsRecord.keytag).toBe("44620");
+            expect(dsRecord.public_key).toBe(null);
+            expect(dsRecord.created_at).toBe("2017-03-03T13:49:58Z");
+            expect(dsRecord.updated_at).toBe("2017-03-03T13:49:58Z");
             done();
           },
           (error) => {
@@ -171,10 +168,8 @@ describe("domains", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq(
-              "Delegation signer record `0` not found"
-            );
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Delegation signer record `0` not found");
             done();
           }
         );
@@ -213,7 +208,7 @@ describe("domains", () => {
         .then(
           (response) => {
             const dsRecord = response.data;
-            expect(dsRecord.id).to.eq(2);
+            expect(dsRecord.id).toBe(2);
             done();
           },
           (error) => {
@@ -238,7 +233,7 @@ describe("domains", () => {
         .deleteDelegationSignerRecord(accountId, domainId, dsRecordId)
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {

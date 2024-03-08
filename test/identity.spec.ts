@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -14,10 +13,10 @@ describe("identity", () => {
     it("produces an account", (done) => {
       dnsimple.identity.whoami().then(
         (response) => {
-          expect(response.data.user).to.eq(null);
+          expect(response.data.user).toBe(null);
           const account = response.data.account;
-          expect(account.id).to.eql(1);
-          expect(account.email).to.eql("example-account@example.com");
+          expect(account.id).toEqual(1);
+          expect(account.email).toEqual("example-account@example.com");
           done();
         },
         (error) => {
@@ -36,10 +35,10 @@ describe("identity", () => {
     it("produces a user", (done) => {
       dnsimple.identity.whoami().then(
         (response) => {
-          expect(response.data.account).to.eq(null);
+          expect(response.data.account).toBe(null);
           const user = response.data.user;
-          expect(user.id).to.eql(1);
-          expect(user.email).to.eql("example-user@example.com");
+          expect(user.id).toEqual(1);
+          expect(user.email).toEqual("example-user@example.com");
           done();
         },
         (error) => {

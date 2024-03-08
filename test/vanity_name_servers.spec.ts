@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -21,16 +20,12 @@ describe("vanity name servers", () => {
         .then(
           (response) => {
             const vanityNameServers = response.data;
-            expect(vanityNameServers.length).to.eq(4);
-            expect(vanityNameServers[0].id).to.eq(1);
-            expect(vanityNameServers[0].ipv4).to.eq("127.0.0.1");
-            expect(vanityNameServers[0].ipv6).to.eq("::1");
-            expect(vanityNameServers[0].created_at).to.eq(
-              "2016-07-14T13:22:17Z"
-            );
-            expect(vanityNameServers[0].updated_at).to.eq(
-              "2016-07-14T13:22:17Z"
-            );
+            expect(vanityNameServers.length).toBe(4);
+            expect(vanityNameServers[0].id).toBe(1);
+            expect(vanityNameServers[0].ipv4).toBe("127.0.0.1");
+            expect(vanityNameServers[0].ipv6).toBe("::1");
+            expect(vanityNameServers[0].created_at).toBe("2016-07-14T13:22:17Z");
+            expect(vanityNameServers[0].updated_at).toBe("2016-07-14T13:22:17Z");
             done();
           },
           (error) => {
@@ -52,7 +47,7 @@ describe("vanity name servers", () => {
         .disableVanityNameServers(accountId, domainId)
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {

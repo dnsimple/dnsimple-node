@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -49,8 +48,8 @@ describe("tlds", () => {
       dnsimple.tlds.listTlds().then(
         (response) => {
           const tlds = response.data;
-          expect(tlds.length).to.eq(2);
-          expect(tlds[0].tld).to.eq("ac");
+          expect(tlds.length).toBe(2);
+          expect(tlds[0].tld).toBe("ac");
           done();
         },
         (error) => {
@@ -67,8 +66,8 @@ describe("tlds", () => {
       dnsimple.tlds.listTlds().then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -89,16 +88,16 @@ describe("tlds", () => {
       dnsimple.tlds.getTld("com").then(
         (response) => {
           const tld = response.data;
-          expect(tld.tld).to.eq("com");
-          expect(tld.tld_type).to.eq(1);
-          expect(tld.whois_privacy).to.eq(true);
-          expect(tld.auto_renew_only).to.eq(false);
-          expect(tld.idn).to.eq(true);
-          expect(tld.minimum_registration).to.eq(1);
-          expect(tld.registration_enabled).to.eq(true);
-          expect(tld.renewal_enabled).to.eq(true);
-          expect(tld.transfer_enabled).to.eq(true);
-          expect(tld.dnssec_interface_type).to.eq("ds");
+          expect(tld.tld).toBe("com");
+          expect(tld.tld_type).toBe(1);
+          expect(tld.whois_privacy).toBe(true);
+          expect(tld.auto_renew_only).toBe(false);
+          expect(tld.idn).toBe(true);
+          expect(tld.minimum_registration).toBe(1);
+          expect(tld.registration_enabled).toBe(true);
+          expect(tld.renewal_enabled).toBe(true);
+          expect(tld.transfer_enabled).toBe(true);
+          expect(tld.dnssec_interface_type).toBe("ds");
           done();
         },
         (error) => {
@@ -119,18 +118,14 @@ describe("tlds", () => {
       dnsimple.tlds.getTldExtendedAttributes("uk").then(
         (response) => {
           const extendedAttributes = response.data;
-          expect(extendedAttributes.length).to.eq(4);
-          expect(extendedAttributes[0].name).to.eq("uk_legal_type");
-          expect(extendedAttributes[0].description).to.eq(
-            "Legal type of registrant contact"
-          );
-          expect(extendedAttributes[0].required).to.eq(false);
-          expect(extendedAttributes[0].options.length).to.eq(17);
-          expect(extendedAttributes[0].options[0].title).to.eq("UK Individual");
-          expect(extendedAttributes[0].options[0].value).to.eq("IND");
-          expect(extendedAttributes[0].options[0].description).to.eq(
-            "UK Individual (our default value)"
-          );
+          expect(extendedAttributes.length).toBe(4);
+          expect(extendedAttributes[0].name).toBe("uk_legal_type");
+          expect(extendedAttributes[0].description).toBe("Legal type of registrant contact");
+          expect(extendedAttributes[0].required).toBe(false);
+          expect(extendedAttributes[0].options.length).toBe(17);
+          expect(extendedAttributes[0].options[0].title).toBe("UK Individual");
+          expect(extendedAttributes[0].options[0].value).toBe("IND");
+          expect(extendedAttributes[0].options[0].description).toBe("UK Individual (our default value)");
           done();
         },
         (error) => {
@@ -151,7 +146,7 @@ describe("tlds", () => {
 
         dnsimple.tlds.getTldExtendedAttributes("com").then(
           (response) => {
-            expect(response.data).to.eql([]);
+            expect(response.data).toEqual([]);
             done();
           },
           (error) => {

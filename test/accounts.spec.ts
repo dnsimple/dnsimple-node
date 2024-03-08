@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -13,7 +12,8 @@ describe("accounts", () => {
         .get("/v2/accounts")
         .reply(fixture.statusCode, fixture.body);
 
-      await expect(dnsimple.accounts.listAccounts()).to.eventually.deep.equal({
+      const result = await dnsimple.accounts.listAccounts();
+      expect(result).toEqual({
         data: [
           {
             id: 123,

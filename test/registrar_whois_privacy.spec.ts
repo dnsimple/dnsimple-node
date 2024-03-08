@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -19,12 +18,12 @@ describe("whois privacy", () => {
       dnsimple.registrar.getWhoisPrivacy(accountId, domainId).then(
         (response) => {
           const whoisPrivacy = response.data;
-          expect(whoisPrivacy.id).to.eq(1);
-          expect(whoisPrivacy.domain_id).to.eq(2);
-          expect(whoisPrivacy.expires_on).to.eq("2017-02-13");
-          expect(whoisPrivacy.enabled).to.eq(true);
-          expect(whoisPrivacy.created_at).to.eq("2016-02-13T14:34:50Z");
-          expect(whoisPrivacy.updated_at).to.eq("2016-02-13T14:34:52Z");
+          expect(whoisPrivacy.id).toBe(1);
+          expect(whoisPrivacy.domain_id).toBe(2);
+          expect(whoisPrivacy.expires_on).toBe("2017-02-13");
+          expect(whoisPrivacy.enabled).toBe(true);
+          expect(whoisPrivacy.created_at).toBe("2016-02-13T14:34:50Z");
+          expect(whoisPrivacy.updated_at).toBe("2016-02-13T14:34:52Z");
           done();
         },
         (error) => {
@@ -46,8 +45,8 @@ describe("whois privacy", () => {
         dnsimple.registrar.enableWhoisPrivacy(accountId, domainId).then(
           (response) => {
             const whoisPrivacy = response.data;
-            expect(whoisPrivacy.id).to.eq(1);
-            expect(whoisPrivacy.domain_id).to.eq(2);
+            expect(whoisPrivacy.id).toBe(1);
+            expect(whoisPrivacy.domain_id).toBe(2);
             done();
           },
           (error) => {
@@ -68,8 +67,8 @@ describe("whois privacy", () => {
         dnsimple.registrar.enableWhoisPrivacy(accountId, domainId).then(
           (response) => {
             const whoisPrivacy = response.data;
-            expect(whoisPrivacy.id).to.eq(1);
-            expect(whoisPrivacy.domain_id).to.eq(2);
+            expect(whoisPrivacy.id).toBe(1);
+            expect(whoisPrivacy.domain_id).toBe(2);
             done();
           },
           (error) => {
@@ -91,8 +90,8 @@ describe("whois privacy", () => {
       dnsimple.registrar.disableWhoisPrivacy(accountId, domainId).then(
         (response) => {
           const whoisPrivacy = response.data;
-          expect(whoisPrivacy.id).to.eq(1);
-          expect(whoisPrivacy.domain_id).to.eq(2);
+          expect(whoisPrivacy.id).toBe(1);
+          expect(whoisPrivacy.domain_id).toBe(2);
           done();
         },
         (error) => {
@@ -113,11 +112,11 @@ describe("whois privacy", () => {
       dnsimple.registrar.renewWhoisPrivacy(accountId, domainId).then(
         (response) => {
           const whoisPrivacyRenewal = response.data;
-          expect(whoisPrivacyRenewal.id).to.eq(1);
-          expect(whoisPrivacyRenewal.domain_id).to.eq(100);
-          expect(whoisPrivacyRenewal.whois_privacy_id).to.eq(999);
-          expect(whoisPrivacyRenewal.state).to.eq("new");
-          expect(whoisPrivacyRenewal.enabled).to.eq(true);
+          expect(whoisPrivacyRenewal.id).toBe(1);
+          expect(whoisPrivacyRenewal.domain_id).toBe(100);
+          expect(whoisPrivacyRenewal.whois_privacy_id).toBe(999);
+          expect(whoisPrivacyRenewal.state).toBe("new");
+          expect(whoisPrivacyRenewal.enabled).toBe(true);
           done();
         },
         (error) => {

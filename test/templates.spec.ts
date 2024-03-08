@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -51,9 +50,9 @@ describe("templates", () => {
       dnsimple.templates.listTemplates(accountId).then(
         (response) => {
           const templates = response.data;
-          expect(templates.length).to.eq(2);
-          expect(templates[0].name).to.eq("Alpha");
-          expect(templates[0].account_id).to.eq(1010);
+          expect(templates.length).toBe(2);
+          expect(templates[0].name).toBe("Alpha");
+          expect(templates[0].account_id).toBe(1010);
           done();
         },
         (error) => {
@@ -70,8 +69,8 @@ describe("templates", () => {
       dnsimple.templates.listTemplates(accountId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -104,9 +103,9 @@ describe("templates", () => {
         .collectAll(accountId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -133,13 +132,13 @@ describe("templates", () => {
       dnsimple.templates.getTemplate(accountId, templateId).then(
         (response) => {
           const template = response.data;
-          expect(template.id).to.eq(1);
-          expect(template.account_id).to.eq(1010);
-          expect(template.name).to.eq("Alpha");
-          expect(template.sid).to.eq("alpha");
-          expect(template.description).to.eq("An alpha template.");
-          expect(template.created_at).to.eq("2016-03-22T11:08:58Z");
-          expect(template.updated_at).to.eq("2016-03-22T11:08:58Z");
+          expect(template.id).toBe(1);
+          expect(template.account_id).toBe(1010);
+          expect(template.name).toBe("Alpha");
+          expect(template.sid).toBe("alpha");
+          expect(template.description).toBe("An alpha template.");
+          expect(template.created_at).toBe("2016-03-22T11:08:58Z");
+          expect(template.updated_at).toBe("2016-03-22T11:08:58Z");
           done();
         },
         (error) => {
@@ -161,8 +160,8 @@ describe("templates", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Template `beta` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Template `beta` not found");
             done();
           }
         );
@@ -194,7 +193,7 @@ describe("templates", () => {
       dnsimple.templates.createTemplate(accountId, attributes).then(
         (response) => {
           const template = response.data;
-          expect(template.id).to.eq(1);
+          expect(template.id).toBe(1);
           done();
         },
         (error) => {
@@ -229,7 +228,7 @@ describe("templates", () => {
       dnsimple.templates.updateTemplate(accountId, templateId, attributes).then(
         (response) => {
           const template = response.data;
-          expect(template.id).to.eq(1);
+          expect(template.id).toBe(1);
           done();
         },
         (error) => {
@@ -251,7 +250,7 @@ describe("templates", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );
@@ -271,7 +270,7 @@ describe("templates", () => {
 
       dnsimple.templates.deleteTemplate(accountId, templateId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -294,7 +293,7 @@ describe("templates", () => {
 
       dnsimple.templates.applyTemplate(accountId, domainId, templateId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -358,7 +357,7 @@ describe("template records", () => {
       dnsimple.templates.listTemplateRecords(accountId, templateId).then(
         (response) => {
           const records = response.data;
-          expect(records.length).to.eq(2);
+          expect(records.length).toBe(2);
           done();
         },
         (error) => {
@@ -375,8 +374,8 @@ describe("template records", () => {
       dnsimple.templates.listTemplateRecords(accountId, templateId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -410,9 +409,9 @@ describe("template records", () => {
         .collectAll(accountId, templateId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -442,15 +441,15 @@ describe("template records", () => {
         .then(
           (response) => {
             const record = response.data;
-            expect(record.id).to.eq(301);
-            expect(record.template_id).to.eq(268);
-            expect(record.name).to.eq("");
-            expect(record.content).to.eq("mx.example.com");
-            expect(record.ttl).to.eq(600);
-            expect(record.priority).to.eq(10);
-            expect(record.type).to.eq("MX");
-            expect(record.created_at).to.eq("2016-05-03T08:03:26Z");
-            expect(record.updated_at).to.eq("2016-05-03T08:03:26Z");
+            expect(record.id).toBe(301);
+            expect(record.template_id).toBe(268);
+            expect(record.name).toBe("");
+            expect(record.content).toBe("mx.example.com");
+            expect(record.ttl).toBe(600);
+            expect(record.priority).toBe(10);
+            expect(record.type).toBe("MX");
+            expect(record.created_at).toBe("2016-05-03T08:03:26Z");
+            expect(record.updated_at).toBe("2016-05-03T08:03:26Z");
             done();
           },
           (error) => {
@@ -472,8 +471,8 @@ describe("template records", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Template `beta` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Template `beta` not found");
             done();
           }
         );
@@ -493,7 +492,7 @@ describe("template records", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );
@@ -532,7 +531,7 @@ describe("template records", () => {
         .then(
           (response) => {
             const record = response.data;
-            expect(record.id).to.eq(300);
+            expect(record.id).toBe(300);
             done();
           },
           (error) => {
@@ -557,7 +556,7 @@ describe("template records", () => {
         .deleteTemplateRecord(accountId, templateId, recordId)
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {

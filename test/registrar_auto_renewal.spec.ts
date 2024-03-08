@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -19,7 +18,7 @@ describe("registrar auto renewal", () => {
 
       dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -41,7 +40,7 @@ describe("registrar auto renewal", () => {
             done("Expected error but future resolved");
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );
@@ -59,7 +58,7 @@ describe("registrar auto renewal", () => {
 
       dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -81,7 +80,7 @@ describe("registrar auto renewal", () => {
             done("Expected error but future resolved");
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );

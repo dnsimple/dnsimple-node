@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { ClientError } from "../lib/main";
 import { createTestClient, loadFixture, stubRequest } from "./util";
@@ -21,9 +20,9 @@ describe("registrar", () => {
       dnsimple.registrar.checkDomain(accountId, domainId).then(
         (response) => {
           const checkResult = response.data;
-          expect(checkResult.domain).to.eql("ruby.codes");
-          expect(checkResult.available).to.eq(true);
-          expect(checkResult.premium).to.eq(true);
+          expect(checkResult.domain).toEqual("ruby.codes");
+          expect(checkResult.available).toBe(true);
+          expect(checkResult.premium).toBe(true);
           done();
         },
         (error) => {
@@ -46,8 +45,8 @@ describe("registrar", () => {
         dnsimple.registrar.getDomainPremiumPrice(accountId, domainId).then(
           (response) => {
             const premiumPriceResult = response.data;
-            expect(premiumPriceResult.premium_price).to.eql("109.00");
-            expect(premiumPriceResult.action).to.eql("registration");
+            expect(premiumPriceResult.premium_price).toEqual("109.00");
+            expect(premiumPriceResult.action).toEqual("registration");
             done();
           },
           (error) => {
@@ -71,10 +70,8 @@ describe("registrar", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(ClientError);
-            expect(error.data.message).to.eq(
-              "`example.com` is not a premium domain for registration"
-            );
+            expect(error).toBeInstanceOf(ClientError);
+            expect(error.data.message).toBe("`example.com` is not a premium domain for registration");
             done();
           }
         );
@@ -94,11 +91,11 @@ describe("registrar", () => {
         dnsimple.registrar.getDomainPrices(accountId, "bingo.pizza").then(
           (response) => {
             const pricesResult = response.data;
-            expect(pricesResult.domain).to.eql("bingo.pizza");
-            expect(pricesResult.premium).to.eql(true);
-            expect(pricesResult.registration_price).to.eql(20.0);
-            expect(pricesResult.renewal_price).to.eql(20.0);
-            expect(pricesResult.transfer_price).to.eql(20.0);
+            expect(pricesResult.domain).toEqual("bingo.pizza");
+            expect(pricesResult.premium).toEqual(true);
+            expect(pricesResult.registration_price).toEqual(20.0);
+            expect(pricesResult.renewal_price).toEqual(20.0);
+            expect(pricesResult.transfer_price).toEqual(20.0);
             done();
           },
           (error) => {
@@ -121,8 +118,8 @@ describe("registrar", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(ClientError);
-            expect(error.data.message).to.eq("TLD .PINEAPPLE is not supported");
+            expect(error).toBeInstanceOf(ClientError);
+            expect(error.data.message).toBe("TLD .PINEAPPLE is not supported");
             done();
           }
         );
@@ -150,7 +147,7 @@ describe("registrar", () => {
           null,
           options
         )
-      ).to.equal(true);
+      ).toBe(true);
       done();
     });
   });
@@ -170,7 +167,7 @@ describe("registrar", () => {
           null,
           options
         )
-      ).to.equal(true);
+      ).toBe(true);
       done();
     });
   });
@@ -191,8 +188,8 @@ describe("registrar", () => {
       dnsimple.registrar.registerDomain(accountId, domainId, attributes).then(
         (response) => {
           const domainRegistration = response.data;
-          expect(domainRegistration.id).to.eq(1);
-          expect(domainRegistration.state).to.eq("new");
+          expect(domainRegistration.id).toBe(1);
+          expect(domainRegistration.state).toBe("new");
           done();
         },
         (error) => {
@@ -215,8 +212,8 @@ describe("registrar", () => {
       dnsimple.registrar.renewDomain(accountId, domainId, attributes).then(
         (response) => {
           const renewDomainal = response.data;
-          expect(renewDomainal.id).to.eq(1);
-          expect(renewDomainal.state).to.eq("new");
+          expect(renewDomainal.id).toBe(1);
+          expect(renewDomainal.state).toBe("new");
           done();
         },
         (error) => {
@@ -240,7 +237,7 @@ describe("registrar", () => {
             done("Expected error, but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -260,8 +257,8 @@ describe("registrar", () => {
       dnsimple.registrar.transferDomain(accountId, domainId, attributes).then(
         (response) => {
           const domain = response.data;
-          expect(domain.id).to.eq(1);
-          expect(domain.state).to.eq("transferring");
+          expect(domain.id).toBe(1);
+          expect(domain.state).toBe("transferring");
           done();
         },
         (error) => {
@@ -283,7 +280,7 @@ describe("registrar", () => {
             done("Expected error, but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -305,7 +302,7 @@ describe("registrar", () => {
             done("Expected error, but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -324,17 +321,15 @@ describe("registrar", () => {
       dnsimple.registrar.getDomainTransfer(accountId, domainId, 42).then(
         (response) => {
           const domainTransfer = response.data;
-          expect(domainTransfer.id).to.eq(361);
-          expect(domainTransfer.domain_id).to.eq(182245);
-          expect(domainTransfer.registrant_id).to.eq(2715);
-          expect(domainTransfer.state).to.eq("cancelled");
-          expect(domainTransfer.auto_renew).to.eq(false);
-          expect(domainTransfer.whois_privacy).to.eq(false);
-          expect(domainTransfer.status_description).to.eq(
-            "Canceled by customer"
-          );
-          expect(domainTransfer.created_at).to.eq("2020-06-05T18:08:00Z");
-          expect(domainTransfer.updated_at).to.eq("2020-06-05T18:10:01Z");
+          expect(domainTransfer.id).toBe(361);
+          expect(domainTransfer.domain_id).toBe(182245);
+          expect(domainTransfer.registrant_id).toBe(2715);
+          expect(domainTransfer.state).toBe("cancelled");
+          expect(domainTransfer.auto_renew).toBe(false);
+          expect(domainTransfer.whois_privacy).toBe(false);
+          expect(domainTransfer.status_description).toBe("Canceled by customer");
+          expect(domainTransfer.created_at).toBe("2020-06-05T18:08:00Z");
+          expect(domainTransfer.updated_at).toBe("2020-06-05T18:10:01Z");
           done();
         },
         (error) => {
@@ -355,15 +350,15 @@ describe("registrar", () => {
       dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42).then(
         (response) => {
           const domainTransfer = response.data;
-          expect(domainTransfer.id).to.eq(361);
-          expect(domainTransfer.domain_id).to.eq(182245);
-          expect(domainTransfer.registrant_id).to.eq(2715);
-          expect(domainTransfer.state).to.eq("transferring");
-          expect(domainTransfer.auto_renew).to.eq(false);
-          expect(domainTransfer.whois_privacy).to.eq(false);
-          expect(domainTransfer.status_description).to.eq(null);
-          expect(domainTransfer.created_at).to.eq("2020-06-05T18:08:00Z");
-          expect(domainTransfer.updated_at).to.eq("2020-06-05T18:08:04Z");
+          expect(domainTransfer.id).toBe(361);
+          expect(domainTransfer.domain_id).toBe(182245);
+          expect(domainTransfer.registrant_id).toBe(2715);
+          expect(domainTransfer.state).toBe("transferring");
+          expect(domainTransfer.auto_renew).toBe(false);
+          expect(domainTransfer.whois_privacy).toBe(false);
+          expect(domainTransfer.status_description).toBe(null);
+          expect(domainTransfer.created_at).toBe("2020-06-05T18:08:00Z");
+          expect(domainTransfer.updated_at).toBe("2020-06-05T18:08:04Z");
           done();
         },
         (error) => {
@@ -383,7 +378,7 @@ describe("registrar", () => {
 
       dnsimple.registrar.transferDomainOut(accountId, domainId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {

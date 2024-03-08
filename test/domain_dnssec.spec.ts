@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -29,7 +28,7 @@ describe("domains", () => {
       dnsimple.domains.enableDnssec(accountId, domainId).then(
         (response) => {
           const dnssec = response.data;
-          expect(dnssec.enabled).to.eq(true);
+          expect(dnssec.enabled).toBe(true);
           done();
         },
         (error) => {
@@ -51,7 +50,7 @@ describe("domains", () => {
 
       dnsimple.domains.disableDnssec(accountId, domainId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -85,7 +84,7 @@ describe("domains", () => {
       dnsimple.domains.getDnssec(accountId, domainId).then(
         (response) => {
           const dnssec = response.data;
-          expect(dnssec.enabled).to.eq(true);
+          expect(dnssec.enabled).toBe(true);
           done();
         },
         (error) => {

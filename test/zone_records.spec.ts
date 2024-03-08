@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -67,24 +66,22 @@ describe("zone records", () => {
       dnsimple.zones.listZoneRecords(accountId, zoneId).then(
         (response) => {
           const records = response.data;
-          expect(records.length).to.eq(5);
-          expect(records[0].id).to.eq(1);
-          expect(records[0].zone_id).to.eq(zoneId);
-          expect(records[0].name).to.eq("");
-          expect(records[0].content).to.eq(
-            "ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300"
-          );
-          expect(records[0].ttl).to.eq(3600);
-          expect(records[0].priority).to.eq(null);
-          expect(records[0].type).to.eq("SOA");
-          expect(records[0].system_record).to.eq(true);
-          expect(records[0].created_at).to.eq("2016-03-22T10:20:53Z");
-          expect(records[0].updated_at).to.eq("2016-10-05T09:26:38Z");
+          expect(records.length).toBe(5);
+          expect(records[0].id).toBe(1);
+          expect(records[0].zone_id).toBe(zoneId);
+          expect(records[0].name).toBe("");
+          expect(records[0].content).toBe("ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300");
+          expect(records[0].ttl).toBe(3600);
+          expect(records[0].priority).toBe(null);
+          expect(records[0].type).toBe("SOA");
+          expect(records[0].system_record).toBe(true);
+          expect(records[0].created_at).toBe("2016-03-22T10:20:53Z");
+          expect(records[0].updated_at).toBe("2016-10-05T09:26:38Z");
           done();
         },
         (error) => {
           done(error);
-        }
+        },
       );
     });
 
@@ -96,13 +93,13 @@ describe("zone records", () => {
       dnsimple.zones.listZoneRecords(accountId, zoneId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
           done(error);
-        }
+        },
       );
     });
   });
@@ -131,14 +128,14 @@ describe("zone records", () => {
         .collectAll(accountId, zoneId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
             done(error);
-          }
+          },
         )
         .catch((error) => {
           done(error);
@@ -159,15 +156,15 @@ describe("zone records", () => {
       dnsimple.zones.getZoneRecord(accountId, zoneId, 64784).then(
         (response) => {
           const record = response.data;
-          expect(record.id).to.eq(5);
-          expect(record.regions.length).to.eq(2);
-          expect(record.regions[0]).to.eq("SV1");
-          expect(record.regions[1]).to.eq("IAD");
+          expect(record.id).toBe(5);
+          expect(record.regions.length).toBe(2);
+          expect(record.regions[0]).toBe("SV1");
+          expect(record.regions[1]).toBe("IAD");
           done();
         },
         (error) => {
           done(error);
-        }
+        },
       );
     });
 
@@ -183,10 +180,10 @@ describe("zone records", () => {
             done("Error expected but future resolved");
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Record `0` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Record `0` not found");
             done();
-          }
+          },
         );
       });
     });
@@ -222,12 +219,12 @@ describe("zone records", () => {
       dnsimple.zones.createZoneRecord(accountId, zoneId, attributes).then(
         (response) => {
           const record = response.data;
-          expect(record.id).to.eq(1);
+          expect(record.id).toBe(1);
           done();
         },
         (error) => {
           done(error);
-        }
+        },
       );
     });
   });
@@ -260,7 +257,7 @@ describe("zone records", () => {
         .then(
           (response) => {
             const record = response.data;
-            expect(record.id).to.eq(5);
+            expect(record.id).toEqual(5);
             done();
           },
           (error) => {
@@ -283,9 +280,9 @@ describe("zone records", () => {
               done();
             },
             (error) => {
-              expect(error).to.be.instanceOf(NotFoundError);
+              expect(error).toBeInstanceOf(NotFoundError);
               done();
-            }
+            },
           );
       });
     });
@@ -315,12 +312,12 @@ describe("zone records", () => {
 
       dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
           done(error);
-        }
+        },
       );
     });
 
@@ -336,9 +333,9 @@ describe("zone records", () => {
             done("Error expected but future resolved");
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
-          }
+          },
         );
       });
     });

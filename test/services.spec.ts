@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -49,9 +48,9 @@ describe("services", () => {
       dnsimple.services.listServices().then(
         (response) => {
           const services = response.data;
-          expect(services.length).to.eq(2);
-          expect(services[0].name).to.eq("Service 1");
-          expect(services[0].sid).to.eq("service1");
+          expect(services.length).toBe(2);
+          expect(services[0].name).toBe("Service 1");
+          expect(services[0].sid).toBe("service1");
           done();
         },
         (error) => {
@@ -68,8 +67,8 @@ describe("services", () => {
       dnsimple.services.listServices().then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -100,9 +99,9 @@ describe("services", () => {
         .collectAll()
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -127,7 +126,7 @@ describe("services", () => {
       dnsimple.services.getService(serviceId).then(
         (response) => {
           const service = response.data;
-          expect(service.id).to.eq(1);
+          expect(service.id).toBe(1);
           done();
         },
         (error) => {

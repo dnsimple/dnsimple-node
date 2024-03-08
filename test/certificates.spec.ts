@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -56,10 +55,10 @@ describe("certificates", () => {
       dnsimple.certificates.listCertificates(accountId, domainId).then(
         (response) => {
           const certificates = response.data;
-          expect(certificates.length).to.eq(2);
-          expect(certificates[0].id).to.eq(101973);
-          expect(certificates[0].domain_id).to.eq(14279);
-          expect(certificates[0].common_name).to.eq("www2.dnsimple.us");
+          expect(certificates.length).toBe(2);
+          expect(certificates[0].id).toBe(101973);
+          expect(certificates[0].domain_id).toBe(14279);
+          expect(certificates[0].common_name).toBe("www2.dnsimple.us");
           done();
         },
         (error) => {
@@ -76,8 +75,8 @@ describe("certificates", () => {
       dnsimple.certificates.listCertificates(accountId, domainId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -111,9 +110,9 @@ describe("certificates", () => {
         .collectAll(accountId, domainId)
         .then(
           (certificates) => {
-            expect(certificates.length).to.eq(5);
-            expect(certificates[0].id).to.eq(1);
-            expect(certificates[4].id).to.eq(5);
+            expect(certificates.length).toBe(5);
+            expect(certificates[0].id).toBe(1);
+            expect(certificates[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -142,13 +141,13 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificate = response.data;
-            expect(certificate.id).to.eq(101967);
-            expect(certificate.domain_id).to.eq(289333);
-            expect(certificate.contact_id).to.eq(2511);
-            expect(certificate.common_name).to.eq("www.bingo.pizza");
-            expect(certificate.alternate_names).to.eql([]);
-            expect(certificate.state).to.eq("issued");
-            expect(certificate.expires_on).to.eq("2020-09-16");
+            expect(certificate.id).toBe(101967);
+            expect(certificate.domain_id).toBe(289333);
+            expect(certificate.contact_id).toBe(2511);
+            expect(certificate.common_name).toBe("www.bingo.pizza");
+            expect(certificate.alternate_names).toEqual([]);
+            expect(certificate.state).toBe("issued");
+            expect(certificate.expires_on).toBe("2020-09-16");
             done();
           },
           (error) => {
@@ -169,9 +168,9 @@ describe("certificates", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
-            expect(error).to.be.an.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Certificate `0` not found");
+            expect(error).not.toBe(null);
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Certificate `0` not found");
             done();
           }
         );
@@ -195,12 +194,10 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificate = response.data;
-            expect(certificate.server).to.match(/-----BEGIN CERTIFICATE-----/);
-            expect(certificate.root).to.eq(null);
-            expect(certificate.chain.length).to.eq(1);
-            expect(certificate.chain[0]).to.match(
-              /-----BEGIN CERTIFICATE-----/
-            );
+            expect(certificate.server).toMatch(/-----BEGIN CERTIFICATE-----/);
+            expect(certificate.root).toBe(null);
+            expect(certificate.chain.length).toBe(1);
+            expect(certificate.chain[0]).toMatch(/-----BEGIN CERTIFICATE-----/);
             done();
           },
           (error) => {
@@ -221,7 +218,7 @@ describe("certificates", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -245,9 +242,7 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificate = response.data;
-            expect(certificate.private_key).to.match(
-              /-----BEGIN RSA PRIVATE KEY-----/
-            );
+            expect(certificate.private_key).toMatch(/-----BEGIN RSA PRIVATE KEY-----/);
             done();
           },
           (error) => {
@@ -270,7 +265,7 @@ describe("certificates", () => {
               done();
             },
             (error) => {
-              expect(error).to.not.eq(null);
+              expect(error).not.toBe(null);
               done();
             }
           );
@@ -293,7 +288,7 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificate = response.data;
-            expect(certificate.id).to.eq(101967);
+            expect(certificate.id).toBe(101967);
             done();
           },
           (error) => {
@@ -321,7 +316,7 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificate = response.data;
-            expect(certificate.id).to.eq(certificateId);
+            expect(certificate.id).toBe(certificateId);
             done();
           },
           (error) => {
@@ -356,9 +351,9 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificateRenewal = response.data;
-            expect(certificateRenewal.id).to.eq(65082);
-            expect(certificateRenewal.old_certificate_id).to.eq(certificateId);
-            expect(certificateRenewal.new_certificate_id).to.eq(101972);
+            expect(certificateRenewal.id).toBe(65082);
+            expect(certificateRenewal.old_certificate_id).toBe(certificateId);
+            expect(certificateRenewal.new_certificate_id).toBe(101972);
             done();
           },
           (error) => {
@@ -395,7 +390,7 @@ describe("certificates", () => {
         .then(
           (response) => {
             const newCertificate = response.data;
-            expect(newCertificate.id).to.eq(newCertificateId);
+            expect(newCertificate.id).toBe(newCertificateId);
             done();
           },
           (error) => {

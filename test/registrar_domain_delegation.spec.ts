@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -19,7 +18,7 @@ describe("domain delegation", () => {
       dnsimple.registrar.getDomainDelegation(accountId, domainId).then(
         (response) => {
           const delegation = response.data;
-          expect(delegation).to.eql([
+          expect(delegation).toEqual([
             "ns1.dnsimple.com",
             "ns2.dnsimple.com",
             "ns3.dnsimple.com",
@@ -53,7 +52,7 @@ describe("domain delegation", () => {
         .then(
           (response) => {
             const delegation = response.data;
-            expect(delegation).to.eql([
+            expect(delegation).toEqual([
               "ns1.dnsimple.com",
               "ns2.dnsimple.com",
               "ns3.dnsimple.com",
@@ -87,7 +86,7 @@ describe("domain delegation", () => {
         .then(
           (response) => {
             const delegation = response.data;
-            expect(delegation.length).to.eq(2);
+            expect(delegation.length).toBe(2);
             done();
           },
           (error) => {
@@ -110,7 +109,7 @@ describe("domain delegation", () => {
         .changeDomainDelegationFromVanity(accountId, domainId)
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {

@@ -1,10 +1,6 @@
-import * as chai from "chai";
-import * as chaiAsPromised from "chai-as-promised";
 import * as fs from "fs";
 import * as sinon from "sinon";
 import { DNSimple } from "../lib/main";
-
-chai.use(chaiAsPromised);
 
 export const getAccessToken = () => process.env["TOKEN"] ?? "bogus";
 
@@ -36,7 +32,7 @@ export const loadFixture = (path: string) => {
     headers[pair[0]] = pair[1];
   }
 
-  const fixture = {
+  return {
     httpVersion,
     statusCode,
     headers,
@@ -48,6 +44,4 @@ export const loadFixture = (path: string) => {
           ? JSON.parse(lines.join("\n"))
           : lines.join("\n"),
   };
-
-  return fixture;
 };

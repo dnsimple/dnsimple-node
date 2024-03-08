@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -29,8 +28,8 @@ describe("webhooks", () => {
       dnsimple.webhooks.listWebhooks(accountId).then(
         (response) => {
           const webhooks = response.data;
-          expect(webhooks.length).to.eq(2);
-          expect(webhooks[0].id).to.eq(1);
+          expect(webhooks.length).toBe(2);
+          expect(webhooks[0].id).toBe(1);
           done();
         },
         (error) => {
@@ -62,8 +61,8 @@ describe("webhooks", () => {
 
       dnsimple.webhooks.listWebhooks(accountId).then(
         ({ data: items }) => {
-          expect(items.length).to.eq(2);
-          expect(items[0].id).to.eq(1);
+          expect(items.length).toBe(2);
+          expect(items[0].id).toBe(1);
           done();
         },
         (error) => {
@@ -86,8 +85,8 @@ describe("webhooks", () => {
       dnsimple.webhooks.getWebhook(accountId, webhookId).then(
         (response) => {
           const webhook = response.data;
-          expect(webhook.id).to.eq(1);
-          expect(webhook.url).to.eq("https://webhook.test");
+          expect(webhook.id).toBe(1);
+          expect(webhook.url).toBe("https://webhook.test");
           done();
         },
         (error) => {
@@ -108,8 +107,8 @@ describe("webhooks", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Webhook `0` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Webhook `0` not found");
             done();
           }
         );
@@ -141,7 +140,7 @@ describe("webhooks", () => {
       dnsimple.webhooks.createWebhook(accountId, attributes).then(
         (response) => {
           const webhook = response.data;
-          expect(webhook.id).to.eq(1);
+          expect(webhook.id).toBe(1);
           done();
         },
         (error) => {
@@ -163,7 +162,7 @@ describe("webhooks", () => {
 
       dnsimple.webhooks.deleteWebhook(accountId, webhookId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -184,7 +183,7 @@ describe("webhooks", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );

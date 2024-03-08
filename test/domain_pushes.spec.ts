@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -30,13 +29,13 @@ describe("domains", () => {
       dnsimple.domains.initiatePush(accountId, domainId, attributes).then(
         (response) => {
           const push = response.data;
-          expect(push.id).to.eq(1);
-          expect(push.domain_id).to.eq(100);
-          expect(push.contact_id).to.eq(null);
-          expect(push.account_id).to.eq(2020);
-          expect(push.created_at).to.eq("2016-08-11T10:16:03Z");
-          expect(push.updated_at).to.eq("2016-08-11T10:16:03Z");
-          expect(push.accepted_at).to.eq(null);
+          expect(push.id).toBe(1);
+          expect(push.domain_id).toBe(100);
+          expect(push.contact_id).toBe(null);
+          expect(push.account_id).toBe(2020);
+          expect(push.created_at).toBe("2016-08-11T10:16:03Z");
+          expect(push.updated_at).toBe("2016-08-11T10:16:03Z");
+          expect(push.accepted_at).toBe(null);
           done();
         },
         (error) => {
@@ -58,7 +57,7 @@ describe("domains", () => {
       dnsimple.domains.listPushes(accountId).then(
         (response) => {
           const pushes = response.data;
-          expect(pushes.length).to.eq(2);
+          expect(pushes.length).toBe(2);
           done();
         },
         (error) => {
@@ -92,7 +91,7 @@ describe("domains", () => {
 
       dnsimple.domains.acceptPush(accountId, pushId, attributes).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -125,7 +124,7 @@ describe("domains", () => {
 
       dnsimple.domains.rejectPush(accountId, pushId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {

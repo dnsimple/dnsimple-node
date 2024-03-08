@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -56,7 +55,7 @@ describe("domains", () => {
       dnsimple.domains.listEmailForwards(accountId, domainId).then(
         (response) => {
           const emailForwards = response.data;
-          expect(emailForwards.length).to.eq(2);
+          expect(emailForwards.length).toBe(2);
           done();
         },
         (error) => {
@@ -73,8 +72,8 @@ describe("domains", () => {
       dnsimple.domains.listEmailForwards(accountId, domainId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -108,9 +107,9 @@ describe("domains", () => {
         .collectAll(accountId, domainId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -139,12 +138,12 @@ describe("domains", () => {
         .then(
           (response) => {
             const emailForward = response.data;
-            expect(emailForward.id).to.eq(41872);
-            expect(emailForward.domain_id).to.eq(235146);
-            expect(emailForward.from).to.eq("example@dnsimple.xyz");
-            expect(emailForward.to).to.eq("example@example.com");
-            expect(emailForward.created_at).to.eq("2021-01-25T13:54:40Z");
-            expect(emailForward.updated_at).to.eq("2021-01-25T13:54:40Z");
+            expect(emailForward.id).toBe(41872);
+            expect(emailForward.domain_id).toBe(235146);
+            expect(emailForward.from).toBe("example@dnsimple.xyz");
+            expect(emailForward.to).toBe("example@example.com");
+            expect(emailForward.created_at).toBe("2021-01-25T13:54:40Z");
+            expect(emailForward.updated_at).toBe("2021-01-25T13:54:40Z");
             done();
           },
           (error) => {
@@ -165,8 +164,8 @@ describe("domains", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Email forward `0` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Email forward `0` not found");
             done();
           }
         );
@@ -199,7 +198,7 @@ describe("domains", () => {
       dnsimple.domains.createEmailForward(accountId, domainId, attributes).then(
         (response) => {
           const emailForward = response.data;
-          expect(emailForward.id).to.eq(41872);
+          expect(emailForward.id).toBe(41872);
           done();
         },
         (error) => {
@@ -224,7 +223,7 @@ describe("domains", () => {
         .deleteEmailForward(accountId, domainId, emailForwardId)
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {

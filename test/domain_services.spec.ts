@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -57,8 +56,8 @@ describe("domain services", () => {
       dnsimple.services.applyService(accountId, domainId).then(
         (response) => {
           const services = response.data;
-          expect(services.length).to.eq(1);
-          expect(services[0].name).to.eq("WordPress");
+          expect(services.length).toBe(1);
+          expect(services[0].name).toBe("WordPress");
           done();
         },
         (error) => {
@@ -92,9 +91,9 @@ describe("domain services", () => {
         .collectAll(accountId, domainId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -123,7 +122,7 @@ describe("domain services", () => {
         .appliedServices(accountId, domainId, serviceId, {})
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {
@@ -147,7 +146,7 @@ describe("domain services", () => {
 
       dnsimple.services.unapplyService(accountId, domainId, serviceId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {

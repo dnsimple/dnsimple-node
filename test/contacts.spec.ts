@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -64,11 +63,11 @@ describe("contacts", () => {
       dnsimple.contacts.listContacts(accountId).then(
         (response) => {
           const contacts = response.data;
-          expect(contacts.length).to.eq(2);
-          expect(contacts[0].account_id).to.eq(1010);
-          expect(contacts[0].label).to.eq("Default");
-          expect(contacts[0].first_name).to.eq("First");
-          expect(contacts[0].last_name).to.eq("User");
+          expect(contacts.length).toBe(2);
+          expect(contacts[0].account_id).toBe(1010);
+          expect(contacts[0].label).toBe("Default");
+          expect(contacts[0].first_name).toBe("First");
+          expect(contacts[0].last_name).toBe("User");
           done();
         },
         (error) => {
@@ -85,8 +84,8 @@ describe("contacts", () => {
       dnsimple.contacts.listContacts(accountId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -119,9 +118,9 @@ describe("contacts", () => {
         .collectAll(accountId)
         .then(
           (contacts) => {
-            expect(contacts.length).to.eq(5);
-            expect(contacts[0].id).to.eq(1);
-            expect(contacts[4].id).to.eq(5);
+            expect(contacts.length).toBe(5);
+            expect(contacts[0].id).toBe(1);
+            expect(contacts[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -146,11 +145,11 @@ describe("contacts", () => {
       dnsimple.contacts.getContact(accountId, 1).then(
         (response) => {
           const contact = response.data;
-          expect(contact.id).to.eq(1);
-          expect(contact.account_id).to.eq(1010);
-          expect(contact.label).to.eq("Default");
-          expect(contact.first_name).to.eq("First");
-          expect(contact.last_name).to.eq("User");
+          expect(contact.id).toBe(1);
+          expect(contact.account_id).toBe(1010);
+          expect(contact.label).toBe("Default");
+          expect(contact.first_name).toBe("First");
+          expect(contact.last_name).toBe("User");
           done();
         },
         (error) => {
@@ -172,8 +171,8 @@ describe("contacts", () => {
             done("Error expected but future resolved");
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Contact `0` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Contact `0` not found");
             done();
           }
         );
@@ -205,11 +204,11 @@ describe("contacts", () => {
       dnsimple.contacts.createContact(accountId, attributes).then(
         (response) => {
           const contact = response.data;
-          expect(contact.id).to.eq(1);
-          expect(contact.account_id).to.eq(1010);
-          expect(contact.label).to.eq("Default");
-          expect(contact.first_name).to.eq("First");
-          expect(contact.last_name).to.eq("User");
+          expect(contact.id).toBe(1);
+          expect(contact.account_id).toBe(1010);
+          expect(contact.label).toBe("Default");
+          expect(contact.first_name).toBe("First");
+          expect(contact.last_name).toBe("User");
           done();
         },
         (error) => {
@@ -230,31 +229,31 @@ describe("contacts", () => {
           throw new Error("The promise should follow the rejection path");
         },
         (error) => {
-          expect(error.attributeErrors().address1).to.deep.eq([
+          expect(error.attributeErrors().address1).toEqual([
             "can't be blank",
           ]);
-          expect(error.attributeErrors().city).to.deep.eq(["can't be blank"]);
-          expect(error.attributeErrors().country).to.deep.eq([
+          expect(error.attributeErrors().city).toEqual(["can't be blank"]);
+          expect(error.attributeErrors().country).toEqual([
             "can't be blank",
           ]);
-          expect(error.attributeErrors().email).to.deep.eq([
+          expect(error.attributeErrors().email).toEqual([
             "can't be blank",
             "is an invalid email address",
           ]);
-          expect(error.attributeErrors().first_name).to.deep.eq([
+          expect(error.attributeErrors().first_name).toEqual([
             "can't be blank",
           ]);
-          expect(error.attributeErrors().last_name).to.deep.eq([
+          expect(error.attributeErrors().last_name).toEqual([
             "can't be blank",
           ]);
-          expect(error.attributeErrors().phone).to.deep.eq([
+          expect(error.attributeErrors().phone).toEqual([
             "can't be blank",
             "is probably not a phone number",
           ]);
-          expect(error.attributeErrors().postal_code).to.deep.eq([
+          expect(error.attributeErrors().postal_code).toEqual([
             "can't be blank",
           ]);
-          expect(error.attributeErrors().state_province).to.deep.eq([
+          expect(error.attributeErrors().state_province).toEqual([
             "can't be blank",
           ]);
         }
@@ -287,7 +286,7 @@ describe("contacts", () => {
       dnsimple.contacts.updateContact(accountId, contactId, attributes).then(
         (response) => {
           const contact = response.data;
-          expect(contact.id).to.eq(1);
+          expect(contact.id).toBe(1);
           done();
         },
         (error) => {
@@ -308,7 +307,7 @@ describe("contacts", () => {
             done("Expected error but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -339,7 +338,7 @@ describe("contacts", () => {
 
       dnsimple.contacts.deleteContact(accountId, contactId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {
@@ -360,7 +359,7 @@ describe("contacts", () => {
             done("Error expected but future resolved");
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );

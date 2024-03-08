@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { ClientError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -18,7 +17,7 @@ describe("billing", () => {
       dnsimple.billing.listCharges(accountId).then(
         (response) => {
           const certificates = response.data;
-          expect(certificates).to.deep.eq([
+          expect(certificates).toEqual([
             {
               invoiced_at: "2023-08-17T05:53:36Z",
               total_amount: "14.50",
@@ -94,12 +93,10 @@ describe("billing", () => {
           throw new Error("Unreachable");
         },
         (error) => {
-          expect(error).to.be.an.instanceOf(ClientError);
+          expect(error).toBeInstanceOf(ClientError);
           const clientError = error as ClientError;
-          expect(clientError.status).to.equal(400);
-          expect(clientError.data.message).to.equal(
-            "Invalid date format must be ISO8601 (YYYY-MM-DD)"
-          );
+          expect(clientError.status).toBe(400);
+          expect(clientError.data.message).toBe("Invalid date format must be ISO8601 (YYYY-MM-DD)");
           done();
         }
       );
@@ -116,12 +113,10 @@ describe("billing", () => {
           throw new Error("Unreachable");
         },
         (error) => {
-          expect(error).to.be.an.instanceOf(ClientError);
+          expect(error).toBeInstanceOf(ClientError);
           const clientError = error as ClientError;
-          expect(clientError.status).to.equal(403);
-          expect(clientError.data.message).to.equal(
-            "Permission Denied. Required Scope: billing:*:read"
-          );
+          expect(clientError.status).toBe(403);
+          expect(clientError.data.message).toBe("Permission Denied. Required Scope: billing:*:read");
           done();
         }
       );

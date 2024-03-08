@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -18,12 +17,12 @@ describe("zones", () => {
       dnsimple.zones.activateDns(accountId, "example.com").then(
         (response) => {
           const zone = response.data;
-          expect(zone.id).to.eq(1);
-          expect(zone.account_id).to.eq(1010);
-          expect(zone.name).to.eq("example.com");
-          expect(zone.reverse).to.eq(false);
-          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
-          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
+          expect(zone.id).toBe(1);
+          expect(zone.account_id).toBe(1010);
+          expect(zone.name).toBe("example.com");
+          expect(zone.reverse).toBe(false);
+          expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
+          expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
           done();
         },
         (error) => {
@@ -45,12 +44,12 @@ describe("zones", () => {
       dnsimple.zones.deactivateDns(accountId, "example.com").then(
         (response) => {
           const zone = response.data;
-          expect(zone.id).to.eq(1);
-          expect(zone.account_id).to.eq(1010);
-          expect(zone.name).to.eq("example.com");
-          expect(zone.reverse).to.eq(false);
-          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
-          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
+          expect(zone.id).toBe(1);
+          expect(zone.account_id).toBe(1010);
+          expect(zone.name).toBe("example.com");
+          expect(zone.reverse).toBe(false);
+          expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
+          expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
           done();
         },
         (error) => {
@@ -116,9 +115,9 @@ describe("zones", () => {
       dnsimple.zones.listZones(accountId).then(
         (response) => {
           const zones = response.data;
-          expect(zones.length).to.eq(2);
-          expect(zones[0].name).to.eq("example-alpha.com");
-          expect(zones[0].account_id).to.eq(1010);
+          expect(zones.length).toBe(2);
+          expect(zones[0].name).toBe("example-alpha.com");
+          expect(zones[0].account_id).toBe(1010);
           done();
         },
         (error) => {
@@ -135,8 +134,8 @@ describe("zones", () => {
       dnsimple.zones.listZones(accountId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -169,9 +168,9 @@ describe("zones", () => {
         .collectAll(accountId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -196,15 +195,15 @@ describe("zones", () => {
       dnsimple.zones.getZone(accountId, "example-alpha.com").then(
         (response) => {
           const zone = response.data;
-          expect(zone.id).to.eq(1);
-          expect(zone.account_id).to.eq(1010);
-          expect(zone.name).to.eq("example-alpha.com");
-          expect(zone.reverse).to.eq(false);
-          expect(zone.secondary).to.eq(false);
-          expect(zone.last_transferred_at).to.eq(null);
-          expect(zone.active).to.eq(true);
-          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
-          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
+          expect(zone.id).toBe(1);
+          expect(zone.account_id).toBe(1010);
+          expect(zone.name).toBe("example-alpha.com");
+          expect(zone.reverse).toBe(false);
+          expect(zone.secondary).toBe(false);
+          expect(zone.last_transferred_at).toBe(null);
+          expect(zone.active).toBe(true);
+          expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
+          expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
           done();
         },
         (error) => {
@@ -225,8 +224,8 @@ describe("zones", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Zone `0` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Zone `0` not found");
             done();
           }
         );
@@ -246,7 +245,7 @@ describe("zones", () => {
       dnsimple.zones.getZoneFile(accountId, "example-alpha.com").then(
         (response) => {
           const zone = response.data;
-          expect(zone).to.not.eq(null);
+          expect(zone).not.toBe(null);
           done();
         },
         (error) => {
@@ -267,7 +266,7 @@ describe("zones", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );
@@ -287,7 +286,7 @@ describe("zones", () => {
       dnsimple.zones.checkZoneDistribution(accountId, "example-alpha.com").then(
         (response) => {
           const zone = response.data;
-          expect(zone).to.not.eq(null);
+          expect(zone).not.toBe(null);
           done();
         },
         (error) => {
@@ -309,7 +308,7 @@ describe("zones", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -329,7 +328,7 @@ describe("zones", () => {
             done();
           },
           (error) => {
-            expect(error).to.not.eq(null);
+            expect(error).not.toBe(null);
             done();
           }
         );
@@ -349,7 +348,7 @@ describe("zones", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
+            expect(error).toBeInstanceOf(NotFoundError);
             done();
           }
         );
@@ -372,7 +371,7 @@ describe("zones", () => {
         .then(
           (response) => {
             const zone = response.data;
-            expect(zone).to.not.eq(null);
+            expect(zone).not.toBe(null);
             done();
           },
           (error) => {
@@ -396,7 +395,7 @@ describe("zones", () => {
               done();
             },
             (error) => {
-              expect(error).to.not.eq(null);
+              expect(error).not.toBe(null);
               done();
             }
           );
@@ -418,7 +417,7 @@ describe("zones", () => {
               done();
             },
             (error) => {
-              expect(error).to.not.eq(null);
+              expect(error).not.toBe(null);
               done();
             }
           );
@@ -440,7 +439,7 @@ describe("zones", () => {
               done();
             },
             (error) => {
-              expect(error).to.be.instanceOf(NotFoundError);
+              expect(error).toBeInstanceOf(NotFoundError);
               done();
             }
           );
@@ -462,7 +461,7 @@ describe("zones", () => {
               done();
             },
             (error) => {
-              expect(error).to.be.instanceOf(NotFoundError);
+              expect(error).toBeInstanceOf(NotFoundError);
               done();
             }
           );

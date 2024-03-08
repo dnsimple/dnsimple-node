@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -64,9 +63,9 @@ describe("domains", () => {
       dnsimple.domains.listDomains(accountId).then(
         (response) => {
           const domains = response.data;
-          expect(domains.length).to.eq(2);
-          expect(domains[0].name).to.eq("example-alpha.com");
-          expect(domains[0].account_id).to.eq(1385);
+          expect(domains.length).toBe(2);
+          expect(domains[0].name).toBe("example-alpha.com");
+          expect(domains[0].account_id).toBe(1385);
           done();
         },
         (error) => {
@@ -83,8 +82,8 @@ describe("domains", () => {
       dnsimple.domains.listDomains(accountId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -117,9 +116,9 @@ describe("domains", () => {
         .collectAll(accountId)
         .then(
           (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
+            expect(items.length).toBe(5);
+            expect(items[0].id).toBe(1);
+            expect(items[4].id).toBe(5);
             done();
           },
           (error) => {
@@ -145,17 +144,17 @@ describe("domains", () => {
       dnsimple.domains.getDomain(accountId, domainId).then(
         (response) => {
           const domain = response.data;
-          expect(domain.id).to.eq(181984);
-          expect(domain.account_id).to.eq(1385);
-          expect(domain.registrant_id).to.eq(2715);
-          expect(domain.name).to.eq("example-alpha.com");
-          expect(domain.state).to.eq("registered");
-          expect(domain.auto_renew).to.eq(false);
-          expect(domain.private_whois).to.eq(false);
-          expect(domain.expires_on).to.eq("2021-06-05");
-          expect(domain.expires_at).to.eq("2021-06-05T02:15:00Z");
-          expect(domain.created_at).to.eq("2020-06-04T19:15:14Z");
-          expect(domain.updated_at).to.eq("2020-06-04T19:15:21Z");
+          expect(domain.id).toBe(181984);
+          expect(domain.account_id).toBe(1385);
+          expect(domain.registrant_id).toBe(2715);
+          expect(domain.name).toBe("example-alpha.com");
+          expect(domain.state).toBe("registered");
+          expect(domain.auto_renew).toBe(false);
+          expect(domain.private_whois).toBe(false);
+          expect(domain.expires_on).toBe("2021-06-05");
+          expect(domain.expires_at).toBe("2021-06-05T02:15:00Z");
+          expect(domain.created_at).toBe("2020-06-04T19:15:14Z");
+          expect(domain.updated_at).toBe("2020-06-04T19:15:21Z");
           done();
         },
         (error) => {
@@ -176,8 +175,8 @@ describe("domains", () => {
             done();
           },
           (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Domain `0` not found");
+            expect(error).toBeInstanceOf(NotFoundError);
+            expect(error.data.message).toBe("Domain `0` not found");
             done();
           }
         );
@@ -209,7 +208,7 @@ describe("domains", () => {
       dnsimple.domains.createDomain(accountId, attributes).then(
         (response) => {
           const domain = response.data;
-          expect(domain.id).to.eq(181985);
+          expect(domain.id).toBe(181985);
           done();
         },
         (error) => {
@@ -231,7 +230,7 @@ describe("domains", () => {
 
       dnsimple.domains.deleteDomain(accountId, domainId).then(
         (response) => {
-          expect(response).to.eql({});
+          expect(response).toEqual({});
           done();
         },
         (error) => {

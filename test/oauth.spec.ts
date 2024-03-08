@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -60,11 +59,9 @@ describe("oauth", () => {
         })
         .then(
           (response) => {
-            expect(response.access_token).to.eq(
-              "zKQ7OLqF5N1gylcJweA9WodA000BUNJD"
-            );
-            expect(response.token_type).to.eq("Bearer");
-            expect(response.account_id).to.eq(1);
+            expect(response.access_token).toBe("zKQ7OLqF5N1gylcJweA9WodA000BUNJD");
+            expect(response.token_type).toBe("Bearer");
+            expect(response.account_id).toBe(1);
             done();
           },
           (error) => {
@@ -124,11 +121,9 @@ describe("oauth", () => {
         return obj;
       };
 
-      expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
-      expect(authorizeUrl.host).to.eq(expectedUrl.host);
-      expect(searchParamsToObj(authorizeUrl.searchParams)).to.deep.equal(
-        searchParamsToObj(expectedUrl.searchParams)
-      );
+      expect(authorizeUrl.protocol).toBe(expectedUrl.protocol);
+      expect(authorizeUrl.host).toBe(expectedUrl.host);
+      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(searchParamsToObj(expectedUrl.searchParams));
     });
   });
 });

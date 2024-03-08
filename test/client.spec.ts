@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { ClientError, MethodNotAllowedError } from "../lib/main";
 import { createTestClient, loadFixture } from "./util";
@@ -18,8 +17,8 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error).to.be.instanceOf(ClientError);
-          expect(error.data.errors.email).to.include("can't be blank");
+          expect(error).toBeInstanceOf(ClientError);
+          expect(error.data.errors.email).toEqual(expect.arrayContaining(["can't be blank"]));
           done();
         }
       );
@@ -38,7 +37,7 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error).instanceOf(SyntaxError);
+          expect(error).toBeInstanceOf(SyntaxError);
           done();
         }
       );
@@ -57,7 +56,7 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error).to.be.instanceOf(SyntaxError);
+          expect(error).toBeInstanceOf(SyntaxError);
           done();
         }
       );
@@ -76,7 +75,7 @@ describe("response handling", () => {
           done("Expected error but promise resolved");
         },
         (error) => {
-          expect(error).to.be.instanceOf(MethodNotAllowedError);
+          expect(error).toBeInstanceOf(MethodNotAllowedError);
           done();
         }
       );

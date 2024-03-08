@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -17,7 +16,7 @@ describe("domain transfer lock", () => {
 
       dnsimple.registrar.getDomainTransferLock(accountId, "101").then(
         ({ data }) => {
-          expect(data).to.deep.eq({
+          expect(data).toEqual({
             enabled: true,
           });
           done();
@@ -39,7 +38,7 @@ describe("domain transfer lock", () => {
 
       dnsimple.registrar.enableDomainTransferLock(accountId, "101").then(
         ({ data }) => {
-          expect(data).to.deep.eq({
+          expect(data).toEqual({
             enabled: true,
           });
           done();
@@ -61,7 +60,7 @@ describe("domain transfer lock", () => {
 
       dnsimple.registrar.disableDomainTransferLock(accountId, "101").then(
         ({ data }) => {
-          expect(data).to.deep.eq({
+          expect(data).toEqual({
             enabled: false,
           });
           done();

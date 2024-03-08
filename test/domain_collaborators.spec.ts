@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { createTestClient, loadFixture } from "./util";
 
@@ -44,10 +43,10 @@ describe("collaborators", () => {
       dnsimple.domains.listCollaborators(accountId, domainId).then(
         (response) => {
           const collaborators = response.data;
-          expect(collaborators.length).to.eq(2);
-          expect(collaborators[0].id).to.eq(100);
-          expect(collaborators[0].domain_id).to.eq(1);
-          expect(collaborators[0].user_id).to.eq(999);
+          expect(collaborators.length).toBe(2);
+          expect(collaborators[0].id).toBe(100);
+          expect(collaborators[0].domain_id).toBe(1);
+          expect(collaborators[0].user_id).toBe(999);
           done();
         },
         (error) => {
@@ -64,8 +63,8 @@ describe("collaborators", () => {
       dnsimple.domains.listCollaborators(accountId, domainId).then(
         (response) => {
           const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
+          expect(pagination).not.toBe(null);
+          expect(pagination.current_page).toBe(1);
           done();
         },
         (error) => {
@@ -92,8 +91,8 @@ describe("collaborators", () => {
       dnsimple.domains.addCollaborator(accountId, domainId, collaborator).then(
         (response) => {
           const data = response.data;
-          expect(data.id).to.eql(100);
-          expect(data.invitation).to.eql(false);
+          expect(data.id).toEqual(100);
+          expect(data.invitation).toEqual(false);
           done();
         },
         (error) => {
@@ -119,7 +118,7 @@ describe("collaborators", () => {
         .removeCollaborator(accountId, domainId, collaboratorId)
         .then(
           (response) => {
-            expect(response).to.eql({});
+            expect(response).toEqual({});
             done();
           },
           (error) => {
