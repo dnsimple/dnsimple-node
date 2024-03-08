@@ -71,7 +71,9 @@ describe("registrar", () => {
           },
           (error) => {
             expect(error).toBeInstanceOf(ClientError);
-            expect(error.data.message).toBe("`example.com` is not a premium domain for registration");
+            expect(error.data.message).toBe(
+              "`example.com` is not a premium domain for registration"
+            );
             done();
           }
         );
@@ -327,7 +329,9 @@ describe("registrar", () => {
           expect(domainTransfer.state).toBe("cancelled");
           expect(domainTransfer.auto_renew).toBe(false);
           expect(domainTransfer.whois_privacy).toBe(false);
-          expect(domainTransfer.status_description).toBe("Canceled by customer");
+          expect(domainTransfer.status_description).toBe(
+            "Canceled by customer"
+          );
           expect(domainTransfer.created_at).toBe("2020-06-05T18:08:00Z");
           expect(domainTransfer.updated_at).toBe("2020-06-05T18:10:01Z");
           done();

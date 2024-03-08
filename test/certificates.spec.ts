@@ -242,7 +242,9 @@ describe("certificates", () => {
         .then(
           (response) => {
             const certificate = response.data;
-            expect(certificate.private_key).toMatch(/-----BEGIN RSA PRIVATE KEY-----/);
+            expect(certificate.private_key).toMatch(
+              /-----BEGIN RSA PRIVATE KEY-----/
+            );
             done();
           },
           (error) => {

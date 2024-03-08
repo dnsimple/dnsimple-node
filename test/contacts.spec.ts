@@ -229,13 +229,9 @@ describe("contacts", () => {
           throw new Error("The promise should follow the rejection path");
         },
         (error) => {
-          expect(error.attributeErrors().address1).toEqual([
-            "can't be blank",
-          ]);
+          expect(error.attributeErrors().address1).toEqual(["can't be blank"]);
           expect(error.attributeErrors().city).toEqual(["can't be blank"]);
-          expect(error.attributeErrors().country).toEqual([
-            "can't be blank",
-          ]);
+          expect(error.attributeErrors().country).toEqual(["can't be blank"]);
           expect(error.attributeErrors().email).toEqual([
             "can't be blank",
             "is an invalid email address",
@@ -243,9 +239,7 @@ describe("contacts", () => {
           expect(error.attributeErrors().first_name).toEqual([
             "can't be blank",
           ]);
-          expect(error.attributeErrors().last_name).toEqual([
-            "can't be blank",
-          ]);
+          expect(error.attributeErrors().last_name).toEqual(["can't be blank"]);
           expect(error.attributeErrors().phone).toEqual([
             "can't be blank",
             "is probably not a phone number",

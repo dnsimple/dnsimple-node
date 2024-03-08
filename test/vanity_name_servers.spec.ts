@@ -24,8 +24,12 @@ describe("vanity name servers", () => {
             expect(vanityNameServers[0].id).toBe(1);
             expect(vanityNameServers[0].ipv4).toBe("127.0.0.1");
             expect(vanityNameServers[0].ipv6).toBe("::1");
-            expect(vanityNameServers[0].created_at).toBe("2016-07-14T13:22:17Z");
-            expect(vanityNameServers[0].updated_at).toBe("2016-07-14T13:22:17Z");
+            expect(vanityNameServers[0].created_at).toBe(
+              "2016-07-14T13:22:17Z"
+            );
+            expect(vanityNameServers[0].updated_at).toBe(
+              "2016-07-14T13:22:17Z"
+            );
             done();
           },
           (error) => {

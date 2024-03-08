@@ -70,7 +70,9 @@ describe("zone records", () => {
           expect(records[0].id).toBe(1);
           expect(records[0].zone_id).toBe(zoneId);
           expect(records[0].name).toBe("");
-          expect(records[0].content).toBe("ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300");
+          expect(records[0].content).toBe(
+            "ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300"
+          );
           expect(records[0].ttl).toBe(3600);
           expect(records[0].priority).toBe(null);
           expect(records[0].type).toBe("SOA");
@@ -81,7 +83,7 @@ describe("zone records", () => {
         },
         (error) => {
           done(error);
-        },
+        }
       );
     });
 
@@ -99,7 +101,7 @@ describe("zone records", () => {
         },
         (error) => {
           done(error);
-        },
+        }
       );
     });
   });
@@ -135,7 +137,7 @@ describe("zone records", () => {
           },
           (error) => {
             done(error);
-          },
+          }
         )
         .catch((error) => {
           done(error);
@@ -164,7 +166,7 @@ describe("zone records", () => {
         },
         (error) => {
           done(error);
-        },
+        }
       );
     });
 
@@ -183,7 +185,7 @@ describe("zone records", () => {
             expect(error).toBeInstanceOf(NotFoundError);
             expect(error.data.message).toBe("Record `0` not found");
             done();
-          },
+          }
         );
       });
     });
@@ -224,7 +226,7 @@ describe("zone records", () => {
         },
         (error) => {
           done(error);
-        },
+        }
       );
     });
   });
@@ -282,7 +284,7 @@ describe("zone records", () => {
             (error) => {
               expect(error).toBeInstanceOf(NotFoundError);
               done();
-            },
+            }
           );
       });
     });
@@ -317,7 +319,7 @@ describe("zone records", () => {
         },
         (error) => {
           done(error);
-        },
+        }
       );
     });
 
@@ -335,7 +337,7 @@ describe("zone records", () => {
           (error) => {
             expect(error).toBeInstanceOf(NotFoundError);
             done();
-          },
+          }
         );
       });
     });

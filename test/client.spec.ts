@@ -18,7 +18,9 @@ describe("response handling", () => {
         },
         (error) => {
           expect(error).toBeInstanceOf(ClientError);
-          expect(error.data.errors.email).toEqual(expect.arrayContaining(["can't be blank"]));
+          expect(error.data.errors.email).toEqual(
+            expect.arrayContaining(["can't be blank"])
+          );
           done();
         }
       );

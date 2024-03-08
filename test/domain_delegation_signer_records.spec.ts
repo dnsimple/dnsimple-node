@@ -142,7 +142,9 @@ describe("domains", () => {
             const dsRecord = response.data;
             expect(dsRecord.id).toBe(24);
             expect(dsRecord.algorithm).toBe("8");
-            expect(dsRecord.digest).toBe("C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F");
+            expect(dsRecord.digest).toBe(
+              "C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F"
+            );
             expect(dsRecord.digest_type).toBe("2");
             expect(dsRecord.keytag).toBe("44620");
             expect(dsRecord.public_key).toBe(null);
@@ -169,7 +171,9 @@ describe("domains", () => {
           },
           (error) => {
             expect(error).toBeInstanceOf(NotFoundError);
-            expect(error.data.message).toBe("Delegation signer record `0` not found");
+            expect(error.data.message).toBe(
+              "Delegation signer record `0` not found"
+            );
             done();
           }
         );

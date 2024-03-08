@@ -120,12 +120,16 @@ describe("tlds", () => {
           const extendedAttributes = response.data;
           expect(extendedAttributes.length).toBe(4);
           expect(extendedAttributes[0].name).toBe("uk_legal_type");
-          expect(extendedAttributes[0].description).toBe("Legal type of registrant contact");
+          expect(extendedAttributes[0].description).toBe(
+            "Legal type of registrant contact"
+          );
           expect(extendedAttributes[0].required).toBe(false);
           expect(extendedAttributes[0].options.length).toBe(17);
           expect(extendedAttributes[0].options[0].title).toBe("UK Individual");
           expect(extendedAttributes[0].options[0].value).toBe("IND");
-          expect(extendedAttributes[0].options[0].description).toBe("UK Individual (our default value)");
+          expect(extendedAttributes[0].options[0].description).toBe(
+            "UK Individual (our default value)"
+          );
           done();
         },
         (error) => {

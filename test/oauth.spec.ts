@@ -59,7 +59,9 @@ describe("oauth", () => {
         })
         .then(
           (response) => {
-            expect(response.access_token).toBe("zKQ7OLqF5N1gylcJweA9WodA000BUNJD");
+            expect(response.access_token).toBe(
+              "zKQ7OLqF5N1gylcJweA9WodA000BUNJD"
+            );
             expect(response.token_type).toBe("Bearer");
             expect(response.account_id).toBe(1);
             done();
@@ -123,7 +125,9 @@ describe("oauth", () => {
 
       expect(authorizeUrl.protocol).toBe(expectedUrl.protocol);
       expect(authorizeUrl.host).toBe(expectedUrl.host);
-      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(searchParamsToObj(expectedUrl.searchParams));
+      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(
+        searchParamsToObj(expectedUrl.searchParams)
+      );
     });
   });
 });

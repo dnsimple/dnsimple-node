@@ -96,7 +96,9 @@ describe("billing", () => {
           expect(error).toBeInstanceOf(ClientError);
           const clientError = error as ClientError;
           expect(clientError.status).toBe(400);
-          expect(clientError.data.message).toBe("Invalid date format must be ISO8601 (YYYY-MM-DD)");
+          expect(clientError.data.message).toBe(
+            "Invalid date format must be ISO8601 (YYYY-MM-DD)"
+          );
           done();
         }
       );
@@ -116,7 +118,9 @@ describe("billing", () => {
           expect(error).toBeInstanceOf(ClientError);
           const clientError = error as ClientError;
           expect(clientError.status).toBe(403);
-          expect(clientError.data.message).toBe("Permission Denied. Required Scope: billing:*:read");
+          expect(clientError.data.message).toBe(
+            "Permission Denied. Required Scope: billing:*:read"
+          );
           done();
         }
       );
