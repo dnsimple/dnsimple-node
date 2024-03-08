@@ -2,6 +2,10 @@
 
 ## main
 
+## 8.0.0
+
+- Upgraded NodeJS runtime requirements to Node JS 18 or higher
+
 ## 7.4.0
 
 ENHANCEMENTS:
