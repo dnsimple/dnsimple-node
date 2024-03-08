@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm i
-      - run: npm clean
+      - run: npm run clean
       - run: npm test
       - run: npm run format-check
       - run: npm run build
