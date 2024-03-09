@@ -16,7 +16,7 @@ describe("response handling", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(ClientError);
         expect(error.data.errors.email).toEqual(
-          expect.arrayContaining(["can't be blank"]),
+          expect.arrayContaining(["can't be blank"])
         );
       }
     });
@@ -28,7 +28,9 @@ describe("response handling", () => {
         .get("/v2/success-with-malformed-json")
         .reply(readFixtureAt("success-with-malformed-json.http"));
 
-      await expect(dnsimple.request("GET", "/success-with-malformed-json", null, {})).rejects.toThrow(SyntaxError);
+      await expect(
+        dnsimple.request("GET", "/success-with-malformed-json", null, {})
+      ).rejects.toThrow(SyntaxError);
     });
   });
 
@@ -38,7 +40,9 @@ describe("response handling", () => {
         .get("/v2/badgateway")
         .reply(readFixtureAt("badgateway.http"));
 
-      await expect(dnsimple.request("GET", "/badgateway", null, {})).rejects.toThrow(SyntaxError);
+      await expect(
+        dnsimple.request("GET", "/badgateway", null, {})
+      ).rejects.toThrow(SyntaxError);
     });
   });
 
@@ -48,7 +52,9 @@ describe("response handling", () => {
         .get("/v2/method-not-allowed")
         .reply(readFixtureAt("method-not-allowed.http"));
 
-      await expect(dnsimple.request("GET", "/method-not-allowed", null, {})).rejects.toThrow(MethodNotAllowedError);
+      await expect(
+        dnsimple.request("GET", "/method-not-allowed", null, {})
+      ).rejects.toThrow(MethodNotAllowedError);
     });
   });
 });

@@ -43,7 +43,9 @@ describe("contacts", () => {
         .get("/v2/1010/contacts?first_name_like=example")
         .reply(readFixtureAt("listContacts/success.http"));
 
-      await dnsimple.contacts.listContacts(accountId, { first_name_like: "example" });
+      await dnsimple.contacts.listContacts(accountId, {
+        first_name_like: "example",
+      });
 
       expect(scope.isDone()).toBeTruthy();
     });
@@ -92,7 +94,8 @@ describe("contacts", () => {
         .get("/v2/1010/contacts?page=3")
         .reply(readFixtureAt("pages-3of3.http"));
 
-      const contacts = await dnsimple.contacts.listContacts.collectAll(accountId);
+      const contacts =
+        await dnsimple.contacts.listContacts.collectAll(accountId);
 
       expect(contacts.length).toBe(5);
       expect(contacts[0].id).toBe(1);
@@ -124,7 +127,9 @@ describe("contacts", () => {
           .get("/v2/1010/contacts/0")
           .reply(readFixtureAt("notfound-contact.http"));
 
-        await expect(dnsimple.contacts.getContact(accountId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.contacts.getContact(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -148,7 +153,10 @@ describe("contacts", () => {
         .post("/v2/1010/contacts", attributes)
         .reply(readFixtureAt("createContact/created.http"));
 
-      const response = await dnsimple.contacts.createContact(accountId, attributes);
+      const response = await dnsimple.contacts.createContact(
+        accountId,
+        attributes
+      );
 
       const contact = response.data;
       expect(contact.id).toBe(1);
@@ -173,17 +181,13 @@ describe("contacts", () => {
           "can't be blank",
           "is an invalid email address",
         ]);
-        expect(error.attributeErrors().first_name).toEqual([
-          "can't be blank",
-        ]);
+        expect(error.attributeErrors().first_name).toEqual(["can't be blank"]);
         expect(error.attributeErrors().last_name).toEqual(["can't be blank"]);
         expect(error.attributeErrors().phone).toEqual([
           "can't be blank",
           "is probably not a phone number",
         ]);
-        expect(error.attributeErrors().postal_code).toEqual([
-          "can't be blank",
-        ]);
+        expect(error.attributeErrors().postal_code).toEqual(["can't be blank"]);
         expect(error.attributeErrors().state_province).toEqual([
           "can't be blank",
         ]);
@@ -211,7 +215,11 @@ describe("contacts", () => {
         .patch("/v2/1010/contacts/" + contactId, attributes)
         .reply(readFixtureAt("updateContact/success.http"));
 
-      const response = await dnsimple.contacts.updateContact(accountId, contactId, attributes);
+      const response = await dnsimple.contacts.updateContact(
+        accountId,
+        contactId,
+        attributes
+      );
 
       const contact = response.data;
       expect(contact.id).toBe(1);
@@ -223,7 +231,9 @@ describe("contacts", () => {
           .get("/v2/1010/contacts/0", attributes)
           .reply(readFixtureAt("notfound-contact.http"));
 
-        await expect(dnsimple.contacts.updateContact(accountId, 0, attributes)).rejects.toThrow();
+        await expect(
+          dnsimple.contacts.updateContact(accountId, 0, attributes)
+        ).rejects.toThrow();
       });
     });
   });
@@ -247,7 +257,10 @@ describe("contacts", () => {
         .delete("/v2/1010/contacts/" + contactId)
         .reply(readFixtureAt("deleteContact/success.http"));
 
-      const response = await dnsimple.contacts.deleteContact(accountId, contactId);
+      const response = await dnsimple.contacts.deleteContact(
+        accountId,
+        contactId
+      );
 
       expect(response).toEqual({});
     });
@@ -258,7 +271,9 @@ describe("contacts", () => {
           .delete("/v2/1010/contacts/0")
           .reply(readFixtureAt("notfound-contact.http"));
 
-        await expect(dnsimple.contacts.deleteContact(accountId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.contacts.deleteContact(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });

@@ -11,7 +11,6 @@ describe("oauth", () => {
   const state = "mysecretstate";
 
   describe("#exchangeAuthorizationForToken", () => {
-
     it("builds the correct request", async () => {
       const scope = nock("https://api.dnsimple.com")
         .post("/v2/oauth/access_token", {
@@ -55,9 +54,7 @@ describe("oauth", () => {
         state,
       });
 
-      expect(response.access_token).toBe(
-        "zKQ7OLqF5N1gylcJweA9WodA000BUNJD",
-      );
+      expect(response.access_token).toBe("zKQ7OLqF5N1gylcJweA9WodA000BUNJD");
       expect(response.token_type).toBe("Bearer");
       expect(response.account_id).toBe(1);
     });
@@ -98,10 +95,10 @@ describe("oauth", () => {
           clientId: "great-app",
           redirectUri,
           state,
-        }),
+        })
       );
       const expectedUrl = new URL(
-        "https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate",
+        "https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate"
       );
 
       const searchParamsToObj = (params: URLSearchParams) => {
@@ -115,7 +112,7 @@ describe("oauth", () => {
       expect(authorizeUrl.protocol).toBe(expectedUrl.protocol);
       expect(authorizeUrl.host).toBe(expectedUrl.host);
       expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(
-        searchParamsToObj(expectedUrl.searchParams),
+        searchParamsToObj(expectedUrl.searchParams)
       );
     });
   });

@@ -16,7 +16,10 @@ describe("registrar", () => {
         .get("/v2/1010/registrar/domains/ruby.codes/check")
         .reply(readFixtureAt("checkDomain/success.http"));
 
-      const response = await dnsimple.registrar.checkDomain(accountId, domainId);
+      const response = await dnsimple.registrar.checkDomain(
+        accountId,
+        domainId
+      );
 
       const checkResult = response.data;
       expect(checkResult.domain).toEqual("ruby.codes");
@@ -34,7 +37,10 @@ describe("registrar", () => {
           .get("/v2/1010/registrar/domains/ruby.codes/premium_price")
           .reply(readFixtureAt("getDomainPremiumPrice/success.http"));
 
-        const response = await dnsimple.registrar.getDomainPremiumPrice(accountId, domainId);
+        const response = await dnsimple.registrar.getDomainPremiumPrice(
+          accountId,
+          domainId
+        );
 
         const premiumPriceResult = response.data;
         expect(premiumPriceResult.premium_price).toEqual("109.00");
@@ -55,7 +61,7 @@ describe("registrar", () => {
         } catch (error) {
           expect(error).toBeInstanceOf(ClientError);
           expect(error.data.message).toBe(
-            "`example.com` is not a premium domain for registration",
+            "`example.com` is not a premium domain for registration"
           );
         }
       });
@@ -64,13 +70,15 @@ describe("registrar", () => {
 
   describe("#getDomainPrices", () => {
     describe("when the TLD is supported", () => {
-
       it("produces a domain prices result", async () => {
         nock("https://api.dnsimple.com")
           .get("/v2/1010/registrar/domains/bingo.pizza/prices")
           .reply(readFixtureAt("getDomainPrices/success.http"));
 
-        const response = await dnsimple.registrar.getDomainPrices(accountId, "bingo.pizza");
+        const response = await dnsimple.registrar.getDomainPrices(
+          accountId,
+          "bingo.pizza"
+        );
 
         const pricesResult = response.data;
         expect(pricesResult.domain).toEqual("bingo.pizza");
@@ -103,7 +111,12 @@ describe("registrar", () => {
         .get("/v2/1010/registrar/domains/example.com/registrations/1535")
         .reply(200);
 
-      await dnsimple.registrar.getDomainRegistration(1010, "example.com", 1535, {});
+      await dnsimple.registrar.getDomainRegistration(
+        1010,
+        "example.com",
+        1535,
+        {}
+      );
 
       expect(scope.isDone()).toBeTruthy();
     });
@@ -128,11 +141,15 @@ describe("registrar", () => {
       nock("https://api.dnsimple.com")
         .post(
           "/v2/1010/registrar/domains/example.com/registrations",
-          attributes,
+          attributes
         )
         .reply(readFixtureAt("registerDomain/success.http"));
 
-      const response = await dnsimple.registrar.registerDomain(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.registerDomain(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const domainRegistration = response.data;
       expect(domainRegistration.id).toBe(1);
@@ -148,12 +165,15 @@ describe("registrar", () => {
         .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
         .reply(readFixtureAt("renewDomain/success.http"));
 
-      const response = await dnsimple.registrar.renewDomain(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.renewDomain(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const renewDomainal = response.data;
       expect(renewDomainal.id).toBe(1);
       expect(renewDomainal.state).toBe("new");
-
     });
 
     describe("when it is too soon for the domain to be renewed", () => {
@@ -164,8 +184,9 @@ describe("registrar", () => {
           .post("/v2/1010/registrar/domains/example.com/renewals", attributes)
           .reply(readFixtureAt("renewDomain/error-tooearly.http"));
 
-        await expect(dnsimple.registrar.renewDomain(accountId, domainId, attributes)).rejects.toThrow();
-
+        await expect(
+          dnsimple.registrar.renewDomain(accountId, domainId, attributes)
+        ).rejects.toThrow();
       });
     });
   });
@@ -178,12 +199,15 @@ describe("registrar", () => {
         .post("/v2/1010/registrar/domains/example.com/transfers", attributes)
         .reply(readFixtureAt("transferDomain/success.http"));
 
-      const response = await dnsimple.registrar.transferDomain(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.transferDomain(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const domain = response.data;
       expect(domain.id).toBe(1);
       expect(domain.state).toBe("transferring");
-
     });
 
     describe("when the domain is already in DNSimple", () => {
@@ -192,20 +216,21 @@ describe("registrar", () => {
           .post("/v2/1010/registrar/domains/example.com/transfers", attributes)
           .reply(readFixtureAt("transferDomain/error-indnsimple.http"));
 
-        await expect(dnsimple.registrar.transferDomain(accountId, domainId, attributes)).rejects.toThrow();
-
+        await expect(
+          dnsimple.registrar.transferDomain(accountId, domainId, attributes)
+        ).rejects.toThrow();
       });
     });
 
     describe("when authcode was not provided and is required by the TLD", () => {
       it("results in an error", async () => {
-
         nock("https://api.dnsimple.com")
           .post("/v2/1010/registrar/domains/example.com/transfers", attributes)
           .reply(readFixtureAt("transferDomain/error-missing-authcode.http"));
 
-        await expect(dnsimple.registrar.transferDomain(accountId, domainId, attributes)).rejects.toThrow();
-
+        await expect(
+          dnsimple.registrar.transferDomain(accountId, domainId, attributes)
+        ).rejects.toThrow();
       });
     });
   });
@@ -216,7 +241,11 @@ describe("registrar", () => {
         .get("/v2/1010/registrar/domains/example.com/transfers/42")
         .reply(readFixtureAt("getDomainTransfer/success.http"));
 
-      const response = await dnsimple.registrar.getDomainTransfer(accountId, domainId, 42);
+      const response = await dnsimple.registrar.getDomainTransfer(
+        accountId,
+        domainId,
+        42
+      );
 
       const domainTransfer = response.data;
       expect(domainTransfer.id).toBe(361);
@@ -225,12 +254,9 @@ describe("registrar", () => {
       expect(domainTransfer.state).toBe("cancelled");
       expect(domainTransfer.auto_renew).toBe(false);
       expect(domainTransfer.whois_privacy).toBe(false);
-      expect(domainTransfer.status_description).toBe(
-        "Canceled by customer",
-      );
+      expect(domainTransfer.status_description).toBe("Canceled by customer");
       expect(domainTransfer.created_at).toBe("2020-06-05T18:08:00Z");
       expect(domainTransfer.updated_at).toBe("2020-06-05T18:10:01Z");
-
     });
   });
 
@@ -240,7 +266,11 @@ describe("registrar", () => {
         .delete("/v2/1010/registrar/domains/example.com/transfers/42")
         .reply(readFixtureAt("cancelDomainTransfer/success.http"));
 
-      const response = await dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42);
+      const response = await dnsimple.registrar.cancelDomainTransfer(
+        accountId,
+        domainId,
+        42
+      );
 
       const domainTransfer = response.data;
       expect(domainTransfer.id).toBe(361);
@@ -261,10 +291,12 @@ describe("registrar", () => {
         .post("/v2/1010/registrar/domains/example.com/authorize_transfer_out")
         .reply(readFixtureAt("authorizeDomainTransferOut/success.http"));
 
-      const response = await dnsimple.registrar.transferDomainOut(accountId, domainId);
+      const response = await dnsimple.registrar.transferDomainOut(
+        accountId,
+        domainId
+      );
 
       expect(response).toEqual({});
-
     });
   });
 });

@@ -24,7 +24,11 @@ describe("domains", () => {
         .post("/v2/1010/domains/example.com/pushes")
         .reply(readFixtureAt("initiatePush/success.http"));
 
-      const response = await dnsimple.domains.initiatePush(accountId, domainId, attributes);
+      const response = await dnsimple.domains.initiatePush(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const push = response.data;
       expect(push.id).toBe(1);
@@ -71,7 +75,11 @@ describe("domains", () => {
         .post("/v2/1010/pushes/200")
         .reply(readFixtureAt("acceptPush/success.http"));
 
-      const response = await dnsimple.domains.acceptPush(accountId, pushId, attributes);
+      const response = await dnsimple.domains.acceptPush(
+        accountId,
+        pushId,
+        attributes
+      );
 
       expect(response).toEqual({});
     });

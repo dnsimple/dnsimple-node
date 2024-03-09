@@ -13,7 +13,9 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators?page=1")
         .reply(readFixtureAt("listCollaborators/success.http"));
 
-      await dnsimple.domains.listCollaborators(accountId, domainId, { page: 1 });
+      await dnsimple.domains.listCollaborators(accountId, domainId, {
+        page: 1,
+      });
 
       expect(scope.isDone()).toBeTruthy();
     });
@@ -23,7 +25,9 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators?foo=bar")
         .reply(readFixtureAt("listCollaborators/success.http"));
 
-      await dnsimple.domains.listCollaborators(accountId, domainId, { foo: "bar" });
+      await dnsimple.domains.listCollaborators(accountId, domainId, {
+        foo: "bar",
+      });
 
       expect(scope.isDone()).toBeTruthy();
     });
@@ -33,7 +37,10 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators")
         .reply(readFixtureAt("listCollaborators/success.http"));
 
-      const response = await dnsimple.domains.listCollaborators(accountId, domainId);
+      const response = await dnsimple.domains.listCollaborators(
+        accountId,
+        domainId
+      );
 
       const collaborators = response.data;
       expect(collaborators.length).toBe(2);
@@ -47,7 +54,10 @@ describe("collaborators", () => {
         .get("/v2/1010/domains/example.com/collaborators")
         .reply(readFixtureAt("listCollaborators/success.http"));
 
-      const response = await dnsimple.domains.listCollaborators(accountId, domainId);
+      const response = await dnsimple.domains.listCollaborators(
+        accountId,
+        domainId
+      );
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -67,7 +77,11 @@ describe("collaborators", () => {
         .post("/v2/1010/domains/example.com/collaborators")
         .reply(readFixtureAt("addCollaborator/success.http"));
 
-      const response = await dnsimple.domains.addCollaborator(accountId, domainId, collaborator);
+      const response = await dnsimple.domains.addCollaborator(
+        accountId,
+        domainId,
+        collaborator
+      );
 
       const data = response.data;
       expect(data.id).toEqual(100);
@@ -81,12 +95,15 @@ describe("collaborators", () => {
     const collaboratorId = 100;
 
     it("produces nothing", async () => {
-
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/domains/example.com/collaborators/100")
         .reply(readFixtureAt("removeCollaborator/success.http"));
 
-      const response = await dnsimple.domains.removeCollaborator(accountId, domainId, collaboratorId);
+      const response = await dnsimple.domains.removeCollaborator(
+        accountId,
+        domainId,
+        collaboratorId
+      );
 
       expect(response).toEqual({});
     });

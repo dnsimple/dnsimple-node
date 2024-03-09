@@ -38,7 +38,10 @@ describe("domains", () => {
         .delete("/v2/1010/domains/example.com/dnssec")
         .reply(readFixtureAt("disableDnssec/success.http"));
 
-      const response = await dnsimple.domains.disableDnssec(accountId, domainId);
+      const response = await dnsimple.domains.disableDnssec(
+        accountId,
+        domainId
+      );
 
       expect(response).toEqual({});
     });

@@ -129,7 +129,9 @@ describe("domains", () => {
           .get("/v2/1385/domains/0")
           .reply(readFixtureAt("notfound-domain.http"));
 
-        await expect(dnsimple.domains.getDomain(accountId, "0")).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.domains.getDomain(accountId, "0")
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -153,7 +155,10 @@ describe("domains", () => {
         .post("/v2/1385/domains")
         .reply(readFixtureAt("createDomain/created.http"));
 
-      const response = await dnsimple.domains.createDomain(accountId, attributes);
+      const response = await dnsimple.domains.createDomain(
+        accountId,
+        attributes
+      );
 
       const domain = response.data;
       expect(domain.id).toBe(181985);
