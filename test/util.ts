@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import type { ReplyFnResult } from "nock/types";
-import * as sinon from "sinon";
 import { DNSimple } from "../lib/main";
 
 export const getAccessToken = () => process.env["TOKEN"] ?? "bogus";
@@ -9,12 +8,6 @@ export const createTestClient = () =>
   new DNSimple({
     accessToken: getAccessToken(),
   });
-
-export const stubRequest = (client: DNSimple) => {
-  const stub = sinon.stub();
-  client.request = stub;
-  return stub;
-};
 
 export const loadFixture = (path: string) => {
   const data = fs.readFileSync(`${__dirname}/fixtures.http/${path}`, "utf-8");
