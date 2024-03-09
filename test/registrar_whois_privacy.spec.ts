@@ -1,5 +1,5 @@
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,121 +8,96 @@ describe("whois privacy", () => {
   const domainId = "example.com";
 
   describe("#getWhoisPrivacy", () => {
-    const fixture = loadFixture("getWhoisPrivacy/success.http");
-
-    it("produces a whois privacy", (done) => {
+    it("produces a whois privacy", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/registrar/domains/example.com/whois_privacy")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getWhoisPrivacy/success.http"));
 
-      dnsimple.registrar.getWhoisPrivacy(accountId, domainId).then(
-        (response) => {
-          const whoisPrivacy = response.data;
-          expect(whoisPrivacy.id).toBe(1);
-          expect(whoisPrivacy.domain_id).toBe(2);
-          expect(whoisPrivacy.expires_on).toBe("2017-02-13");
-          expect(whoisPrivacy.enabled).toBe(true);
-          expect(whoisPrivacy.created_at).toBe("2016-02-13T14:34:50Z");
-          expect(whoisPrivacy.updated_at).toBe("2016-02-13T14:34:52Z");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.getWhoisPrivacy(
+        accountId,
+        domainId
       );
+
+      const whoisPrivacy = response.data;
+      expect(whoisPrivacy.id).toBe(1);
+      expect(whoisPrivacy.domain_id).toBe(2);
+      expect(whoisPrivacy.expires_on).toBe("2017-02-13");
+      expect(whoisPrivacy.enabled).toBe(true);
+      expect(whoisPrivacy.created_at).toBe("2016-02-13T14:34:50Z");
+      expect(whoisPrivacy.updated_at).toBe("2016-02-13T14:34:52Z");
     });
   });
 
   describe("#enableWhoisPrivacy", () => {
     describe("when whois privacy is already purchased", () => {
-      const fixture = loadFixture("enableWhoisPrivacy/success.http");
-
-      it("produces a whois privacy", (done) => {
+      it("produces a whois privacy", async () => {
         nock("https://api.dnsimple.com")
           .put("/v2/1010/registrar/domains/example.com/whois_privacy")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("enableWhoisPrivacy/success.http"));
 
-        dnsimple.registrar.enableWhoisPrivacy(accountId, domainId).then(
-          (response) => {
-            const whoisPrivacy = response.data;
-            expect(whoisPrivacy.id).toBe(1);
-            expect(whoisPrivacy.domain_id).toBe(2);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
+        const response = await dnsimple.registrar.enableWhoisPrivacy(
+          accountId,
+          domainId
         );
+
+        const whoisPrivacy = response.data;
+        expect(whoisPrivacy.id).toBe(1);
+        expect(whoisPrivacy.domain_id).toBe(2);
       });
     });
 
     describe("when whois privacy is newly purchased", () => {
-      const fixture = loadFixture("enableWhoisPrivacy/created.http");
-
-      it("produces a whois privacy", (done) => {
+      it("produces a whois privacy", async () => {
         nock("https://api.dnsimple.com")
           .put("/v2/1010/registrar/domains/example.com/whois_privacy")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("enableWhoisPrivacy/created.http"));
 
-        dnsimple.registrar.enableWhoisPrivacy(accountId, domainId).then(
-          (response) => {
-            const whoisPrivacy = response.data;
-            expect(whoisPrivacy.id).toBe(1);
-            expect(whoisPrivacy.domain_id).toBe(2);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
+        const response = await dnsimple.registrar.enableWhoisPrivacy(
+          accountId,
+          domainId
         );
+
+        const whoisPrivacy = response.data;
+        expect(whoisPrivacy.id).toBe(1);
+        expect(whoisPrivacy.domain_id).toBe(2);
       });
     });
   });
 
   describe("#disableWhoisPrivacy", () => {
-    const fixture = loadFixture("disableWhoisPrivacy/success.http");
-
-    it("produces a whois privacy", (done) => {
+    it("produces a whois privacy", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/registrar/domains/example.com/whois_privacy")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("disableWhoisPrivacy/success.http"));
 
-      dnsimple.registrar.disableWhoisPrivacy(accountId, domainId).then(
-        (response) => {
-          const whoisPrivacy = response.data;
-          expect(whoisPrivacy.id).toBe(1);
-          expect(whoisPrivacy.domain_id).toBe(2);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.disableWhoisPrivacy(
+        accountId,
+        domainId
       );
+
+      const whoisPrivacy = response.data;
+      expect(whoisPrivacy.id).toBe(1);
+      expect(whoisPrivacy.domain_id).toBe(2);
     });
   });
 
   describe("#renewWhoisPrivacy", () => {
-    const fixture = loadFixture("renewWhoisPrivacy/success.http");
-
-    it("produces a whois privacy renewal", (done) => {
+    it("produces a whois privacy renewal", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/registrar/domains/example.com/whois_privacy/renewals")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("renewWhoisPrivacy/success.http"));
 
-      dnsimple.registrar.renewWhoisPrivacy(accountId, domainId).then(
-        (response) => {
-          const whoisPrivacyRenewal = response.data;
-          expect(whoisPrivacyRenewal.id).toBe(1);
-          expect(whoisPrivacyRenewal.domain_id).toBe(100);
-          expect(whoisPrivacyRenewal.whois_privacy_id).toBe(999);
-          expect(whoisPrivacyRenewal.state).toBe("new");
-          expect(whoisPrivacyRenewal.enabled).toBe(true);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.renewWhoisPrivacy(
+        accountId,
+        domainId
       );
+
+      const whoisPrivacyRenewal = response.data;
+      expect(whoisPrivacyRenewal.id).toBe(1);
+      expect(whoisPrivacyRenewal.domain_id).toBe(100);
+      expect(whoisPrivacyRenewal.whois_privacy_id).toBe(999);
+      expect(whoisPrivacyRenewal.state).toBe("new");
+      expect(whoisPrivacyRenewal.enabled).toBe(true);
     });
   });
 });

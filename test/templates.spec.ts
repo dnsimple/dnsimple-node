@@ -1,120 +1,91 @@
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
 describe("templates", () => {
   describe("#listTemplates", () => {
     const accountId = 1010;
-    const fixture = loadFixture("listTemplates/success.http");
 
-    it("supports pagination", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports pagination", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/templates?page=1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplates/success.http"));
 
-      dnsimple.templates.listTemplates(accountId, { page: 1 });
+      await dnsimple.templates.listTemplates(accountId, { page: 1 });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/templates?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplates/success.http"));
 
-      dnsimple.templates.listTemplates(accountId, { foo: "bar" });
+      await dnsimple.templates.listTemplates(accountId, { foo: "bar" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports sorting", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports sorting", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/templates?sort=name%3Aasc")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplates/success.http"));
 
-      dnsimple.templates.listTemplates(accountId, { sort: "name:asc" });
+      await dnsimple.templates.listTemplates(accountId, { sort: "name:asc" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a template list", (done) => {
+    it("produces a template list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplates/success.http"));
 
-      dnsimple.templates.listTemplates(accountId).then(
-        (response) => {
-          const templates = response.data;
-          expect(templates.length).toBe(2);
-          expect(templates[0].name).toBe("Alpha");
-          expect(templates[0].account_id).toBe(1010);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.templates.listTemplates(accountId);
+
+      const templates = response.data;
+      expect(templates.length).toBe(2);
+      expect(templates[0].name).toBe("Alpha");
+      expect(templates[0].account_id).toBe(1010);
     });
 
-    it("exposes the pagination info", (done) => {
+    it("exposes the pagination info", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplates/success.http"));
 
-      dnsimple.templates.listTemplates(accountId).then(
-        (response) => {
-          const pagination = response.pagination;
-          expect(pagination).not.toBe(null);
-          expect(pagination.current_page).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.templates.listTemplates(accountId);
+
+      const pagination = response.pagination;
+      expect(pagination).not.toBe(null);
+      expect(pagination.current_page).toBe(1);
     });
   });
 
   describe("#listTemplates.collectAll", () => {
     const accountId = 1010;
 
-    it("produces a complete list", (done) => {
-      const fixture1 = loadFixture("pages-1of3.http");
+    it("produces a complete list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates?page=1")
-        .reply(fixture1.statusCode, fixture1.body);
+        .reply(readFixtureAt("pages-1of3.http"));
 
-      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates?page=2")
-        .reply(fixture2.statusCode, fixture2.body);
+        .reply(readFixtureAt("pages-2of3.http"));
 
-      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates?page=3")
-        .reply(fixture3.statusCode, fixture3.body);
+        .reply(readFixtureAt("pages-3of3.http"));
 
-      dnsimple.templates.listTemplates
-        .collectAll(accountId)
-        .then(
-          (items) => {
-            expect(items.length).toBe(5);
-            expect(items[0].id).toBe(1);
-            expect(items[4].id).toBe(5);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        )
-        .catch((error) => {
-          done(error);
-        });
+      const items =
+        await dnsimple.templates.listTemplates.collectAll(accountId);
+
+      expect(items.length).toBe(5);
+      expect(items[0].id).toBe(1);
+      expect(items[4].id).toBe(5);
     });
   });
 
@@ -122,49 +93,35 @@ describe("templates", () => {
     const accountId = 1010;
     const templateId = "name";
 
-    it("produces a template", (done) => {
-      const fixture = loadFixture("getTemplate/success.http");
-
+    it("produces a template", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/name")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getTemplate/success.http"));
 
-      dnsimple.templates.getTemplate(accountId, templateId).then(
-        (response) => {
-          const template = response.data;
-          expect(template.id).toBe(1);
-          expect(template.account_id).toBe(1010);
-          expect(template.name).toBe("Alpha");
-          expect(template.sid).toBe("alpha");
-          expect(template.description).toBe("An alpha template.");
-          expect(template.created_at).toBe("2016-03-22T11:08:58Z");
-          expect(template.updated_at).toBe("2016-03-22T11:08:58Z");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.getTemplate(
+        accountId,
+        templateId
       );
+
+      const template = response.data;
+      expect(template.id).toBe(1);
+      expect(template.account_id).toBe(1010);
+      expect(template.name).toBe("Alpha");
+      expect(template.sid).toBe("alpha");
+      expect(template.description).toBe("An alpha template.");
+      expect(template.created_at).toBe("2016-03-22T11:08:58Z");
+      expect(template.updated_at).toBe("2016-03-22T11:08:58Z");
     });
 
     describe("when the template does not exist", () => {
-      it("produces an error", (done) => {
-        const fixture = loadFixture("notfound-template.http");
-
+      it("produces an error", async () => {
         nock("https://api.dnsimple.com")
           .get("/v2/1010/templates/name")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("notfound-template.http"));
 
-        dnsimple.templates.getTemplate(accountId, templateId).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            expect(error.data.message).toBe("Template `beta` not found");
-            done();
-          }
-        );
+        await expect(
+          dnsimple.templates.getTemplate(accountId, templateId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -172,34 +129,28 @@ describe("templates", () => {
   describe("#createTemplate", () => {
     const accountId = 1010;
     const attributes = { name: "Beta" };
-    const fixture = loadFixture("createTemplate/created.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/templates", { name: "Beta" })
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createTemplate/created.http"));
 
-      dnsimple.templates.createTemplate(accountId, attributes);
+      await dnsimple.templates.createTemplate(accountId, attributes);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a template", (done) => {
+    it("produces a template", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/templates")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createTemplate/created.http"));
 
-      dnsimple.templates.createTemplate(accountId, attributes).then(
-        (response) => {
-          const template = response.data;
-          expect(template.id).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.createTemplate(
+        accountId,
+        attributes
       );
+
+      expect(response.data.id).toBe(1);
     });
   });
 
@@ -207,53 +158,44 @@ describe("templates", () => {
     const accountId = 1010;
     const templateId = 1;
     const attributes = { name: "Alpha" };
-    const fixture = loadFixture("updateTemplate/success.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .patch("/v2/1010/templates/1", { name: "Alpha" })
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("updateTemplate/success.http"));
 
-      dnsimple.templates.updateTemplate(accountId, templateId, attributes);
+      await dnsimple.templates.updateTemplate(
+        accountId,
+        templateId,
+        attributes
+      );
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a template", (done) => {
+    it("produces a template", async () => {
       nock("https://api.dnsimple.com")
         .patch("/v2/1010/templates/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("updateTemplate/success.http"));
 
-      dnsimple.templates.updateTemplate(accountId, templateId, attributes).then(
-        (response) => {
-          const template = response.data;
-          expect(template.id).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.updateTemplate(
+        accountId,
+        templateId,
+        attributes
       );
+
+      expect(response.data.id).toBe(1);
     });
 
     describe("when the template does not exist", () => {
-      it("produces an error", (done) => {
-        const fixture = loadFixture("notfound-template.http");
-
+      it("produces an error", async () => {
         nock("https://api.dnsimple.com")
           .patch("/v2/1010/templates/0")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("notfound-template.http"));
 
-        dnsimple.templates.updateTemplate(accountId, 0, attributes).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.templates.updateTemplate(accountId, 0, attributes)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -261,22 +203,18 @@ describe("templates", () => {
   describe("#deleteTemplate", () => {
     const accountId = 1010;
     const templateId = 1;
-    const fixture = loadFixture("deleteTemplate/success.http");
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/templates/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("deleteTemplate/success.http"));
 
-      dnsimple.templates.deleteTemplate(accountId, templateId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.deleteTemplate(
+        accountId,
+        templateId
       );
+
+      expect(response).toEqual({});
     });
   });
 
@@ -284,22 +222,19 @@ describe("templates", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const templateId = 1;
-    const fixture = loadFixture("applyTemplate/success.http");
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/templates/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("applyTemplate/success.http"));
 
-      dnsimple.templates.applyTemplate(accountId, domainId, templateId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.applyTemplate(
+        accountId,
+        domainId,
+        templateId
       );
+
+      expect(response).toEqual({});
     });
   });
 });
@@ -308,80 +243,69 @@ describe("template records", () => {
   describe("#listTemplateRecords", () => {
     const accountId = 1010;
     const templateId = "1";
-    const fixture = loadFixture("listTemplateRecords/success.http");
 
-    it("supports pagination", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports pagination", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records?page=1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplateRecords/success.http"));
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId, {
+      await dnsimple.templates.listTemplateRecords(accountId, templateId, {
         page: 1,
       });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplateRecords/success.http"));
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId, {
+      await dnsimple.templates.listTemplateRecords(accountId, templateId, {
         foo: "bar",
       });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports sorting", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports sorting", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records?sort=name%3Aasc")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplateRecords/success.http"));
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId, {
+      await dnsimple.templates.listTemplateRecords(accountId, templateId, {
         sort: "name:asc",
       });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a template list", (done) => {
+    it("produces a template list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplateRecords/success.http"));
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId).then(
-        (response) => {
-          const records = response.data;
-          expect(records.length).toBe(2);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.listTemplateRecords(
+        accountId,
+        templateId
       );
+
+      expect(response.data.length).toBe(2);
     });
 
-    it("exposes the pagination info", (done) => {
+    it("exposes the pagination info", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTemplateRecords/success.http"));
 
-      dnsimple.templates.listTemplateRecords(accountId, templateId).then(
-        (response) => {
-          const pagination = response.pagination;
-          expect(pagination).not.toBe(null);
-          expect(pagination.current_page).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.templates.listTemplateRecords(
+        accountId,
+        templateId
       );
+
+      const pagination = response.pagination;
+      expect(pagination).not.toBe(null);
+      expect(pagination.current_page).toBe(1);
     });
   });
 
@@ -389,38 +313,26 @@ describe("template records", () => {
     const accountId = 1010;
     const templateId = 1;
 
-    it("produces a complete list", (done) => {
-      const fixture1 = loadFixture("pages-1of3.http");
+    it("produces a complete list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records?page=1")
-        .reply(fixture1.statusCode, fixture1.body);
+        .reply(readFixtureAt("pages-1of3.http"));
 
-      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records?page=2")
-        .reply(fixture2.statusCode, fixture2.body);
+        .reply(readFixtureAt("pages-2of3.http"));
 
-      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/1/records?page=3")
-        .reply(fixture3.statusCode, fixture3.body);
+        .reply(readFixtureAt("pages-3of3.http"));
 
-      dnsimple.templates.listTemplateRecords
-        .collectAll(accountId, templateId)
-        .then(
-          (items) => {
-            expect(items.length).toBe(5);
-            expect(items[0].id).toBe(1);
-            expect(items[4].id).toBe(5);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        )
-        .catch((error) => {
-          done(error);
-        });
+      const items = await dnsimple.templates.listTemplateRecords.collectAll(
+        accountId,
+        templateId
+      );
+      expect(items.length).toBe(5);
+      expect(items[0].id).toBe(1);
+      expect(items[4].id).toBe(5);
     });
   });
 
@@ -429,73 +341,50 @@ describe("template records", () => {
     const templateId = "name";
     const recordId = 1;
 
-    it("produces a template", (done) => {
-      const fixture = loadFixture("getTemplateRecord/success.http");
-
+    it("produces a template", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/templates/name/records/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getTemplateRecord/success.http"));
 
-      dnsimple.templates
-        .getTemplateRecord(accountId, templateId, recordId)
-        .then(
-          (response) => {
-            const record = response.data;
-            expect(record.id).toBe(301);
-            expect(record.template_id).toBe(268);
-            expect(record.name).toBe("");
-            expect(record.content).toBe("mx.example.com");
-            expect(record.ttl).toBe(600);
-            expect(record.priority).toBe(10);
-            expect(record.type).toBe("MX");
-            expect(record.created_at).toBe("2016-05-03T08:03:26Z");
-            expect(record.updated_at).toBe("2016-05-03T08:03:26Z");
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.templates.getTemplateRecord(
+        accountId,
+        templateId,
+        recordId
+      );
+
+      const record = response.data;
+      expect(record.id).toBe(301);
+      expect(record.template_id).toBe(268);
+      expect(record.name).toBe("");
+      expect(record.content).toBe("mx.example.com");
+      expect(record.ttl).toBe(600);
+      expect(record.priority).toBe(10);
+      expect(record.type).toBe("MX");
+      expect(record.created_at).toBe("2016-05-03T08:03:26Z");
+      expect(record.updated_at).toBe("2016-05-03T08:03:26Z");
     });
 
     describe("when the template does not exist", () => {
-      it("produces an error", (done) => {
-        const fixture = loadFixture("notfound-template.http");
-
+      it("produces an error", async () => {
         nock("https://api.dnsimple.com")
           .get("/v2/1010/templates/0/records/1")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("notfound-template.http"));
 
-        dnsimple.templates.getTemplateRecord(accountId, 0, recordId).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            expect(error.data.message).toBe("Template `beta` not found");
-            done();
-          }
-        );
+        await expect(
+          dnsimple.templates.getTemplateRecord(accountId, 0, recordId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
 
     describe("when the template record does not exist", () => {
-      it("produces an error", (done) => {
-        const fixture = loadFixture("notfound-record.http");
-
+      it("produces an error", async () => {
         nock("https://api.dnsimple.com")
           .get("/v2/1010/templates/name/records/0")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("notfound-record.http"));
 
-        dnsimple.templates.getTemplateRecord(accountId, templateId, 0).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.templates.getTemplateRecord(accountId, templateId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -504,40 +393,33 @@ describe("template records", () => {
     const accountId = 1010;
     const templateId = 1;
     const attributes = { content: "mx.example.com" };
-    const fixture = loadFixture("createTemplateRecord/created.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/templates/1/records", { content: "mx.example.com" })
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createTemplateRecord/created.http"));
 
-      dnsimple.templates.createTemplateRecord(
+      await dnsimple.templates.createTemplateRecord(
         accountId,
         templateId,
         attributes
       );
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a record", (done) => {
+    it("produces a record", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/templates/1/records")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createTemplateRecord/created.http"));
 
-      dnsimple.templates
-        .createTemplateRecord(accountId, templateId, attributes)
-        .then(
-          (response) => {
-            const record = response.data;
-            expect(record.id).toBe(300);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.templates.createTemplateRecord(
+        accountId,
+        templateId,
+        attributes
+      );
+
+      expect(response.data.id).toBe(300);
     });
   });
 
@@ -545,24 +427,19 @@ describe("template records", () => {
     const accountId = 1010;
     const templateId = 1;
     const recordId = 2;
-    const fixture = loadFixture("deleteTemplateRecord/success.http");
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/templates/1/records/2")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("deleteTemplateRecord/success.http"));
 
-      dnsimple.templates
-        .deleteTemplateRecord(accountId, templateId, recordId)
-        .then(
-          (response) => {
-            expect(response).toEqual({});
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.templates.deleteTemplateRecord(
+        accountId,
+        templateId,
+        recordId
+      );
+
+      expect(response).toEqual({});
     });
   });
 });

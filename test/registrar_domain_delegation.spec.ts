@@ -1,5 +1,5 @@
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,28 +8,22 @@ describe("domain delegation", () => {
   const domainId = "example.com";
 
   describe("#getDomainDelegation", () => {
-    const fixture = loadFixture("getDomainDelegation/success.http");
-
-    it("produces a name server list", (done) => {
+    it("produces a name server list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/registrar/domains/example.com/delegation")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getDomainDelegation/success.http"));
 
-      dnsimple.registrar.getDomainDelegation(accountId, domainId).then(
-        (response) => {
-          const delegation = response.data;
-          expect(delegation).toEqual([
-            "ns1.dnsimple.com",
-            "ns2.dnsimple.com",
-            "ns3.dnsimple.com",
-            "ns4.dnsimple.com",
-          ]);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.getDomainDelegation(
+        accountId,
+        domainId
       );
+
+      expect(response.data).toEqual([
+        "ns1.dnsimple.com",
+        "ns2.dnsimple.com",
+        "ns3.dnsimple.com",
+        "ns4.dnsimple.com",
+      ]);
     });
   });
 
@@ -41,81 +35,60 @@ describe("domain delegation", () => {
       "ns4.dnsimple.com",
     ];
 
-    it("produces a name server list", (done) => {
-      const fixture = loadFixture("changeDomainDelegation/success.http");
+    it("produces a name server list", async () => {
       nock("https://api.dnsimple.com")
         .put("/v2/1010/registrar/domains/example.com/delegation", attributes)
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("changeDomainDelegation/success.http"));
 
-      dnsimple.registrar
-        .changeDomainDelegation(accountId, domainId, attributes)
-        .then(
-          (response) => {
-            const delegation = response.data;
-            expect(delegation).toEqual([
-              "ns1.dnsimple.com",
-              "ns2.dnsimple.com",
-              "ns3.dnsimple.com",
-              "ns4.dnsimple.com",
-            ]);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.registrar.changeDomainDelegation(
+        accountId,
+        domainId,
+        attributes
+      );
+
+      expect(response.data).toEqual([
+        "ns1.dnsimple.com",
+        "ns2.dnsimple.com",
+        "ns3.dnsimple.com",
+        "ns4.dnsimple.com",
+      ]);
     });
   });
 
   describe("#changeDomainDelegationToVanity", () => {
     const attributes = ["ns1.example.com", "ns2.example.com"];
 
-    it("produces a name server list", (done) => {
-      const fixture = loadFixture(
-        "changeDomainDelegationToVanity/success.http"
-      );
+    it("produces a name server list", async () => {
       nock("https://api.dnsimple.com")
         .put(
           "/v2/1010/registrar/domains/example.com/delegation/vanity",
           attributes
         )
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("changeDomainDelegationToVanity/success.http"));
 
-      dnsimple.registrar
-        .changeDomainDelegationToVanity(accountId, domainId, attributes)
-        .then(
-          (response) => {
-            const delegation = response.data;
-            expect(delegation.length).toBe(2);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.registrar.changeDomainDelegationToVanity(
+        accountId,
+        domainId,
+        attributes
+      );
+
+      expect(response.data.length).toBe(2);
     });
   });
 
   describe("#changeDomainDelegationFromVanity", () => {
-    it("produces nothing", (done) => {
-      const fixture = loadFixture(
-        "changeDomainDelegationFromVanity/success.http"
-      );
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/registrar/domains/example.com/delegation/vanity")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("changeDomainDelegationFromVanity/success.http"));
 
-      dnsimple.registrar
-        .changeDomainDelegationFromVanity(accountId, domainId)
-        .then(
-          (response) => {
-            expect(response).toEqual({});
-            done();
-          },
-          (error) => {
-            done(error);
-          }
+      const response =
+        await dnsimple.registrar.changeDomainDelegationFromVanity(
+          accountId,
+          domainId
         );
+
+      expect(response).toEqual({});
     });
   });
 });

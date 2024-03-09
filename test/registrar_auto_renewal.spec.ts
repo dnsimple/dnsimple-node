@@ -1,6 +1,6 @@
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -9,81 +9,55 @@ describe("registrar auto renewal", () => {
   const domainId = "example.com";
 
   describe("#enableDomainAutoRenewal", () => {
-    const fixture = loadFixture("enableDomainAutoRenewal/success.http");
-
-    it("produces an empty result", (done) => {
+    it("produces an empty result", async () => {
       nock("https://api.dnsimple.com")
         .put("/v2/1010/registrar/domains/example.com/auto_renewal")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("enableDomainAutoRenewal/success.http"));
 
-      dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.enableDomainAutoRenewal(
+        accountId,
+        domainId
       );
+
+      expect(response).toEqual({});
     });
 
     describe("when the domain does not exist", () => {
-      it("results in an error", (done) => {
-        const fixture = loadFixture("notfound-domain.http");
-
+      it("results in an error", async () => {
         nock("https://api.dnsimple.com")
           .put("/v2/1010/registrar/domains/example.com/auto_renewal")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("notfound-domain.http"));
 
-        dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId).then(
-          (response) => {
-            done("Expected error but future resolved");
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
 
   describe("#disableDomainAutoRenewal", () => {
-    const fixture = loadFixture("disableDomainAutoRenewal/success.http");
-
-    it("produces an empty result", (done) => {
+    it("produces an empty result", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/registrar/domains/example.com/auto_renewal")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("disableDomainAutoRenewal/success.http"));
 
-      dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.disableDomainAutoRenewal(
+        accountId,
+        domainId
       );
+
+      expect(response).toEqual({});
     });
 
     describe("when the domain does not exist", () => {
-      it("results in an error", (done) => {
-        const fixture = loadFixture("notfound-domain.http");
-
+      it("results in an error", async () => {
         nock("https://api.dnsimple.com")
           .delete("/v2/1010/registrar/domains/example.com/auto_renewal")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("notfound-domain.http"));
 
-        dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId).then(
-          (response) => {
-            done("Expected error but future resolved");
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
