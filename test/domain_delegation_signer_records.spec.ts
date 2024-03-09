@@ -1,6 +1,6 @@
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,80 +8,57 @@ describe("domains", () => {
   describe("#listDelegationSignerRecords", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const fixture = loadFixture("listDelegationSignerRecords/success.http");
 
-    it("supports pagination", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports pagination", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listDelegationSignerRecords/success.http"));
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
-        page: 1,
-      });
+      await dnsimple.domains.listDelegationSignerRecords(accountId, domainId, { page: 1 });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listDelegationSignerRecords/success.http"));
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
-        foo: "bar",
-      });
+      await dnsimple.domains.listDelegationSignerRecords(accountId, domainId, { foo: "bar" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports sorting", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports sorting", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?sort=created_at%3Aasc")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listDelegationSignerRecords/success.http"));
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
-        sort: "created_at:asc",
-      });
+      await dnsimple.domains.listDelegationSignerRecords(accountId, domainId, { sort: "created_at:asc" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces an delegation signer records list", (done) => {
+    it("produces an delegation signer records list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listDelegationSignerRecords/success.http"));
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(
-        (response) => {
-          const dsRecords = response.data;
-          expect(dsRecords.length).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.listDelegationSignerRecords(accountId, domainId);
+
+      expect(response.data.length).toBe(1);
     });
 
-    it("exposes the pagination info", (done) => {
+    it("exposes the pagination info", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listDelegationSignerRecords/success.http"));
 
-      dnsimple.domains.listDelegationSignerRecords(accountId, domainId).then(
-        (response) => {
-          const pagination = response.pagination;
-          expect(pagination).not.toBe(null);
-          expect(pagination.current_page).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.listDelegationSignerRecords(accountId, domainId);
+
+      const pagination = response.pagination;
+      expect(pagination).not.toBe(null);
+      expect(pagination.current_page).toBe(1);
     });
   });
 
@@ -89,38 +66,24 @@ describe("domains", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
-    it("produces a complete list", (done) => {
-      const fixture1 = loadFixture("pages-1of3.http");
+    it("produces a complete list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=1")
-        .reply(fixture1.statusCode, fixture1.body);
+        .reply(readFixtureAt("pages-1of3.http"));
 
-      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=2")
-        .reply(fixture2.statusCode, fixture2.body);
+        .reply(readFixtureAt("pages-2of3.http"));
 
-      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records?page=3")
-        .reply(fixture3.statusCode, fixture3.body);
+        .reply(readFixtureAt("pages-3of3.http"));
 
-      dnsimple.domains.listDelegationSignerRecords
-        .collectAll(accountId, domainId)
-        .then(
-          (items) => {
-            expect(items.length).toBe(5);
-            expect(items[0].id).toBe(1);
-            expect(items[4].id).toBe(5);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        )
-        .catch((error) => {
-          done(error);
-        });
+      const items = await dnsimple.domains.listDelegationSignerRecords.collectAll(accountId, domainId);
+
+      expect(items.length).toBe(5);
+      expect(items[0].id).toBe(1);
+      expect(items[4].id).toBe(5);
     });
   });
 
@@ -128,55 +91,34 @@ describe("domains", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const dsRecordId = 1;
-    const fixture = loadFixture("getDelegationSignerRecord/success.http");
 
-    it("produces a delegation signer record", (done) => {
+    it("produces a delegation signer record", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/ds_records/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getDelegationSignerRecord/success.http"));
 
-      dnsimple.domains
-        .getDelegationSignerRecord(accountId, domainId, dsRecordId)
-        .then(
-          (response) => {
-            const dsRecord = response.data;
-            expect(dsRecord.id).toBe(24);
-            expect(dsRecord.algorithm).toBe("8");
-            expect(dsRecord.digest).toBe(
-              "C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F"
-            );
-            expect(dsRecord.digest_type).toBe("2");
-            expect(dsRecord.keytag).toBe("44620");
-            expect(dsRecord.public_key).toBe(null);
-            expect(dsRecord.created_at).toBe("2017-03-03T13:49:58Z");
-            expect(dsRecord.updated_at).toBe("2017-03-03T13:49:58Z");
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.domains.getDelegationSignerRecord(accountId, domainId, dsRecordId);
+
+      const dsRecord = response.data;
+      expect(dsRecord.id).toBe(24);
+      expect(dsRecord.algorithm).toBe("8");
+      expect(dsRecord.digest).toBe(
+        "C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F",
+      );
+      expect(dsRecord.digest_type).toBe("2");
+      expect(dsRecord.keytag).toBe("44620");
+      expect(dsRecord.public_key).toBe(null);
+      expect(dsRecord.created_at).toBe("2017-03-03T13:49:58Z");
+      expect(dsRecord.updated_at).toBe("2017-03-03T13:49:58Z");
     });
 
     describe("when the delegation signer record does not exist", () => {
-      const fixture = loadFixture("notfound-delegationSignerRecord.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/ds_records/0")
-        .reply(fixture.statusCode, fixture.body);
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/domains/example.com/ds_records/0")
+          .reply(readFixtureAt("notfound-delegationSignerRecord.http"));
 
-      it("produces an error", (done) => {
-        dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            expect(error.data.message).toBe(
-              "Delegation signer record `0` not found"
-            );
-            done();
-          }
-        );
+        await expect(dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0)).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -185,40 +127,25 @@ describe("domains", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const attributes = { algorithm: "8" };
-    const fixture = loadFixture("createDelegationSignerRecord/created.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/ds_records", attributes)
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createDelegationSignerRecord/created.http"));
 
-      dnsimple.domains.createDelegationSignerRecord(
-        accountId,
-        domainId,
-        attributes
-      );
+      await dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a delegation signer record", (done) => {
+    it("produces a delegation signer record", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/ds_records")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createDelegationSignerRecord/created.http"));
 
-      dnsimple.domains
-        .createDelegationSignerRecord(accountId, domainId, attributes)
-        .then(
-          (response) => {
-            const dsRecord = response.data;
-            expect(dsRecord.id).toBe(2);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes);
+
+      expect(response.data.id).toBe(2);
     });
   });
 
@@ -226,24 +153,15 @@ describe("domains", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const dsRecordId = 1;
-    const fixture = loadFixture("deleteDelegationSignerRecord/success.http");
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/domains/example.com/ds_records/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("deleteDelegationSignerRecord/success.http"));
 
-      dnsimple.domains
-        .deleteDelegationSignerRecord(accountId, domainId, dsRecordId)
-        .then(
-          (response) => {
-            expect(response).toEqual({});
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.domains.deleteDelegationSignerRecord(accountId, domainId, dsRecordId);
+
+      expect(response).toEqual({});
     });
   });
 });

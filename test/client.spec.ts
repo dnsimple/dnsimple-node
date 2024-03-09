@@ -1,86 +1,54 @@
 import * as nock from "nock";
 import { ClientError, MethodNotAllowedError } from "../lib/main";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
 describe("response handling", () => {
   describe("a 400 error", () => {
-    it("includes the error message from the server", (done) => {
-      const fixture = loadFixture("validation-error.http");
+    it("includes the error message from the server", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/validation-error", {})
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("validation-error.http"));
 
-      dnsimple.request("POST", "/validation-error", {}, {}).then(
-        (response) => {
-          done("Expected error but promise resolved");
-        },
-        (error) => {
-          expect(error).toBeInstanceOf(ClientError);
-          expect(error.data.errors.email).toEqual(
-            expect.arrayContaining(["can't be blank"])
-          );
-          done();
-        }
-      );
+      try {
+        await dnsimple.request("POST", "/validation-error", {}, {});
+      } catch (error) {
+        expect(error).toBeInstanceOf(ClientError);
+        expect(error.data.errors.email).toEqual(
+          expect.arrayContaining(["can't be blank"]),
+        );
+      }
     });
   });
 
   describe("a 200 response with malformed json", () => {
-    it("produces a JSON parse error", (done) => {
-      const fixture = loadFixture("success-with-malformed-json.http");
+    it("produces a JSON parse error", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/success-with-malformed-json")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("success-with-malformed-json.http"));
 
-      dnsimple.request("GET", "/success-with-malformed-json", null, {}).then(
-        (response) => {
-          done("Expected error but promise resolved");
-        },
-        (error) => {
-          expect(error).toBeInstanceOf(SyntaxError);
-          done();
-        }
-      );
+      await expect(dnsimple.request("GET", "/success-with-malformed-json", null, {})).rejects.toThrow(SyntaxError);
     });
   });
 
   describe("an error response with HTML content", () => {
-    it("produces a JSON parse error", (done) => {
-      const fixture = loadFixture("badgateway.http");
+    it("produces a JSON parse error", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/badgateway")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("badgateway.http"));
 
-      dnsimple.request("GET", "/badgateway", null, {}).then(
-        (response) => {
-          done("Expected error but promise resolved");
-        },
-        (error) => {
-          expect(error).toBeInstanceOf(SyntaxError);
-          done();
-        }
-      );
+      await expect(dnsimple.request("GET", "/badgateway", null, {})).rejects.toThrow(SyntaxError);
     });
   });
 
   describe("a 405 error", () => {
-    it("results in a rejected promise", (done) => {
-      const fixture = loadFixture("method-not-allowed.http");
+    it("results in a rejected promise", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/method-not-allowed")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("method-not-allowed.http"));
 
-      dnsimple.request("GET", "/method-not-allowed", null, {}).then(
-        (response) => {
-          done("Expected error but promise resolved");
-        },
-        (error) => {
-          expect(error).toBeInstanceOf(MethodNotAllowedError);
-          done();
-        }
-      );
+      await expect(dnsimple.request("GET", "/method-not-allowed", null, {})).rejects.toThrow(MethodNotAllowedError);
     });
   });
 });

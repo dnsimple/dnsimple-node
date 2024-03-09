@@ -1,5 +1,5 @@
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -7,90 +7,65 @@ describe("domains", () => {
   describe("#enableDnssec", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const fixture = loadFixture("enableDnssec/success.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/dnssec")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("enableDnssec/success.http"));
 
-      dnsimple.domains.enableDnssec(accountId, domainId);
+      await dnsimple.domains.enableDnssec(accountId, domainId);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces an response", (done) => {
+    it("produces an response", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/dnssec")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("enableDnssec/success.http"));
 
-      dnsimple.domains.enableDnssec(accountId, domainId).then(
-        (response) => {
-          const dnssec = response.data;
-          expect(dnssec.enabled).toBe(true);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.enableDnssec(accountId, domainId);
+
+      expect(response.data.enabled).toBe(true);
     });
   });
 
   describe("#disableDnssec", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const fixture = loadFixture("disableDnssec/success.http");
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/domains/example.com/dnssec")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("disableDnssec/success.http"));
 
-      dnsimple.domains.disableDnssec(accountId, domainId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.disableDnssec(accountId, domainId);
+
+      expect(response).toEqual({});
     });
   });
 
   describe("#getDnssec", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const fixture = loadFixture("getDnssec/success.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/dnssec")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getDnssec/success.http"));
 
-      dnsimple.domains.getDnssec(accountId, domainId);
+      await dnsimple.domains.getDnssec(accountId, domainId);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces an response", (done) => {
+    it("produces an response", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/domains/example.com/dnssec")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getDnssec/success.http"));
 
-      dnsimple.domains.getDnssec(accountId, domainId).then(
-        (response) => {
-          const dnssec = response.data;
-          expect(dnssec.enabled).toBe(true);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.getDnssec(accountId, domainId);
+
+      expect(response.data.enabled).toBe(true);
     });
   });
 });

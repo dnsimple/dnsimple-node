@@ -1,5 +1,5 @@
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,62 +8,46 @@ describe("domains", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const attributes = { new_account_email: "jim@example.com" };
-    const fixture = loadFixture("initiatePush/success.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/pushes", attributes)
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("initiatePush/success.http"));
 
-      dnsimple.domains.initiatePush(accountId, domainId, attributes);
+      await dnsimple.domains.initiatePush(accountId, domainId, attributes);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a push result", (done) => {
+    it("produces a push result", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/domains/example.com/pushes")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("initiatePush/success.http"));
 
-      dnsimple.domains.initiatePush(accountId, domainId, attributes).then(
-        (response) => {
-          const push = response.data;
-          expect(push.id).toBe(1);
-          expect(push.domain_id).toBe(100);
-          expect(push.contact_id).toBe(null);
-          expect(push.account_id).toBe(2020);
-          expect(push.created_at).toBe("2016-08-11T10:16:03Z");
-          expect(push.updated_at).toBe("2016-08-11T10:16:03Z");
-          expect(push.accepted_at).toBe(null);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.initiatePush(accountId, domainId, attributes);
+
+      const push = response.data;
+      expect(push.id).toBe(1);
+      expect(push.domain_id).toBe(100);
+      expect(push.contact_id).toBe(null);
+      expect(push.account_id).toBe(2020);
+      expect(push.created_at).toBe("2016-08-11T10:16:03Z");
+      expect(push.updated_at).toBe("2016-08-11T10:16:03Z");
+      expect(push.accepted_at).toBe(null);
     });
   });
 
   describe("#listPushes", () => {
     const accountId = 1010;
-    const fixture = loadFixture("listPushes/success.http");
 
-    it("produces an pushes list", (done) => {
+    it("produces an pushes list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/pushes")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listPushes/success.http"));
 
-      dnsimple.domains.listPushes(accountId).then(
-        (response) => {
-          const pushes = response.data;
-          expect(pushes.length).toBe(2);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.listPushes(accountId);
+
+      expect(response.data.length).toBe(2);
     });
   });
 
@@ -71,66 +55,50 @@ describe("domains", () => {
     const accountId = 1010;
     const pushId = 200;
     const attributes = { contact_id: 1 };
-    const fixture = loadFixture("acceptPush/success.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/pushes/200", attributes)
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("acceptPush/success.http"));
 
-      dnsimple.domains.acceptPush(accountId, pushId, attributes);
+      await dnsimple.domains.acceptPush(accountId, pushId, attributes);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/pushes/200")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("acceptPush/success.http"));
 
-      dnsimple.domains.acceptPush(accountId, pushId, attributes).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.acceptPush(accountId, pushId, attributes);
+
+      expect(response).toEqual({});
     });
   });
 
   describe("#rejectPush", () => {
     const accountId = 1010;
     const pushId = 200;
-    const fixture = loadFixture("rejectPush/success.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .delete("/v2/1010/pushes/200")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("rejectPush/success.http"));
 
-      dnsimple.domains.rejectPush(accountId, pushId);
+      await dnsimple.domains.rejectPush(accountId, pushId);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces nothing", (done) => {
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/pushes/200")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("rejectPush/success.http"));
 
-      dnsimple.domains.rejectPush(accountId, pushId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.domains.rejectPush(accountId, pushId);
+
+      expect(response).toEqual({});
     });
   });
 });

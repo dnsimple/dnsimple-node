@@ -1,18 +1,17 @@
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
 describe("accounts", () => {
   describe("#listAccounts", () => {
-    const fixture = loadFixture("listAccounts/success-account.http");
-
     it("produces an account list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/accounts")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listAccounts/success-account.http"));
 
       const result = await dnsimple.accounts.listAccounts();
+
       expect(result).toEqual({
         data: [
           {
