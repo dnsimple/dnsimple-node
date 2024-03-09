@@ -62,8 +62,7 @@ export function readFixtureAt(path: string): () => ReplyFnResult {
     headers[pair[0]] = pair[1];
   }
 
-  if (statusCode === 204)
-    return () => [204, ""];
+  if (statusCode === 204) return () => [204, ""];
 
   if (headers["Content-Type"] === "application/json")
     return () => [statusCode, JSON.parse(lines.join("\n"))];
