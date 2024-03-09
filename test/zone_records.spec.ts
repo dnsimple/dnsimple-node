@@ -134,12 +134,7 @@ describe("zone records", () => {
           .get("/v2/1010/zones/example.com/records/0")
           .reply(readFixtureAt("notfound-record.http"));
 
-        try {
-          await dnsimple.zones.getZoneRecord(accountId, zoneId, 0);
-        } catch (error) {
-          expect(error).toBeInstanceOf(NotFoundError);
-          expect(error.data.message).toBe("Record `0` not found");
-        }
+        await expect(dnsimple.zones.getZoneRecord(accountId, zoneId, 0)).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -207,11 +202,7 @@ describe("zone records", () => {
           .patch("/v2/1010/zones/example.com/records/" + recordId, attributes)
           .reply(readFixtureAt("notfound-record.http"));
 
-        try {
-          await dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes);
-        } catch (error) {
-          expect(error).toBeInstanceOf(NotFoundError);
-        }
+        await expect(dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes)).rejects.toThrow(NotFoundError);
       });
     });
 
@@ -246,11 +237,7 @@ describe("zone records", () => {
             .delete("/v2/1010/zones/example.com/records/" + recordId)
             .reply(readFixtureAt("notfound-record.http"));
 
-          try {
-            await dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId);
-          } catch (error) {
-            expect(error).toBeInstanceOf(NotFoundError);
-          }
+          await expect(dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId)).rejects.toThrow(NotFoundError);
         });
       });
     });
