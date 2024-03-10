@@ -1,117 +1,87 @@
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
 describe("webhooks", () => {
   describe("#listWebhooks", () => {
     const accountId = 1010;
-    const fixture = loadFixture("listWebhooks/success.http");
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listWebhooks/success.http"));
 
-      dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
+      await dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a webhook list", (done) => {
+    it("produces a webhook list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listWebhooks/success.http"));
 
-      dnsimple.webhooks.listWebhooks(accountId).then(
-        (response) => {
-          const webhooks = response.data;
-          expect(webhooks.length).toBe(2);
-          expect(webhooks[0].id).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.webhooks.listWebhooks(accountId);
+
+      const webhooks = response.data;
+      expect(webhooks.length).toBe(2);
+      expect(webhooks[0].id).toBe(1);
     });
   });
 
   describe("#listWebhooks", () => {
     const accountId = 1010;
-    const fixture = loadFixture("listWebhooks/success.http");
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listWebhooks/success.http"));
 
-      dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
+      await dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a webhook list", (done) => {
+    it("produces a webhook list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listWebhooks/success.http"));
 
-      dnsimple.webhooks.listWebhooks(accountId).then(
-        ({ data: items }) => {
-          expect(items.length).toBe(2);
-          expect(items[0].id).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.webhooks.listWebhooks(accountId);
+
+      const items = response.data;
+      expect(items.length).toBe(2);
+      expect(items[0].id).toBe(1);
     });
   });
 
   describe("#getWebhook", () => {
     const accountId = 1010;
     const webhookId = 1;
-    const fixture = loadFixture("getWebhook/success.http");
 
-    it("produces a webhook", (done) => {
+    it("produces a webhook", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/webhooks/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getWebhook/success.http"));
 
-      dnsimple.webhooks.getWebhook(accountId, webhookId).then(
-        (response) => {
-          const webhook = response.data;
-          expect(webhook.id).toBe(1);
-          expect(webhook.url).toBe("https://webhook.test");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.webhooks.getWebhook(accountId, webhookId);
+
+      const webhook = response.data;
+      expect(webhook.id).toBe(1);
+      expect(webhook.url).toBe("https://webhook.test");
     });
 
     describe("when the webhook does not exist", () => {
-      const fixture = loadFixture("notfound-webhook.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/webhooks/0")
-        .reply(fixture.statusCode, fixture.body);
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/webhooks/0")
+          .reply(readFixtureAt("notfound-webhook.http"));
 
-      it("produces an error", (done) => {
-        dnsimple.webhooks.getWebhook(accountId, 0).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            expect(error.data.message).toBe("Webhook `0` not found");
-            done();
-          }
-        );
+        await expect(
+          dnsimple.webhooks.getWebhook(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -119,34 +89,28 @@ describe("webhooks", () => {
   describe("#createWebhook", () => {
     const accountId = 1010;
     const attributes = { url: "https://some-site.com" };
-    const fixture = loadFixture("createWebhook/created.http");
 
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/1010/webhooks", attributes)
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createWebhook/created.http"));
 
-      dnsimple.webhooks.createWebhook(accountId, attributes);
+      await dnsimple.webhooks.createWebhook(accountId, attributes);
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a webhook", (done) => {
+    it("produces a webhook", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/webhooks")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("createWebhook/created.http"));
 
-      dnsimple.webhooks.createWebhook(accountId, attributes).then(
-        (response) => {
-          const webhook = response.data;
-          expect(webhook.id).toBe(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.webhooks.createWebhook(
+        accountId,
+        attributes
       );
+
+      expect(response.data.id).toBe(1);
     });
   });
 
@@ -154,39 +118,28 @@ describe("webhooks", () => {
     const accountId = 1010;
     const webhookId = 1;
 
-    it("produces nothing", (done) => {
-      const fixture = loadFixture("deleteWebhook/success.http");
+    it("produces nothing", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/webhooks/1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("deleteWebhook/success.http"));
 
-      dnsimple.webhooks.deleteWebhook(accountId, webhookId).then(
-        (response) => {
-          expect(response).toEqual({});
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.webhooks.deleteWebhook(
+        accountId,
+        webhookId
       );
+
+      expect(response).toEqual({});
     });
 
     describe("when the webhook does not exist", () => {
-      const fixture = loadFixture("notfound-webhook.http");
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/webhooks/0")
-        .reply(fixture.statusCode, fixture.body);
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .delete("/v2/1010/webhooks/0")
+          .reply(readFixtureAt("notfound-webhook.http"));
 
-      it("produces an error", (done) => {
-        dnsimple.webhooks.deleteWebhook(accountId, 0).then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).toBeInstanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.webhooks.deleteWebhook(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
