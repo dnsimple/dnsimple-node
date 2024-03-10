@@ -4,23 +4,28 @@ import { DNSimple } from "../lib/main";
 function hasJsonContent(lines: string[]) {
   for (let line of lines) {
     const [key, value] = line.split(/:\s/);
-    if (key.toLowerCase() === "content-type" && value.includes("application/json"))
+    if (
+      key.toLowerCase() === "content-type" &&
+      value.includes("application/json")
+    )
       return true;
   }
   return false;
 }
 
 function parseStatusCode(lines: string[]) {
-  return parseInt((lines[0].split(/\s+/))[1], 10);
+  return parseInt(lines[0].split(/\s+/)[1], 10);
 }
 
 function parseBody(lines: string[]) {
   const separatorLineIndex = lines.findIndex((line) => line.trim() === "");
 
-  const rawBody = lines.slice(separatorLineIndex + 1).join("\n").trim();
+  const rawBody = lines
+    .slice(separatorLineIndex + 1)
+    .join("\n")
+    .trim();
 
-  if (hasJsonContent(lines) && rawBody !== "")
-    return JSON.parse(rawBody);
+  if (hasJsonContent(lines) && rawBody !== "") return JSON.parse(rawBody);
 
   return rawBody;
 }
@@ -36,8 +41,7 @@ export function readFixtureAt(path: string) {
   const lines = data.split(/\r?\n/);
 
   const statusCode = parseStatusCode(lines);
-  if (statusCode === 204)
-    return () => [204, ""];
+  if (statusCode === 204) return () => [204, ""];
 
   return () => [statusCode, parseBody(lines)];
 }
