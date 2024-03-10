@@ -2,11 +2,9 @@ import * as fs from "fs";
 import type { ReplyFnResult } from "nock/types";
 import { DNSimple } from "../lib/main";
 
-export const getAccessToken = () => process.env["TOKEN"] ?? "bogus";
-
 export const createTestClient = () =>
   new DNSimple({
-    accessToken: getAccessToken(),
+    accessToken: process.env["TOKEN"] ?? "bogus",
   });
 
 export const loadFixture = (path: string) => {
