@@ -1,358 +1,268 @@
-import { expect } from "chai";
 import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
 describe("zones", () => {
   describe("#activateDns", () => {
     const accountId = 1010;
-    const fixture = loadFixture("activateZoneService/success.http");
 
-    it("produces a zone", (done) => {
+    it("produces a zone", async () => {
       nock("https://api.dnsimple.com")
         .put("/v2/1010/zones/example.com/activation")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("activateZoneService/success.http"));
 
-      dnsimple.zones.activateDns(accountId, "example.com").then(
-        (response) => {
-          const zone = response.data;
-          expect(zone.id).to.eq(1);
-          expect(zone.account_id).to.eq(1010);
-          expect(zone.name).to.eq("example.com");
-          expect(zone.reverse).to.eq(false);
-          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
-          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.zones.activateDns(
+        accountId,
+        "example.com"
       );
+
+      const zone = response.data;
+      expect(zone.id).toBe(1);
+      expect(zone.account_id).toBe(1010);
+      expect(zone.name).toBe("example.com");
+      expect(zone.reverse).toBe(false);
+      expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
+      expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
     });
   });
 
   describe("#deactivateDns", () => {
     const accountId = 1010;
-    const fixture = loadFixture("deactivateZoneService/success.http");
 
-    it("produces a zone", (done) => {
+    it("produces a zone", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/zones/example.com/activation")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("deactivateZoneService/success.http"));
 
-      dnsimple.zones.deactivateDns(accountId, "example.com").then(
-        (response) => {
-          const zone = response.data;
-          expect(zone.id).to.eq(1);
-          expect(zone.account_id).to.eq(1010);
-          expect(zone.name).to.eq("example.com");
-          expect(zone.reverse).to.eq(false);
-          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
-          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.zones.deactivateDns(
+        accountId,
+        "example.com"
       );
+
+      const zone = response.data;
+      expect(zone.id).toBe(1);
+      expect(zone.account_id).toBe(1010);
+      expect(zone.name).toBe("example.com");
+      expect(zone.reverse).toBe(false);
+      expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
+      expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
     });
   });
 
   describe("#listZones", () => {
     const accountId = 1010;
-    const fixture = loadFixture("listZones/success.http");
 
-    it("supports pagination", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports pagination", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listZones/success.http"));
 
-      dnsimple.zones.listZones(accountId, { page: 1 });
+      await dnsimple.zones.listZones(accountId, { page: 1 });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listZones/success.http"));
 
-      dnsimple.zones.listZones(accountId, { foo: "bar" });
+      await dnsimple.zones.listZones(accountId, { foo: "bar" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports sorting", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports sorting", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?sort=name%3Aasc")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listZones/success.http"));
 
-      dnsimple.zones.listZones(accountId, { sort: "name:asc" });
+      await dnsimple.zones.listZones(accountId, { sort: "name:asc" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports filter", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports filter", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?name_like=example")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listZones/success.http"));
 
-      dnsimple.zones.listZones(accountId, { name_like: "example" });
+      await dnsimple.zones.listZones(accountId, { name_like: "example" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a zone list", (done) => {
+    it("produces a zone list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listZones/success.http"));
 
-      dnsimple.zones.listZones(accountId).then(
-        (response) => {
-          const zones = response.data;
-          expect(zones.length).to.eq(2);
-          expect(zones[0].name).to.eq("example-alpha.com");
-          expect(zones[0].account_id).to.eq(1010);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.zones.listZones(accountId);
+
+      const zones = response.data;
+      expect(zones.length).toBe(2);
+      expect(zones[0].name).toBe("example-alpha.com");
+      expect(zones[0].account_id).toBe(1010);
     });
 
-    it("exposes the pagination info", (done) => {
+    it("exposes the pagination info", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listZones/success.http"));
 
-      dnsimple.zones.listZones(accountId).then(
-        (response) => {
-          const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.zones.listZones(accountId);
+
+      const pagination = response.pagination;
+      expect(pagination).not.toBe(null);
+      expect(pagination.current_page).toBe(1);
     });
   });
 
   describe("#listZones.collectAll", () => {
     const accountId = 1010;
 
-    it("produces a complete list", (done) => {
-      const fixture1 = loadFixture("pages-1of3.http");
+    it("produces a complete list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=1")
-        .reply(fixture1.statusCode, fixture1.body);
+        .reply(readFixtureAt("pages-1of3.http"));
 
-      const fixture2 = loadFixture("pages-2of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=2")
-        .reply(fixture2.statusCode, fixture2.body);
+        .reply(readFixtureAt("pages-2of3.http"));
 
-      const fixture3 = loadFixture("pages-3of3.http");
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones?page=3")
-        .reply(fixture3.statusCode, fixture3.body);
+        .reply(readFixtureAt("pages-3of3.http"));
 
-      dnsimple.zones.listZones
-        .collectAll(accountId)
-        .then(
-          (items) => {
-            expect(items.length).to.eq(5);
-            expect(items[0].id).to.eq(1);
-            expect(items[4].id).to.eq(5);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        )
-        .catch((error) => {
-          done(error);
-        });
+      const items = await dnsimple.zones.listZones.collectAll(accountId);
+
+      expect(items.length).toBe(5);
+      expect(items[0].id).toBe(1);
+      expect(items[4].id).toBe(5);
     });
   });
 
   describe("#getZone", () => {
     const accountId = 1010;
-    const fixture = loadFixture("getZone/success.http");
 
-    it("produces a zone", (done) => {
+    it("produces a zone", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example-alpha.com")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getZone/success.http"));
 
-      dnsimple.zones.getZone(accountId, "example-alpha.com").then(
-        (response) => {
-          const zone = response.data;
-          expect(zone.id).to.eq(1);
-          expect(zone.account_id).to.eq(1010);
-          expect(zone.name).to.eq("example-alpha.com");
-          expect(zone.reverse).to.eq(false);
-          expect(zone.secondary).to.eq(false);
-          expect(zone.last_transferred_at).to.eq(null);
-          expect(zone.active).to.eq(true);
-          expect(zone.created_at).to.eq("2015-04-23T07:40:03Z");
-          expect(zone.updated_at).to.eq("2015-04-23T07:40:03Z");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.zones.getZone(
+        accountId,
+        "example-alpha.com"
       );
+
+      const zone = response.data;
+      expect(zone.id).toBe(1);
+      expect(zone.account_id).toBe(1010);
+      expect(zone.name).toBe("example-alpha.com");
+      expect(zone.reverse).toBe(false);
+      expect(zone.secondary).toBe(false);
+      expect(zone.last_transferred_at).toBe(null);
+      expect(zone.active).toBe(true);
+      expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
+      expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
     });
 
     describe("when the zone does not exist", () => {
-      const fixture = loadFixture("notfound-zone.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com")
-        .reply(fixture.statusCode, fixture.body);
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com")
+          .reply(readFixtureAt("notfound-zone.http"));
 
-      it("produces an error", (done) => {
-        dnsimple.zones.getZone(accountId, "example.com").then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            expect(error.data.message).to.eq("Zone `0` not found");
-            done();
-          }
-        );
+        await expect(
+          dnsimple.zones.getZone(accountId, "example.com")
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
 
   describe("#getZoneFile", () => {
     const accountId = 1010;
-    const fixture = loadFixture("getZoneFile/success.http");
 
-    it("produces a zone file", (done) => {
+    it("produces a zone file", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example-alpha.com/file")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getZoneFile/success.http"));
 
-      dnsimple.zones.getZoneFile(accountId, "example-alpha.com").then(
-        (response) => {
-          const zone = response.data;
-          expect(zone).to.not.eq(null);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.zones.getZoneFile(
+        accountId,
+        "example-alpha.com"
       );
+
+      expect(response.data).not.toBe(null);
     });
 
     describe("when the zone file does not exist", () => {
-      const fixture = loadFixture("notfound-zone.http");
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/file")
-        .reply(fixture.statusCode, fixture.body);
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/file")
+          .reply(readFixtureAt("notfound-zone.http"));
 
-      it("produces an error", (done) => {
-        dnsimple.zones.getZoneFile(accountId, "example.com").then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.zones.getZoneFile(accountId, "example.com")
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
 
   describe("#checkZoneDistribution", () => {
     const accountId = 1010;
-    const fixture = loadFixture("checkZoneDistribution/success.http");
 
-    it("returns true when the zone is fully distributed", (done) => {
+    it("returns true when the zone is fully distributed", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example-alpha.com/distribution")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("checkZoneDistribution/success.http"));
 
-      dnsimple.zones.checkZoneDistribution(accountId, "example-alpha.com").then(
-        (response) => {
-          const zone = response.data;
-          expect(zone).to.not.eq(null);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.zones.checkZoneDistribution(
+        accountId,
+        "example-alpha.com"
       );
+
+      expect(response.data).not.toBe(null);
     });
 
-    describe("returns false when the zone is not fully distributed", () => {
-      const fixture = loadFixture("checkZoneDistribution/failure.http");
+    describe("when the zone is not fully distributed", () => {
+      it("returns false", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/distribution")
+          .reply(readFixtureAt("checkZoneDistribution/failure.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/distribution")
-        .reply(fixture.statusCode, fixture.body);
-
-      it("produces an error", (done) => {
-        dnsimple.zones.checkZoneDistribution(accountId, "example.com").then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).to.not.eq(null);
-            done();
-          }
+        const response = await dnsimple.zones.checkZoneDistribution(
+          accountId,
+          "example.com"
         );
+
+        expect(response.data.distributed).toBeFalsy();
       });
     });
 
     describe("returns an error when the server was not able to complete the check", () => {
-      const fixture = loadFixture("checkZoneDistribution/error.http");
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/distribution")
+          .reply(readFixtureAt("checkZoneDistribution/error.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/distribution")
-        .reply(fixture.statusCode, fixture.body);
-
-      it("produces an error", (done) => {
-        dnsimple.zones.checkZoneDistribution(accountId, "example.com").then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).to.not.eq(null);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.zones.checkZoneDistribution(accountId, "example.com")
+        ).rejects.toThrow();
       });
     });
 
     describe("when the zone does not exist", () => {
-      const fixture = loadFixture("notfound-zone.http");
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/distribution")
+          .reply(readFixtureAt("notfound-zone.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/distribution")
-        .reply(fixture.statusCode, fixture.body);
-
-      it("produces an error", (done) => {
-        dnsimple.zones.checkZoneDistribution(accountId, "example.com").then(
-          (response) => {
-            done();
-          },
-          (error) => {
-            expect(error).to.be.instanceOf(NotFoundError);
-            done();
-          }
-        );
+        await expect(
+          dnsimple.zones.checkZoneDistribution(accountId, "example.com")
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -360,112 +270,82 @@ describe("zones", () => {
   describe("#checkZoneRecordDistribution", () => {
     const accountId = 1010;
     const recordId = 1;
-    const fixture = loadFixture("checkZoneRecordDistribution/success.http");
 
-    it("returns true when the zone record is fully distributed", (done) => {
+    it("returns true when the zone record is fully distributed", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/zones/example-alpha.com/records/1/distribution")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("checkZoneRecordDistribution/success.http"));
 
-      dnsimple.zones
-        .checkZoneRecordDistribution(accountId, "example-alpha.com", recordId)
-        .then(
-          (response) => {
-            const zone = response.data;
-            expect(zone).to.not.eq(null);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.zones.checkZoneRecordDistribution(
+        accountId,
+        "example-alpha.com",
+        recordId
+      );
+
+      expect(response.data).not.toBe(null);
     });
 
-    describe("returns false when the zone record is not fully distributed", () => {
-      const fixture = loadFixture("checkZoneRecordDistribution/failure.http");
+    describe("when the zone record is not fully distributed", () => {
+      it("returns false", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/records/1/distribution")
+          .reply(readFixtureAt("checkZoneRecordDistribution/failure.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/records/1/distribution")
-        .reply(fixture.statusCode, fixture.body);
+        const response = await dnsimple.zones.checkZoneRecordDistribution(
+          accountId,
+          "example.com",
+          recordId
+        );
 
-      it("produces an error", (done) => {
-        dnsimple.zones
-          .checkZoneRecordDistribution(accountId, "example.com", recordId)
-          .then(
-            (response) => {
-              done();
-            },
-            (error) => {
-              expect(error).to.not.eq(null);
-              done();
-            }
-          );
+        expect(response.data.distributed).toBeFalsy();
       });
     });
 
     describe("returns an error when the server was not able to complete the check", () => {
-      const fixture = loadFixture("checkZoneRecordDistribution/error.http");
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/records/1/distribution")
+          .reply(readFixtureAt("checkZoneRecordDistribution/error.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/records/1/distribution")
-        .reply(fixture.statusCode, fixture.body);
-
-      it("produces an error", (done) => {
-        dnsimple.zones
-          .checkZoneRecordDistribution(accountId, "example.com", recordId)
-          .then(
-            (response) => {
-              done();
-            },
-            (error) => {
-              expect(error).to.not.eq(null);
-              done();
-            }
-          );
+        await expect(
+          dnsimple.zones.checkZoneRecordDistribution(
+            accountId,
+            "example.com",
+            recordId
+          )
+        ).rejects.toThrow();
       });
     });
 
     describe("when the zone does not exist", () => {
-      const fixture = loadFixture("notfound-zone.http");
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/records/1/distribution")
+          .reply(readFixtureAt("notfound-zone.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/records/1/distribution")
-        .reply(fixture.statusCode, fixture.body);
-
-      it("produces an error", (done) => {
-        dnsimple.zones
-          .checkZoneRecordDistribution(accountId, "example.com", recordId)
-          .then(
-            (response) => {
-              done();
-            },
-            (error) => {
-              expect(error).to.be.instanceOf(NotFoundError);
-              done();
-            }
-          );
+        await expect(
+          dnsimple.zones.checkZoneRecordDistribution(
+            accountId,
+            "example.com",
+            recordId
+          )
+        ).rejects.toThrow(NotFoundError);
       });
     });
 
     describe("when the zone record does not exist", () => {
-      const fixture = loadFixture("notfound-record.http");
+      it("produces an error", async () => {
+        nock("https://api.dnsimple.com")
+          .get("/v2/1010/zones/example.com/records/1/distribution")
+          .reply(readFixtureAt("notfound-record.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/zones/example.com/records/1/distribution")
-        .reply(fixture.statusCode, fixture.body);
-
-      it("produces an error", (done) => {
-        dnsimple.zones
-          .checkZoneRecordDistribution(accountId, "example.com", recordId)
-          .then(
-            (response) => {
-              done();
-            },
-            (error) => {
-              expect(error).to.be.instanceOf(NotFoundError);
-              done();
-            }
-          );
+        await expect(
+          dnsimple.zones.checkZoneRecordDistribution(
+            accountId,
+            "example.com",
+            recordId
+          )
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });

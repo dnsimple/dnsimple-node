@@ -1,163 +1,121 @@
-import { expect } from "chai";
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
 describe("tlds", () => {
   describe("#listTlds", () => {
-    const fixture = loadFixture("listTlds/success.http");
-
-    it("supports pagination", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports pagination", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/tlds?page=1")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTlds/success.http"));
 
-      dnsimple.tlds.listTlds({ page: 1 });
+      await dnsimple.tlds.listTlds({ page: 1 });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports extra request options", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports extra request options", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/tlds?foo=bar")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTlds/success.http"));
 
-      dnsimple.tlds.listTlds({ foo: "bar" });
+      await dnsimple.tlds.listTlds({ foo: "bar" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("supports sorting", (done) => {
-      nock("https://api.dnsimple.com")
+    it("supports sorting", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .get("/v2/tlds?sort=tld%3Aasc")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTlds/success.http"));
 
-      dnsimple.tlds.listTlds({ sort: "tld:asc" });
+      await dnsimple.tlds.listTlds({ sort: "tld:asc" });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("produces a tld list", (done) => {
+    it("produces a tld list", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/tlds")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTlds/success.http"));
 
-      dnsimple.tlds.listTlds().then(
-        (response) => {
-          const tlds = response.data;
-          expect(tlds.length).to.eq(2);
-          expect(tlds[0].tld).to.eq("ac");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.tlds.listTlds();
+
+      const tlds = response.data;
+      expect(tlds.length).toBe(2);
+      expect(tlds[0].tld).toBe("ac");
     });
 
-    it("exposes the pagination info", (done) => {
+    it("exposes the pagination info", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/tlds")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("listTlds/success.http"));
 
-      dnsimple.tlds.listTlds().then(
-        (response) => {
-          const pagination = response.pagination;
-          expect(pagination).to.not.eq(null);
-          expect(pagination.current_page).to.eq(1);
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.tlds.listTlds();
+
+      const pagination = response.pagination;
+      expect(pagination).not.toBe(null);
+      expect(pagination.current_page).toBe(1);
     });
   });
 
   describe("#getTld", () => {
-    const fixture = loadFixture("getTld/success.http");
-
-    it("produces a tld", (done) => {
+    it("produces a tld", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/tlds/com")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getTld/success.http"));
 
-      dnsimple.tlds.getTld("com").then(
-        (response) => {
-          const tld = response.data;
-          expect(tld.tld).to.eq("com");
-          expect(tld.tld_type).to.eq(1);
-          expect(tld.whois_privacy).to.eq(true);
-          expect(tld.auto_renew_only).to.eq(false);
-          expect(tld.idn).to.eq(true);
-          expect(tld.minimum_registration).to.eq(1);
-          expect(tld.registration_enabled).to.eq(true);
-          expect(tld.renewal_enabled).to.eq(true);
-          expect(tld.transfer_enabled).to.eq(true);
-          expect(tld.dnssec_interface_type).to.eq("ds");
-          done();
-        },
-        (error) => {
-          done(error);
-        }
-      );
+      const response = await dnsimple.tlds.getTld("com");
+
+      const tld = response.data;
+      expect(tld.tld).toBe("com");
+      expect(tld.tld_type).toBe(1);
+      expect(tld.whois_privacy).toBe(true);
+      expect(tld.auto_renew_only).toBe(false);
+      expect(tld.idn).toBe(true);
+      expect(tld.minimum_registration).toBe(1);
+      expect(tld.registration_enabled).toBe(true);
+      expect(tld.renewal_enabled).toBe(true);
+      expect(tld.transfer_enabled).toBe(true);
+      expect(tld.dnssec_interface_type).toBe("ds");
     });
   });
 
   describe("#getTldExtendedAttributes", () => {
-    it("produces a collection of extended attributes", (done) => {
-      const fixture = loadFixture("getTldExtendedAttributes/success.http");
-
+    it("produces a collection of extended attributes", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/tlds/uk/extended_attributes")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getTldExtendedAttributes/success.http"));
 
-      dnsimple.tlds.getTldExtendedAttributes("uk").then(
-        (response) => {
-          const extendedAttributes = response.data;
-          expect(extendedAttributes.length).to.eq(4);
-          expect(extendedAttributes[0].name).to.eq("uk_legal_type");
-          expect(extendedAttributes[0].description).to.eq(
-            "Legal type of registrant contact"
-          );
-          expect(extendedAttributes[0].required).to.eq(false);
-          expect(extendedAttributes[0].options.length).to.eq(17);
-          expect(extendedAttributes[0].options[0].title).to.eq("UK Individual");
-          expect(extendedAttributes[0].options[0].value).to.eq("IND");
-          expect(extendedAttributes[0].options[0].description).to.eq(
-            "UK Individual (our default value)"
-          );
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.tlds.getTldExtendedAttributes("uk");
+
+      const extendedAttributes = response.data;
+      expect(extendedAttributes.length).toBe(4);
+      expect(extendedAttributes[0].name).toBe("uk_legal_type");
+      expect(extendedAttributes[0].description).toBe(
+        "Legal type of registrant contact"
+      );
+      expect(extendedAttributes[0].required).toBe(false);
+      expect(extendedAttributes[0].options.length).toBe(17);
+      expect(extendedAttributes[0].options[0].title).toBe("UK Individual");
+      expect(extendedAttributes[0].options[0].value).toBe("IND");
+      expect(extendedAttributes[0].options[0].description).toBe(
+        "UK Individual (our default value)"
       );
     });
 
     describe("when there are no extended attributes for a TLD", () => {
-      const fixture = loadFixture(
-        "getTldExtendedAttributes/success-noattributes.http"
-      );
-
-      it("returns an empty collection", (done) => {
+      it("returns an empty collection", async () => {
         nock("https://api.dnsimple.com")
           .get("/v2/tlds/com/extended_attributes")
-          .reply(fixture.statusCode, fixture.body);
+          .reply(
+            readFixtureAt("getTldExtendedAttributes/success-noattributes.http")
+          );
 
-        dnsimple.tlds.getTldExtendedAttributes("com").then(
-          (response) => {
-            expect(response.data).to.eql([]);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+        const response = await dnsimple.tlds.getTldExtendedAttributes("com");
+
+        expect(response.data).toEqual([]);
       });
     });
   });

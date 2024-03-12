@@ -1,6 +1,5 @@
-import { expect } from "chai";
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,68 +7,53 @@ describe("domain transfer lock", () => {
   const accountId = 1010;
 
   describe("#getDomainTransferLock", () => {
-    const fixture = loadFixture("getDomainTransferLock/success.http");
-
-    it("produces a transfer lock", (done) => {
+    it("produces a transfer lock", async () => {
       nock("https://api.dnsimple.com")
         .get("/v2/1010/registrar/domains/101/transfer_lock")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("getDomainTransferLock/success.http"));
 
-      dnsimple.registrar.getDomainTransferLock(accountId, "101").then(
-        ({ data }) => {
-          expect(data).to.deep.eq({
-            enabled: true,
-          });
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.getDomainTransferLock(
+        accountId,
+        "101"
       );
+
+      expect(response.data).toEqual({
+        enabled: true,
+      });
     });
   });
 
   describe("#enableDomainTransferLock", () => {
-    const fixture = loadFixture("enableDomainTransferLock/success.http");
-
-    it("produces a transfer lock", (done) => {
+    it("produces a transfer lock", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/1010/registrar/domains/101/transfer_lock")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("enableDomainTransferLock/success.http"));
 
-      dnsimple.registrar.enableDomainTransferLock(accountId, "101").then(
-        ({ data }) => {
-          expect(data).to.deep.eq({
-            enabled: true,
-          });
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.enableDomainTransferLock(
+        accountId,
+        "101"
       );
+
+      expect(response.data).toEqual({
+        enabled: true,
+      });
     });
   });
 
   describe("#disableDomainTransferLock", () => {
-    const fixture = loadFixture("disableDomainTransferLock/success.http");
-
-    it("produces a transfer lock", (done) => {
+    it("produces a transfer lock", async () => {
       nock("https://api.dnsimple.com")
         .delete("/v2/1010/registrar/domains/101/transfer_lock")
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("disableDomainTransferLock/success.http"));
 
-      dnsimple.registrar.disableDomainTransferLock(accountId, "101").then(
-        ({ data }) => {
-          expect(data).to.deep.eq({
-            enabled: false,
-          });
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+      const response = await dnsimple.registrar.disableDomainTransferLock(
+        accountId,
+        "101"
       );
+
+      expect(response.data).toEqual({
+        enabled: false,
+      });
     });
   });
 });

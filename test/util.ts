@@ -1,53 +1,47 @@
-import * as chai from "chai";
-import * as chaiAsPromised from "chai-as-promised";
-import * as fs from "fs";
-import * as sinon from "sinon";
+import { readFileSync } from "fs";
 import { DNSimple } from "../lib/main";
 
-chai.use(chaiAsPromised);
+function hasJsonContent(lines: string[]) {
+  for (let line of lines) {
+    const [key, value] = line.split(/:\s/);
+    if (
+      key.toLowerCase() === "content-type" &&
+      value.includes("application/json")
+    )
+      return true;
+  }
+  return false;
+}
 
-export const getAccessToken = () => process.env["TOKEN"] ?? "bogus";
+function parseStatusCode(lines: string[]) {
+  return parseInt(lines[0].split(/\s+/)[1], 10);
+}
 
-export const createTestClient = () =>
-  new DNSimple({
-    accessToken: getAccessToken(),
+function parseBody(lines: string[]) {
+  const separatorLineIndex = lines.findIndex((line) => line.trim() === "");
+
+  const rawBody = lines
+    .slice(separatorLineIndex + 1)
+    .join("\n")
+    .trim();
+
+  if (hasJsonContent(lines) && rawBody !== "") return JSON.parse(rawBody);
+
+  return rawBody;
+}
+
+export function createTestClient() {
+  return new DNSimple({
+    accessToken: process.env["TOKEN"] ?? "bogus",
   });
+}
 
-export const stubRequest = (client: DNSimple) => {
-  const stub = sinon.stub();
-  client.request = stub;
-  return stub;
-};
-
-export const loadFixture = (path: string) => {
-  const data = fs.readFileSync(`${__dirname}/fixtures.http/${path}`, "utf-8");
+export function readFixtureAt(path: string) {
+  const data = readFileSync(`${__dirname}/fixtures.http/${path}`, "utf-8");
   const lines = data.split(/\r?\n/);
 
-  const statusLine = lines.shift()!;
-  const statusParts = statusLine.split(/\s+/);
-  const httpVersion = statusParts[0];
-  const statusCode = Number.parseInt(statusParts[1], 10);
-  const reasonPhrase = statusParts[2];
+  const statusCode = parseStatusCode(lines);
+  if (statusCode === 204) return () => [204, ""];
 
-  const headers: { [name: string]: string } = {};
-  let val;
-  while ((val = lines.shift())) {
-    const pair = val.split(/:\s/);
-    headers[pair[0]] = pair[1];
-  }
-
-  const fixture = {
-    httpVersion,
-    statusCode,
-    headers,
-    reasonPhrase,
-    body:
-      statusCode === 204
-        ? null
-        : headers["Content-Type"] === "application/json"
-          ? JSON.parse(lines.join("\n"))
-          : lines.join("\n"),
-  };
-
-  return fixture;
-};
+  return () => [statusCode, parseBody(lines)];
+}

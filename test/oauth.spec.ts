@@ -1,6 +1,5 @@
-import { expect } from "chai";
 import * as nock from "nock";
-import { createTestClient, loadFixture } from "./util";
+import { createTestClient, readFixtureAt } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -12,10 +11,8 @@ describe("oauth", () => {
   const state = "mysecretstate";
 
   describe("#exchangeAuthorizationForToken", () => {
-    const fixture = loadFixture("oauthAccessToken/success.http");
-
-    it("builds the correct request", (done) => {
-      nock("https://api.dnsimple.com")
+    it("builds the correct request", async () => {
+      const scope = nock("https://api.dnsimple.com")
         .post("/v2/oauth/access_token", {
           client_id: clientId,
           client_secret: clientSecret,
@@ -24,9 +21,9 @@ describe("oauth", () => {
           redirect_uri: redirectUri,
           state,
         })
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("oauthAccessToken/success.http"));
 
-      dnsimple.oauth.exchangeAuthorizationForToken({
+      await dnsimple.oauth.exchangeAuthorizationForToken({
         code,
         clientId,
         clientSecret,
@@ -34,11 +31,10 @@ describe("oauth", () => {
         state,
       });
 
-      nock.isDone();
-      done();
+      expect(scope.isDone()).toBeTruthy();
     });
 
-    it("returns the oauth token", (done) => {
+    it("returns the oauth token", async () => {
       nock("https://api.dnsimple.com")
         .post("/v2/oauth/access_token", {
           client_id: clientId,
@@ -48,37 +44,27 @@ describe("oauth", () => {
           redirect_uri: redirectUri,
           state,
         })
-        .reply(fixture.statusCode, fixture.body);
+        .reply(readFixtureAt("oauthAccessToken/success.http"));
 
-      dnsimple.oauth
-        .exchangeAuthorizationForToken({
-          code,
-          clientId,
-          clientSecret,
-          redirectUri,
-          state,
-        })
-        .then(
-          (response) => {
-            expect(response.access_token).to.eq(
-              "zKQ7OLqF5N1gylcJweA9WodA000BUNJD"
-            );
-            expect(response.token_type).to.eq("Bearer");
-            expect(response.account_id).to.eq(1);
-            done();
-          },
-          (error) => {
-            done(error);
-          }
-        );
+      const response = await dnsimple.oauth.exchangeAuthorizationForToken({
+        code,
+        clientId,
+        clientSecret,
+        redirectUri,
+        state,
+      });
+
+      expect(response.access_token).toBe("zKQ7OLqF5N1gylcJweA9WodA000BUNJD");
+      expect(response.token_type).toBe("Bearer");
+      expect(response.account_id).toBe(1);
     });
 
     describe("when state and redirect_uri are provided", () => {
       const state = "super-state";
       const redirectUri = "super-redirect-uri";
 
-      it("builds the correct request", (done) => {
-        nock("https://api.dnsimple.com")
+      it("builds the correct request", async () => {
+        const scope = nock("https://api.dnsimple.com")
           .post("/v2/oauth/access_token", {
             client_id: clientId,
             client_secret: clientSecret,
@@ -87,9 +73,9 @@ describe("oauth", () => {
             state,
             redirect_uri: redirectUri,
           })
-          .reply(fixture.statusCode, fixture.body);
+          .reply(readFixtureAt("oauthAccessToken/success.http"));
 
-        dnsimple.oauth.exchangeAuthorizationForToken({
+        await dnsimple.oauth.exchangeAuthorizationForToken({
           code,
           clientId,
           clientSecret,
@@ -97,8 +83,7 @@ describe("oauth", () => {
           redirectUri,
         });
 
-        nock.isDone();
-        done();
+        expect(scope.isDone()).toBeTruthy();
       });
     });
   });
@@ -124,9 +109,9 @@ describe("oauth", () => {
         return obj;
       };
 
-      expect(authorizeUrl.protocol).to.eq(expectedUrl.protocol);
-      expect(authorizeUrl.host).to.eq(expectedUrl.host);
-      expect(searchParamsToObj(authorizeUrl.searchParams)).to.deep.equal(
+      expect(authorizeUrl.protocol).toBe(expectedUrl.protocol);
+      expect(authorizeUrl.host).toBe(expectedUrl.host);
+      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(
         searchParamsToObj(expectedUrl.searchParams)
       );
     });
