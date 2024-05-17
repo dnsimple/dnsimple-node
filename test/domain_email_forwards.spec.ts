@@ -123,6 +123,8 @@ describe("domains", () => {
       expect(emailForward.domain_id).toBe(235146);
       expect(emailForward.from).toBe("example@dnsimple.xyz");
       expect(emailForward.to).toBe("example@example.com");
+      expect(emailForward.alias_email).toBe("example@dnsimple.xyz");
+      expect(emailForward.destination_email).toBe("example@example.com");
       expect(emailForward.created_at).toBe("2021-01-25T13:54:40Z");
       expect(emailForward.updated_at).toBe("2021-01-25T13:54:40Z");
     });
