@@ -55,7 +55,7 @@ describe("domains", () => {
         domainId
       );
 
-      expect(response.data.length).toBe(2);
+      expect(response.data.length).toBe(1);
     });
 
     it("exposes the pagination info", async () => {
