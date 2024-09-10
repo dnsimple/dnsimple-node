@@ -119,9 +119,30 @@ export type Fetcher = (params: {
   body: string;
 }>;
 
+// Cloudflare workers will hoist requires when compiling, so we can't use
+// require conditionally. Instead, hoist them manually and store the error if we
+// have one, so that if we feature detect node and they still fail, we can throw
+// the right error.
+let NODE_IMPORTS: {
+  Buffer: typeof import("buffer").Buffer;
+  https: typeof import("https");
+};
+let NODE_IMPORT_ERR: Error | undefined;
+try {
+  const { Buffer }: typeof import("buffer") = require("buffer");
+  const https: typeof import("https") = require("https");
+  NODE_IMPORTS = { Buffer, https };
+} catch (e) {
+  NODE_IMPORT_ERR = e;
+}
+
 const getFetcherForPlatform = (): Fetcher => {
-  // @ts-ignore
-  if (typeof window == "object") {
+  if (
+    // @ts-ignore detect browser
+    typeof window == "object" ||
+    // @ts-ignore detect web worker or cloudflare worker
+    typeof WorkerGlobalScope !== undefined
+  ) {
     return async ({ url, timeout, ...req }) => {
       const abortController = new AbortController();
       if (timeout) {
@@ -144,8 +165,10 @@ const getFetcherForPlatform = (): Fetcher => {
       }
     };
   }
-  const { Buffer }: typeof import("buffer") = require("buffer");
-  const https: typeof import("https") = require("https");
+  if (NODE_IMPORT_ERR) {
+    throw NODE_IMPORT_ERR;
+  }
+  const { Buffer, https } = NODE_IMPORTS;
   return ({ url, method, headers, timeout, body }) =>
     new Promise((resolve, reject) => {
       const req = https.request(url, {
