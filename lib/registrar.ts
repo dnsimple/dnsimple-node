@@ -17,17 +17,7 @@ export class Registrar {
    * @param params Query parameters
    */
   checkDomain = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainCheckResult }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/check`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DomainCheckResult }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/check`, null, params);
     return method;
   })();
 
@@ -48,17 +38,7 @@ export class Registrar {
    * @param params.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
    */
   getDomainPremiumPrice = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & { action?: string } = {}
-    ): Promise<{ data: types.DomainPremiumPrice }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/premium_price`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & { action?: string } = {}): Promise<{ data: types.DomainPremiumPrice }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/premium_price`, null, params);
     return method;
   })();
 
@@ -74,17 +54,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getDomainPrices = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainPrices }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/prices`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DomainPrices }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/prices`, null, params);
     return method;
   })();
 
@@ -113,13 +83,7 @@ export class Registrar {
         premium_price: string;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainRegistration }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/registrations`,
-        data,
-        params
-      );
+    ): Promise<{ data: types.DomainRegistration }> => this._client.request("POST", `/${account}/registrar/domains/${domain}/registrations`, data, params);
     return method;
   })();
 
@@ -136,18 +100,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getDomainRegistration = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      domainregistration: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainRegistration }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/registrations/${domainregistration}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, domainregistration: number, params: QueryParams & {} = {}): Promise<{ data: types.DomainRegistration }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/registrations/${domainregistration}`, null, params);
     return method;
   })();
 
@@ -177,13 +130,7 @@ export class Registrar {
         premium_price: string;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainTransfer }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/transfers`,
-        data,
-        params
-      );
+    ): Promise<{ data: types.DomainTransfer }> => this._client.request("POST", `/${account}/registrar/domains/${domain}/transfers`, data, params);
     return method;
   })();
 
@@ -200,18 +147,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getDomainTransfer = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      domaintransfer: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainTransfer }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, domaintransfer: number, params: QueryParams & {} = {}): Promise<{ data: types.DomainTransfer }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`, null, params);
     return method;
   })();
 
@@ -228,18 +164,7 @@ export class Registrar {
    * @param params Query parameters
    */
   cancelDomainTransfer = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      domaintransfer: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainTransfer }> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, domaintransfer: number, params: QueryParams & {} = {}): Promise<{ data: types.DomainTransfer }> => this._client.request("DELETE", `/${account}/registrar/domains/${domain}/transfers/${domaintransfer}`, null, params);
     return method;
   })();
 
@@ -257,18 +182,7 @@ export class Registrar {
    * @param params Query parameters
    */
   renewDomain = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      data: Partial<{ period: number; premium_price: string }>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainRenewal }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/renewals`,
-        data,
-        params
-      );
+    const method = (account: number, domain: string, data: Partial<{ period: number; premium_price: string }>, params: QueryParams & {} = {}): Promise<{ data: types.DomainRenewal }> => this._client.request("POST", `/${account}/registrar/domains/${domain}/renewals`, data, params);
     return method;
   })();
 
@@ -285,18 +199,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getDomainRenewal = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      domainrenewal: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainRenewal }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/renewals/${domainrenewal}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, domainrenewal: number, params: QueryParams & {} = {}): Promise<{ data: types.DomainRenewal }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/renewals/${domainrenewal}`, null, params);
     return method;
   })();
 
@@ -314,17 +217,7 @@ export class Registrar {
    * @param params Query parameters
    */
   transferDomainOut = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/authorize_transfer_out`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("POST", `/${account}/registrar/domains/${domain}/authorize_transfer_out`, null, params);
     return method;
   })();
 
@@ -340,17 +233,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getDomainDelegation = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: Array<string> }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/delegation`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: Array<string> }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/delegation`, null, params);
     return method;
   })();
 
@@ -366,18 +249,7 @@ export class Registrar {
    * @param params Query parameters
    */
   changeDomainDelegation = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      data: Partial<Array<string>>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: Array<string> }> =>
-      this._client.request(
-        "PUT",
-        `/${account}/registrar/domains/${domain}/delegation`,
-        data,
-        params
-      );
+    const method = (account: number, domain: string, data: Partial<Array<string>>, params: QueryParams & {} = {}): Promise<{ data: Array<string> }> => this._client.request("PUT", `/${account}/registrar/domains/${domain}/delegation`, data, params);
     return method;
   })();
 
@@ -393,18 +265,7 @@ export class Registrar {
    * @param params Query parameters
    */
   changeDomainDelegationToVanity = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      data: Partial<Array<string>>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: Array<types.NameServer> }> =>
-      this._client.request(
-        "PUT",
-        `/${account}/registrar/domains/${domain}/delegation/vanity`,
-        data,
-        params
-      );
+    const method = (account: number, domain: string, data: Partial<Array<string>>, params: QueryParams & {} = {}): Promise<{ data: Array<types.NameServer> }> => this._client.request("PUT", `/${account}/registrar/domains/${domain}/delegation/vanity`, data, params);
     return method;
   })();
 
@@ -420,17 +281,7 @@ export class Registrar {
    * @param params Query parameters
    */
   changeDomainDelegationFromVanity = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/registrar/domains/${domain}/delegation/vanity`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/registrar/domains/${domain}/delegation/vanity`, null, params);
     return method;
   })();
 
@@ -446,17 +297,7 @@ export class Registrar {
    * @param params Query parameters
    */
   enableDomainAutoRenewal = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "PUT",
-        `/${account}/registrar/domains/${domain}/auto_renewal`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("PUT", `/${account}/registrar/domains/${domain}/auto_renewal`, null, params);
     return method;
   })();
 
@@ -472,17 +313,7 @@ export class Registrar {
    * @param params Query parameters
    */
   disableDomainAutoRenewal = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/registrar/domains/${domain}/auto_renewal`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/registrar/domains/${domain}/auto_renewal`, null, params);
     return method;
   })();
 
@@ -498,17 +329,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacy }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.WhoisPrivacy }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/whois_privacy`, null, params);
     return method;
   })();
 
@@ -526,17 +347,7 @@ export class Registrar {
    * @param params Query parameters
    */
   enableWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacy }> =>
-      this._client.request(
-        "PUT",
-        `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.WhoisPrivacy }> => this._client.request("PUT", `/${account}/registrar/domains/${domain}/whois_privacy`, null, params);
     return method;
   })();
 
@@ -552,17 +363,7 @@ export class Registrar {
    * @param params Query parameters
    */
   disableWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacy }> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.WhoisPrivacy }> => this._client.request("DELETE", `/${account}/registrar/domains/${domain}/whois_privacy`, null, params);
     return method;
   })();
 
@@ -580,17 +381,7 @@ export class Registrar {
    * @param params Query parameters
    */
   renewWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacyRenewal }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.WhoisPrivacyRenewal }> => this._client.request("POST", `/${account}/registrar/domains/${domain}/whois_privacy/renewals`, null, params);
     return method;
   })();
 
@@ -622,13 +413,7 @@ export class Registrar {
     ): Promise<{
       data: Array<types.RegistrantChange>;
       pagination: types.Pagination;
-    }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/registrant_changes`,
-        null,
-        params
-      );
+    }> => this._client.request("GET", `/${account}/registrar/registrant_changes`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & {
@@ -675,13 +460,7 @@ export class Registrar {
         extended_attributes: Record<string, string>;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.RegistrantChange }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/registrant_changes`,
-        data,
-        params
-      );
+    ): Promise<{ data: types.RegistrantChange }> => this._client.request("POST", `/${account}/registrar/registrant_changes`, data, params);
     return method;
   })();
 
@@ -703,13 +482,7 @@ export class Registrar {
         contact_id: string | number;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.RegistrantChangeCheck }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/registrant_changes/check`,
-        data,
-        params
-      );
+    ): Promise<{ data: types.RegistrantChangeCheck }> => this._client.request("POST", `/${account}/registrar/registrant_changes/check`, data, params);
     return method;
   })();
 
@@ -725,17 +498,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getRegistrantChange = (() => {
-    const method = (
-      account: number,
-      registrantchange: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.RegistrantChange }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/registrant_changes/${registrantchange}`,
-        null,
-        params
-      );
+    const method = (account: number, registrantchange: number, params: QueryParams & {} = {}): Promise<{ data: types.RegistrantChange }> => this._client.request("GET", `/${account}/registrar/registrant_changes/${registrantchange}`, null, params);
     return method;
   })();
 
@@ -751,17 +514,7 @@ export class Registrar {
    * @param params Query parameters
    */
   deleteRegistrantChange = (() => {
-    const method = (
-      account: number,
-      registrantchange: number,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/registrar/registrant_changes/${registrantchange}`,
-        null,
-        params
-      );
+    const method = (account: number, registrantchange: number, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/registrar/registrant_changes/${registrantchange}`, null, params);
     return method;
   })();
 
@@ -777,17 +530,7 @@ export class Registrar {
    * @param params Query parameters
    */
   getDomainTransferLock = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainTransferLock }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/transfer_lock`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DomainTransferLock }> => this._client.request("GET", `/${account}/registrar/domains/${domain}/transfer_lock`, null, params);
     return method;
   })();
 
@@ -803,17 +546,7 @@ export class Registrar {
    * @param params Query parameters
    */
   enableDomainTransferLock = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainTransferLock }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/transfer_lock`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DomainTransferLock }> => this._client.request("POST", `/${account}/registrar/domains/${domain}/transfer_lock`, null, params);
     return method;
   })();
 
@@ -829,17 +562,7 @@ export class Registrar {
    * @param params Query parameters
    */
   disableDomainTransferLock = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DomainTransferLock }> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/registrar/domains/${domain}/transfer_lock`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DomainTransferLock }> => this._client.request("DELETE", `/${account}/registrar/domains/${domain}/transfer_lock`, null, params);
     return method;
   })();
 }

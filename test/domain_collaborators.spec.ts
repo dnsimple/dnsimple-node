@@ -9,9 +9,7 @@ describe("collaborators", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators?page=1")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/collaborators?page=1").reply(readFixtureAt("listCollaborators/success.http"));
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
         page: 1,
@@ -21,9 +19,7 @@ describe("collaborators", () => {
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators?foo=bar")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/collaborators?foo=bar").reply(readFixtureAt("listCollaborators/success.http"));
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
         foo: "bar",
@@ -33,14 +29,9 @@ describe("collaborators", () => {
     });
 
     it("produces a collaborators list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/collaborators").reply(readFixtureAt("listCollaborators/success.http"));
 
-      const response = await dnsimple.domains.listCollaborators(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.domains.listCollaborators(accountId, domainId);
 
       const collaborators = response.data;
       expect(collaborators.length).toBe(2);
@@ -50,14 +41,9 @@ describe("collaborators", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/collaborators").reply(readFixtureAt("listCollaborators/success.http"));
 
-      const response = await dnsimple.domains.listCollaborators(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.domains.listCollaborators(accountId, domainId);
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -73,15 +59,9 @@ describe("collaborators", () => {
     };
 
     it("produces a response", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/collaborators")
-        .reply(readFixtureAt("addCollaborator/success.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/collaborators").reply(readFixtureAt("addCollaborator/success.http"));
 
-      const response = await dnsimple.domains.addCollaborator(
-        accountId,
-        domainId,
-        collaborator
-      );
+      const response = await dnsimple.domains.addCollaborator(accountId, domainId, collaborator);
 
       const data = response.data;
       expect(data.id).toEqual(100);
@@ -95,15 +75,9 @@ describe("collaborators", () => {
     const collaboratorId = 100;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com/collaborators/100")
-        .reply(readFixtureAt("removeCollaborator/success.http"));
+      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com/collaborators/100").reply(readFixtureAt("removeCollaborator/success.http"));
 
-      const response = await dnsimple.domains.removeCollaborator(
-        accountId,
-        domainId,
-        collaboratorId
-      );
+      const response = await dnsimple.domains.removeCollaborator(accountId, domainId, collaboratorId);
 
       expect(response).toEqual({});
     });

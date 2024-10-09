@@ -8,17 +8,12 @@ describe("registrant", () => {
 
   describe("#checkRegistrantChange", () => {
     it("produces a registrant change", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/registrar/registrant_changes/check")
-        .reply(readFixtureAt("checkRegistrantChange/success.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/registrar/registrant_changes/check").reply(readFixtureAt("checkRegistrantChange/success.http"));
 
-      const response = await dnsimple.registrar.checkRegistrantChange(
-        accountId,
-        {
-          contact_id: 101,
-          domain_id: 101,
-        }
-      );
+      const response = await dnsimple.registrar.checkRegistrantChange(accountId, {
+        contact_id: 101,
+        domain_id: 101,
+      });
 
       const data = response.data;
       expect(data.domain_id).toBe(101);
@@ -30,18 +25,13 @@ describe("registrant", () => {
 
   describe("#createRegistrantChange", () => {
     it("produces a registrant change", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/registrar/registrant_changes")
-        .reply(readFixtureAt("createRegistrantChange/success.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/registrar/registrant_changes").reply(readFixtureAt("createRegistrantChange/success.http"));
 
-      const response = await dnsimple.registrar.createRegistrantChange(
-        accountId,
-        {
-          contact_id: 101,
-          domain_id: 101,
-          extended_attributes: {},
-        }
-      );
+      const response = await dnsimple.registrar.createRegistrantChange(accountId, {
+        contact_id: 101,
+        domain_id: 101,
+        extended_attributes: {},
+      });
 
       const data = response.data;
       expect(data.id).toBe(101);
@@ -59,9 +49,7 @@ describe("registrant", () => {
 
   describe("#deleteRegistrantChange", () => {
     it("deletes the registrant change", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .delete("/v2/1010/registrar/registrant_changes/101")
-        .reply(readFixtureAt("deleteRegistrantChange/success.http"));
+      const scope = nock("https://api.dnsimple.com").delete("/v2/1010/registrar/registrant_changes/101").reply(readFixtureAt("deleteRegistrantChange/success.http"));
 
       await dnsimple.registrar.deleteRegistrantChange(accountId, 101);
 
@@ -71,14 +59,9 @@ describe("registrant", () => {
 
   describe("#getRegistrantChange", () => {
     it("returns the registrant change", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/registrar/registrant_changes/101")
-        .reply(readFixtureAt("getRegistrantChange/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/registrar/registrant_changes/101").reply(readFixtureAt("getRegistrantChange/success.http"));
 
-      const response = await dnsimple.registrar.getRegistrantChange(
-        accountId,
-        101
-      );
+      const response = await dnsimple.registrar.getRegistrantChange(accountId, 101);
 
       expect(response.data).toEqual({
         id: 101,

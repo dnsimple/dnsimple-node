@@ -45,5 +45,8 @@
     "format": "prettier -w '*.{js,json}' '{lib,test}/**/*.ts'",
     "format-check": "prettier --check '*.{js,json}' '{lib,test}/**/*.ts'",
     "test": "jest"
+  },
+  "dependencies": {
+    "fetch-mock": "^11.1.5"
   }
 }

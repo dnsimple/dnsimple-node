@@ -97,9 +97,7 @@ describe("oauth", () => {
           state,
         })
       );
-      const expectedUrl = new URL(
-        "https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate"
-      );
+      const expectedUrl = new URL("https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate");
 
       const searchParamsToObj = (params: URLSearchParams) => {
         const obj: { [name: string]: any } = {};
@@ -111,9 +109,7 @@ describe("oauth", () => {
 
       expect(authorizeUrl.protocol).toBe(expectedUrl.protocol);
       expect(authorizeUrl.host).toBe(expectedUrl.host);
-      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(
-        searchParamsToObj(expectedUrl.searchParams)
-      );
+      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(searchParamsToObj(expectedUrl.searchParams));
     });
   });
 });

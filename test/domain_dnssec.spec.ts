@@ -9,9 +9,7 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("enableDnssec/success.http"));
+      const scope = nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/dnssec").reply(readFixtureAt("enableDnssec/success.http"));
 
       await dnsimple.domains.enableDnssec(accountId, domainId);
 
@@ -19,9 +17,7 @@ describe("domains", () => {
     });
 
     it("produces an response", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("enableDnssec/success.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/dnssec").reply(readFixtureAt("enableDnssec/success.http"));
 
       const response = await dnsimple.domains.enableDnssec(accountId, domainId);
 
@@ -34,14 +30,9 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("disableDnssec/success.http"));
+      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com/dnssec").reply(readFixtureAt("disableDnssec/success.http"));
 
-      const response = await dnsimple.domains.disableDnssec(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.domains.disableDnssec(accountId, domainId);
 
       expect(response).toEqual({});
     });
@@ -52,9 +43,7 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("getDnssec/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/dnssec").reply(readFixtureAt("getDnssec/success.http"));
 
       await dnsimple.domains.getDnssec(accountId, domainId);
 
@@ -62,9 +51,7 @@ describe("domains", () => {
     });
 
     it("produces an response", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("getDnssec/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/dnssec").reply(readFixtureAt("getDnssec/success.http"));
 
       const response = await dnsimple.domains.getDnssec(accountId, domainId);
 

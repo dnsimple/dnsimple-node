@@ -4,11 +4,7 @@ import { DNSimple } from "../lib/main";
 function hasJsonContent(lines: string[]) {
   for (let line of lines) {
     const [key, value] = line.split(/:\s/);
-    if (
-      key.toLowerCase() === "content-type" &&
-      value.includes("application/json")
-    )
-      return true;
+    if (key.toLowerCase() === "content-type" && value.includes("application/json")) return true;
   }
   return false;
 }
@@ -36,7 +32,7 @@ export function createTestClient() {
   });
 }
 
-export function readFixtureAt(path: string) {
+export function readFixtureAt(path: string): () => [number, string] {
   const data = readFileSync(`${__dirname}/fixtures.http/${path}`, "utf-8");
   const lines = data.split(/\r?\n/);
 
@@ -45,3 +41,11 @@ export function readFixtureAt(path: string) {
 
   return () => [statusCode, parseBody(lines)];
 }
+
+export const fetchMockResponse = (fixturePath: string) => {
+  const [status, body] = readFixtureAt(fixturePath)();
+  if (status === 204)
+    return {status: 204};
+
+  return { status, body };
+};

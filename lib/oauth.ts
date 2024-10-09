@@ -20,13 +20,7 @@ export class OAuth {
    * @param attributes.state The random state used when authorizing
    * @param attributes.redirectUri A redirect URI
    */
-  exchangeAuthorizationForToken(attributes: {
-    code: string;
-    clientId: string;
-    clientSecret: string;
-    state: string;
-    redirectUri: string;
-  }) {
+  exchangeAuthorizationForToken(attributes: { code: string; clientId: string; clientSecret: string; state: string; redirectUri: string }) {
     return this._client.request(
       "POST",
       "/oauth/access_token",
@@ -54,12 +48,7 @@ export class OAuth {
    * @param attributes.scope The scope to request during authorization
    * @return The URL to redirect the user to for authorization
    */
-  authorizeUrl(attributes: {
-    clientId: string;
-    state: string;
-    redirectUri?: string;
-    scope?: string;
-  }) {
+  authorizeUrl(attributes: { clientId: string; state: string; redirectUri?: string; scope?: string }) {
     const siteUrl = this._client.baseUrl.replace("api.", "");
     return `${siteUrl}/oauth/authorize?${toQueryString({
       state: attributes.state,

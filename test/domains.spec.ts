@@ -9,9 +9,7 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?page=1")
-        .reply(readFixtureAt("listDomains/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?page=1").reply(readFixtureAt("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { page: 1 });
 
@@ -19,9 +17,7 @@ describe("domains", () => {
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?foo=bar")
-        .reply(readFixtureAt("listDomains/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?foo=bar").reply(readFixtureAt("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { foo: "bar" });
 
@@ -29,9 +25,7 @@ describe("domains", () => {
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?sort=expiration%3Aasc")
-        .reply(readFixtureAt("listDomains/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?sort=expiration%3Aasc").reply(readFixtureAt("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { sort: "expiration:asc" });
 
@@ -39,9 +33,7 @@ describe("domains", () => {
     });
 
     it("supports filter", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?name_like=example")
-        .reply(readFixtureAt("listDomains/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?name_like=example").reply(readFixtureAt("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { name_like: "example" });
 
@@ -49,9 +41,7 @@ describe("domains", () => {
     });
 
     it("produces a domain list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains")
-        .reply(readFixtureAt("listDomains/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains").reply(readFixtureAt("listDomains/success.http"));
 
       const response = await dnsimple.domains.listDomains(accountId);
 
@@ -62,9 +52,7 @@ describe("domains", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains")
-        .reply(readFixtureAt("listDomains/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains").reply(readFixtureAt("listDomains/success.http"));
 
       const response = await dnsimple.domains.listDomains(accountId);
 
@@ -78,17 +66,11 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?page=1")
-        .reply(readFixtureAt("pages-1of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains?page=1").reply(readFixtureAt("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?page=2")
-        .reply(readFixtureAt("pages-2of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains?page=2").reply(readFixtureAt("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains?page=3")
-        .reply(readFixtureAt("pages-3of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains?page=3").reply(readFixtureAt("pages-3of3.http"));
 
       const items = await dnsimple.domains.listDomains.collectAll(accountId);
 
@@ -103,9 +85,7 @@ describe("domains", () => {
     const domainId = "example-alpha.com";
 
     it("produces a domain", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1385/domains/example-alpha.com")
-        .reply(readFixtureAt("getDomain/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1385/domains/example-alpha.com").reply(readFixtureAt("getDomain/success.http"));
 
       const response = await dnsimple.domains.getDomain(accountId, domainId);
 
@@ -125,13 +105,9 @@ describe("domains", () => {
 
     describe("when the domain does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1385/domains/0")
-          .reply(readFixtureAt("notfound-domain.http"));
+        nock("https://api.dnsimple.com").get("/v2/1385/domains/0").reply(readFixtureAt("notfound-domain.http"));
 
-        await expect(
-          dnsimple.domains.getDomain(accountId, "0")
-        ).rejects.toThrow(NotFoundError);
+        await expect(dnsimple.domains.getDomain(accountId, "0")).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -141,9 +117,7 @@ describe("domains", () => {
     const attributes = { name: "example-alpha.com" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1385/domains", attributes)
-        .reply(readFixtureAt("createDomain/created.http"));
+      const scope = nock("https://api.dnsimple.com").post("/v2/1385/domains", attributes).reply(readFixtureAt("createDomain/created.http"));
 
       await dnsimple.domains.createDomain(accountId, attributes);
 
@@ -151,14 +125,9 @@ describe("domains", () => {
     });
 
     it("produces a domain", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1385/domains")
-        .reply(readFixtureAt("createDomain/created.http"));
+      nock("https://api.dnsimple.com").post("/v2/1385/domains").reply(readFixtureAt("createDomain/created.http"));
 
-      const response = await dnsimple.domains.createDomain(
-        accountId,
-        attributes
-      );
+      const response = await dnsimple.domains.createDomain(accountId, attributes);
 
       const domain = response.data;
       expect(domain.id).toBe(181985);
@@ -170,9 +139,7 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com")
-        .reply(readFixtureAt("deleteDomain/success.http"));
+      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com").reply(readFixtureAt("deleteDomain/success.http"));
 
       const response = await dnsimple.domains.deleteDomain(accountId, domainId);
 

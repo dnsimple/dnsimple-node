@@ -16,11 +16,7 @@ export class Webhooks {
    * @param params.sort Sort results. Default sorting is by name ascending.
    */
   listWebhooks = (() => {
-    const method = (
-      account: number,
-      params: QueryParams & { sort?: "id:asc" | "id:desc" } = {}
-    ): Promise<{ data: Array<types.Webhook> }> =>
-      this._client.request("GET", `/${account}/webhooks`, null, params);
+    const method = (account: number, params: QueryParams & { sort?: "id:asc" | "id:desc" } = {}): Promise<{ data: Array<types.Webhook> }> => this._client.request("GET", `/${account}/webhooks`, null, params);
     return method;
   })();
 
@@ -35,12 +31,7 @@ export class Webhooks {
    * @param params Query parameters
    */
   createWebhook = (() => {
-    const method = (
-      account: number,
-      data: Partial<{ url: string }>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Webhook }> =>
-      this._client.request("POST", `/${account}/webhooks`, data, params);
+    const method = (account: number, data: Partial<{ url: string }>, params: QueryParams & {} = {}): Promise<{ data: types.Webhook }> => this._client.request("POST", `/${account}/webhooks`, data, params);
     return method;
   })();
 
@@ -56,17 +47,7 @@ export class Webhooks {
    * @param params Query parameters
    */
   getWebhook = (() => {
-    const method = (
-      account: number,
-      webhook: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Webhook }> =>
-      this._client.request(
-        "GET",
-        `/${account}/webhooks/${webhook}`,
-        null,
-        params
-      );
+    const method = (account: number, webhook: number, params: QueryParams & {} = {}): Promise<{ data: types.Webhook }> => this._client.request("GET", `/${account}/webhooks/${webhook}`, null, params);
     return method;
   })();
 
@@ -82,17 +63,7 @@ export class Webhooks {
    * @param params Query parameters
    */
   deleteWebhook = (() => {
-    const method = (
-      account: number,
-      webhook: number,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/webhooks/${webhook}`,
-        null,
-        params
-      );
+    const method = (account: number, webhook: number, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/webhooks/${webhook}`, null, params);
     return method;
   })();
 }

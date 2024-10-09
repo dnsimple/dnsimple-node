@@ -9,9 +9,7 @@ describe("billing", () => {
     const accountId = 1010;
 
     it("produces a charges list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/billing/charges")
-        .reply(readFixtureAt("listCharges/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/billing/charges").reply(readFixtureAt("listCharges/success.http"));
 
       const response = await dnsimple.billing.listCharges(accountId);
 
@@ -76,9 +74,7 @@ describe("billing", () => {
     });
 
     it("throws an error on bad filter", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/billing/charges")
-        .reply(readFixtureAt("listCharges/fail-400-bad-filter.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/billing/charges").reply(readFixtureAt("listCharges/fail-400-bad-filter.http"));
 
       try {
         await dnsimple.billing.listCharges(accountId);
@@ -86,16 +82,12 @@ describe("billing", () => {
         expect(error).toBeInstanceOf(ClientError);
         const clientError = error as ClientError;
         expect(clientError.status).toBe(400);
-        expect(clientError.data.message).toBe(
-          "Invalid date format must be ISO8601 (YYYY-MM-DD)"
-        );
+        expect(clientError.data.message).toBe("Invalid date format must be ISO8601 (YYYY-MM-DD)");
       }
     });
 
     it("throws an error on missing scope", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/billing/charges")
-        .reply(readFixtureAt("listCharges/fail-403.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/billing/charges").reply(readFixtureAt("listCharges/fail-403.http"));
 
       try {
         await dnsimple.billing.listCharges(accountId);
@@ -103,9 +95,7 @@ describe("billing", () => {
         expect(error).toBeInstanceOf(ClientError);
         const clientError = error as ClientError;
         expect(clientError.status).toBe(403);
-        expect(clientError.data.message).toBe(
-          "Permission Denied. Required Scope: billing:*:read"
-        );
+        expect(clientError.data.message).toBe("Permission Denied. Required Scope: billing:*:read");
       }
     });
   });

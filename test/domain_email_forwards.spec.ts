@@ -10,9 +10,7 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards?page=1")
-        .reply(readFixtureAt("listEmailForwards/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=1").reply(readFixtureAt("listEmailForwards/success.http"));
 
       await dnsimple.domains.listEmailForwards(accountId, domainId, {
         page: 1,
@@ -22,9 +20,7 @@ describe("domains", () => {
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards?foo=bar")
-        .reply(readFixtureAt("listEmailForwards/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?foo=bar").reply(readFixtureAt("listEmailForwards/success.http"));
 
       await dnsimple.domains.listEmailForwards(accountId, domainId, {
         foo: "bar",
@@ -34,9 +30,7 @@ describe("domains", () => {
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards?sort=from%3Aasc")
-        .reply(readFixtureAt("listEmailForwards/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?sort=from%3Aasc").reply(readFixtureAt("listEmailForwards/success.http"));
 
       await dnsimple.domains.listEmailForwards(accountId, domainId, {
         sort: "from:asc",
@@ -46,27 +40,17 @@ describe("domains", () => {
     });
 
     it("produces an email forward list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards")
-        .reply(readFixtureAt("listEmailForwards/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards").reply(readFixtureAt("listEmailForwards/success.http"));
 
-      const response = await dnsimple.domains.listEmailForwards(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.domains.listEmailForwards(accountId, domainId);
 
       expect(response.data.length).toBe(1);
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards")
-        .reply(readFixtureAt("listEmailForwards/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards").reply(readFixtureAt("listEmailForwards/success.http"));
 
-      const response = await dnsimple.domains.listEmailForwards(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.domains.listEmailForwards(accountId, domainId);
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -79,22 +63,13 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards?page=1")
-        .reply(readFixtureAt("pages-1of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=1").reply(readFixtureAt("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards?page=2")
-        .reply(readFixtureAt("pages-2of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=2").reply(readFixtureAt("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards?page=3")
-        .reply(readFixtureAt("pages-3of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=3").reply(readFixtureAt("pages-3of3.http"));
 
-      const items = await dnsimple.domains.listEmailForwards.collectAll(
-        accountId,
-        domainId
-      );
+      const items = await dnsimple.domains.listEmailForwards.collectAll(accountId, domainId);
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -108,15 +83,9 @@ describe("domains", () => {
     const emailForwardId = 41872;
 
     it("produces an email forward", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/email_forwards/41872")
-        .reply(readFixtureAt("getEmailForward/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards/41872").reply(readFixtureAt("getEmailForward/success.http"));
 
-      const response = await dnsimple.domains.getEmailForward(
-        accountId,
-        domainId,
-        emailForwardId
-      );
+      const response = await dnsimple.domains.getEmailForward(accountId, domainId, emailForwardId);
 
       const emailForward = response.data;
       expect(emailForward.id).toBe(41872);
@@ -131,13 +100,9 @@ describe("domains", () => {
 
     describe("when the email forward does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/domains/example.com/email_forwards/0")
-          .reply(readFixtureAt("notfound-emailforward.http"));
+        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards/0").reply(readFixtureAt("notfound-emailforward.http"));
 
-        await expect(
-          dnsimple.domains.getEmailForward(accountId, domainId, 0)
-        ).rejects.toThrow(NotFoundError);
+        await expect(dnsimple.domains.getEmailForward(accountId, domainId, 0)).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -148,29 +113,17 @@ describe("domains", () => {
     const attributes = { alias_name: "jim" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/email_forwards", attributes)
-        .reply(readFixtureAt("createEmailForward/created.http"));
+      const scope = nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/email_forwards", attributes).reply(readFixtureAt("createEmailForward/created.http"));
 
-      await dnsimple.domains.createEmailForward(
-        accountId,
-        domainId,
-        attributes
-      );
+      await dnsimple.domains.createEmailForward(accountId, domainId, attributes);
 
       expect(scope.isDone()).toBeTruthy();
     });
 
     it("produces an email forward", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/email_forwards")
-        .reply(readFixtureAt("createEmailForward/created.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/email_forwards").reply(readFixtureAt("createEmailForward/created.http"));
 
-      const response = await dnsimple.domains.createEmailForward(
-        accountId,
-        domainId,
-        attributes
-      );
+      const response = await dnsimple.domains.createEmailForward(accountId, domainId, attributes);
 
       expect(response.data.id).toBe(41872);
     });
@@ -182,15 +135,9 @@ describe("domains", () => {
     const emailForwardId = 1;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com/email_forwards/1")
-        .reply(readFixtureAt("deleteEmailForward/success.http"));
+      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com/email_forwards/1").reply(readFixtureAt("deleteEmailForward/success.http"));
 
-      const response = await dnsimple.domains.deleteEmailForward(
-        accountId,
-        domainId,
-        emailForwardId
-      );
+      const response = await dnsimple.domains.deleteEmailForward(accountId, domainId, emailForwardId);
 
       expect(response).toEqual({});
     });

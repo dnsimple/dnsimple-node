@@ -14,10 +14,7 @@ export class Accounts {
    * @param params Query parameters
    */
   listAccounts = (() => {
-    const method = (
-      params: QueryParams & {} = {}
-    ): Promise<{ data: Array<types.Account> }> =>
-      this._client.request("GET", `/accounts`, null, params);
+    const method = (params: QueryParams & {} = {}): Promise<{ data: Array<types.Account> }> => this._client.request("GET", `/accounts`, null, params);
     return method;
   })();
 }

@@ -6,9 +6,7 @@ const dnsimple = createTestClient();
 describe("tlds", () => {
   describe("#listTlds", () => {
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/tlds?page=1")
-        .reply(readFixtureAt("listTlds/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/tlds?page=1").reply(readFixtureAt("listTlds/success.http"));
 
       await dnsimple.tlds.listTlds({ page: 1 });
 
@@ -16,9 +14,7 @@ describe("tlds", () => {
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/tlds?foo=bar")
-        .reply(readFixtureAt("listTlds/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/tlds?foo=bar").reply(readFixtureAt("listTlds/success.http"));
 
       await dnsimple.tlds.listTlds({ foo: "bar" });
 
@@ -26,9 +22,7 @@ describe("tlds", () => {
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/tlds?sort=tld%3Aasc")
-        .reply(readFixtureAt("listTlds/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/tlds?sort=tld%3Aasc").reply(readFixtureAt("listTlds/success.http"));
 
       await dnsimple.tlds.listTlds({ sort: "tld:asc" });
 
@@ -36,9 +30,7 @@ describe("tlds", () => {
     });
 
     it("produces a tld list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds")
-        .reply(readFixtureAt("listTlds/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/tlds").reply(readFixtureAt("listTlds/success.http"));
 
       const response = await dnsimple.tlds.listTlds();
 
@@ -48,9 +40,7 @@ describe("tlds", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds")
-        .reply(readFixtureAt("listTlds/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/tlds").reply(readFixtureAt("listTlds/success.http"));
 
       const response = await dnsimple.tlds.listTlds();
 
@@ -62,9 +52,7 @@ describe("tlds", () => {
 
   describe("#getTld", () => {
     it("produces a tld", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds/com")
-        .reply(readFixtureAt("getTld/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/tlds/com").reply(readFixtureAt("getTld/success.http"));
 
       const response = await dnsimple.tlds.getTld("com");
 
@@ -84,34 +72,24 @@ describe("tlds", () => {
 
   describe("#getTldExtendedAttributes", () => {
     it("produces a collection of extended attributes", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/tlds/uk/extended_attributes")
-        .reply(readFixtureAt("getTldExtendedAttributes/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/tlds/uk/extended_attributes").reply(readFixtureAt("getTldExtendedAttributes/success.http"));
 
       const response = await dnsimple.tlds.getTldExtendedAttributes("uk");
 
       const extendedAttributes = response.data;
       expect(extendedAttributes.length).toBe(4);
       expect(extendedAttributes[0].name).toBe("uk_legal_type");
-      expect(extendedAttributes[0].description).toBe(
-        "Legal type of registrant contact"
-      );
+      expect(extendedAttributes[0].description).toBe("Legal type of registrant contact");
       expect(extendedAttributes[0].required).toBe(false);
       expect(extendedAttributes[0].options.length).toBe(17);
       expect(extendedAttributes[0].options[0].title).toBe("UK Individual");
       expect(extendedAttributes[0].options[0].value).toBe("IND");
-      expect(extendedAttributes[0].options[0].description).toBe(
-        "UK Individual (our default value)"
-      );
+      expect(extendedAttributes[0].options[0].description).toBe("UK Individual (our default value)");
     });
 
     describe("when there are no extended attributes for a TLD", () => {
       it("returns an empty collection", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/tlds/com/extended_attributes")
-          .reply(
-            readFixtureAt("getTldExtendedAttributes/success-noattributes.http")
-          );
+        nock("https://api.dnsimple.com").get("/v2/tlds/com/extended_attributes").reply(readFixtureAt("getTldExtendedAttributes/success-noattributes.http"));
 
         const response = await dnsimple.tlds.getTldExtendedAttributes("com");
 

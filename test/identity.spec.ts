@@ -6,9 +6,7 @@ const dnsimple = createTestClient();
 describe("identity", () => {
   describe("#whoami when authenticated as account", () => {
     it("produces an account", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/whoami")
-        .reply(readFixtureAt("whoami/success-account.http"));
+      nock("https://api.dnsimple.com").get("/v2/whoami").reply(readFixtureAt("whoami/success-account.http"));
 
       const response = await dnsimple.identity.whoami();
 
@@ -21,9 +19,7 @@ describe("identity", () => {
 
   describe("#whoami when authenticated as user", () => {
     it("produces a user", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/whoami")
-        .reply(readFixtureAt("whoami/success-user.http"));
+      nock("https://api.dnsimple.com").get("/v2/whoami").reply(readFixtureAt("whoami/success-user.http"));
 
       const response = await dnsimple.identity.whoami();
 

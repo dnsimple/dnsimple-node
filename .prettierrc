@@ -1,4 +1,5 @@
 {
+  "printWidth": 99999,
   "bracketSpacing": true,
   "insertPragma": false,
   "proseWrap": "always",

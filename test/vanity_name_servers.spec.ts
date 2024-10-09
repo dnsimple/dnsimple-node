@@ -9,14 +9,9 @@ describe("vanity name servers", () => {
 
   describe("#enableVanityNameServers", () => {
     it("produces a list of name servers", async () => {
-      nock("https://api.dnsimple.com")
-        .put("/v2/1010/vanity/example.com")
-        .reply(readFixtureAt("enableVanityNameServers/success.http"));
+      nock("https://api.dnsimple.com").put("/v2/1010/vanity/example.com").reply(readFixtureAt("enableVanityNameServers/success.http"));
 
-      const response = await dnsimple.vanityNameServers.enableVanityNameServers(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.vanityNameServers.enableVanityNameServers(accountId, domainId);
 
       const vanityNameServers = response.data;
       expect(vanityNameServers.length).toBe(4);
@@ -30,15 +25,9 @@ describe("vanity name servers", () => {
 
   describe("#disableVanityNameServers", () => {
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/vanity/example.com")
-        .reply(readFixtureAt("disableVanityNameServers/success.http"));
+      nock("https://api.dnsimple.com").delete("/v2/1010/vanity/example.com").reply(readFixtureAt("disableVanityNameServers/success.http"));
 
-      const response =
-        await dnsimple.vanityNameServers.disableVanityNameServers(
-          accountId,
-          domainId
-        );
+      const response = await dnsimple.vanityNameServers.disableVanityNameServers(accountId, domainId);
 
       expect(response).toEqual({});
     });

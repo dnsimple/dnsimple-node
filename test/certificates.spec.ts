@@ -10,9 +10,7 @@ describe("certificates", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?page=1")
-        .reply(readFixtureAt("listCertificates/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=1").reply(readFixtureAt("listCertificates/success.http"));
 
       await dnsimple.certificates.listCertificates(accountId, domainId, {
         page: 1,
@@ -22,9 +20,7 @@ describe("certificates", () => {
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?foo=bar")
-        .reply(readFixtureAt("listCertificates/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?foo=bar").reply(readFixtureAt("listCertificates/success.http"));
 
       await dnsimple.certificates.listCertificates(accountId, domainId, {
         foo: "bar",
@@ -34,9 +30,7 @@ describe("certificates", () => {
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?sort=expiration%3Aasc")
-        .reply(readFixtureAt("listCertificates/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?sort=expiration%3Aasc").reply(readFixtureAt("listCertificates/success.http"));
 
       await dnsimple.certificates.listCertificates(accountId, domainId, {
         sort: "expiration:asc",
@@ -46,14 +40,9 @@ describe("certificates", () => {
     });
 
     it("produces a certificate list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates")
-        .reply(readFixtureAt("listCertificates/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates").reply(readFixtureAt("listCertificates/success.http"));
 
-      const response = await dnsimple.certificates.listCertificates(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.certificates.listCertificates(accountId, domainId);
 
       const certificates = response.data;
       expect(certificates.length).toBe(2);
@@ -63,14 +52,9 @@ describe("certificates", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates")
-        .reply(readFixtureAt("listCertificates/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates").reply(readFixtureAt("listCertificates/success.http"));
 
-      const response = await dnsimple.certificates.listCertificates(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.certificates.listCertificates(accountId, domainId);
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -83,23 +67,13 @@ describe("certificates", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?page=1")
-        .reply(readFixtureAt("pages-1of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=1").reply(readFixtureAt("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?page=2")
-        .reply(readFixtureAt("pages-2of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=2").reply(readFixtureAt("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates?page=3")
-        .reply(readFixtureAt("pages-3of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=3").reply(readFixtureAt("pages-3of3.http"));
 
-      const certificates =
-        await dnsimple.certificates.listCertificates.collectAll(
-          accountId,
-          domainId
-        );
+      const certificates = await dnsimple.certificates.listCertificates.collectAll(accountId, domainId);
 
       expect(certificates.length).toBe(5);
       expect(certificates[0].id).toBe(1);
@@ -113,15 +87,9 @@ describe("certificates", () => {
     const certificateId = 1;
 
     it("produces a certificate", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates/1")
-        .reply(readFixtureAt("getCertificate/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/1").reply(readFixtureAt("getCertificate/success.http"));
 
-      const response = await dnsimple.certificates.getCertificate(
-        accountId,
-        domainId,
-        certificateId
-      );
+      const response = await dnsimple.certificates.getCertificate(accountId, domainId, certificateId);
 
       const certificate = response.data;
       expect(certificate.id).toBe(101967);
@@ -135,9 +103,7 @@ describe("certificates", () => {
 
     describe("when the certificate does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/domains/example.com/certificates/0")
-          .reply(readFixtureAt("notfound-certificate.http"));
+        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/0").reply(readFixtureAt("notfound-certificate.http"));
 
         try {
           await dnsimple.certificates.getCertificate(accountId, domainId, 0);
@@ -156,15 +122,9 @@ describe("certificates", () => {
     const certificateId = 1;
 
     it("produces a certificate", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates/1/download")
-        .reply(readFixtureAt("downloadCertificate/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/1/download").reply(readFixtureAt("downloadCertificate/success.http"));
 
-      const response = await dnsimple.certificates.downloadCertificate(
-        accountId,
-        domainId,
-        certificateId
-      );
+      const response = await dnsimple.certificates.downloadCertificate(accountId, domainId, certificateId);
 
       const certificate = response.data;
       expect(certificate.server).toMatch(/-----BEGIN CERTIFICATE-----/);
@@ -175,13 +135,9 @@ describe("certificates", () => {
 
     describe("when the certificate does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/domains/example.com/certificates/0/download")
-          .reply(readFixtureAt("notfound-certificate.http"));
+        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/0/download").reply(readFixtureAt("notfound-certificate.http"));
 
-        await expect(
-          dnsimple.certificates.downloadCertificate(accountId, domainId, 0)
-        ).rejects.toThrow();
+        await expect(dnsimple.certificates.downloadCertificate(accountId, domainId, 0)).rejects.toThrow();
       });
     });
   });
@@ -192,33 +148,19 @@ describe("certificates", () => {
     const certificateId = 1;
 
     it("produces a certificate", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/certificates/1/private_key")
-        .reply(readFixtureAt("getCertificatePrivateKey/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/1/private_key").reply(readFixtureAt("getCertificatePrivateKey/success.http"));
 
-      const response = await dnsimple.certificates.getCertificatePrivateKey(
-        accountId,
-        domainId,
-        certificateId
-      );
+      const response = await dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, certificateId);
 
-      expect(response.data.private_key).toMatch(
-        /-----BEGIN RSA PRIVATE KEY-----/
-      );
+      expect(response.data.private_key).toMatch(/-----BEGIN RSA PRIVATE KEY-----/);
     });
 
     describe("when the certificate does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/domains/example.com/certificates/0/private_key")
-          .reply(readFixtureAt("notfound-certificate.http"));
+        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/0/private_key").reply(readFixtureAt("notfound-certificate.http"));
 
         try {
-          await dnsimple.certificates.getCertificatePrivateKey(
-            accountId,
-            domainId,
-            0
-          );
+          await dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, 0);
         } catch (error) {
           expect(error).not.toBe(null);
         }
@@ -231,16 +173,9 @@ describe("certificates", () => {
     const domainId = "example.com";
 
     it("purchases a certificate", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/certificates/letsencrypt")
-        .reply(readFixtureAt("purchaseLetsencryptCertificate/success.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/certificates/letsencrypt").reply(readFixtureAt("purchaseLetsencryptCertificate/success.http"));
 
-      const response =
-        await dnsimple.certificates.purchaseLetsencryptCertificate(
-          accountId,
-          domainId,
-          {}
-        );
+      const response = await dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, {});
 
       const certificate = response.data;
       expect(certificate.id).toBe(101967);
@@ -253,17 +188,9 @@ describe("certificates", () => {
     const certificateId = 101967;
 
     it("issues a certificate", async () => {
-      nock("https://api.dnsimple.com")
-        .post(
-          `/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/issue`
-        )
-        .reply(readFixtureAt("issueLetsencryptCertificate/success.http"));
+      nock("https://api.dnsimple.com").post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/issue`).reply(readFixtureAt("issueLetsencryptCertificate/success.http"));
 
-      const response = await dnsimple.certificates.issueLetsencryptCertificate(
-        accountId,
-        domainId,
-        certificateId
-      );
+      const response = await dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId);
 
       const certificate = response.data;
       expect(certificate.id).toBe(certificateId);
@@ -276,21 +203,9 @@ describe("certificates", () => {
     const certificateId = 101967;
 
     it("purchases a certificate renewal", async () => {
-      nock("https://api.dnsimple.com")
-        .post(
-          `/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals`
-        )
-        .reply(
-          readFixtureAt("purchaseRenewalLetsencryptCertificate/success.http")
-        );
+      nock("https://api.dnsimple.com").post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals`).reply(readFixtureAt("purchaseRenewalLetsencryptCertificate/success.http"));
 
-      const response =
-        await dnsimple.certificates.purchaseLetsencryptCertificateRenewal(
-          accountId,
-          domainId,
-          certificateId,
-          {}
-        );
+      const response = await dnsimple.certificates.purchaseLetsencryptCertificateRenewal(accountId, domainId, certificateId, {});
 
       const certificateRenewal = response.data;
       expect(certificateRenewal.id).toBe(65082);
@@ -307,21 +222,9 @@ describe("certificates", () => {
     const newCertificateId = 101972;
 
     it("issues a certificate renewal", async () => {
-      nock("https://api.dnsimple.com")
-        .post(
-          `/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals/${certificateRenewalId}/issue`
-        )
-        .reply(
-          readFixtureAt("issueRenewalLetsencryptCertificate/success.http")
-        );
+      nock("https://api.dnsimple.com").post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals/${certificateRenewalId}/issue`).reply(readFixtureAt("issueRenewalLetsencryptCertificate/success.http"));
 
-      const response =
-        await dnsimple.certificates.issueLetsencryptCertificateRenewal(
-          accountId,
-          domainId,
-          certificateId,
-          certificateRenewalId
-        );
+      const response = await dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId);
 
       const newCertificate = response.data;
       expect(newCertificate.id).toBe(newCertificateId);

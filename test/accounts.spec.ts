@@ -6,9 +6,7 @@ const dnsimple = createTestClient();
 describe("accounts", () => {
   describe("#listAccounts", () => {
     it("produces an account list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/accounts")
-        .reply(readFixtureAt("listAccounts/success-account.http"));
+      nock("https://api.dnsimple.com").get("/v2/accounts").reply(readFixtureAt("listAccounts/success-account.http"));
 
       const result = await dnsimple.accounts.listAccounts();
 

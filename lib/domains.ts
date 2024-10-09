@@ -26,28 +26,15 @@ export class Domains {
       params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
-        sort?:
-          | "id:asc"
-          | "id:desc"
-          | "name:asc"
-          | "name:desc"
-          | "expiration:asc"
-          | "expiration:desc";
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc" | "expiration:asc" | "expiration:desc";
       } = {}
-    ): Promise<{ data: Array<types.Domain>; pagination: types.Pagination }> =>
-      this._client.request("GET", `/${account}/domains`, null, params);
+    ): Promise<{ data: Array<types.Domain>; pagination: types.Pagination }> => this._client.request("GET", `/${account}/domains`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
-        sort?:
-          | "id:asc"
-          | "id:desc"
-          | "name:asc"
-          | "name:desc"
-          | "expiration:asc"
-          | "expiration:desc";
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc" | "expiration:asc" | "expiration:desc";
       } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
@@ -55,13 +42,7 @@ export class Domains {
       params: QueryParams & {
         name_like?: string;
         registrant_id?: number;
-        sort?:
-          | "id:asc"
-          | "id:desc"
-          | "name:asc"
-          | "name:desc"
-          | "expiration:asc"
-          | "expiration:desc";
+        sort?: "id:asc" | "id:desc" | "name:asc" | "name:desc" | "expiration:asc" | "expiration:desc";
       } = {}
     ) => {
       const items = [];
@@ -84,12 +65,7 @@ export class Domains {
    * @param params Query parameters
    */
   createDomain = (() => {
-    const method = (
-      account: number,
-      data: Partial<{ name: string }>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Domain }> =>
-      this._client.request("POST", `/${account}/domains`, data, params);
+    const method = (account: number, data: Partial<{ name: string }>, params: QueryParams & {} = {}): Promise<{ data: types.Domain }> => this._client.request("POST", `/${account}/domains`, data, params);
     return method;
   })();
 
@@ -105,17 +81,7 @@ export class Domains {
    * @param params Query parameters
    */
   getDomain = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Domain }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.Domain }> => this._client.request("GET", `/${account}/domains/${domain}`, null, params);
     return method;
   })();
 
@@ -131,17 +97,7 @@ export class Domains {
    * @param params Query parameters
    */
   deleteDomain = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/domains/${domain}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/domains/${domain}`, null, params);
     return method;
   })();
 
@@ -166,24 +122,9 @@ export class Domains {
     ): Promise<{
       data: Array<types.Collaborator>;
       pagination: types.Pagination;
-    }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}/collaborators`,
-        null,
-        params
-      );
-    method.iterateAll = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ) =>
-      paginate((page) => method(account, domain, { ...params, page } as any));
-    method.collectAll = async (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ) => {
+    }> => this._client.request("GET", `/${account}/domains/${domain}/collaborators`, null, params);
+    method.iterateAll = (account: number, domain: string, params: QueryParams & {} = {}) => paginate((page) => method(account, domain, { ...params, page } as any));
+    method.collectAll = async (account: number, domain: string, params: QueryParams & {} = {}) => {
       const items = [];
       for await (const item of method.iterateAll(account, domain, params)) {
         items.push(item);
@@ -207,18 +148,7 @@ export class Domains {
    * @param params Query parameters
    */
   addCollaborator = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      data: Partial<{ email: string }>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Collaborator }> =>
-      this._client.request(
-        "POST",
-        `/${account}/domains/${domain}/collaborators`,
-        data,
-        params
-      );
+    const method = (account: number, domain: string, data: Partial<{ email: string }>, params: QueryParams & {} = {}): Promise<{ data: types.Collaborator }> => this._client.request("POST", `/${account}/domains/${domain}/collaborators`, data, params);
     return method;
   })();
 
@@ -235,18 +165,7 @@ export class Domains {
    * @param params Query parameters
    */
   removeCollaborator = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      collaborator: number,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/domains/${domain}/collaborators/${collaborator}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, collaborator: number, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/domains/${domain}/collaborators/${collaborator}`, null, params);
     return method;
   })();
 
@@ -262,17 +181,7 @@ export class Domains {
    * @param params Query parameters
    */
   getDnssec = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DNSSEC }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}/dnssec`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DNSSEC }> => this._client.request("GET", `/${account}/domains/${domain}/dnssec`, null, params);
     return method;
   })();
 
@@ -290,17 +199,7 @@ export class Domains {
    * @param params Query parameters
    */
   enableDnssec = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DNSSEC }> =>
-      this._client.request(
-        "POST",
-        `/${account}/domains/${domain}/dnssec`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: types.DNSSEC }> => this._client.request("POST", `/${account}/domains/${domain}/dnssec`, null, params);
     return method;
   })();
 
@@ -318,17 +217,7 @@ export class Domains {
    * @param params Query parameters
    */
   disableDnssec = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/domains/${domain}/dnssec`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/domains/${domain}/dnssec`, null, params);
     return method;
   })();
 
@@ -356,21 +245,14 @@ export class Domains {
     ): Promise<{
       data: Array<types.DelegationSigner>;
       pagination: types.Pagination;
-    }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}/ds_records`,
-        null,
-        params
-      );
+    }> => this._client.request("GET", `/${account}/domains/${domain}/ds_records`, null, params);
     method.iterateAll = (
       account: number,
       domain: string,
       params: QueryParams & {
         sort?: "id:asc" | "id:desc" | "created_at:asc" | "created_at:desc";
       } = {}
-    ) =>
-      paginate((page) => method(account, domain, { ...params, page } as any));
+    ) => paginate((page) => method(account, domain, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       domain: string,
@@ -410,13 +292,7 @@ export class Domains {
         public_key: string;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.DelegationSigner }> =>
-      this._client.request(
-        "POST",
-        `/${account}/domains/${domain}/ds_records`,
-        data,
-        params
-      );
+    ): Promise<{ data: types.DelegationSigner }> => this._client.request("POST", `/${account}/domains/${domain}/ds_records`, data, params);
     return method;
   })();
 
@@ -433,18 +309,7 @@ export class Domains {
    * @param params Query parameters
    */
   getDelegationSignerRecord = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      ds: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.DelegationSigner }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}/ds_records/${ds}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, ds: number, params: QueryParams & {} = {}): Promise<{ data: types.DelegationSigner }> => this._client.request("GET", `/${account}/domains/${domain}/ds_records/${ds}`, null, params);
     return method;
   })();
 
@@ -461,18 +326,7 @@ export class Domains {
    * @param params Query parameters
    */
   deleteDelegationSignerRecord = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      ds: number,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/domains/${domain}/ds_records/${ds}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, ds: number, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/domains/${domain}/ds_records/${ds}`, null, params);
     return method;
   })();
 
@@ -495,49 +349,24 @@ export class Domains {
       account: number,
       domain: string,
       params: QueryParams & {
-        sort?:
-          | "id:asc"
-          | "id:desc"
-          | "from:asc"
-          | "from:desc"
-          | "to:asc"
-          | "to:desc";
+        sort?: "id:asc" | "id:desc" | "from:asc" | "from:desc" | "to:asc" | "to:desc";
       } = {}
     ): Promise<{
       data: Array<types.EmailForward>;
       pagination: types.Pagination;
-    }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}/email_forwards`,
-        null,
-        params
-      );
+    }> => this._client.request("GET", `/${account}/domains/${domain}/email_forwards`, null, params);
     method.iterateAll = (
       account: number,
       domain: string,
       params: QueryParams & {
-        sort?:
-          | "id:asc"
-          | "id:desc"
-          | "from:asc"
-          | "from:desc"
-          | "to:asc"
-          | "to:desc";
+        sort?: "id:asc" | "id:desc" | "from:asc" | "from:desc" | "to:asc" | "to:desc";
       } = {}
-    ) =>
-      paginate((page) => method(account, domain, { ...params, page } as any));
+    ) => paginate((page) => method(account, domain, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       domain: string,
       params: QueryParams & {
-        sort?:
-          | "id:asc"
-          | "id:desc"
-          | "from:asc"
-          | "from:desc"
-          | "to:asc"
-          | "to:desc";
+        sort?: "id:asc" | "id:desc" | "from:asc" | "from:desc" | "to:asc" | "to:desc";
       } = {}
     ) => {
       const items = [];
@@ -561,18 +390,7 @@ export class Domains {
    * @param params Query parameters
    */
   createEmailForward = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      data: Partial<{ alias_name: string; destination_email: string }>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.EmailForward }> =>
-      this._client.request(
-        "POST",
-        `/${account}/domains/${domain}/email_forwards`,
-        data,
-        params
-      );
+    const method = (account: number, domain: string, data: Partial<{ alias_name: string; destination_email: string }>, params: QueryParams & {} = {}): Promise<{ data: types.EmailForward }> => this._client.request("POST", `/${account}/domains/${domain}/email_forwards`, data, params);
     return method;
   })();
 
@@ -589,18 +407,7 @@ export class Domains {
    * @param params Query parameters
    */
   getEmailForward = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      emailforward: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.EmailForward }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/${domain}/email_forwards/${emailforward}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, emailforward: number, params: QueryParams & {} = {}): Promise<{ data: types.EmailForward }> => this._client.request("GET", `/${account}/domains/${domain}/email_forwards/${emailforward}`, null, params);
     return method;
   })();
 
@@ -617,18 +424,7 @@ export class Domains {
    * @param params Query parameters
    */
   deleteEmailForward = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      emailforward: number,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/domains/${domain}/email_forwards/${emailforward}`,
-        null,
-        params
-      );
+    const method = (account: number, domain: string, emailforward: number, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/domains/${domain}/email_forwards/${emailforward}`, null, params);
     return method;
   })();
 
@@ -644,18 +440,7 @@ export class Domains {
    * @param params Query parameters
    */
   initiatePush = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      data: Partial<{ new_account_email: string }>,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.Push }> =>
-      this._client.request(
-        "POST",
-        `/${account}/domains/${domain}/pushes`,
-        data,
-        params
-      );
+    const method = (account: number, domain: string, data: Partial<{ new_account_email: string }>, params: QueryParams & {} = {}): Promise<{ data: types.Push }> => this._client.request("POST", `/${account}/domains/${domain}/pushes`, data, params);
     return method;
   })();
 
@@ -672,17 +457,9 @@ export class Domains {
    * @param params Query parameters
    */
   listPushes = (() => {
-    const method = (
-      account: number,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: Array<types.Push>; pagination: types.Pagination }> =>
-      this._client.request("GET", `/${account}/pushes`, null, params);
-    method.iterateAll = (account: number, params: QueryParams & {} = {}) =>
-      paginate((page) => method(account, { ...params, page } as any));
-    method.collectAll = async (
-      account: number,
-      params: QueryParams & {} = {}
-    ) => {
+    const method = (account: number, params: QueryParams & {} = {}): Promise<{ data: Array<types.Push>; pagination: types.Pagination }> => this._client.request("GET", `/${account}/pushes`, null, params);
+    method.iterateAll = (account: number, params: QueryParams & {} = {}) => paginate((page) => method(account, { ...params, page } as any));
+    method.collectAll = async (account: number, params: QueryParams & {} = {}) => {
       const items = [];
       for await (const item of method.iterateAll(account, params)) {
         items.push(item);
@@ -704,13 +481,7 @@ export class Domains {
    * @param params Query parameters
    */
   acceptPush = (() => {
-    const method = (
-      account: number,
-      push: number,
-      data: Partial<{ contact_id: number }>,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request("POST", `/${account}/pushes/${push}`, data, params);
+    const method = (account: number, push: number, data: Partial<{ contact_id: number }>, params: QueryParams & {} = {}): Promise<{}> => this._client.request("POST", `/${account}/pushes/${push}`, data, params);
     return method;
   })();
 
@@ -726,17 +497,7 @@ export class Domains {
    * @param params Query parameters
    */
   rejectPush = (() => {
-    const method = (
-      account: number,
-      push: number,
-      params: QueryParams & {} = {}
-    ): Promise<{}> =>
-      this._client.request(
-        "DELETE",
-        `/${account}/pushes/${push}`,
-        null,
-        params
-      );
+    const method = (account: number, push: number, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/pushes/${push}`, null, params);
     return method;
   })();
 }

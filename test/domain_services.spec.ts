@@ -9,9 +9,7 @@ describe("domain services", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services?page=1")
-        .reply(readFixtureAt("appliedServices/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services?page=1").reply(readFixtureAt("appliedServices/success.http"));
 
       await dnsimple.services.applyService(accountId, domainId, { page: 1 });
 
@@ -19,9 +17,7 @@ describe("domain services", () => {
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services?foo=bar")
-        .reply(readFixtureAt("appliedServices/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services?foo=bar").reply(readFixtureAt("appliedServices/success.http"));
 
       await dnsimple.services.applyService(accountId, domainId, { foo: "bar" });
 
@@ -29,9 +25,7 @@ describe("domain services", () => {
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services?sort=name%3Aasc")
-        .reply(readFixtureAt("appliedServices/success.http"));
+      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services?sort=name%3Aasc").reply(readFixtureAt("appliedServices/success.http"));
 
       await dnsimple.services.applyService(accountId, domainId, {
         sort: "name:asc",
@@ -41,14 +35,9 @@ describe("domain services", () => {
     });
 
     it("produces a service list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services")
-        .reply(readFixtureAt("appliedServices/success.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services").reply(readFixtureAt("appliedServices/success.http"));
 
-      const response = await dnsimple.services.applyService(
-        accountId,
-        domainId
-      );
+      const response = await dnsimple.services.applyService(accountId, domainId);
 
       const services = response.data;
       expect(services.length).toBe(1);
@@ -61,22 +50,13 @@ describe("domain services", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services?page=1")
-        .reply(readFixtureAt("pages-1of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services?page=1").reply(readFixtureAt("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services?page=2")
-        .reply(readFixtureAt("pages-2of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services?page=2").reply(readFixtureAt("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/services?page=3")
-        .reply(readFixtureAt("pages-3of3.http"));
+      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/services?page=3").reply(readFixtureAt("pages-3of3.http"));
 
-      const items = await dnsimple.services.applyService.collectAll(
-        accountId,
-        domainId
-      );
+      const items = await dnsimple.services.applyService.collectAll(accountId, domainId);
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -90,16 +70,9 @@ describe("domain services", () => {
     const serviceId = "name";
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/services/name")
-        .reply(readFixtureAt("applyService/success.http"));
+      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/services/name").reply(readFixtureAt("applyService/success.http"));
 
-      const response = await dnsimple.services.appliedServices(
-        accountId,
-        domainId,
-        serviceId,
-        {}
-      );
+      const response = await dnsimple.services.appliedServices(accountId, domainId, serviceId, {});
 
       expect(response).toEqual({});
     });
@@ -111,15 +84,9 @@ describe("domain services", () => {
     const serviceId = "name";
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com/services/name")
-        .reply(readFixtureAt("unapplyService/success.http"));
+      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com/services/name").reply(readFixtureAt("unapplyService/success.http"));
 
-      const response = await dnsimple.services.unapplyService(
-        accountId,
-        domainId,
-        serviceId
-      );
+      const response = await dnsimple.services.unapplyService(accountId, domainId, serviceId);
 
       expect(response).toEqual({});
     });
