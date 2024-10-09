@@ -29,6 +29,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.12",
+    "fetch-mock": "^11.1.5",
     "jest": "^29.7.0",
     "js-yaml": ">=3.13.1",
     "lodash": ">=4.17.13",
@@ -44,8 +45,5 @@
     "format": "prettier -w '*.{js,json}' '{lib,test}/**/*.ts'",
     "format-check": "prettier --check '*.{js,json}' '{lib,test}/**/*.ts'",
     "test": "jest"
-  },
-  "dependencies": {
-    "fetch-mock": "^11.1.5"
   }
 }
