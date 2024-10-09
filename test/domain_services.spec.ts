@@ -49,7 +49,10 @@ describe("domain services", () => {
         fetchMockResponse("appliedServices/success.http")
       );
 
-      const response = await dnsimple.services.applyService(accountId, domainId);
+      const response = await dnsimple.services.applyService(
+        accountId,
+        domainId
+      );
 
       const services = response.data;
       expect(services.length).toBe(1);
@@ -77,7 +80,10 @@ describe("domain services", () => {
         fetchMockResponse("pages-3of3.http")
       );
 
-      const items = await dnsimple.services.applyService.collectAll(accountId, domainId);
+      const items = await dnsimple.services.applyService.collectAll(
+        accountId,
+        domainId
+      );
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -96,7 +102,12 @@ describe("domain services", () => {
         fetchMockResponse("applyService/success.http")
       );
 
-      const response = await dnsimple.services.appliedServices(accountId, domainId, serviceId, {});
+      const response = await dnsimple.services.appliedServices(
+        accountId,
+        domainId,
+        serviceId,
+        {}
+      );
 
       expect(response).toEqual({});
     });
@@ -113,7 +124,11 @@ describe("domain services", () => {
         fetchMockResponse("unapplyService/success.http")
       );
 
-      const response = await dnsimple.services.unapplyService(accountId, domainId, serviceId);
+      const response = await dnsimple.services.unapplyService(
+        accountId,
+        domainId,
+        serviceId
+      );
 
       expect(response).toEqual({});
     });

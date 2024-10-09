@@ -16,8 +16,17 @@ export class Zones {
    * @param zone The zone name
    */
   activateDns = (() => {
-    const method = (account: number, zone: string, params: QueryParams & {} = {}): Promise<{ data: types.Zone }> =>
-      this._client.request("PUT", `/${account}/zones/${zone}/activation`, null, params);
+    const method = (
+      account: number,
+      zone: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Zone }> =>
+      this._client.request(
+        "PUT",
+        `/${account}/zones/${zone}/activation`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -32,8 +41,17 @@ export class Zones {
    * @param zone The zone name
    */
   deactivateDns = (() => {
-    const method = (account: number, zone: string, params: QueryParams & {} = {}): Promise<{ data: types.Zone }> =>
-      this._client.request("DELETE", `/${account}/zones/${zone}/activation`, null, params);
+    const method = (
+      account: number,
+      zone: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Zone }> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/zones/${zone}/activation`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -95,7 +113,11 @@ export class Zones {
    * @param params Query parameters
    */
   getZone = (() => {
-    const method = (account: number, zone: string, params: QueryParams & {} = {}): Promise<{ data: types.Zone }> =>
+    const method = (
+      account: number,
+      zone: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Zone }> =>
       this._client.request("GET", `/${account}/zones/${zone}`, null, params);
     return method;
   })();
@@ -112,8 +134,17 @@ export class Zones {
    * @param params Query parameters
    */
   getZoneFile = (() => {
-    const method = (account: number, zone: string, params: QueryParams & {} = {}): Promise<{ data: types.ZoneFile }> =>
-      this._client.request("GET", `/${account}/zones/${zone}/file`, null, params);
+    const method = (
+      account: number,
+      zone: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.ZoneFile }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/file`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -134,7 +165,12 @@ export class Zones {
       zone: string,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneDistribution }> =>
-      this._client.request("GET", `/${account}/zones/${zone}/distribution`, null, params);
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/distribution`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -156,7 +192,12 @@ export class Zones {
       data: Partial<{ ns_names: Array<string>; ns_set_ids: Array<number> }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: Array<types.ZoneRecord> }> =>
-      this._client.request("PUT", `/${account}/zones/${zone}/ns_records`, data, params);
+      this._client.request(
+        "PUT",
+        `/${account}/zones/${zone}/ns_records`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -198,7 +239,13 @@ export class Zones {
     ): Promise<{
       data: Array<types.ZoneRecord>;
       pagination: types.Pagination;
-    }> => this._client.request("GET", `/${account}/zones/${zone}/records`, null, params);
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/records`,
+        null,
+        params
+      );
     method.iterateAll = (
       account: number,
       zone: string,
@@ -269,7 +316,12 @@ export class Zones {
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>
-      this._client.request("POST", `/${account}/zones/${zone}/records`, data, params);
+      this._client.request(
+        "POST",
+        `/${account}/zones/${zone}/records`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -292,7 +344,12 @@ export class Zones {
       zonerecord: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>
-      this._client.request("GET", `/${account}/zones/${zone}/records/${zonerecord}`, null, params);
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/records/${zonerecord}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -322,7 +379,12 @@ export class Zones {
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneRecord }> =>
-      this._client.request("PATCH", `/${account}/zones/${zone}/records/${zonerecord}`, data, params);
+      this._client.request(
+        "PATCH",
+        `/${account}/zones/${zone}/records/${zonerecord}`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -339,8 +401,18 @@ export class Zones {
    * @param params Query parameters
    */
   deleteZoneRecord = (() => {
-    const method = (account: number, zone: string, zonerecord: number, params: QueryParams & {} = {}): Promise<{}> =>
-      this._client.request("DELETE", `/${account}/zones/${zone}/records/${zonerecord}`, null, params);
+    const method = (
+      account: number,
+      zone: string,
+      zonerecord: number,
+      params: QueryParams & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/zones/${zone}/records/${zonerecord}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -363,7 +435,12 @@ export class Zones {
       zonerecord: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.ZoneDistribution }> =>
-      this._client.request("GET", `/${account}/zones/${zone}/records/${zonerecord}/distribution`, null, params);
+      this._client.request(
+        "GET",
+        `/${account}/zones/${zone}/records/${zonerecord}/distribution`,
+        null,
+        params
+      );
     return method;
   })();
 }

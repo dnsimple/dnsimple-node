@@ -6,7 +6,10 @@ const dnsimple = createTestClient();
 describe("identity", () => {
   describe("#whoami when authenticated as account", () => {
     it("produces an account", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/whoami", fetchMockResponse("whoami/success-account.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/whoami",
+        fetchMockResponse("whoami/success-account.http")
+      );
 
       const response = await dnsimple.identity.whoami();
 
@@ -19,7 +22,10 @@ describe("identity", () => {
 
   describe("#whoami when authenticated as user", () => {
     it("produces a user", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/whoami", fetchMockResponse("whoami/success-user.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/whoami",
+        fetchMockResponse("whoami/success-user.http")
+      );
 
       const response = await dnsimple.identity.whoami();
 

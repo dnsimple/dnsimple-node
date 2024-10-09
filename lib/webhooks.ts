@@ -19,7 +19,8 @@ export class Webhooks {
     const method = (
       account: number,
       params: QueryParams & { sort?: "id:asc" | "id:desc" } = {}
-    ): Promise<{ data: Array<types.Webhook> }> => this._client.request("GET", `/${account}/webhooks`, null, params);
+    ): Promise<{ data: Array<types.Webhook> }> =>
+      this._client.request("GET", `/${account}/webhooks`, null, params);
     return method;
   })();
 
@@ -38,7 +39,8 @@ export class Webhooks {
       account: number,
       data: Partial<{ url: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.Webhook }> => this._client.request("POST", `/${account}/webhooks`, data, params);
+    ): Promise<{ data: types.Webhook }> =>
+      this._client.request("POST", `/${account}/webhooks`, data, params);
     return method;
   })();
 
@@ -58,7 +60,13 @@ export class Webhooks {
       account: number,
       webhook: number,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.Webhook }> => this._client.request("GET", `/${account}/webhooks/${webhook}`, null, params);
+    ): Promise<{ data: types.Webhook }> =>
+      this._client.request(
+        "GET",
+        `/${account}/webhooks/${webhook}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -74,8 +82,17 @@ export class Webhooks {
    * @param params Query parameters
    */
   deleteWebhook = (() => {
-    const method = (account: number, webhook: number, params: QueryParams & {} = {}): Promise<{}> =>
-      this._client.request("DELETE", `/${account}/webhooks/${webhook}`, null, params);
+    const method = (
+      account: number,
+      webhook: number,
+      params: QueryParams & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/webhooks/${webhook}`,
+        null,
+        params
+      );
     return method;
   })();
 }

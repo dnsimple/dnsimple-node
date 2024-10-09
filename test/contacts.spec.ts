@@ -9,7 +9,10 @@ describe("contacts", () => {
     const accountId = 1010;
 
     it("supports pagination", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?page=1", fetchMockResponse("listContacts/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?page=1",
+        fetchMockResponse("listContacts/success.http")
+      );
 
       await dnsimple.contacts.listContacts(accountId, { page: 1 });
 
@@ -52,7 +55,10 @@ describe("contacts", () => {
     });
 
     it("produces a contact list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts", fetchMockResponse("listContacts/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts",
+        fetchMockResponse("listContacts/success.http")
+      );
 
       const response = await dnsimple.contacts.listContacts(accountId);
 
@@ -65,7 +71,10 @@ describe("contacts", () => {
     });
 
     it("exposes the pagination info", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts", fetchMockResponse("listContacts/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts",
+        fetchMockResponse("listContacts/success.http")
+      );
 
       const response = await dnsimple.contacts.listContacts(accountId);
 
@@ -79,13 +88,23 @@ describe("contacts", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?page=1", fetchMockResponse("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?page=2", fetchMockResponse("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?page=3", fetchMockResponse("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
-      const contacts = await dnsimple.contacts.listContacts.collectAll(accountId);
+      const contacts =
+        await dnsimple.contacts.listContacts.collectAll(accountId);
 
       expect(contacts.length).toBe(5);
       expect(contacts[0].id).toBe(1);
@@ -97,7 +116,10 @@ describe("contacts", () => {
     const accountId = 1010;
 
     it("produces a contact", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts/1", fetchMockResponse("getContact/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts/1",
+        fetchMockResponse("getContact/success.http")
+      );
 
       const response = await dnsimple.contacts.getContact(accountId, 1);
 
@@ -111,9 +133,14 @@ describe("contacts", () => {
 
     describe("when the contact does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/contacts/0", fetchMockResponse("notfound-contact.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/contacts/0",
+          fetchMockResponse("notfound-contact.http")
+        );
 
-        await expect(dnsimple.contacts.getContact(accountId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.contacts.getContact(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -124,17 +151,28 @@ describe("contacts", () => {
 
     it("builds the correct request", async () => {
       const expectedPayload = attributes;
-      fetchMock.post("https://api.dnsimple.com/v2/1010/contacts", fetchMockResponse("createContact/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/contacts",
+        fetchMockResponse("createContact/created.http")
+      );
 
       await dnsimple.contacts.createContact(accountId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(expectedPayload));
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a contact", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/contacts", fetchMockResponse("createContact/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/contacts",
+        fetchMockResponse("createContact/created.http")
+      );
 
-      const response = await dnsimple.contacts.createContact(accountId, attributes);
+      const response = await dnsimple.contacts.createContact(
+        accountId,
+        attributes
+      );
 
       const contact = response.data;
       expect(contact.id).toBe(1);
@@ -156,12 +194,20 @@ describe("contacts", () => {
         expect(error.attributeErrors().address1).toEqual(["can't be blank"]);
         expect(error.attributeErrors().city).toEqual(["can't be blank"]);
         expect(error.attributeErrors().country).toEqual(["can't be blank"]);
-        expect(error.attributeErrors().email).toEqual(["can't be blank", "is an invalid email address"]);
+        expect(error.attributeErrors().email).toEqual([
+          "can't be blank",
+          "is an invalid email address",
+        ]);
         expect(error.attributeErrors().first_name).toEqual(["can't be blank"]);
         expect(error.attributeErrors().last_name).toEqual(["can't be blank"]);
-        expect(error.attributeErrors().phone).toEqual(["can't be blank", "is probably not a phone number"]);
+        expect(error.attributeErrors().phone).toEqual([
+          "can't be blank",
+          "is probably not a phone number",
+        ]);
         expect(error.attributeErrors().postal_code).toEqual(["can't be blank"]);
-        expect(error.attributeErrors().state_province).toEqual(["can't be blank"]);
+        expect(error.attributeErrors().state_province).toEqual([
+          "can't be blank",
+        ]);
       }
     });
   });
@@ -188,16 +234,25 @@ describe("contacts", () => {
         fetchMockResponse("updateContact/success.http")
       );
 
-      const response = await dnsimple.contacts.updateContact(accountId, contactId, attributes);
+      const response = await dnsimple.contacts.updateContact(
+        accountId,
+        contactId,
+        attributes
+      );
 
       expect(response.data.id).toBe(1);
     });
 
     describe("when the contact does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.patch("https://api.dnsimple.com/v2/1010/contacts/0", fetchMockResponse("notfound-contact.http"));
+        fetchMock.patch(
+          "https://api.dnsimple.com/v2/1010/contacts/0",
+          fetchMockResponse("notfound-contact.http")
+        );
 
-        await expect(dnsimple.contacts.updateContact(accountId, 0, attributes)).rejects.toThrow();
+        await expect(
+          dnsimple.contacts.updateContact(accountId, 0, attributes)
+        ).rejects.toThrow();
       });
     });
   });
@@ -223,16 +278,24 @@ describe("contacts", () => {
         fetchMockResponse("deleteContact/success.http")
       );
 
-      const response = await dnsimple.contacts.deleteContact(accountId, contactId);
+      const response = await dnsimple.contacts.deleteContact(
+        accountId,
+        contactId
+      );
 
       expect(response).toEqual({});
     });
 
     describe("when the contact does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.delete("https://api.dnsimple.com/v2/1010/contacts/0", fetchMockResponse("notfound-contact.http"));
+        fetchMock.delete(
+          "https://api.dnsimple.com/v2/1010/contacts/0",
+          fetchMockResponse("notfound-contact.http")
+        );
 
-        await expect(dnsimple.contacts.deleteContact(accountId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.contacts.deleteContact(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });

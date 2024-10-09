@@ -33,7 +33,9 @@ describe("oauth", () => {
         state,
       });
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(expectedPayload));
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("returns the oauth token", async () => {
@@ -81,7 +83,9 @@ describe("oauth", () => {
           redirectUri,
         });
 
-        expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(expectedPayload));
+        expect(fetchMock.calls()[0][1]!.body).toEqual(
+          JSON.stringify(expectedPayload)
+        );
       });
     });
   });
@@ -109,7 +113,9 @@ describe("oauth", () => {
 
       expect(authorizeUrl.protocol).toBe(expectedUrl.protocol);
       expect(authorizeUrl.host).toBe(expectedUrl.host);
-      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(searchParamsToObj(expectedUrl.searchParams));
+      expect(searchParamsToObj(authorizeUrl.searchParams)).toEqual(
+        searchParamsToObj(expectedUrl.searchParams)
+      );
     });
   });
 });

@@ -6,7 +6,10 @@ const dnsimple = createTestClient();
 describe("accounts", () => {
   describe("#listAccounts", () => {
     it("produces an account list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/accounts", fetchMockResponse("listAccounts/success-account.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/accounts",
+        fetchMockResponse("listAccounts/success-account.http")
+      );
 
       const result = await dnsimple.accounts.listAccounts();
 

@@ -22,20 +22,38 @@ export class Contacts {
     const method = (
       account: number,
       params: QueryParams & {
-        sort?: "id:asc" | "id:desc" | "label:asc" | "label:desc" | "email:asc" | "email:desc";
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "label:asc"
+          | "label:desc"
+          | "email:asc"
+          | "email:desc";
       } = {}
     ): Promise<{ data: Array<types.Contact>; pagination: types.Pagination }> =>
       this._client.request("GET", `/${account}/contacts`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & {
-        sort?: "id:asc" | "id:desc" | "label:asc" | "label:desc" | "email:asc" | "email:desc";
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "label:asc"
+          | "label:desc"
+          | "email:asc"
+          | "email:desc";
       } = {}
     ) => paginate((page) => method(account, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       params: QueryParams & {
-        sort?: "id:asc" | "id:desc" | "label:asc" | "label:desc" | "email:asc" | "email:desc";
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "label:asc"
+          | "label:desc"
+          | "email:asc"
+          | "email:desc";
       } = {}
     ) => {
       const items = [];
@@ -77,7 +95,8 @@ export class Contacts {
         job_title: string;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.Contact }> => this._client.request("POST", `/${account}/contacts`, data, params);
+    ): Promise<{ data: types.Contact }> =>
+      this._client.request("POST", `/${account}/contacts`, data, params);
     return method;
   })();
 
@@ -97,7 +116,13 @@ export class Contacts {
       account: number,
       contact: number,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.Contact }> => this._client.request("GET", `/${account}/contacts/${contact}`, null, params);
+    ): Promise<{ data: types.Contact }> =>
+      this._client.request(
+        "GET",
+        `/${account}/contacts/${contact}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -134,7 +159,12 @@ export class Contacts {
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.Contact }> =>
-      this._client.request("PATCH", `/${account}/contacts/${contact}`, data, params);
+      this._client.request(
+        "PATCH",
+        `/${account}/contacts/${contact}`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -150,8 +180,17 @@ export class Contacts {
    * @param params Query parameters
    */
   deleteContact = (() => {
-    const method = (account: number, contact: number, params: QueryParams & {} = {}): Promise<{}> =>
-      this._client.request("DELETE", `/${account}/contacts/${contact}`, null, params);
+    const method = (
+      account: number,
+      contact: number,
+      params: QueryParams & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/contacts/${contact}`,
+        null,
+        params
+      );
     return method;
   })();
 }

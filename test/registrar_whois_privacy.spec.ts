@@ -14,7 +14,10 @@ describe("whois privacy", () => {
         fetchMockResponse("getWhoisPrivacy/success.http")
       );
 
-      const response = await dnsimple.registrar.getWhoisPrivacy(accountId, domainId);
+      const response = await dnsimple.registrar.getWhoisPrivacy(
+        accountId,
+        domainId
+      );
 
       const whoisPrivacy = response.data;
       expect(whoisPrivacy.id).toBe(1);
@@ -34,7 +37,10 @@ describe("whois privacy", () => {
           fetchMockResponse("enableWhoisPrivacy/success.http")
         );
 
-        const response = await dnsimple.registrar.enableWhoisPrivacy(accountId, domainId);
+        const response = await dnsimple.registrar.enableWhoisPrivacy(
+          accountId,
+          domainId
+        );
 
         const whoisPrivacy = response.data;
         expect(whoisPrivacy.id).toBe(1);
@@ -49,7 +55,10 @@ describe("whois privacy", () => {
           fetchMockResponse("enableWhoisPrivacy/created.http")
         );
 
-        const response = await dnsimple.registrar.enableWhoisPrivacy(accountId, domainId);
+        const response = await dnsimple.registrar.enableWhoisPrivacy(
+          accountId,
+          domainId
+        );
 
         const whoisPrivacy = response.data;
         expect(whoisPrivacy.id).toBe(1);
@@ -65,7 +74,10 @@ describe("whois privacy", () => {
         fetchMockResponse("disableWhoisPrivacy/success.http")
       );
 
-      const response = await dnsimple.registrar.disableWhoisPrivacy(accountId, domainId);
+      const response = await dnsimple.registrar.disableWhoisPrivacy(
+        accountId,
+        domainId
+      );
 
       const whoisPrivacy = response.data;
       expect(whoisPrivacy.id).toBe(1);
@@ -80,7 +92,10 @@ describe("whois privacy", () => {
         fetchMockResponse("renewWhoisPrivacy/success.http")
       );
 
-      const response = await dnsimple.registrar.renewWhoisPrivacy(accountId, domainId);
+      const response = await dnsimple.registrar.renewWhoisPrivacy(
+        accountId,
+        domainId
+      );
 
       const whoisPrivacyRenewal = response.data;
       expect(whoisPrivacyRenewal.id).toBe(1);

@@ -13,7 +13,10 @@ describe("domain transfer lock", () => {
         fetchMockResponse("getDomainTransferLock/success.http")
       );
 
-      const response = await dnsimple.registrar.getDomainTransferLock(accountId, "101");
+      const response = await dnsimple.registrar.getDomainTransferLock(
+        accountId,
+        "101"
+      );
 
       expect(response.data).toEqual({
         enabled: true,
@@ -28,7 +31,10 @@ describe("domain transfer lock", () => {
         fetchMockResponse("enableDomainTransferLock/success.http")
       );
 
-      const response = await dnsimple.registrar.enableDomainTransferLock(accountId, "101");
+      const response = await dnsimple.registrar.enableDomainTransferLock(
+        accountId,
+        "101"
+      );
 
       expect(response.data).toEqual({
         enabled: true,
@@ -43,7 +49,10 @@ describe("domain transfer lock", () => {
         fetchMockResponse("disableDomainTransferLock/success.http")
       );
 
-      const response = await dnsimple.registrar.disableDomainTransferLock(accountId, "101");
+      const response = await dnsimple.registrar.disableDomainTransferLock(
+        accountId,
+        "101"
+      );
 
       expect(response.data).toEqual({
         enabled: false,

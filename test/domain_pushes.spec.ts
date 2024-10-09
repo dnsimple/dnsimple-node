@@ -26,7 +26,11 @@ describe("domains", () => {
         fetchMockResponse("initiatePush/success.http")
       );
 
-      const response = await dnsimple.domains.initiatePush(accountId, domainId, attributes);
+      const response = await dnsimple.domains.initiatePush(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const push = response.data;
       expect(push.id).toBe(1);
@@ -43,7 +47,10 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("produces an pushes list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/pushes", fetchMockResponse("listPushes/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/pushes",
+        fetchMockResponse("listPushes/success.http")
+      );
 
       const response = await dnsimple.domains.listPushes(accountId);
 
@@ -57,7 +64,10 @@ describe("domains", () => {
     const attributes = { contact_id: 1 };
 
     it("builds the correct request", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/pushes/200", fetchMockResponse("acceptPush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("acceptPush/success.http")
+      );
 
       await dnsimple.domains.acceptPush(accountId, pushId, attributes);
 
@@ -65,9 +75,16 @@ describe("domains", () => {
     });
 
     it("produces nothing", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/pushes/200", fetchMockResponse("acceptPush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("acceptPush/success.http")
+      );
 
-      const response = await dnsimple.domains.acceptPush(accountId, pushId, attributes);
+      const response = await dnsimple.domains.acceptPush(
+        accountId,
+        pushId,
+        attributes
+      );
 
       expect(response).toEqual({});
     });
@@ -78,7 +95,10 @@ describe("domains", () => {
     const pushId = 200;
 
     it("builds the correct request", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/pushes/200", fetchMockResponse("rejectPush/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("rejectPush/success.http")
+      );
 
       await dnsimple.domains.rejectPush(accountId, pushId);
 
@@ -86,7 +106,10 @@ describe("domains", () => {
     });
 
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/pushes/200", fetchMockResponse("rejectPush/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("rejectPush/success.http")
+      );
 
       const response = await dnsimple.domains.rejectPush(accountId, pushId);
 

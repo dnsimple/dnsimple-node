@@ -14,14 +14,27 @@ describe("domain delegation", () => {
         fetchMockResponse("getDomainDelegation/success.http")
       );
 
-      const response = await dnsimple.registrar.getDomainDelegation(accountId, domainId);
+      const response = await dnsimple.registrar.getDomainDelegation(
+        accountId,
+        domainId
+      );
 
-      expect(response.data).toEqual(["ns1.dnsimple.com", "ns2.dnsimple.com", "ns3.dnsimple.com", "ns4.dnsimple.com"]);
+      expect(response.data).toEqual([
+        "ns1.dnsimple.com",
+        "ns2.dnsimple.com",
+        "ns3.dnsimple.com",
+        "ns4.dnsimple.com",
+      ]);
     });
   });
 
   describe("#changeDomainDelegation", () => {
-    const attributes = ["ns1.dnsimple.com", "ns2.dnsimple.com", "ns3.dnsimple.com", "ns4.dnsimple.com"];
+    const attributes = [
+      "ns1.dnsimple.com",
+      "ns2.dnsimple.com",
+      "ns3.dnsimple.com",
+      "ns4.dnsimple.com",
+    ];
 
     it("produces a name server list", async () => {
       fetchMock.put(
@@ -29,9 +42,18 @@ describe("domain delegation", () => {
         fetchMockResponse("changeDomainDelegation/success.http")
       );
 
-      const response = await dnsimple.registrar.changeDomainDelegation(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.changeDomainDelegation(
+        accountId,
+        domainId,
+        attributes
+      );
 
-      expect(response.data).toEqual(["ns1.dnsimple.com", "ns2.dnsimple.com", "ns3.dnsimple.com", "ns4.dnsimple.com"]);
+      expect(response.data).toEqual([
+        "ns1.dnsimple.com",
+        "ns2.dnsimple.com",
+        "ns3.dnsimple.com",
+        "ns4.dnsimple.com",
+      ]);
     });
   });
 
@@ -44,7 +66,11 @@ describe("domain delegation", () => {
         fetchMockResponse("changeDomainDelegationToVanity/success.http")
       );
 
-      const response = await dnsimple.registrar.changeDomainDelegationToVanity(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.changeDomainDelegationToVanity(
+        accountId,
+        domainId,
+        attributes
+      );
 
       expect(response.data.length).toBe(2);
     });
@@ -57,7 +83,11 @@ describe("domain delegation", () => {
         fetchMockResponse("changeDomainDelegationFromVanity/success.http")
       );
 
-      const response = await dnsimple.registrar.changeDomainDelegationFromVanity(accountId, domainId);
+      const response =
+        await dnsimple.registrar.changeDomainDelegationFromVanity(
+          accountId,
+          domainId
+        );
 
       expect(response).toEqual({});
     });

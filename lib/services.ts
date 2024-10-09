@@ -54,7 +54,10 @@ export class Services {
    * @param params Query parameters
    */
   getService = (() => {
-    const method = (service: string, params: QueryParams & {} = {}): Promise<{ data: types.Service }> =>
+    const method = (
+      service: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Service }> =>
       this._client.request("GET", `/services/${service}`, null, params);
     return method;
   })();
@@ -78,10 +81,23 @@ export class Services {
       domain: string,
       params: QueryParams & {} = {}
     ): Promise<{ data: Array<types.Service>; pagination: types.Pagination }> =>
-      this._client.request("GET", `/${account}/domains/${domain}/services`, null, params);
-    method.iterateAll = (account: number, domain: string, params: QueryParams & {} = {}) =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/services`,
+        null,
+        params
+      );
+    method.iterateAll = (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ) =>
       paginate((page) => method(account, domain, { ...params, page } as any));
-    method.collectAll = async (account: number, domain: string, params: QueryParams & {} = {}) => {
+    method.collectAll = async (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ) => {
       const items = [];
       for await (const item of method.iterateAll(account, domain, params)) {
         items.push(item);
@@ -110,7 +126,13 @@ export class Services {
       service: string,
       data: Partial<{}>,
       params: QueryParams & {} = {}
-    ): Promise<{}> => this._client.request("POST", `/${account}/domains/${domain}/services/${service}`, data, params);
+    ): Promise<{}> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/services/${service}`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -127,8 +149,18 @@ export class Services {
    * @param params Query parameters
    */
   unapplyService = (() => {
-    const method = (account: number, domain: string, service: string, params: QueryParams & {} = {}): Promise<{}> =>
-      this._client.request("DELETE", `/${account}/domains/${domain}/services/${service}`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      service: string,
+      params: QueryParams & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/domains/${domain}/services/${service}`,
+        null,
+        params
+      );
     return method;
   })();
 }

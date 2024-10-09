@@ -70,7 +70,9 @@ describe("zone records", () => {
       expect(records[0].id).toBe(1);
       expect(records[0].zone_id).toBe(zoneId);
       expect(records[0].name).toBe("");
-      expect(records[0].content).toBe("ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300");
+      expect(records[0].content).toBe(
+        "ns1.dnsimple.com admin.dnsimple.com 1458642070 86400 7200 604800 300"
+      );
       expect(records[0].ttl).toBe(3600);
       expect(records[0].priority).toBe(null);
       expect(records[0].type).toBe("SOA");
@@ -113,7 +115,10 @@ describe("zone records", () => {
         fetchMockResponse("pages-3of3.http")
       );
 
-      const items = await dnsimple.zones.listZoneRecords.collectAll(accountId, zoneId);
+      const items = await dnsimple.zones.listZoneRecords.collectAll(
+        accountId,
+        zoneId
+      );
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -131,7 +136,11 @@ describe("zone records", () => {
         fetchMockResponse("getZoneRecord/success.http")
       );
 
-      const response = await dnsimple.zones.getZoneRecord(accountId, zoneId, 64784);
+      const response = await dnsimple.zones.getZoneRecord(
+        accountId,
+        zoneId,
+        64784
+      );
 
       const record = response.data;
       expect(record.id).toBe(5);
@@ -147,7 +156,9 @@ describe("zone records", () => {
           fetchMockResponse("notfound-record.http")
         );
 
-        await expect(dnsimple.zones.getZoneRecord(accountId, zoneId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.zones.getZoneRecord(accountId, zoneId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -179,7 +190,11 @@ describe("zone records", () => {
         fetchMockResponse("createZoneRecord/created.http")
       );
 
-      const response = await dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
+      const response = await dnsimple.zones.createZoneRecord(
+        accountId,
+        zoneId,
+        attributes
+      );
 
       expect(response.data.id).toBe(1);
     });
@@ -193,22 +208,34 @@ describe("zone records", () => {
 
     it("builds the correct request", async () => {
       fetchMock.patch(
-        "https://api.dnsimple.com/v2/1010/zones/example.com/records/" + recordId,
+        "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
+          recordId,
         fetchMockResponse("updateZoneRecord/success.http")
       );
 
-      await dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes);
+      await dnsimple.zones.updateZoneRecord(
+        accountId,
+        zoneId,
+        recordId,
+        attributes
+      );
 
       expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a record", async () => {
       fetchMock.patch(
-        "https://api.dnsimple.com/v2/1010/zones/example.com/records/" + recordId,
+        "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
+          recordId,
         fetchMockResponse("updateZoneRecord/success.http")
       );
 
-      const response = await dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes);
+      const response = await dnsimple.zones.updateZoneRecord(
+        accountId,
+        zoneId,
+        recordId,
+        attributes
+      );
 
       expect(response.data.id).toEqual(5);
     });
@@ -216,13 +243,19 @@ describe("zone records", () => {
     describe("when the record does not exist", () => {
       it("produces an error", async () => {
         fetchMock.patch(
-          "https://api.dnsimple.com/v2/1010/zones/example.com/records/" + recordId,
+          "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
+            recordId,
           fetchMockResponse("notfound-record.http")
         );
 
-        await expect(dnsimple.zones.updateZoneRecord(accountId, zoneId, recordId, attributes)).rejects.toThrow(
-          NotFoundError
-        );
+        await expect(
+          dnsimple.zones.updateZoneRecord(
+            accountId,
+            zoneId,
+            recordId,
+            attributes
+          )
+        ).rejects.toThrow(NotFoundError);
       });
     });
 
@@ -233,7 +266,8 @@ describe("zone records", () => {
 
       it("builds the correct request", async () => {
         fetchMock.delete(
-          "https://api.dnsimple.com/v2/1010/zones/example.com/records/" + recordId,
+          "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
+            recordId,
           fetchMockResponse("deleteZoneRecord/success.http")
         );
 
@@ -244,11 +278,16 @@ describe("zone records", () => {
 
       it("produces nothing", async () => {
         fetchMock.delete(
-          "https://api.dnsimple.com/v2/1010/zones/example.com/records/" + recordId,
+          "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
+            recordId,
           fetchMockResponse("deleteZoneRecord/success.http")
         );
 
-        const response = await dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId);
+        const response = await dnsimple.zones.deleteZoneRecord(
+          accountId,
+          zoneId,
+          recordId
+        );
 
         expect(response).toEqual({});
       });
@@ -256,11 +295,14 @@ describe("zone records", () => {
       describe("when the record does not exist", () => {
         it("produces an error", async () => {
           fetchMock.delete(
-            "https://api.dnsimple.com/v2/1010/zones/example.com/records/" + recordId,
+            "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
+              recordId,
             fetchMockResponse("notfound-record.http")
           );
 
-          await expect(dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId)).rejects.toThrow(NotFoundError);
+          await expect(
+            dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId)
+          ).rejects.toThrow(NotFoundError);
         });
       });
     });

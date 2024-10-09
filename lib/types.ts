@@ -324,7 +324,16 @@ export type ZoneRecordType =
   | "TXT"
   | "URL";
 
-export type ZoneRecordRegion = "global" | "SV1" | "ORD" | "IAD" | "AMS" | "TKO" | "SYD" | "CDG" | "FRA";
+export type ZoneRecordRegion =
+  | "global"
+  | "SV1"
+  | "ORD"
+  | "IAD"
+  | "AMS"
+  | "TKO"
+  | "SYD"
+  | "CDG"
+  | "FRA";
 
 export type ZoneRecord = {
   id: number;

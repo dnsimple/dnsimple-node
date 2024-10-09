@@ -9,7 +9,10 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("supports pagination", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=1", fetchMockResponse("listDomains/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains?page=1",
+        fetchMockResponse("listDomains/success.http")
+      );
 
       await dnsimple.domains.listDomains(accountId, { page: 1 });
 
@@ -17,7 +20,10 @@ describe("domains", () => {
     });
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?foo=bar", fetchMockResponse("listDomains/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains?foo=bar",
+        fetchMockResponse("listDomains/success.http")
+      );
 
       await dnsimple.domains.listDomains(accountId, { foo: "bar" });
 
@@ -47,7 +53,10 @@ describe("domains", () => {
     });
 
     it("produces a domain list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains", fetchMockResponse("listDomains/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains",
+        fetchMockResponse("listDomains/success.http")
+      );
 
       const response = await dnsimple.domains.listDomains(accountId);
 
@@ -58,7 +67,10 @@ describe("domains", () => {
     });
 
     it("exposes the pagination info", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains", fetchMockResponse("listDomains/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains",
+        fetchMockResponse("listDomains/success.http")
+      );
 
       const response = await dnsimple.domains.listDomains(accountId);
 
@@ -72,11 +84,20 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=1", fetchMockResponse("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=2", fetchMockResponse("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=3", fetchMockResponse("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
       const items = await dnsimple.domains.listDomains.collectAll(accountId);
 
@@ -114,9 +135,14 @@ describe("domains", () => {
 
     describe("when the domain does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1385/domains/0", fetchMockResponse("notfound-domain.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1385/domains/0",
+          fetchMockResponse("notfound-domain.http")
+        );
 
-        await expect(dnsimple.domains.getDomain(accountId, "0")).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.domains.getDomain(accountId, "0")
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -126,7 +152,10 @@ describe("domains", () => {
     const attributes = { name: "example-alpha.com" };
 
     it("builds the correct request", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1385/domains", fetchMockResponse("createDomain/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1385/domains",
+        fetchMockResponse("createDomain/created.http")
+      );
 
       await dnsimple.domains.createDomain(accountId, attributes);
 
@@ -134,9 +163,15 @@ describe("domains", () => {
     });
 
     it("produces a domain", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1385/domains", fetchMockResponse("createDomain/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1385/domains",
+        fetchMockResponse("createDomain/created.http")
+      );
 
-      const response = await dnsimple.domains.createDomain(accountId, attributes);
+      const response = await dnsimple.domains.createDomain(
+        accountId,
+        attributes
+      );
 
       const domain = response.data;
       expect(domain.id).toBe(181985);

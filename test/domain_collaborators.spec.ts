@@ -40,7 +40,10 @@ describe("collaborators", () => {
         fetchMockResponse("listCollaborators/success.http")
       );
 
-      const response = await dnsimple.domains.listCollaborators(accountId, domainId);
+      const response = await dnsimple.domains.listCollaborators(
+        accountId,
+        domainId
+      );
 
       const collaborators = response.data;
       expect(collaborators.length).toBe(2);
@@ -55,7 +58,10 @@ describe("collaborators", () => {
         fetchMockResponse("listCollaborators/success.http")
       );
 
-      const response = await dnsimple.domains.listCollaborators(accountId, domainId);
+      const response = await dnsimple.domains.listCollaborators(
+        accountId,
+        domainId
+      );
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -76,7 +82,11 @@ describe("collaborators", () => {
         fetchMockResponse("addCollaborator/success.http")
       );
 
-      const response = await dnsimple.domains.addCollaborator(accountId, domainId, collaborator);
+      const response = await dnsimple.domains.addCollaborator(
+        accountId,
+        domainId,
+        collaborator
+      );
 
       const data = response.data;
       expect(data.id).toEqual(100);
@@ -95,7 +105,11 @@ describe("collaborators", () => {
         fetchMockResponse("removeCollaborator/success.http")
       );
 
-      const response = await dnsimple.domains.removeCollaborator(accountId, domainId, collaboratorId);
+      const response = await dnsimple.domains.removeCollaborator(
+        accountId,
+        domainId,
+        collaboratorId
+      );
 
       expect(response).toEqual({});
     });

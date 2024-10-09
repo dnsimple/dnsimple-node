@@ -24,24 +24,49 @@ export class Certificates {
       account: number,
       domain: string,
       params: QueryParams & {
-        sort?: "id:asc" | "id:desc" | "common_name:asc" | "common_name:desc" | "expiration:asc" | "expiration:desc";
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "common_name:asc"
+          | "common_name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
       } = {}
     ): Promise<{
       data: Array<types.Certificate>;
       pagination: types.Pagination;
-    }> => this._client.request("GET", `/${account}/domains/${domain}/certificates`, null, params);
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates`,
+        null,
+        params
+      );
     method.iterateAll = (
       account: number,
       domain: string,
       params: QueryParams & {
-        sort?: "id:asc" | "id:desc" | "common_name:asc" | "common_name:desc" | "expiration:asc" | "expiration:desc";
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "common_name:asc"
+          | "common_name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
       } = {}
-    ) => paginate((page) => method(account, domain, { ...params, page } as any));
+    ) =>
+      paginate((page) => method(account, domain, { ...params, page } as any));
     method.collectAll = async (
       account: number,
       domain: string,
       params: QueryParams & {
-        sort?: "id:asc" | "id:desc" | "common_name:asc" | "common_name:desc" | "expiration:asc" | "expiration:desc";
+        sort?:
+          | "id:asc"
+          | "id:desc"
+          | "common_name:asc"
+          | "common_name:desc"
+          | "expiration:asc"
+          | "expiration:desc";
       } = {}
     ) => {
       const items = [];
@@ -72,7 +97,12 @@ export class Certificates {
       certificate: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.Certificate }> =>
-      this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}`, null, params);
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates/${certificate}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -95,7 +125,12 @@ export class Certificates {
       certificate: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.CertificateDownload }> =>
-      this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}/download`, null, params);
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates/${certificate}/download`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -150,7 +185,12 @@ export class Certificates {
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.LetsencryptCertificatePurchase }> =>
-      this._client.request("POST", `/${account}/domains/${domain}/certificates/letsencrypt`, data, params);
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/letsencrypt`,
+        data,
+        params
+      );
     return method;
   })();
 

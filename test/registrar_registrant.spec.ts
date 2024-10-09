@@ -13,10 +13,13 @@ describe("registrant", () => {
         fetchMockResponse("checkRegistrantChange/success.http")
       );
 
-      const response = await dnsimple.registrar.checkRegistrantChange(accountId, {
-        contact_id: 101,
-        domain_id: 101,
-      });
+      const response = await dnsimple.registrar.checkRegistrantChange(
+        accountId,
+        {
+          contact_id: 101,
+          domain_id: 101,
+        }
+      );
 
       const data = response.data;
       expect(data.domain_id).toBe(101);
@@ -33,11 +36,14 @@ describe("registrant", () => {
         fetchMockResponse("createRegistrantChange/success.http")
       );
 
-      const response = await dnsimple.registrar.createRegistrantChange(accountId, {
-        contact_id: 101,
-        domain_id: 101,
-        extended_attributes: {},
-      });
+      const response = await dnsimple.registrar.createRegistrantChange(
+        accountId,
+        {
+          contact_id: 101,
+          domain_id: 101,
+          extended_attributes: {},
+        }
+      );
 
       const data = response.data;
       expect(data.id).toBe(101);
@@ -73,7 +79,10 @@ describe("registrant", () => {
         fetchMockResponse("getRegistrantChange/success.http")
       );
 
-      const response = await dnsimple.registrar.getRegistrantChange(accountId, 101);
+      const response = await dnsimple.registrar.getRegistrantChange(
+        accountId,
+        101
+      );
 
       expect(response.data).toEqual({
         id: 101,

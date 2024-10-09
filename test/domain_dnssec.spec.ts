@@ -41,7 +41,10 @@ describe("domains", () => {
         fetchMockResponse("disableDnssec/success.http")
       );
 
-      const response = await dnsimple.domains.disableDnssec(accountId, domainId);
+      const response = await dnsimple.domains.disableDnssec(
+        accountId,
+        domainId
+      );
 
       expect(response).toEqual({});
     });

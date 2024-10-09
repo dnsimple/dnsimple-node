@@ -54,7 +54,10 @@ describe("domains", () => {
         fetchMockResponse("listEmailForwards/success.http")
       );
 
-      const response = await dnsimple.domains.listEmailForwards(accountId, domainId);
+      const response = await dnsimple.domains.listEmailForwards(
+        accountId,
+        domainId
+      );
 
       expect(response.data.length).toBe(1);
     });
@@ -65,7 +68,10 @@ describe("domains", () => {
         fetchMockResponse("listEmailForwards/success.http")
       );
 
-      const response = await dnsimple.domains.listEmailForwards(accountId, domainId);
+      const response = await dnsimple.domains.listEmailForwards(
+        accountId,
+        domainId
+      );
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -93,7 +99,10 @@ describe("domains", () => {
         fetchMockResponse("pages-3of3.http")
       );
 
-      const items = await dnsimple.domains.listEmailForwards.collectAll(accountId, domainId);
+      const items = await dnsimple.domains.listEmailForwards.collectAll(
+        accountId,
+        domainId
+      );
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -112,7 +121,11 @@ describe("domains", () => {
         fetchMockResponse("getEmailForward/success.http")
       );
 
-      const response = await dnsimple.domains.getEmailForward(accountId, domainId, emailForwardId);
+      const response = await dnsimple.domains.getEmailForward(
+        accountId,
+        domainId,
+        emailForwardId
+      );
 
       const emailForward = response.data;
       expect(emailForward.id).toBe(41872);
@@ -132,7 +145,9 @@ describe("domains", () => {
           fetchMockResponse("notfound-emailforward.http")
         );
 
-        await expect(dnsimple.domains.getEmailForward(accountId, domainId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.domains.getEmailForward(accountId, domainId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -148,7 +163,11 @@ describe("domains", () => {
         fetchMockResponse("createEmailForward/created.http")
       );
 
-      await dnsimple.domains.createEmailForward(accountId, domainId, attributes);
+      await dnsimple.domains.createEmailForward(
+        accountId,
+        domainId,
+        attributes
+      );
 
       expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
@@ -159,7 +178,11 @@ describe("domains", () => {
         fetchMockResponse("createEmailForward/created.http")
       );
 
-      const response = await dnsimple.domains.createEmailForward(accountId, domainId, attributes);
+      const response = await dnsimple.domains.createEmailForward(
+        accountId,
+        domainId,
+        attributes
+      );
 
       expect(response.data.id).toBe(41872);
     });
@@ -176,7 +199,11 @@ describe("domains", () => {
         fetchMockResponse("deleteEmailForward/success.http")
       );
 
-      const response = await dnsimple.domains.deleteEmailForward(accountId, domainId, emailForwardId);
+      const response = await dnsimple.domains.deleteEmailForward(
+        accountId,
+        domainId,
+        emailForwardId
+      );
 
       expect(response).toEqual({});
     });

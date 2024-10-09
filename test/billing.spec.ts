@@ -9,7 +9,10 @@ describe("billing", () => {
     const accountId = 1010;
 
     it("produces a charges list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/billing/charges", fetchMockResponse("listCharges/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/billing/charges",
+        fetchMockResponse("listCharges/success.http")
+      );
 
       const response = await dnsimple.billing.listCharges(accountId);
 
@@ -85,12 +88,17 @@ describe("billing", () => {
         expect(error).toBeInstanceOf(ClientError);
         const clientError = error as ClientError;
         expect(clientError.status).toBe(400);
-        expect(clientError.data.message).toBe("Invalid date format must be ISO8601 (YYYY-MM-DD)");
+        expect(clientError.data.message).toBe(
+          "Invalid date format must be ISO8601 (YYYY-MM-DD)"
+        );
       }
     });
 
     it("throws an error on missing scope", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/billing/charges", fetchMockResponse("listCharges/fail-403.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/billing/charges",
+        fetchMockResponse("listCharges/fail-403.http")
+      );
 
       try {
         await dnsimple.billing.listCharges(accountId);
@@ -98,7 +106,9 @@ describe("billing", () => {
         expect(error).toBeInstanceOf(ClientError);
         const clientError = error as ClientError;
         expect(clientError.status).toBe(403);
-        expect(clientError.data.message).toBe("Permission Denied. Required Scope: billing:*:read");
+        expect(clientError.data.message).toBe(
+          "Permission Denied. Required Scope: billing:*:read"
+        );
       }
     });
   });

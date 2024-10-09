@@ -15,7 +15,10 @@ describe("registrar auto renewal", () => {
         fetchMockResponse("enableDomainAutoRenewal/success.http")
       );
 
-      const response = await dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId);
+      const response = await dnsimple.registrar.enableDomainAutoRenewal(
+        accountId,
+        domainId
+      );
 
       expect(response).toEqual({});
     });
@@ -27,7 +30,9 @@ describe("registrar auto renewal", () => {
           fetchMockResponse("notfound-domain.http")
         );
 
-        await expect(dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.registrar.enableDomainAutoRenewal(accountId, domainId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -39,7 +44,10 @@ describe("registrar auto renewal", () => {
         fetchMockResponse("disableDomainAutoRenewal/success.http")
       );
 
-      const response = await dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId);
+      const response = await dnsimple.registrar.disableDomainAutoRenewal(
+        accountId,
+        domainId
+      );
 
       expect(response).toEqual({});
     });
@@ -51,7 +59,9 @@ describe("registrar auto renewal", () => {
           fetchMockResponse("notfound-domain.http")
         );
 
-        await expect(dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.registrar.disableDomainAutoRenewal(accountId, domainId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });

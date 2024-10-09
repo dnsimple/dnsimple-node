@@ -54,7 +54,10 @@ describe("domains", () => {
         fetchMockResponse("listDelegationSignerRecords/success.http")
       );
 
-      const response = await dnsimple.domains.listDelegationSignerRecords(accountId, domainId);
+      const response = await dnsimple.domains.listDelegationSignerRecords(
+        accountId,
+        domainId
+      );
 
       expect(response.data.length).toBe(1);
     });
@@ -65,7 +68,10 @@ describe("domains", () => {
         fetchMockResponse("listDelegationSignerRecords/success.http")
       );
 
-      const response = await dnsimple.domains.listDelegationSignerRecords(accountId, domainId);
+      const response = await dnsimple.domains.listDelegationSignerRecords(
+        accountId,
+        domainId
+      );
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -93,7 +99,11 @@ describe("domains", () => {
         fetchMockResponse("pages-3of3.http")
       );
 
-      const items = await dnsimple.domains.listDelegationSignerRecords.collectAll(accountId, domainId);
+      const items =
+        await dnsimple.domains.listDelegationSignerRecords.collectAll(
+          accountId,
+          domainId
+        );
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -112,12 +122,18 @@ describe("domains", () => {
         fetchMockResponse("getDelegationSignerRecord/success.http")
       );
 
-      const response = await dnsimple.domains.getDelegationSignerRecord(accountId, domainId, dsRecordId);
+      const response = await dnsimple.domains.getDelegationSignerRecord(
+        accountId,
+        domainId,
+        dsRecordId
+      );
 
       const dsRecord = response.data;
       expect(dsRecord.id).toBe(24);
       expect(dsRecord.algorithm).toBe("8");
-      expect(dsRecord.digest).toBe("C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F");
+      expect(dsRecord.digest).toBe(
+        "C1F6E04A5A61FBF65BF9DC8294C363CF11C89E802D926BDAB79C55D27BEFA94F"
+      );
       expect(dsRecord.digest_type).toBe("2");
       expect(dsRecord.keytag).toBe("44620");
       expect(dsRecord.public_key).toBe(null);
@@ -132,7 +148,9 @@ describe("domains", () => {
           fetchMockResponse("notfound-delegationSignerRecord.http")
         );
 
-        await expect(dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -148,7 +166,11 @@ describe("domains", () => {
         fetchMockResponse("createDelegationSignerRecord/created.http")
       );
 
-      await dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes);
+      await dnsimple.domains.createDelegationSignerRecord(
+        accountId,
+        domainId,
+        attributes
+      );
 
       expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
@@ -159,7 +181,11 @@ describe("domains", () => {
         fetchMockResponse("createDelegationSignerRecord/created.http")
       );
 
-      const response = await dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes);
+      const response = await dnsimple.domains.createDelegationSignerRecord(
+        accountId,
+        domainId,
+        attributes
+      );
 
       expect(response.data.id).toBe(2);
     });
@@ -176,7 +202,11 @@ describe("domains", () => {
         fetchMockResponse("deleteDelegationSignerRecord/success.http")
       );
 
-      const response = await dnsimple.domains.deleteDelegationSignerRecord(accountId, domainId, dsRecordId);
+      const response = await dnsimple.domains.deleteDelegationSignerRecord(
+        accountId,
+        domainId,
+        dsRecordId
+      );
 
       expect(response).toEqual({});
     });

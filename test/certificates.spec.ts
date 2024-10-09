@@ -54,7 +54,10 @@ describe("certificates", () => {
         fetchMockResponse("listCertificates/success.http")
       );
 
-      const response = await dnsimple.certificates.listCertificates(accountId, domainId);
+      const response = await dnsimple.certificates.listCertificates(
+        accountId,
+        domainId
+      );
 
       const certificates = response.data;
       expect(certificates.length).toBe(2);
@@ -69,7 +72,10 @@ describe("certificates", () => {
         fetchMockResponse("listCertificates/success.http")
       );
 
-      const response = await dnsimple.certificates.listCertificates(accountId, domainId);
+      const response = await dnsimple.certificates.listCertificates(
+        accountId,
+        domainId
+      );
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -97,7 +103,11 @@ describe("certificates", () => {
         fetchMockResponse("pages-3of3.http")
       );
 
-      const certificates = await dnsimple.certificates.listCertificates.collectAll(accountId, domainId);
+      const certificates =
+        await dnsimple.certificates.listCertificates.collectAll(
+          accountId,
+          domainId
+        );
 
       expect(certificates.length).toBe(5);
       expect(certificates[0].id).toBe(1);
@@ -116,7 +126,11 @@ describe("certificates", () => {
         fetchMockResponse("getCertificate/success.http")
       );
 
-      const response = await dnsimple.certificates.getCertificate(accountId, domainId, certificateId);
+      const response = await dnsimple.certificates.getCertificate(
+        accountId,
+        domainId,
+        certificateId
+      );
 
       const certificate = response.data;
       expect(certificate.id).toBe(101967);
@@ -157,7 +171,11 @@ describe("certificates", () => {
         fetchMockResponse("downloadCertificate/success.http")
       );
 
-      const response = await dnsimple.certificates.downloadCertificate(accountId, domainId, certificateId);
+      const response = await dnsimple.certificates.downloadCertificate(
+        accountId,
+        domainId,
+        certificateId
+      );
 
       const certificate = response.data;
       expect(certificate.server).toMatch(/-----BEGIN CERTIFICATE-----/);
@@ -173,7 +191,9 @@ describe("certificates", () => {
           fetchMockResponse("notfound-certificate.http")
         );
 
-        await expect(dnsimple.certificates.downloadCertificate(accountId, domainId, 0)).rejects.toThrow();
+        await expect(
+          dnsimple.certificates.downloadCertificate(accountId, domainId, 0)
+        ).rejects.toThrow();
       });
     });
   });
@@ -189,9 +209,15 @@ describe("certificates", () => {
         fetchMockResponse("getCertificatePrivateKey/success.http")
       );
 
-      const response = await dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, certificateId);
+      const response = await dnsimple.certificates.getCertificatePrivateKey(
+        accountId,
+        domainId,
+        certificateId
+      );
 
-      expect(response.data.private_key).toMatch(/-----BEGIN RSA PRIVATE KEY-----/);
+      expect(response.data.private_key).toMatch(
+        /-----BEGIN RSA PRIVATE KEY-----/
+      );
     });
 
     describe("when the certificate does not exist", () => {
@@ -202,7 +228,11 @@ describe("certificates", () => {
         );
 
         try {
-          await dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, 0);
+          await dnsimple.certificates.getCertificatePrivateKey(
+            accountId,
+            domainId,
+            0
+          );
         } catch (error) {
           expect(error).not.toBe(null);
         }
@@ -220,7 +250,12 @@ describe("certificates", () => {
         fetchMockResponse("purchaseLetsencryptCertificate/success.http")
       );
 
-      const response = await dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, {});
+      const response =
+        await dnsimple.certificates.purchaseLetsencryptCertificate(
+          accountId,
+          domainId,
+          {}
+        );
 
       const certificate = response.data;
       expect(certificate.id).toBe(101967);
@@ -238,7 +273,11 @@ describe("certificates", () => {
         fetchMockResponse("issueLetsencryptCertificate/success.http")
       );
 
-      const response = await dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId);
+      const response = await dnsimple.certificates.issueLetsencryptCertificate(
+        accountId,
+        domainId,
+        certificateId
+      );
 
       const certificate = response.data;
       expect(certificate.id).toBe(certificateId);
@@ -256,12 +295,13 @@ describe("certificates", () => {
         fetchMockResponse("purchaseRenewalLetsencryptCertificate/success.http")
       );
 
-      const response = await dnsimple.certificates.purchaseLetsencryptCertificateRenewal(
-        accountId,
-        domainId,
-        certificateId,
-        {}
-      );
+      const response =
+        await dnsimple.certificates.purchaseLetsencryptCertificateRenewal(
+          accountId,
+          domainId,
+          certificateId,
+          {}
+        );
 
       const certificateRenewal = response.data;
       expect(certificateRenewal.id).toBe(65082);
@@ -283,12 +323,13 @@ describe("certificates", () => {
         fetchMockResponse("issueRenewalLetsencryptCertificate/success.http")
       );
 
-      const response = await dnsimple.certificates.issueLetsencryptCertificateRenewal(
-        accountId,
-        domainId,
-        certificateId,
-        certificateRenewalId
-      );
+      const response =
+        await dnsimple.certificates.issueLetsencryptCertificateRenewal(
+          accountId,
+          domainId,
+          certificateId,
+          certificateRenewalId
+        );
 
       const newCertificate = response.data;
       expect(newCertificate.id).toBe(newCertificateId);

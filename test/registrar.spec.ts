@@ -17,7 +17,10 @@ describe("registrar", () => {
         fetchMockResponse("checkDomain/success.http")
       );
 
-      const response = await dnsimple.registrar.checkDomain(accountId, domainId);
+      const response = await dnsimple.registrar.checkDomain(
+        accountId,
+        domainId
+      );
 
       const checkResult = response.data;
       expect(checkResult.domain).toEqual("ruby.codes");
@@ -36,7 +39,10 @@ describe("registrar", () => {
           fetchMockResponse("getDomainPremiumPrice/success.http")
         );
 
-        const response = await dnsimple.registrar.getDomainPremiumPrice(accountId, domainId);
+        const response = await dnsimple.registrar.getDomainPremiumPrice(
+          accountId,
+          domainId
+        );
 
         const premiumPriceResult = response.data;
         expect(premiumPriceResult.premium_price).toEqual("109.00");
@@ -57,7 +63,9 @@ describe("registrar", () => {
           await dnsimple.registrar.getDomainPremiumPrice(accountId, domainId);
         } catch (error) {
           expect(error).toBeInstanceOf(ClientError);
-          expect(error.data.message).toBe("`example.com` is not a premium domain for registration");
+          expect(error.data.message).toBe(
+            "`example.com` is not a premium domain for registration"
+          );
         }
       });
     });
@@ -71,7 +79,10 @@ describe("registrar", () => {
           fetchMockResponse("getDomainPrices/success.http")
         );
 
-        const response = await dnsimple.registrar.getDomainPrices(accountId, "bingo.pizza");
+        const response = await dnsimple.registrar.getDomainPrices(
+          accountId,
+          "bingo.pizza"
+        );
 
         const pricesResult = response.data;
         expect(pricesResult.domain).toEqual("bingo.pizza");
@@ -101,11 +112,19 @@ describe("registrar", () => {
 
   describe("#getDomainRegistration", () => {
     it("calls the correct method", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations/1535", {
-        status: 200,
-      });
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations/1535",
+        {
+          status: 200,
+        }
+      );
 
-      await dnsimple.registrar.getDomainRegistration(1010, "example.com", 1535, {});
+      await dnsimple.registrar.getDomainRegistration(
+        1010,
+        "example.com",
+        1535,
+        {}
+      );
 
       expect(fetchMock.calls()).not.toEqual([]);
     });
@@ -113,7 +132,10 @@ describe("registrar", () => {
 
   describe("#getDomainRenewal", () => {
     it("calls the correct method", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1023/registrar/domains/example.com/renewals/1694", { status: 200 });
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1023/registrar/domains/example.com/renewals/1694",
+        { status: 200 }
+      );
 
       await dnsimple.registrar.getDomainRenewal(1023, "example.com", 1694, {});
 
@@ -130,7 +152,11 @@ describe("registrar", () => {
         fetchMockResponse("registerDomain/success.http")
       );
 
-      const response = await dnsimple.registrar.registerDomain(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.registerDomain(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const domainRegistration = response.data;
       expect(domainRegistration.id).toBe(1);
@@ -147,7 +173,11 @@ describe("registrar", () => {
         fetchMockResponse("renewDomain/success.http")
       );
 
-      const response = await dnsimple.registrar.renewDomain(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.renewDomain(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const renewDomainal = response.data;
       expect(renewDomainal.id).toBe(1);
@@ -163,7 +193,9 @@ describe("registrar", () => {
           fetchMockResponse("renewDomain/error-tooearly.http")
         );
 
-        await expect(dnsimple.registrar.renewDomain(accountId, domainId, attributes)).rejects.toThrow();
+        await expect(
+          dnsimple.registrar.renewDomain(accountId, domainId, attributes)
+        ).rejects.toThrow();
       });
     });
   });
@@ -177,7 +209,11 @@ describe("registrar", () => {
         fetchMockResponse("transferDomain/success.http")
       );
 
-      const response = await dnsimple.registrar.transferDomain(accountId, domainId, attributes);
+      const response = await dnsimple.registrar.transferDomain(
+        accountId,
+        domainId,
+        attributes
+      );
 
       const domain = response.data;
       expect(domain.id).toBe(1);
@@ -191,7 +227,9 @@ describe("registrar", () => {
           fetchMockResponse("transferDomain/error-indnsimple.http")
         );
 
-        await expect(dnsimple.registrar.transferDomain(accountId, domainId, attributes)).rejects.toThrow();
+        await expect(
+          dnsimple.registrar.transferDomain(accountId, domainId, attributes)
+        ).rejects.toThrow();
       });
     });
 
@@ -202,7 +240,9 @@ describe("registrar", () => {
           fetchMockResponse("transferDomain/error-missing-authcode.http")
         );
 
-        await expect(dnsimple.registrar.transferDomain(accountId, domainId, attributes)).rejects.toThrow();
+        await expect(
+          dnsimple.registrar.transferDomain(accountId, domainId, attributes)
+        ).rejects.toThrow();
       });
     });
   });
@@ -214,7 +254,11 @@ describe("registrar", () => {
         fetchMockResponse("getDomainTransfer/success.http")
       );
 
-      const response = await dnsimple.registrar.getDomainTransfer(accountId, domainId, 42);
+      const response = await dnsimple.registrar.getDomainTransfer(
+        accountId,
+        domainId,
+        42
+      );
 
       const domainTransfer = response.data;
       expect(domainTransfer.id).toBe(361);
@@ -236,7 +280,11 @@ describe("registrar", () => {
         fetchMockResponse("cancelDomainTransfer/success.http")
       );
 
-      const response = await dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42);
+      const response = await dnsimple.registrar.cancelDomainTransfer(
+        accountId,
+        domainId,
+        42
+      );
 
       const domainTransfer = response.data;
       expect(domainTransfer.id).toBe(361);
@@ -258,7 +306,10 @@ describe("registrar", () => {
         fetchMockResponse("authorizeDomainTransferOut/success.http")
       );
 
-      const response = await dnsimple.registrar.transferDomainOut(accountId, domainId);
+      const response = await dnsimple.registrar.transferDomainOut(
+        accountId,
+        domainId
+      );
 
       expect(response).toEqual({});
     });

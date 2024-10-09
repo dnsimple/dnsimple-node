@@ -20,7 +20,10 @@ describe("webhooks", () => {
     });
 
     it("produces a webhook list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/webhooks", fetchMockResponse("listWebhooks/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/webhooks",
+        fetchMockResponse("listWebhooks/success.http")
+      );
 
       const response = await dnsimple.webhooks.listWebhooks(accountId);
 
@@ -45,7 +48,10 @@ describe("webhooks", () => {
     });
 
     it("produces a webhook list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/webhooks", fetchMockResponse("listWebhooks/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/webhooks",
+        fetchMockResponse("listWebhooks/success.http")
+      );
 
       const response = await dnsimple.webhooks.listWebhooks(accountId);
 
@@ -60,7 +66,10 @@ describe("webhooks", () => {
     const webhookId = 1;
 
     it("produces a webhook", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/webhooks/1", fetchMockResponse("getWebhook/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/webhooks/1",
+        fetchMockResponse("getWebhook/success.http")
+      );
 
       const response = await dnsimple.webhooks.getWebhook(accountId, webhookId);
 
@@ -71,9 +80,14 @@ describe("webhooks", () => {
 
     describe("when the webhook does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/webhooks/0", fetchMockResponse("notfound-webhook.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/webhooks/0",
+          fetchMockResponse("notfound-webhook.http")
+        );
 
-        await expect(dnsimple.webhooks.getWebhook(accountId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.webhooks.getWebhook(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -83,7 +97,10 @@ describe("webhooks", () => {
     const attributes = { url: "https://some-site.com" };
 
     it("builds the correct request", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/webhooks", fetchMockResponse("createWebhook/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/webhooks",
+        fetchMockResponse("createWebhook/created.http")
+      );
 
       await dnsimple.webhooks.createWebhook(accountId, attributes);
 
@@ -91,9 +108,15 @@ describe("webhooks", () => {
     });
 
     it("produces a webhook", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/webhooks", fetchMockResponse("createWebhook/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/webhooks",
+        fetchMockResponse("createWebhook/created.http")
+      );
 
-      const response = await dnsimple.webhooks.createWebhook(accountId, attributes);
+      const response = await dnsimple.webhooks.createWebhook(
+        accountId,
+        attributes
+      );
 
       expect(response.data.id).toBe(1);
     });
@@ -104,18 +127,29 @@ describe("webhooks", () => {
     const webhookId = 1;
 
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/webhooks/1", fetchMockResponse("deleteWebhook/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/webhooks/1",
+        fetchMockResponse("deleteWebhook/success.http")
+      );
 
-      const response = await dnsimple.webhooks.deleteWebhook(accountId, webhookId);
+      const response = await dnsimple.webhooks.deleteWebhook(
+        accountId,
+        webhookId
+      );
 
       expect(response).toEqual({});
     });
 
     describe("when the webhook does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.delete("https://api.dnsimple.com/v2/1010/webhooks/0", fetchMockResponse("notfound-webhook.http"));
+        fetchMock.delete(
+          "https://api.dnsimple.com/v2/1010/webhooks/0",
+          fetchMockResponse("notfound-webhook.http")
+        );
 
-        await expect(dnsimple.webhooks.deleteWebhook(accountId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.webhooks.deleteWebhook(accountId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });

@@ -22,9 +22,12 @@ export class Tlds {
       params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}
     ): Promise<{ data: Array<types.TLD>; pagination: types.Pagination }> =>
       this._client.request("GET", `/tlds`, null, params);
-    method.iterateAll = (params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}) =>
-      paginate((page) => method({ ...params, page } as any));
-    method.collectAll = async (params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}) => {
+    method.iterateAll = (
+      params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}
+    ) => paginate((page) => method({ ...params, page } as any));
+    method.collectAll = async (
+      params: QueryParams & { sort?: "tld:asc" | "tld:desc" } = {}
+    ) => {
       const items = [];
       for await (const item of method.iterateAll(params)) {
         items.push(item);
@@ -45,7 +48,10 @@ export class Tlds {
    * @param params Query parameters
    */
   getTld = (() => {
-    const method = (tld: string, params: QueryParams & {} = {}): Promise<{ data: types.TLD }> =>
+    const method = (
+      tld: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.TLD }> =>
       this._client.request("GET", `/tlds/${tld}`, null, params);
     return method;
   })();
@@ -63,8 +69,16 @@ export class Tlds {
    * @param params Query parameters
    */
   getTldExtendedAttributes = (() => {
-    const method = (tld: string, params: QueryParams & {} = {}): Promise<{ data: Array<types.ExtendedAttribute> }> =>
-      this._client.request("GET", `/tlds/${tld}/extended_attributes`, null, params);
+    const method = (
+      tld: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: Array<types.ExtendedAttribute> }> =>
+      this._client.request(
+        "GET",
+        `/tlds/${tld}/extended_attributes`,
+        null,
+        params
+      );
     return method;
   })();
 }

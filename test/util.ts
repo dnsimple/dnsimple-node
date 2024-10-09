@@ -4,7 +4,11 @@ import { DNSimple, TimeoutError } from "../lib/main";
 function hasJsonContent(lines: string[]) {
   for (let line of lines) {
     const [key, value] = line.split(/:\s/);
-    if (key.toLowerCase() === "content-type" && value.includes("application/json")) return true;
+    if (
+      key.toLowerCase() === "content-type" &&
+      value.includes("application/json")
+    )
+      return true;
   }
   return false;
 }
@@ -47,7 +51,8 @@ export function createTestClient() {
         });
         return { status: response.status, body: await response.text() };
       } catch (error) {
-        if (abortController && abortController.signal.aborted) throw new TimeoutError();
+        if (abortController && abortController.signal.aborted)
+          throw new TimeoutError();
 
         throw error;
       }

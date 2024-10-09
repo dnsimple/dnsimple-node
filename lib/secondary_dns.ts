@@ -27,7 +27,13 @@ export class SecondaryDns {
     ): Promise<{
       data: Array<types.PrimaryServer>;
       pagination: types.Pagination;
-    }> => this._client.request("GET", `/${account}/secondary_dns/primaries`, null, params);
+    }> =>
+      this._client.request(
+        "GET",
+        `/${account}/secondary_dns/primaries`,
+        null,
+        params
+      );
     method.iterateAll = (
       account: number,
       params: QueryParams & {
@@ -65,7 +71,12 @@ export class SecondaryDns {
       data: Partial<{ name: string; ip: string; port: string }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.PrimaryServer }> =>
-      this._client.request("POST", `/${account}/secondary_dns/primaries`, data, params);
+      this._client.request(
+        "POST",
+        `/${account}/secondary_dns/primaries`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -86,7 +97,12 @@ export class SecondaryDns {
       primaryserver: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.PrimaryServer }> =>
-      this._client.request("GET", `/${account}/secondary_dns/primaries/${primaryserver}`, null, params);
+      this._client.request(
+        "GET",
+        `/${account}/secondary_dns/primaries/${primaryserver}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -102,8 +118,17 @@ export class SecondaryDns {
    * @param params Query parameters
    */
   removePrimaryServer = (() => {
-    const method = (account: number, primaryserver: number, params: QueryParams & {} = {}): Promise<{}> =>
-      this._client.request("DELETE", `/${account}/secondary_dns/primaries/${primaryserver}`, null, params);
+    const method = (
+      account: number,
+      primaryserver: number,
+      params: QueryParams & {} = {}
+    ): Promise<{}> =>
+      this._client.request(
+        "DELETE",
+        `/${account}/secondary_dns/primaries/${primaryserver}`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -124,7 +149,12 @@ export class SecondaryDns {
       primaryserver: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.PrimaryServer }> =>
-      this._client.request("PUT", `/${account}/secondary_dns/primaries/${primaryserver}/link`, null, params);
+      this._client.request(
+        "PUT",
+        `/${account}/secondary_dns/primaries/${primaryserver}/link`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -145,7 +175,12 @@ export class SecondaryDns {
       primaryserver: number,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.PrimaryServer }> =>
-      this._client.request("PUT", `/${account}/secondary_dns/primaries/${primaryserver}/unlink`, null, params);
+      this._client.request(
+        "PUT",
+        `/${account}/secondary_dns/primaries/${primaryserver}/unlink`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -164,7 +199,13 @@ export class SecondaryDns {
       account: number,
       data: Partial<{ name: string }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.Zone }> => this._client.request("POST", `/${account}/secondary_dns/zones`, data, params);
+    ): Promise<{ data: types.Zone }> =>
+      this._client.request(
+        "POST",
+        `/${account}/secondary_dns/zones`,
+        data,
+        params
+      );
     return method;
   })();
 }

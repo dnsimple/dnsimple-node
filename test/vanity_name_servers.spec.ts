@@ -14,7 +14,10 @@ describe("vanity name servers", () => {
         fetchMockResponse("enableVanityNameServers/success.http")
       );
 
-      const response = await dnsimple.vanityNameServers.enableVanityNameServers(accountId, domainId);
+      const response = await dnsimple.vanityNameServers.enableVanityNameServers(
+        accountId,
+        domainId
+      );
 
       const vanityNameServers = response.data;
       expect(vanityNameServers.length).toBe(4);
@@ -33,7 +36,11 @@ describe("vanity name servers", () => {
         fetchMockResponse("disableVanityNameServers/success.http")
       );
 
-      const response = await dnsimple.vanityNameServers.disableVanityNameServers(accountId, domainId);
+      const response =
+        await dnsimple.vanityNameServers.disableVanityNameServers(
+          accountId,
+          domainId
+        );
 
       expect(response).toEqual({});
     });

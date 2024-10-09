@@ -42,7 +42,10 @@ describe("templates", () => {
     });
 
     it("produces a template list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/templates", fetchMockResponse("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       const response = await dnsimple.templates.listTemplates(accountId);
 
@@ -53,7 +56,10 @@ describe("templates", () => {
     });
 
     it("exposes the pagination info", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/templates", fetchMockResponse("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       const response = await dnsimple.templates.listTemplates(accountId);
 
@@ -67,13 +73,23 @@ describe("templates", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/templates?page=1", fetchMockResponse("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/templates?page=2", fetchMockResponse("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/templates?page=3", fetchMockResponse("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
-      const items = await dnsimple.templates.listTemplates.collectAll(accountId);
+      const items =
+        await dnsimple.templates.listTemplates.collectAll(accountId);
 
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
@@ -86,9 +102,15 @@ describe("templates", () => {
     const templateId = "name";
 
     it("produces a template", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/templates/name", fetchMockResponse("getTemplate/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/name",
+        fetchMockResponse("getTemplate/success.http")
+      );
 
-      const response = await dnsimple.templates.getTemplate(accountId, templateId);
+      const response = await dnsimple.templates.getTemplate(
+        accountId,
+        templateId
+      );
 
       const template = response.data;
       expect(template.id).toBe(1);
@@ -102,9 +124,14 @@ describe("templates", () => {
 
     describe("when the template does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/templates/name", fetchMockResponse("notfound-template.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/templates/name",
+          fetchMockResponse("notfound-template.http")
+        );
 
-        await expect(dnsimple.templates.getTemplate(accountId, templateId)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.templates.getTemplate(accountId, templateId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -115,17 +142,28 @@ describe("templates", () => {
 
     it("builds the correct request", async () => {
       const expectedPayload = { name: "Beta" };
-      fetchMock.post("https://api.dnsimple.com/v2/1010/templates", fetchMockResponse("createTemplate/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("createTemplate/created.http")
+      );
 
       await dnsimple.templates.createTemplate(accountId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(expectedPayload));
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a template", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/templates", fetchMockResponse("createTemplate/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("createTemplate/created.http")
+      );
 
-      const response = await dnsimple.templates.createTemplate(accountId, attributes);
+      const response = await dnsimple.templates.createTemplate(
+        accountId,
+        attributes
+      );
 
       expect(response.data.id).toBe(1);
     });
@@ -138,26 +176,47 @@ describe("templates", () => {
 
     it("builds the correct request", async () => {
       const expectedPayload = { name: "Alpha" };
-      fetchMock.patch("https://api.dnsimple.com/v2/1010/templates/1", fetchMockResponse("updateTemplate/success.http"));
+      fetchMock.patch(
+        "https://api.dnsimple.com/v2/1010/templates/1",
+        fetchMockResponse("updateTemplate/success.http")
+      );
 
-      await dnsimple.templates.updateTemplate(accountId, templateId, attributes);
+      await dnsimple.templates.updateTemplate(
+        accountId,
+        templateId,
+        attributes
+      );
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(expectedPayload));
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a template", async () => {
-      fetchMock.patch("https://api.dnsimple.com/v2/1010/templates/1", fetchMockResponse("updateTemplate/success.http"));
+      fetchMock.patch(
+        "https://api.dnsimple.com/v2/1010/templates/1",
+        fetchMockResponse("updateTemplate/success.http")
+      );
 
-      const response = await dnsimple.templates.updateTemplate(accountId, templateId, attributes);
+      const response = await dnsimple.templates.updateTemplate(
+        accountId,
+        templateId,
+        attributes
+      );
 
       expect(response.data.id).toBe(1);
     });
 
     describe("when the template does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.patch("https://api.dnsimple.com/v2/1010/templates/0", fetchMockResponse("notfound-template.http"));
+        fetchMock.patch(
+          "https://api.dnsimple.com/v2/1010/templates/0",
+          fetchMockResponse("notfound-template.http")
+        );
 
-        await expect(dnsimple.templates.updateTemplate(accountId, 0, attributes)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.templates.updateTemplate(accountId, 0, attributes)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -172,7 +231,10 @@ describe("templates", () => {
         fetchMockResponse("deleteTemplate/success.http")
       );
 
-      const response = await dnsimple.templates.deleteTemplate(accountId, templateId);
+      const response = await dnsimple.templates.deleteTemplate(
+        accountId,
+        templateId
+      );
 
       expect(response).toEqual({});
     });
@@ -189,7 +251,11 @@ describe("templates", () => {
         fetchMockResponse("applyTemplate/success.http")
       );
 
-      const response = await dnsimple.templates.applyTemplate(accountId, domainId, templateId);
+      const response = await dnsimple.templates.applyTemplate(
+        accountId,
+        domainId,
+        templateId
+      );
 
       expect(response).toEqual({});
     });
@@ -250,7 +316,10 @@ describe("template records", () => {
         fetchMockResponse("listTemplateRecords/success.http")
       );
 
-      const response = await dnsimple.templates.listTemplateRecords(accountId, templateId);
+      const response = await dnsimple.templates.listTemplateRecords(
+        accountId,
+        templateId
+      );
 
       expect(response.data.length).toBe(2);
     });
@@ -261,7 +330,10 @@ describe("template records", () => {
         fetchMockResponse("listTemplateRecords/success.http")
       );
 
-      const response = await dnsimple.templates.listTemplateRecords(accountId, templateId);
+      const response = await dnsimple.templates.listTemplateRecords(
+        accountId,
+        templateId
+      );
 
       const pagination = response.pagination;
       expect(pagination).not.toBe(null);
@@ -289,7 +361,10 @@ describe("template records", () => {
         fetchMockResponse("pages-3of3.http")
       );
 
-      const items = await dnsimple.templates.listTemplateRecords.collectAll(accountId, templateId);
+      const items = await dnsimple.templates.listTemplateRecords.collectAll(
+        accountId,
+        templateId
+      );
       expect(items.length).toBe(5);
       expect(items[0].id).toBe(1);
       expect(items[4].id).toBe(5);
@@ -307,7 +382,11 @@ describe("template records", () => {
         fetchMockResponse("getTemplateRecord/success.http")
       );
 
-      const response = await dnsimple.templates.getTemplateRecord(accountId, templateId, recordId);
+      const response = await dnsimple.templates.getTemplateRecord(
+        accountId,
+        templateId,
+        recordId
+      );
 
       const record = response.data;
       expect(record.id).toBe(301);
@@ -328,7 +407,9 @@ describe("template records", () => {
           fetchMockResponse("notfound-template.http")
         );
 
-        await expect(dnsimple.templates.getTemplateRecord(accountId, 0, recordId)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.templates.getTemplateRecord(accountId, 0, recordId)
+        ).rejects.toThrow(NotFoundError);
       });
     });
 
@@ -339,7 +420,9 @@ describe("template records", () => {
           fetchMockResponse("notfound-record.http")
         );
 
-        await expect(dnsimple.templates.getTemplateRecord(accountId, templateId, 0)).rejects.toThrow(NotFoundError);
+        await expect(
+          dnsimple.templates.getTemplateRecord(accountId, templateId, 0)
+        ).rejects.toThrow(NotFoundError);
       });
     });
   });
@@ -356,9 +439,15 @@ describe("template records", () => {
         fetchMockResponse("createTemplateRecord/created.http")
       );
 
-      await dnsimple.templates.createTemplateRecord(accountId, templateId, attributes);
+      await dnsimple.templates.createTemplateRecord(
+        accountId,
+        templateId,
+        attributes
+      );
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(expectedPayload));
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a record", async () => {
@@ -367,7 +456,11 @@ describe("template records", () => {
         fetchMockResponse("createTemplateRecord/created.http")
       );
 
-      const response = await dnsimple.templates.createTemplateRecord(accountId, templateId, attributes);
+      const response = await dnsimple.templates.createTemplateRecord(
+        accountId,
+        templateId,
+        attributes
+      );
 
       expect(response.data.id).toBe(300);
     });
@@ -384,7 +477,11 @@ describe("template records", () => {
         fetchMockResponse("deleteTemplateRecord/success.http")
       );
 
-      const response = await dnsimple.templates.deleteTemplateRecord(accountId, templateId, recordId);
+      const response = await dnsimple.templates.deleteTemplateRecord(
+        accountId,
+        templateId,
+        recordId
+      );
 
       expect(response).toEqual({});
     });

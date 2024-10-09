@@ -54,7 +54,12 @@ export class OAuth {
    * @param attributes.scope The scope to request during authorization
    * @return The URL to redirect the user to for authorization
    */
-  authorizeUrl(attributes: { clientId: string; state: string; redirectUri?: string; scope?: string }) {
+  authorizeUrl(attributes: {
+    clientId: string;
+    state: string;
+    redirectUri?: string;
+    scope?: string;
+  }) {
     const siteUrl = this._client.baseUrl.replace("api.", "");
     return `${siteUrl}/oauth/authorize?${toQueryString({
       state: attributes.state,
