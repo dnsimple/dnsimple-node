@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
-import { DNSimple, TimeoutError } from "../lib/main";
+import { DNSimple } from "../lib/main";
+import fetchFetcher from "../lib/fetcher/fetch-fetcher";
 
 function hasJsonContent(lines: string[]) {
   for (let line of lines) {
@@ -33,30 +34,7 @@ function parseBody(lines: string[]) {
 export function createTestClient() {
   return new DNSimple({
     accessToken: process.env["TOKEN"] ?? "bogus",
-    fetcher: async (params: {
-      method: string;
-      url: string;
-      headers: { [name: string]: string };
-      timeout: number;
-      body?: string;
-    }) => {
-      const abortController = new AbortController();
-      setTimeout(() => abortController.abort(), DNSimple.DEFAULT_TIMEOUT);
-      try {
-        const response = await fetch(params.url, {
-          method: params.method,
-          headers: params.headers,
-          body: params.body,
-          signal: abortController.signal,
-        });
-        return { status: response.status, body: await response.text() };
-      } catch (error) {
-        if (abortController && abortController.signal.aborted)
-          throw new TimeoutError();
-
-        throw error;
-      }
-    },
+    fetcher: fetchFetcher,
   });
 }
 
