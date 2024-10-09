@@ -13,6 +13,9 @@ import { Tlds } from "./tlds";
 import { VanityNameServers } from "./vanity_name_servers";
 import { Webhooks } from "./webhooks";
 import { Zones } from "./zones";
+import type { Fetcher } from "./fetcher/fetcher";
+import fetchFetcher from "./fetcher/fetch-fetcher";
+import httpsFetcher from "./fetcher/https-fetcher";
 
 export * from "./types";
 
@@ -206,7 +209,7 @@ export class DNSimple {
   constructor({
     accessToken,
     baseUrl = DNSimple.DEFAULT_BASE_URL,
-    fetcher = getFetcherForPlatform(),
+    fetcher = typeof fetch === "undefined" ? httpsFetcher : fetchFetcher,
     timeout = DNSimple.DEFAULT_TIMEOUT,
     userAgent = "",
   }: {
