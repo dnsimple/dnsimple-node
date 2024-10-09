@@ -87,7 +87,7 @@ describe("webhooks", () => {
 
       await dnsimple.webhooks.createWebhook(accountId, attributes);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a webhook", async () => {

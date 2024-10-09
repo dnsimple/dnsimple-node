@@ -170,7 +170,7 @@ describe("zone records", () => {
 
       await dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a record", async () => {

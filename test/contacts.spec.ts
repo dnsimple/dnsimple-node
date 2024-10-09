@@ -195,7 +195,7 @@ describe("contacts", () => {
 
     describe("when the contact does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/contacts/0", fetchMockResponse("notfound-contact.http"));
+        fetchMock.patch("https://api.dnsimple.com/v2/1010/contacts/0", fetchMockResponse("notfound-contact.http"));
 
         await expect(dnsimple.contacts.updateContact(accountId, 0, attributes)).rejects.toThrow();
       });
