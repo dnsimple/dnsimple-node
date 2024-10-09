@@ -20,7 +20,10 @@ describe("oauth", () => {
         redirect_uri: redirectUri,
         state,
       };
-      fetchMock.post("https://api.dnsimple.com/v2/oauth/access_token", fetchMockResponse("oauthAccessToken/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/oauth/access_token",
+        fetchMockResponse("oauthAccessToken/success.http")
+      );
 
       await dnsimple.oauth.exchangeAuthorizationForToken({
         code,
@@ -34,7 +37,10 @@ describe("oauth", () => {
     });
 
     it("returns the oauth token", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/oauth/access_token", fetchMockResponse("oauthAccessToken/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/oauth/access_token",
+        fetchMockResponse("oauthAccessToken/success.http")
+      );
 
       const response = await dnsimple.oauth.exchangeAuthorizationForToken({
         code,
@@ -62,7 +68,10 @@ describe("oauth", () => {
           redirect_uri: redirectUri,
           state,
         };
-        fetchMock.post("https://api.dnsimple.com/v2/oauth/access_token", fetchMockResponse("oauthAccessToken/success.http"));
+        fetchMock.post(
+          "https://api.dnsimple.com/v2/oauth/access_token",
+          fetchMockResponse("oauthAccessToken/success.http")
+        );
 
         await dnsimple.oauth.exchangeAuthorizationForToken({
           code,
@@ -84,9 +93,11 @@ describe("oauth", () => {
           clientId: "great-app",
           redirectUri,
           state,
-        }),
+        })
       );
-      const expectedUrl = new URL("https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate");
+      const expectedUrl = new URL(
+        "https://dnsimple.com/oauth/authorize?client_id=great-app&redirect_uri=https://great-app.com/oauth&response_type=code&state=mysecretstate"
+      );
 
       const searchParamsToObj = (params: URLSearchParams) => {
         const obj: { [name: string]: any } = {};

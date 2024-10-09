@@ -14,7 +14,8 @@ export class Identity {
    * @param params Query parameters
    */
   whoami = (() => {
-    const method = (params: QueryParams & {} = {}): Promise<{ data: { account: types.Account; user: types.User } }> => this._client.request("GET", `/whoami`, null, params);
+    const method = (params: QueryParams & {} = {}): Promise<{ data: { account: types.Account; user: types.User } }> =>
+      this._client.request("GET", `/whoami`, null, params);
     return method;
   })();
 }

@@ -1,4 +1,4 @@
-import fetchMock from 'fetch-mock';
+import fetchMock from "fetch-mock";
 import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
@@ -8,7 +8,10 @@ describe("registrant", () => {
 
   describe("#checkRegistrantChange", () => {
     it("produces a registrant change", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/registrant_changes/check", fetchMockResponse("checkRegistrantChange/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/registrant_changes/check",
+        fetchMockResponse("checkRegistrantChange/success.http")
+      );
 
       const response = await dnsimple.registrar.checkRegistrantChange(accountId, {
         contact_id: 101,
@@ -25,7 +28,10 @@ describe("registrant", () => {
 
   describe("#createRegistrantChange", () => {
     it("produces a registrant change", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/registrant_changes", fetchMockResponse("createRegistrantChange/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/registrant_changes",
+        fetchMockResponse("createRegistrantChange/success.http")
+      );
 
       const response = await dnsimple.registrar.createRegistrantChange(accountId, {
         contact_id: 101,
@@ -49,17 +55,23 @@ describe("registrant", () => {
 
   describe("#deleteRegistrantChange", () => {
     it("deletes the registrant change", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101", fetchMockResponse("deleteRegistrantChange/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101",
+        fetchMockResponse("deleteRegistrantChange/success.http")
+      );
 
       await dnsimple.registrar.deleteRegistrantChange(accountId, 101);
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
   });
 
   describe("#getRegistrantChange", () => {
     it("returns the registrant change", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101", fetchMockResponse("getRegistrantChange/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101",
+        fetchMockResponse("getRegistrantChange/success.http")
+      );
 
       const response = await dnsimple.registrar.getRegistrantChange(accountId, 101);
 

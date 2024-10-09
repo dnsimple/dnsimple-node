@@ -10,7 +10,10 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=1", fetchMockResponse("listDelegationSignerRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=1",
+        fetchMockResponse("listDelegationSignerRecords/success.http")
+      );
 
       await dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
         page: 1,
@@ -20,7 +23,10 @@ describe("domains", () => {
     });
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?foo=bar", fetchMockResponse("listDelegationSignerRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?foo=bar",
+        fetchMockResponse("listDelegationSignerRecords/success.http")
+      );
 
       await dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
         foo: "bar",
@@ -30,7 +36,10 @@ describe("domains", () => {
     });
 
     it("supports sorting", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?sort=created_at%3Aasc", fetchMockResponse("listDelegationSignerRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?sort=created_at%3Aasc",
+        fetchMockResponse("listDelegationSignerRecords/success.http")
+      );
 
       await dnsimple.domains.listDelegationSignerRecords(accountId, domainId, {
         sort: "created_at:asc",
@@ -40,7 +49,10 @@ describe("domains", () => {
     });
 
     it("produces an delegation signer records list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records", fetchMockResponse("listDelegationSignerRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records",
+        fetchMockResponse("listDelegationSignerRecords/success.http")
+      );
 
       const response = await dnsimple.domains.listDelegationSignerRecords(accountId, domainId);
 
@@ -48,7 +60,10 @@ describe("domains", () => {
     });
 
     it("exposes the pagination info", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records", fetchMockResponse("listDelegationSignerRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records",
+        fetchMockResponse("listDelegationSignerRecords/success.http")
+      );
 
       const response = await dnsimple.domains.listDelegationSignerRecords(accountId, domainId);
 
@@ -63,11 +78,20 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=1", fetchMockResponse("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=2", fetchMockResponse("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=3", fetchMockResponse("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
       const items = await dnsimple.domains.listDelegationSignerRecords.collectAll(accountId, domainId);
 
@@ -83,7 +107,10 @@ describe("domains", () => {
     const dsRecordId = 1;
 
     it("produces a delegation signer record", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records/1", fetchMockResponse("getDelegationSignerRecord/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records/1",
+        fetchMockResponse("getDelegationSignerRecord/success.http")
+      );
 
       const response = await dnsimple.domains.getDelegationSignerRecord(accountId, domainId, dsRecordId);
 
@@ -100,7 +127,10 @@ describe("domains", () => {
 
     describe("when the delegation signer record does not exist", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records/0", fetchMockResponse("notfound-delegationSignerRecord.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records/0",
+          fetchMockResponse("notfound-delegationSignerRecord.http")
+        );
 
         await expect(dnsimple.domains.getDelegationSignerRecord(accountId, domainId, 0)).rejects.toThrow(NotFoundError);
       });
@@ -113,7 +143,10 @@ describe("domains", () => {
     const attributes = { algorithm: "8" };
 
     it("builds the correct request", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records", fetchMockResponse("createDelegationSignerRecord/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records",
+        fetchMockResponse("createDelegationSignerRecord/created.http")
+      );
 
       await dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes);
 
@@ -121,7 +154,10 @@ describe("domains", () => {
     });
 
     it("produces a delegation signer record", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records", fetchMockResponse("createDelegationSignerRecord/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records",
+        fetchMockResponse("createDelegationSignerRecord/created.http")
+      );
 
       const response = await dnsimple.domains.createDelegationSignerRecord(accountId, domainId, attributes);
 
@@ -135,7 +171,10 @@ describe("domains", () => {
     const dsRecordId = 1;
 
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/domains/example.com/ds_records/1", fetchMockResponse("deleteDelegationSignerRecord/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/ds_records/1",
+        fetchMockResponse("deleteDelegationSignerRecord/success.http")
+      );
 
       const response = await dnsimple.domains.deleteDelegationSignerRecord(accountId, domainId, dsRecordId);
 

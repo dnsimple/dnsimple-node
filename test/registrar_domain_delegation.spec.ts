@@ -1,4 +1,4 @@
-import fetchMock from 'fetch-mock';
+import fetchMock from "fetch-mock";
 import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
@@ -9,7 +9,10 @@ describe("domain delegation", () => {
 
   describe("#getDomainDelegation", () => {
     it("produces a name server list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation", fetchMockResponse("getDomainDelegation/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation",
+        fetchMockResponse("getDomainDelegation/success.http")
+      );
 
       const response = await dnsimple.registrar.getDomainDelegation(accountId, domainId);
 
@@ -21,7 +24,10 @@ describe("domain delegation", () => {
     const attributes = ["ns1.dnsimple.com", "ns2.dnsimple.com", "ns3.dnsimple.com", "ns4.dnsimple.com"];
 
     it("produces a name server list", async () => {
-fetchMock.put("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation", fetchMockResponse("changeDomainDelegation/success.http"));
+      fetchMock.put(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation",
+        fetchMockResponse("changeDomainDelegation/success.http")
+      );
 
       const response = await dnsimple.registrar.changeDomainDelegation(accountId, domainId, attributes);
 
@@ -33,7 +39,10 @@ fetchMock.put("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/de
     const attributes = ["ns1.example.com", "ns2.example.com"];
 
     it("produces a name server list", async () => {
-fetchMock.put("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation/vanity", fetchMockResponse("changeDomainDelegationToVanity/success.http"));
+      fetchMock.put(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation/vanity",
+        fetchMockResponse("changeDomainDelegationToVanity/success.http")
+      );
 
       const response = await dnsimple.registrar.changeDomainDelegationToVanity(accountId, domainId, attributes);
 
@@ -43,7 +52,10 @@ fetchMock.put("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/de
 
   describe("#changeDomainDelegationFromVanity", () => {
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation/vanity", fetchMockResponse("changeDomainDelegationFromVanity/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation/vanity",
+        fetchMockResponse("changeDomainDelegationFromVanity/success.http")
+      );
 
       const response = await dnsimple.registrar.changeDomainDelegationFromVanity(accountId, domainId);
 

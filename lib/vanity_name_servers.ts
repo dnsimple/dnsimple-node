@@ -18,7 +18,12 @@ export class VanityNameServers {
    * @param params Query parameters
    */
   enableVanityNameServers = (() => {
-    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{ data: Array<types.VanityNameServer> }> => this._client.request("PUT", `/${account}/vanity/${domain}`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: Array<types.VanityNameServer> }> =>
+      this._client.request("PUT", `/${account}/vanity/${domain}`, null, params);
     return method;
   })();
 
@@ -36,7 +41,8 @@ export class VanityNameServers {
    * @param params Query parameters
    */
   disableVanityNameServers = (() => {
-    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> => this._client.request("DELETE", `/${account}/vanity/${domain}`, null, params);
+    const method = (account: number, domain: string, params: QueryParams & {} = {}): Promise<{}> =>
+      this._client.request("DELETE", `/${account}/vanity/${domain}`, null, params);
     return method;
   })();
 }

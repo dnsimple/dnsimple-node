@@ -1,4 +1,4 @@
-import fetchMock from 'fetch-mock';
+import fetchMock from "fetch-mock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, fetchMockResponse } from "./util";
 
@@ -9,11 +9,14 @@ describe("webhooks", () => {
     const accountId = 1010;
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/webhooks?foo=bar", fetchMockResponse("listWebhooks/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/webhooks?foo=bar",
+        fetchMockResponse("listWebhooks/success.http")
+      );
 
       await dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces a webhook list", async () => {
@@ -31,11 +34,14 @@ describe("webhooks", () => {
     const accountId = 1010;
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/webhooks?foo=bar", fetchMockResponse("listWebhooks/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/webhooks?foo=bar",
+        fetchMockResponse("listWebhooks/success.http")
+      );
 
       await dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces a webhook list", async () => {
@@ -77,11 +83,11 @@ describe("webhooks", () => {
     const attributes = { url: "https://some-site.com" };
 
     it("builds the correct request", async () => {
-fetchMock.post("https://api.dnsimple.com/v2/1010/webhooks", fetchMockResponse("createWebhook/created.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1010/webhooks", fetchMockResponse("createWebhook/created.http"));
 
       await dnsimple.webhooks.createWebhook(accountId, attributes);
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces a webhook", async () => {

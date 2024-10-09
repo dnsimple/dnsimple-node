@@ -1,4 +1,4 @@
-import fetchMock from 'fetch-mock';
+import fetchMock from "fetch-mock";
 import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
@@ -10,7 +10,7 @@ describe("services", () => {
 
       await dnsimple.services.listServices({ page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports extra request options", async () => {
@@ -18,15 +18,18 @@ describe("services", () => {
 
       await dnsimple.services.listServices({ foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports sorting", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/services?sort=sid%3Aasc", fetchMockResponse("listServices/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/services?sort=sid%3Aasc",
+        fetchMockResponse("listServices/success.http")
+      );
 
       await dnsimple.services.listServices({ sort: "sid:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces a service list", async () => {

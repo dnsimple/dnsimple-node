@@ -10,7 +10,10 @@ describe("domains", () => {
     const attributes = { new_account_email: "jim@example.com" };
 
     it("builds the correct request", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/pushes", fetchMockResponse("initiatePush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
+        fetchMockResponse("initiatePush/success.http")
+      );
 
       await dnsimple.domains.initiatePush(accountId, domainId, attributes);
 
@@ -18,7 +21,10 @@ describe("domains", () => {
     });
 
     it("produces a push result", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/pushes", fetchMockResponse("initiatePush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
+        fetchMockResponse("initiatePush/success.http")
+      );
 
       const response = await dnsimple.domains.initiatePush(accountId, domainId, attributes);
 

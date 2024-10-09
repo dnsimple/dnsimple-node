@@ -28,7 +28,8 @@ export class Billing {
         end_date?: string;
         sort?: "invoiced:asc" | "invoiced:desc";
       } = {}
-    ): Promise<{ data: Array<types.Charge>; pagination: types.Pagination }> => this._client.request("GET", `/${account}/billing/charges`, null, params);
+    ): Promise<{ data: Array<types.Charge>; pagination: types.Pagination }> =>
+      this._client.request("GET", `/${account}/billing/charges`, null, params);
     method.iterateAll = (
       account: number,
       params: QueryParams & {

@@ -1,4 +1,4 @@
-import fetchMock from 'fetch-mock';
+import fetchMock from "fetch-mock";
 import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
@@ -9,7 +9,10 @@ describe("vanity name servers", () => {
 
   describe("#enableVanityNameServers", () => {
     it("produces a list of name servers", async () => {
-      fetchMock.put("https://api.dnsimple.com/v2/1010/vanity/example.com", fetchMockResponse("enableVanityNameServers/success.http"));
+      fetchMock.put(
+        "https://api.dnsimple.com/v2/1010/vanity/example.com",
+        fetchMockResponse("enableVanityNameServers/success.http")
+      );
 
       const response = await dnsimple.vanityNameServers.enableVanityNameServers(accountId, domainId);
 
@@ -25,7 +28,10 @@ describe("vanity name servers", () => {
 
   describe("#disableVanityNameServers", () => {
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/vanity/example.com", fetchMockResponse("disableVanityNameServers/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/vanity/example.com",
+        fetchMockResponse("disableVanityNameServers/success.http")
+      );
 
       const response = await dnsimple.vanityNameServers.disableVanityNameServers(accountId, domainId);
 

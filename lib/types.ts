@@ -113,7 +113,17 @@ export type Certificate = {
   common_name: string;
   years: number;
   csr: string;
-  state: "new" | "purchased" | "configured" | "submitted" | "issued" | "rejected" | "refunded" | "cancelled" | "requesting" | "failed";
+  state:
+    | "new"
+    | "purchased"
+    | "configured"
+    | "submitted"
+    | "issued"
+    | "rejected"
+    | "refunded"
+    | "cancelled"
+    | "requesting"
+    | "failed";
   auto_renew: boolean;
   alternate_names: Array<string>;
   authority_identifier: "comodo" | "rapidssl" | "letsencrypt";
@@ -134,7 +144,17 @@ export type CertificatePrivateKey = { private_key: string };
 export type LetsencryptCertificatePurchase = {
   id: number;
   certificate_id: number;
-  state: "new" | "purchased" | "configured" | "submitted" | "issued" | "rejected" | "refunded" | "cancelled" | "requesting" | "failed";
+  state:
+    | "new"
+    | "purchased"
+    | "configured"
+    | "submitted"
+    | "issued"
+    | "rejected"
+    | "refunded"
+    | "cancelled"
+    | "requesting"
+    | "failed";
   auto_renew: boolean;
   created_at: string;
   updated_at: string;
@@ -283,7 +303,26 @@ export type ZoneFile = { zone: string };
 
 export type ZoneDistribution = { distributed: boolean };
 
-export type ZoneRecordType = "A" | "AAAA" | "ALIAS" | "CAA" | "CNAME" | "DNSKEY" | "DS" | "HINFO" | "MX" | "NAPTR" | "NS" | "POOL" | "PTR" | "SOA" | "SPF" | "SRV" | "SSHFP" | "TXT" | "URL";
+export type ZoneRecordType =
+  | "A"
+  | "AAAA"
+  | "ALIAS"
+  | "CAA"
+  | "CNAME"
+  | "DNSKEY"
+  | "DS"
+  | "HINFO"
+  | "MX"
+  | "NAPTR"
+  | "NS"
+  | "POOL"
+  | "PTR"
+  | "SOA"
+  | "SPF"
+  | "SRV"
+  | "SSHFP"
+  | "TXT"
+  | "URL";
 
 export type ZoneRecordRegion = "global" | "SV1" | "ORD" | "IAD" | "AMS" | "TKO" | "SYD" | "CDG" | "FRA";
 
@@ -355,7 +394,26 @@ export type Template = {
   updated_at: string;
 };
 
-export type TemplateRecordType = "A" | "AAAA" | "ALIAS" | "CAA" | "CNAME" | "DNSKEY" | "DS" | "HINFO" | "MX" | "NAPTR" | "NS" | "POOL" | "PTR" | "SOA" | "SPF" | "SRV" | "SSHFP" | "TXT" | "URL";
+export type TemplateRecordType =
+  | "A"
+  | "AAAA"
+  | "ALIAS"
+  | "CAA"
+  | "CNAME"
+  | "DNSKEY"
+  | "DS"
+  | "HINFO"
+  | "MX"
+  | "NAPTR"
+  | "NS"
+  | "POOL"
+  | "PTR"
+  | "SOA"
+  | "SPF"
+  | "SRV"
+  | "SSHFP"
+  | "TXT"
+  | "URL";
 
 export type TemplateRecord = {
   id: number;

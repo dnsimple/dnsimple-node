@@ -1,4 +1,4 @@
-import fetchMock from 'fetch-mock';
+import fetchMock from "fetch-mock";
 import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
@@ -10,7 +10,7 @@ describe("tlds", () => {
 
       await dnsimple.tlds.listTlds({ page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports extra request options", async () => {
@@ -18,7 +18,7 @@ describe("tlds", () => {
 
       await dnsimple.tlds.listTlds({ foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports sorting", async () => {
@@ -26,7 +26,7 @@ describe("tlds", () => {
 
       await dnsimple.tlds.listTlds({ sort: "tld:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([])
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces a tld list", async () => {
@@ -72,7 +72,10 @@ describe("tlds", () => {
 
   describe("#getTldExtendedAttributes", () => {
     it("produces a collection of extended attributes", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/tlds/uk/extended_attributes", fetchMockResponse("getTldExtendedAttributes/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/tlds/uk/extended_attributes",
+        fetchMockResponse("getTldExtendedAttributes/success.http")
+      );
 
       const response = await dnsimple.tlds.getTldExtendedAttributes("uk");
 
@@ -89,7 +92,10 @@ describe("tlds", () => {
 
     describe("when there are no extended attributes for a TLD", () => {
       it("returns an empty collection", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/tlds/com/extended_attributes", fetchMockResponse("getTldExtendedAttributes/success-noattributes.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/tlds/com/extended_attributes",
+          fetchMockResponse("getTldExtendedAttributes/success-noattributes.http")
+        );
 
         const response = await dnsimple.tlds.getTldExtendedAttributes("com");
 

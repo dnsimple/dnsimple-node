@@ -9,7 +9,10 @@ describe("collaborators", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?page=1", fetchMockResponse("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?page=1",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
         page: 1,
@@ -19,7 +22,10 @@ describe("collaborators", () => {
     });
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?foo=bar", fetchMockResponse("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?foo=bar",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
         foo: "bar",
@@ -29,7 +35,10 @@ describe("collaborators", () => {
     });
 
     it("produces a collaborators list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/collaborators", fetchMockResponse("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       const response = await dnsimple.domains.listCollaborators(accountId, domainId);
 
@@ -41,7 +50,10 @@ describe("collaborators", () => {
     });
 
     it("exposes the pagination info", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/collaborators", fetchMockResponse("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       const response = await dnsimple.domains.listCollaborators(accountId, domainId);
 
@@ -59,7 +71,10 @@ describe("collaborators", () => {
     };
 
     it("produces a response", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/collaborators", fetchMockResponse("addCollaborator/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
+        fetchMockResponse("addCollaborator/success.http")
+      );
 
       const response = await dnsimple.domains.addCollaborator(accountId, domainId, collaborator);
 
@@ -75,7 +90,10 @@ describe("collaborators", () => {
     const collaboratorId = 100;
 
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/domains/example.com/collaborators/100", fetchMockResponse("removeCollaborator/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators/100",
+        fetchMockResponse("removeCollaborator/success.http")
+      );
 
       const response = await dnsimple.domains.removeCollaborator(accountId, domainId, collaboratorId);
 

@@ -74,7 +74,10 @@ describe("billing", () => {
     });
 
     it("throws an error on bad filter", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/billing/charges", fetchMockResponse("listCharges/fail-400-bad-filter.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/billing/charges",
+        fetchMockResponse("listCharges/fail-400-bad-filter.http")
+      );
 
       try {
         await dnsimple.billing.listCharges(accountId);

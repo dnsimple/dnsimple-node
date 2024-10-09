@@ -44,8 +44,7 @@ export function readFixtureAt(path: string): () => [number, string] {
 
 export const fetchMockResponse = (fixturePath: string) => {
   const [status, body] = readFixtureAt(fixturePath)();
-  if (status === 204)
-    return {status: 204};
+  if (status === 204) return { status: 204 };
 
   return { status, body };
 };

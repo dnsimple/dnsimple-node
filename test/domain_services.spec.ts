@@ -9,7 +9,10 @@ describe("domain services", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services?page=1", fetchMockResponse("appliedServices/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=1",
+        fetchMockResponse("appliedServices/success.http")
+      );
 
       await dnsimple.services.applyService(accountId, domainId, { page: 1 });
 
@@ -17,7 +20,10 @@ describe("domain services", () => {
     });
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services?foo=bar", fetchMockResponse("appliedServices/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services?foo=bar",
+        fetchMockResponse("appliedServices/success.http")
+      );
 
       await dnsimple.services.applyService(accountId, domainId, { foo: "bar" });
 
@@ -25,7 +31,10 @@ describe("domain services", () => {
     });
 
     it("supports sorting", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services?sort=name%3Aasc", fetchMockResponse("appliedServices/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services?sort=name%3Aasc",
+        fetchMockResponse("appliedServices/success.http")
+      );
 
       await dnsimple.services.applyService(accountId, domainId, {
         sort: "name:asc",
@@ -35,7 +44,10 @@ describe("domain services", () => {
     });
 
     it("produces a service list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services", fetchMockResponse("appliedServices/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services",
+        fetchMockResponse("appliedServices/success.http")
+      );
 
       const response = await dnsimple.services.applyService(accountId, domainId);
 
@@ -50,11 +62,20 @@ describe("domain services", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services?page=1", fetchMockResponse("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services?page=2", fetchMockResponse("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/services?page=3", fetchMockResponse("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
       const items = await dnsimple.services.applyService.collectAll(accountId, domainId);
 
@@ -70,7 +91,10 @@ describe("domain services", () => {
     const serviceId = "name";
 
     it("produces nothing", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/services/name", fetchMockResponse("applyService/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services/name",
+        fetchMockResponse("applyService/success.http")
+      );
 
       const response = await dnsimple.services.appliedServices(accountId, domainId, serviceId, {});
 
@@ -84,7 +108,10 @@ describe("domain services", () => {
     const serviceId = "name";
 
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/domains/example.com/services/name", fetchMockResponse("unapplyService/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/services/name",
+        fetchMockResponse("unapplyService/success.http")
+      );
 
       const response = await dnsimple.services.unapplyService(accountId, domainId, serviceId);
 

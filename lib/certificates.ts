@@ -66,7 +66,13 @@ export class Certificates {
    * @param params Query parameters
    */
   getCertificate = (() => {
-    const method = (account: number, domain: string, certificate: number, params: QueryParams & {} = {}): Promise<{ data: types.Certificate }> => this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Certificate }> =>
+      this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}`, null, params);
     return method;
   })();
 
@@ -83,7 +89,13 @@ export class Certificates {
    * @param params Query parameters
    */
   downloadCertificate = (() => {
-    const method = (account: number, domain: string, certificate: number, params: QueryParams & {} = {}): Promise<{ data: types.CertificateDownload }> => this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}/download`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.CertificateDownload }> =>
+      this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}/download`, null, params);
     return method;
   })();
 
@@ -100,7 +112,18 @@ export class Certificates {
    * @param params Query parameters
    */
   getCertificatePrivateKey = (() => {
-    const method = (account: number, domain: string, certificate: number, params: QueryParams & {} = {}): Promise<{ data: types.CertificatePrivateKey }> => this._client.request("GET", `/${account}/domains/${domain}/certificates/${certificate}/private_key`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.CertificatePrivateKey }> =>
+      this._client.request(
+        "GET",
+        `/${account}/domains/${domain}/certificates/${certificate}/private_key`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -126,7 +149,8 @@ export class Certificates {
         signature_algorithm?: string;
       }>,
       params: QueryParams & {} = {}
-    ): Promise<{ data: types.LetsencryptCertificatePurchase }> => this._client.request("POST", `/${account}/domains/${domain}/certificates/letsencrypt`, data, params);
+    ): Promise<{ data: types.LetsencryptCertificatePurchase }> =>
+      this._client.request("POST", `/${account}/domains/${domain}/certificates/letsencrypt`, data, params);
     return method;
   })();
 
@@ -143,7 +167,18 @@ export class Certificates {
    * @param params Query parameters
    */
   issueLetsencryptCertificate = (() => {
-    const method = (account: number, domain: string, purchaseId: number, params: QueryParams & {} = {}): Promise<{ data: types.Certificate }> => this._client.request("POST", `/${account}/domains/${domain}/certificates/letsencrypt/${purchaseId}/issue`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      purchaseId: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Certificate }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/letsencrypt/${purchaseId}/issue`,
+        null,
+        params
+      );
     return method;
   })();
 
@@ -160,7 +195,19 @@ export class Certificates {
    * @param params Query parameters
    */
   purchaseLetsencryptCertificateRenewal = (() => {
-    const method = (account: number, domain: string, certificate: number, data: Partial<{ auto_renew?: boolean; signature_algorithm?: string }>, params: QueryParams & {} = {}): Promise<{ data: types.LetsencryptCertificateRenewal }> => this._client.request("POST", `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals`, data, params);
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      data: Partial<{ auto_renew?: boolean; signature_algorithm?: string }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.LetsencryptCertificateRenewal }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals`,
+        data,
+        params
+      );
     return method;
   })();
 
@@ -178,7 +225,19 @@ export class Certificates {
    * @param params Query parameters
    */
   issueLetsencryptCertificateRenewal = (() => {
-    const method = (account: number, domain: string, certificate: number, renewalId: number, params: QueryParams & {} = {}): Promise<{ data: types.Certificate }> => this._client.request("POST", `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`, null, params);
+    const method = (
+      account: number,
+      domain: string,
+      certificate: number,
+      renewalId: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.Certificate }> =>
+      this._client.request(
+        "POST",
+        `/${account}/domains/${domain}/certificates/letsencrypt/${certificate}/renewals/${renewalId}/issue`,
+        null,
+        params
+      );
     return method;
   })();
 }

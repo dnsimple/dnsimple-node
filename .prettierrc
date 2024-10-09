@@ -1,8 +1,7 @@
 {
-  "printWidth": 99999,
   "bracketSpacing": true,
   "insertPragma": false,
-  "proseWrap": "never",
+  "proseWrap": "always",
   "quoteProps": "as-needed",
   "requirePragma": false,
   "trailingComma": "es5"

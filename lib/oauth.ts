@@ -20,7 +20,13 @@ export class OAuth {
    * @param attributes.state The random state used when authorizing
    * @param attributes.redirectUri A redirect URI
    */
-  exchangeAuthorizationForToken(attributes: { code: string; clientId: string; clientSecret: string; state: string; redirectUri: string }) {
+  exchangeAuthorizationForToken(attributes: {
+    code: string;
+    clientId: string;
+    clientSecret: string;
+    state: string;
+    redirectUri: string;
+  }) {
     return this._client.request(
       "POST",
       "/oauth/access_token",

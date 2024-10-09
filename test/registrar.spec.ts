@@ -12,7 +12,10 @@ describe("registrar", () => {
     const domainId = "ruby.codes";
 
     it("produces a check result", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/check", fetchMockResponse("checkDomain/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/check",
+        fetchMockResponse("checkDomain/success.http")
+      );
 
       const response = await dnsimple.registrar.checkDomain(accountId, domainId);
 
@@ -28,7 +31,10 @@ describe("registrar", () => {
       const domainId = "ruby.codes";
 
       it("produces a premium price result", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/premium_price", fetchMockResponse("getDomainPremiumPrice/success.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/premium_price",
+          fetchMockResponse("getDomainPremiumPrice/success.http")
+        );
 
         const response = await dnsimple.registrar.getDomainPremiumPrice(accountId, domainId);
 
@@ -42,7 +48,10 @@ describe("registrar", () => {
       const domainId = "example.com";
 
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/premium_price", fetchMockResponse("getDomainPremiumPrice/failure.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/premium_price",
+          fetchMockResponse("getDomainPremiumPrice/failure.http")
+        );
 
         try {
           await dnsimple.registrar.getDomainPremiumPrice(accountId, domainId);
@@ -57,7 +66,10 @@ describe("registrar", () => {
   describe("#getDomainPrices", () => {
     describe("when the TLD is supported", () => {
       it("produces a domain prices result", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pizza/prices", fetchMockResponse("getDomainPrices/success.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pizza/prices",
+          fetchMockResponse("getDomainPrices/success.http")
+        );
 
         const response = await dnsimple.registrar.getDomainPrices(accountId, "bingo.pizza");
 
@@ -72,7 +84,10 @@ describe("registrar", () => {
 
     describe("when the TLD is not available", () => {
       it("produces an error", async () => {
-        fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pineaple/prices", fetchMockResponse("getDomainPrices/failure.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pineaple/prices",
+          fetchMockResponse("getDomainPrices/failure.http")
+        );
 
         try {
           await dnsimple.registrar.getDomainPrices(accountId, "bingo.pineaple");
@@ -86,7 +101,9 @@ describe("registrar", () => {
 
   describe("#getDomainRegistration", () => {
     it("calls the correct method", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations/1535", { status: 200 });
+      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations/1535", {
+        status: 200,
+      });
 
       await dnsimple.registrar.getDomainRegistration(1010, "example.com", 1535, {});
 
@@ -108,7 +125,10 @@ describe("registrar", () => {
     it("produces a domain", async () => {
       const attributes = { registrant_id: 10 };
 
-      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations", fetchMockResponse("registerDomain/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations",
+        fetchMockResponse("registerDomain/success.http")
+      );
 
       const response = await dnsimple.registrar.registerDomain(accountId, domainId, attributes);
 
@@ -122,7 +142,10 @@ describe("registrar", () => {
     it("produces a domain", async () => {
       const attributes = { period: 3 };
 
-      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/renewals", fetchMockResponse("renewDomain/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/renewals",
+        fetchMockResponse("renewDomain/success.http")
+      );
 
       const response = await dnsimple.registrar.renewDomain(accountId, domainId, attributes);
 
@@ -135,7 +158,10 @@ describe("registrar", () => {
       it("results in an error", async () => {
         const attributes = {};
 
-        fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/renewals", fetchMockResponse("renewDomain/error-tooearly.http"));
+        fetchMock.post(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/renewals",
+          fetchMockResponse("renewDomain/error-tooearly.http")
+        );
 
         await expect(dnsimple.registrar.renewDomain(accountId, domainId, attributes)).rejects.toThrow();
       });
@@ -146,7 +172,10 @@ describe("registrar", () => {
     const attributes = { registrant_id: 10, auth_code: "x1y2z3" };
 
     it("produces a domain", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers", fetchMockResponse("transferDomain/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers",
+        fetchMockResponse("transferDomain/success.http")
+      );
 
       const response = await dnsimple.registrar.transferDomain(accountId, domainId, attributes);
 
@@ -157,7 +186,10 @@ describe("registrar", () => {
 
     describe("when the domain is already in DNSimple", () => {
       it("results in an error", async () => {
-        fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers", fetchMockResponse("transferDomain/error-indnsimple.http"));
+        fetchMock.post(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers",
+          fetchMockResponse("transferDomain/error-indnsimple.http")
+        );
 
         await expect(dnsimple.registrar.transferDomain(accountId, domainId, attributes)).rejects.toThrow();
       });
@@ -165,7 +197,10 @@ describe("registrar", () => {
 
     describe("when authcode was not provided and is required by the TLD", () => {
       it("results in an error", async () => {
-        fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers", fetchMockResponse("transferDomain/error-missing-authcode.http"));
+        fetchMock.post(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers",
+          fetchMockResponse("transferDomain/error-missing-authcode.http")
+        );
 
         await expect(dnsimple.registrar.transferDomain(accountId, domainId, attributes)).rejects.toThrow();
       });
@@ -174,7 +209,10 @@ describe("registrar", () => {
 
   describe("#getDomainTransfer", () => {
     it("retrieves a domain transfer", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers/42", fetchMockResponse("getDomainTransfer/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers/42",
+        fetchMockResponse("getDomainTransfer/success.http")
+      );
 
       const response = await dnsimple.registrar.getDomainTransfer(accountId, domainId, 42);
 
@@ -193,7 +231,10 @@ describe("registrar", () => {
 
   describe("#cancelDomainTransfer", () => {
     it("cancels a domain transfer", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers/42", fetchMockResponse("cancelDomainTransfer/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers/42",
+        fetchMockResponse("cancelDomainTransfer/success.http")
+      );
 
       const response = await dnsimple.registrar.cancelDomainTransfer(accountId, domainId, 42);
 
@@ -212,7 +253,10 @@ describe("registrar", () => {
 
   describe("#transferDomainOut", () => {
     it("produces nothing", async () => {
-      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/domains/example.com/authorize_transfer_out", fetchMockResponse("authorizeDomainTransferOut/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/authorize_transfer_out",
+        fetchMockResponse("authorizeDomainTransferOut/success.http")
+      );
 
       const response = await dnsimple.registrar.transferDomainOut(accountId, domainId);
 

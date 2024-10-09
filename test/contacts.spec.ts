@@ -17,7 +17,10 @@ describe("contacts", () => {
     });
 
     it("supports extra request options", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?foo=bar", fetchMockResponse("listContacts/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?foo=bar",
+        fetchMockResponse("listContacts/success.http")
+      );
 
       await dnsimple.contacts.listContacts(accountId, { foo: "bar" });
 
@@ -25,7 +28,10 @@ describe("contacts", () => {
     });
 
     it("supports sorting", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?sort=label%3Aasc", fetchMockResponse("listContacts/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?sort=label%3Aasc",
+        fetchMockResponse("listContacts/success.http")
+      );
 
       await dnsimple.contacts.listContacts(accountId, { sort: "label:asc" });
 
@@ -33,7 +39,10 @@ describe("contacts", () => {
     });
 
     it("supports filter", async () => {
-      fetchMock.get("https://api.dnsimple.com/v2/1010/contacts?first_name_like=example", fetchMockResponse("listContacts/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/contacts?first_name_like=example",
+        fetchMockResponse("listContacts/success.http")
+      );
 
       await dnsimple.contacts.listContacts(accountId, {
         first_name_like: "example",
@@ -123,7 +132,6 @@ describe("contacts", () => {
     });
 
     it("produces a contact", async () => {
-
       fetchMock.post("https://api.dnsimple.com/v2/1010/contacts", fetchMockResponse("createContact/created.http"));
 
       const response = await dnsimple.contacts.createContact(accountId, attributes);
@@ -137,8 +145,10 @@ describe("contacts", () => {
     });
 
     it("includes validation errors coming from the API", async () => {
-
-      fetchMock.post("https://api.dnsimple.com/v2/1010/contacts", fetchMockResponse("createContact/error-validation-errors.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/contacts",
+        fetchMockResponse("createContact/error-validation-errors.http")
+      );
 
       try {
         await dnsimple.contacts.createContact(accountId, attributes);
@@ -162,7 +172,10 @@ describe("contacts", () => {
     const attributes = { last_name: "Buckminster" };
 
     it("builds the correct request", async () => {
-      fetchMock.patch("https://api.dnsimple.com/v2/1010/contacts/" + contactId, fetchMockResponse("updateContact/success.http"));
+      fetchMock.patch(
+        "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
+        fetchMockResponse("updateContact/success.http")
+      );
 
       await dnsimple.contacts.updateContact(accountId, contactId, attributes);
 
@@ -170,7 +183,10 @@ describe("contacts", () => {
     });
 
     it("produces a contact", async () => {
-      fetchMock.patch("https://api.dnsimple.com/v2/1010/contacts/" + contactId, fetchMockResponse("updateContact/success.http"));
+      fetchMock.patch(
+        "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
+        fetchMockResponse("updateContact/success.http")
+      );
 
       const response = await dnsimple.contacts.updateContact(accountId, contactId, attributes);
 
@@ -191,7 +207,10 @@ describe("contacts", () => {
     const contactId = 1;
 
     it("builds the correct request", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/contacts/" + contactId, fetchMockResponse("deleteContact/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
+        fetchMockResponse("deleteContact/success.http")
+      );
 
       await dnsimple.contacts.deleteContact(accountId, contactId);
 
@@ -199,7 +218,10 @@ describe("contacts", () => {
     });
 
     it("produces nothing", async () => {
-      fetchMock.delete("https://api.dnsimple.com/v2/1010/contacts/" + contactId, fetchMockResponse("deleteContact/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
+        fetchMockResponse("deleteContact/success.http")
+      );
 
       const response = await dnsimple.contacts.deleteContact(accountId, contactId);
 
