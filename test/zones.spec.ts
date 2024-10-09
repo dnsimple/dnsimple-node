@@ -1,6 +1,6 @@
-import * as nock from "nock";
+import fetchMock from 'fetch-mock';
 import { NotFoundError } from "../lib/main";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -9,7 +9,7 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("produces a zone", async () => {
-      nock("https://api.dnsimple.com").put("/v2/1010/zones/example.com/activation").reply(readFixtureAt("activateZoneService/success.http"));
+      fetchMock.put("https://api.dnsimple.com/v2/1010/zones/example.com/activation", fetchMockResponse("activateZoneService/success.http"));
 
       const response = await dnsimple.zones.activateDns(accountId, "example.com");
 
@@ -27,7 +27,7 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("produces a zone", async () => {
-      nock("https://api.dnsimple.com").delete("/v2/1010/zones/example.com/activation").reply(readFixtureAt("deactivateZoneService/success.http"));
+      fetchMock.delete("https://api.dnsimple.com/v2/1010/zones/example.com/activation", fetchMockResponse("deactivateZoneService/success.http"));
 
       const response = await dnsimple.zones.deactivateDns(accountId, "example.com");
 
@@ -45,39 +45,39 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/zones?page=1").reply(readFixtureAt("listZones/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?page=1", fetchMockResponse("listZones/success.http"));
 
       await dnsimple.zones.listZones(accountId, { page: 1 });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/zones?foo=bar").reply(readFixtureAt("listZones/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?foo=bar", fetchMockResponse("listZones/success.http"));
 
       await dnsimple.zones.listZones(accountId, { foo: "bar" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/zones?sort=name%3Aasc").reply(readFixtureAt("listZones/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?sort=name%3Aasc", fetchMockResponse("listZones/success.http"));
 
       await dnsimple.zones.listZones(accountId, { sort: "name:asc" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports filter", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/zones?name_like=example").reply(readFixtureAt("listZones/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?name_like=example", fetchMockResponse("listZones/success.http"));
 
       await dnsimple.zones.listZones(accountId, { name_like: "example" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("produces a zone list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones").reply(readFixtureAt("listZones/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones", fetchMockResponse("listZones/success.http"));
 
       const response = await dnsimple.zones.listZones(accountId);
 
@@ -88,7 +88,7 @@ describe("zones", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones").reply(readFixtureAt("listZones/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones", fetchMockResponse("listZones/success.http"));
 
       const response = await dnsimple.zones.listZones(accountId);
 
@@ -102,11 +102,11 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones?page=1").reply(readFixtureAt("pages-1of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?page=1", fetchMockResponse("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/zones?page=2").reply(readFixtureAt("pages-2of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?page=2", fetchMockResponse("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/zones?page=3").reply(readFixtureAt("pages-3of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones?page=3", fetchMockResponse("pages-3of3.http"));
 
       const items = await dnsimple.zones.listZones.collectAll(accountId);
 
@@ -120,7 +120,7 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("produces a zone", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones/example-alpha.com").reply(readFixtureAt("getZone/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example-alpha.com", fetchMockResponse("getZone/success.http"));
 
       const response = await dnsimple.zones.getZone(accountId, "example-alpha.com");
 
@@ -138,7 +138,7 @@ describe("zones", () => {
 
     describe("when the zone does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com").reply(readFixtureAt("notfound-zone.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com", fetchMockResponse("notfound-zone.http"));
 
         await expect(dnsimple.zones.getZone(accountId, "example.com")).rejects.toThrow(NotFoundError);
       });
@@ -149,7 +149,7 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("produces a zone file", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones/example-alpha.com/file").reply(readFixtureAt("getZoneFile/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example-alpha.com/file", fetchMockResponse("getZoneFile/success.http"));
 
       const response = await dnsimple.zones.getZoneFile(accountId, "example-alpha.com");
 
@@ -158,7 +158,7 @@ describe("zones", () => {
 
     describe("when the zone file does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/file").reply(readFixtureAt("notfound-zone.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/file", fetchMockResponse("notfound-zone.http"));
 
         await expect(dnsimple.zones.getZoneFile(accountId, "example.com")).rejects.toThrow(NotFoundError);
       });
@@ -169,7 +169,7 @@ describe("zones", () => {
     const accountId = 1010;
 
     it("returns true when the zone is fully distributed", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones/example-alpha.com/distribution").reply(readFixtureAt("checkZoneDistribution/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example-alpha.com/distribution", fetchMockResponse("checkZoneDistribution/success.http"));
 
       const response = await dnsimple.zones.checkZoneDistribution(accountId, "example-alpha.com");
 
@@ -178,7 +178,7 @@ describe("zones", () => {
 
     describe("when the zone is not fully distributed", () => {
       it("returns false", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/distribution").reply(readFixtureAt("checkZoneDistribution/failure.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/distribution", fetchMockResponse("checkZoneDistribution/failure.http"));
 
         const response = await dnsimple.zones.checkZoneDistribution(accountId, "example.com");
 
@@ -188,7 +188,7 @@ describe("zones", () => {
 
     describe("returns an error when the server was not able to complete the check", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/distribution").reply(readFixtureAt("checkZoneDistribution/error.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/distribution", fetchMockResponse("checkZoneDistribution/error.http"));
 
         await expect(dnsimple.zones.checkZoneDistribution(accountId, "example.com")).rejects.toThrow();
       });
@@ -196,7 +196,7 @@ describe("zones", () => {
 
     describe("when the zone does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/distribution").reply(readFixtureAt("notfound-zone.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/distribution", fetchMockResponse("notfound-zone.http"));
 
         await expect(dnsimple.zones.checkZoneDistribution(accountId, "example.com")).rejects.toThrow(NotFoundError);
       });
@@ -208,7 +208,7 @@ describe("zones", () => {
     const recordId = 1;
 
     it("returns true when the zone record is fully distributed", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/zones/example-alpha.com/records/1/distribution").reply(readFixtureAt("checkZoneRecordDistribution/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example-alpha.com/records/1/distribution", fetchMockResponse("checkZoneRecordDistribution/success.http"));
 
       const response = await dnsimple.zones.checkZoneRecordDistribution(accountId, "example-alpha.com", recordId);
 
@@ -217,7 +217,7 @@ describe("zones", () => {
 
     describe("when the zone record is not fully distributed", () => {
       it("returns false", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/records/1/distribution").reply(readFixtureAt("checkZoneRecordDistribution/failure.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/records/1/distribution", fetchMockResponse("checkZoneRecordDistribution/failure.http"));
 
         const response = await dnsimple.zones.checkZoneRecordDistribution(accountId, "example.com", recordId);
 
@@ -227,7 +227,7 @@ describe("zones", () => {
 
     describe("returns an error when the server was not able to complete the check", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/records/1/distribution").reply(readFixtureAt("checkZoneRecordDistribution/error.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/records/1/distribution", fetchMockResponse("checkZoneRecordDistribution/error.http"));
 
         await expect(dnsimple.zones.checkZoneRecordDistribution(accountId, "example.com", recordId)).rejects.toThrow();
       });
@@ -235,7 +235,7 @@ describe("zones", () => {
 
     describe("when the zone does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/records/1/distribution").reply(readFixtureAt("notfound-zone.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/records/1/distribution", fetchMockResponse("notfound-zone.http"));
 
         await expect(dnsimple.zones.checkZoneRecordDistribution(accountId, "example.com", recordId)).rejects.toThrow(NotFoundError);
       });
@@ -243,7 +243,7 @@ describe("zones", () => {
 
     describe("when the zone record does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/zones/example.com/records/1/distribution").reply(readFixtureAt("notfound-record.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/zones/example.com/records/1/distribution", fetchMockResponse("notfound-record.http"));
 
         await expect(dnsimple.zones.checkZoneRecordDistribution(accountId, "example.com", recordId)).rejects.toThrow(NotFoundError);
       });

@@ -1,6 +1,6 @@
-import * as nock from "nock";
+import fetchMock from 'fetch-mock';
 import { NotFoundError } from "../lib/main";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -9,39 +9,39 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?page=1").reply(readFixtureAt("listDomains/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=1", fetchMockResponse("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { page: 1 });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?foo=bar").reply(readFixtureAt("listDomains/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?foo=bar", fetchMockResponse("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { foo: "bar" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?sort=expiration%3Aasc").reply(readFixtureAt("listDomains/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?sort=expiration%3Aasc", fetchMockResponse("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { sort: "expiration:asc" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports filter", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains?name_like=example").reply(readFixtureAt("listDomains/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?name_like=example", fetchMockResponse("listDomains/success.http"));
 
       await dnsimple.domains.listDomains(accountId, { name_like: "example" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("produces a domain list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains").reply(readFixtureAt("listDomains/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains", fetchMockResponse("listDomains/success.http"));
 
       const response = await dnsimple.domains.listDomains(accountId);
 
@@ -52,7 +52,7 @@ describe("domains", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains").reply(readFixtureAt("listDomains/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains", fetchMockResponse("listDomains/success.http"));
 
       const response = await dnsimple.domains.listDomains(accountId);
 
@@ -66,11 +66,11 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains?page=1").reply(readFixtureAt("pages-1of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=1", fetchMockResponse("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/domains?page=2").reply(readFixtureAt("pages-2of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=2", fetchMockResponse("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/domains?page=3").reply(readFixtureAt("pages-3of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains?page=3", fetchMockResponse("pages-3of3.http"));
 
       const items = await dnsimple.domains.listDomains.collectAll(accountId);
 
@@ -85,7 +85,7 @@ describe("domains", () => {
     const domainId = "example-alpha.com";
 
     it("produces a domain", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1385/domains/example-alpha.com").reply(readFixtureAt("getDomain/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1385/domains/example-alpha.com", fetchMockResponse("getDomain/success.http"));
 
       const response = await dnsimple.domains.getDomain(accountId, domainId);
 
@@ -105,7 +105,7 @@ describe("domains", () => {
 
     describe("when the domain does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1385/domains/0").reply(readFixtureAt("notfound-domain.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1385/domains/0", fetchMockResponse("notfound-domain.http"));
 
         await expect(dnsimple.domains.getDomain(accountId, "0")).rejects.toThrow(NotFoundError);
       });
@@ -117,15 +117,15 @@ describe("domains", () => {
     const attributes = { name: "example-alpha.com" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com").post("/v2/1385/domains", attributes).reply(readFixtureAt("createDomain/created.http"));
+fetchMock.post("https://api.dnsimple.com/v2/1385/domains", fetchMockResponse("createDomain/created.http"));
 
       await dnsimple.domains.createDomain(accountId, attributes);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("produces a domain", async () => {
-      nock("https://api.dnsimple.com").post("/v2/1385/domains").reply(readFixtureAt("createDomain/created.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1385/domains", fetchMockResponse("createDomain/created.http"));
 
       const response = await dnsimple.domains.createDomain(accountId, attributes);
 
@@ -139,7 +139,7 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com").reply(readFixtureAt("deleteDomain/success.http"));
+      fetchMock.delete("https://api.dnsimple.com/v2/1010/domains/example.com", fetchMockResponse("deleteDomain/success.http"));
 
       const response = await dnsimple.domains.deleteDomain(accountId, domainId);
 

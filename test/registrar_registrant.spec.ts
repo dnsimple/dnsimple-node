@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import fetchMock from 'fetch-mock';
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,7 +8,7 @@ describe("registrant", () => {
 
   describe("#checkRegistrantChange", () => {
     it("produces a registrant change", async () => {
-      nock("https://api.dnsimple.com").post("/v2/1010/registrar/registrant_changes/check").reply(readFixtureAt("checkRegistrantChange/success.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/registrant_changes/check", fetchMockResponse("checkRegistrantChange/success.http"));
 
       const response = await dnsimple.registrar.checkRegistrantChange(accountId, {
         contact_id: 101,
@@ -25,7 +25,7 @@ describe("registrant", () => {
 
   describe("#createRegistrantChange", () => {
     it("produces a registrant change", async () => {
-      nock("https://api.dnsimple.com").post("/v2/1010/registrar/registrant_changes").reply(readFixtureAt("createRegistrantChange/success.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1010/registrar/registrant_changes", fetchMockResponse("createRegistrantChange/success.http"));
 
       const response = await dnsimple.registrar.createRegistrantChange(accountId, {
         contact_id: 101,
@@ -49,17 +49,17 @@ describe("registrant", () => {
 
   describe("#deleteRegistrantChange", () => {
     it("deletes the registrant change", async () => {
-      const scope = nock("https://api.dnsimple.com").delete("/v2/1010/registrar/registrant_changes/101").reply(readFixtureAt("deleteRegistrantChange/success.http"));
+      fetchMock.delete("https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101", fetchMockResponse("deleteRegistrantChange/success.http"));
 
       await dnsimple.registrar.deleteRegistrantChange(accountId, 101);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
   });
 
   describe("#getRegistrantChange", () => {
     it("returns the registrant change", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/registrar/registrant_changes/101").reply(readFixtureAt("getRegistrantChange/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101", fetchMockResponse("getRegistrantChange/success.http"));
 
       const response = await dnsimple.registrar.getRegistrantChange(accountId, 101);
 

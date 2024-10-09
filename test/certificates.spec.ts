@@ -1,6 +1,6 @@
-import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -10,37 +10,37 @@ describe("certificates", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=1").reply(readFixtureAt("listCertificates/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates?page=1", fetchMockResponse("listCertificates/success.http"));
 
       await dnsimple.certificates.listCertificates(accountId, domainId, {
         page: 1,
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?foo=bar").reply(readFixtureAt("listCertificates/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates?foo=bar", fetchMockResponse("listCertificates/success.http"));
 
       await dnsimple.certificates.listCertificates(accountId, domainId, {
         foo: "bar",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?sort=expiration%3Aasc").reply(readFixtureAt("listCertificates/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates?sort=expiration%3Aasc", fetchMockResponse("listCertificates/success.http"));
 
       await dnsimple.certificates.listCertificates(accountId, domainId, {
         sort: "expiration:asc",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([])
     });
 
     it("produces a certificate list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates").reply(readFixtureAt("listCertificates/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates", fetchMockResponse("listCertificates/success.http"));
 
       const response = await dnsimple.certificates.listCertificates(accountId, domainId);
 
@@ -52,7 +52,7 @@ describe("certificates", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates").reply(readFixtureAt("listCertificates/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates", fetchMockResponse("listCertificates/success.http"));
 
       const response = await dnsimple.certificates.listCertificates(accountId, domainId);
 
@@ -67,11 +67,11 @@ describe("certificates", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=1").reply(readFixtureAt("pages-1of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates?page=1", fetchMockResponse("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=2").reply(readFixtureAt("pages-2of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates?page=2", fetchMockResponse("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates?page=3").reply(readFixtureAt("pages-3of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates?page=3", fetchMockResponse("pages-3of3.http"));
 
       const certificates = await dnsimple.certificates.listCertificates.collectAll(accountId, domainId);
 
@@ -87,7 +87,7 @@ describe("certificates", () => {
     const certificateId = 1;
 
     it("produces a certificate", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/1").reply(readFixtureAt("getCertificate/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/1", fetchMockResponse("getCertificate/success.http"));
 
       const response = await dnsimple.certificates.getCertificate(accountId, domainId, certificateId);
 
@@ -103,7 +103,7 @@ describe("certificates", () => {
 
     describe("when the certificate does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/0").reply(readFixtureAt("notfound-certificate.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/0", fetchMockResponse("notfound-certificate.http"));
 
         try {
           await dnsimple.certificates.getCertificate(accountId, domainId, 0);
@@ -122,7 +122,7 @@ describe("certificates", () => {
     const certificateId = 1;
 
     it("produces a certificate", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/1/download").reply(readFixtureAt("downloadCertificate/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/1/download", fetchMockResponse("downloadCertificate/success.http"));
 
       const response = await dnsimple.certificates.downloadCertificate(accountId, domainId, certificateId);
 
@@ -135,7 +135,7 @@ describe("certificates", () => {
 
     describe("when the certificate does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/0/download").reply(readFixtureAt("notfound-certificate.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/0/download", fetchMockResponse("notfound-certificate.http"));
 
         await expect(dnsimple.certificates.downloadCertificate(accountId, domainId, 0)).rejects.toThrow();
       });
@@ -148,7 +148,7 @@ describe("certificates", () => {
     const certificateId = 1;
 
     it("produces a certificate", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/1/private_key").reply(readFixtureAt("getCertificatePrivateKey/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/1/private_key", fetchMockResponse("getCertificatePrivateKey/success.http"));
 
       const response = await dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, certificateId);
 
@@ -157,7 +157,7 @@ describe("certificates", () => {
 
     describe("when the certificate does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/certificates/0/private_key").reply(readFixtureAt("notfound-certificate.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/0/private_key", fetchMockResponse("notfound-certificate.http"));
 
         try {
           await dnsimple.certificates.getCertificatePrivateKey(accountId, domainId, 0);
@@ -173,7 +173,7 @@ describe("certificates", () => {
     const domainId = "example.com";
 
     it("purchases a certificate", async () => {
-      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/certificates/letsencrypt").reply(readFixtureAt("purchaseLetsencryptCertificate/success.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/certificates/letsencrypt", fetchMockResponse("purchaseLetsencryptCertificate/success.http"));
 
       const response = await dnsimple.certificates.purchaseLetsencryptCertificate(accountId, domainId, {});
 
@@ -188,7 +188,7 @@ describe("certificates", () => {
     const certificateId = 101967;
 
     it("issues a certificate", async () => {
-      nock("https://api.dnsimple.com").post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/issue`).reply(readFixtureAt("issueLetsencryptCertificate/success.http"));
+      fetchMock.post(`https://api.dnsimple.com/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/issue`, fetchMockResponse("issueLetsencryptCertificate/success.http"));
 
       const response = await dnsimple.certificates.issueLetsencryptCertificate(accountId, domainId, certificateId);
 
@@ -203,7 +203,7 @@ describe("certificates", () => {
     const certificateId = 101967;
 
     it("purchases a certificate renewal", async () => {
-      nock("https://api.dnsimple.com").post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals`).reply(readFixtureAt("purchaseRenewalLetsencryptCertificate/success.http"));
+      fetchMock.post(`https://api.dnsimple.com/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals`, fetchMockResponse("purchaseRenewalLetsencryptCertificate/success.http"));
 
       const response = await dnsimple.certificates.purchaseLetsencryptCertificateRenewal(accountId, domainId, certificateId, {});
 
@@ -222,7 +222,7 @@ describe("certificates", () => {
     const newCertificateId = 101972;
 
     it("issues a certificate renewal", async () => {
-      nock("https://api.dnsimple.com").post(`/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals/${certificateRenewalId}/issue`).reply(readFixtureAt("issueRenewalLetsencryptCertificate/success.http"));
+      fetchMock.post(`https://api.dnsimple.com/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals/${certificateRenewalId}/issue`, fetchMockResponse("issueRenewalLetsencryptCertificate/success.http"));
 
       const response = await dnsimple.certificates.issueLetsencryptCertificateRenewal(accountId, domainId, certificateId, certificateRenewalId);
 

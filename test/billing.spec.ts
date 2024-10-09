@@ -1,6 +1,6 @@
-import * as nock from "nock";
 import { ClientError } from "../lib/main";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -9,7 +9,7 @@ describe("billing", () => {
     const accountId = 1010;
 
     it("produces a charges list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/billing/charges").reply(readFixtureAt("listCharges/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/billing/charges", fetchMockResponse("listCharges/success.http"));
 
       const response = await dnsimple.billing.listCharges(accountId);
 
@@ -74,7 +74,7 @@ describe("billing", () => {
     });
 
     it("throws an error on bad filter", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/billing/charges").reply(readFixtureAt("listCharges/fail-400-bad-filter.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/billing/charges", fetchMockResponse("listCharges/fail-400-bad-filter.http"));
 
       try {
         await dnsimple.billing.listCharges(accountId);
@@ -87,7 +87,7 @@ describe("billing", () => {
     });
 
     it("throws an error on missing scope", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/billing/charges").reply(readFixtureAt("listCharges/fail-403.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/billing/charges", fetchMockResponse("listCharges/fail-403.http"));
 
       try {
         await dnsimple.billing.listCharges(accountId);

@@ -1,6 +1,6 @@
-import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -10,37 +10,37 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=1").reply(readFixtureAt("listEmailForwards/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards?page=1", fetchMockResponse("listEmailForwards/success.http"));
 
       await dnsimple.domains.listEmailForwards(accountId, domainId, {
         page: 1,
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?foo=bar").reply(readFixtureAt("listEmailForwards/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards?foo=bar", fetchMockResponse("listEmailForwards/success.http"));
 
       await dnsimple.domains.listEmailForwards(accountId, domainId, {
         foo: "bar",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?sort=from%3Aasc").reply(readFixtureAt("listEmailForwards/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards?sort=from%3Aasc", fetchMockResponse("listEmailForwards/success.http"));
 
       await dnsimple.domains.listEmailForwards(accountId, domainId, {
         sort: "from:asc",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces an email forward list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards").reply(readFixtureAt("listEmailForwards/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards", fetchMockResponse("listEmailForwards/success.http"));
 
       const response = await dnsimple.domains.listEmailForwards(accountId, domainId);
 
@@ -48,7 +48,7 @@ describe("domains", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards").reply(readFixtureAt("listEmailForwards/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards", fetchMockResponse("listEmailForwards/success.http"));
 
       const response = await dnsimple.domains.listEmailForwards(accountId, domainId);
 
@@ -63,11 +63,11 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=1").reply(readFixtureAt("pages-1of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards?page=1", fetchMockResponse("pages-1of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=2").reply(readFixtureAt("pages-2of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards?page=2", fetchMockResponse("pages-2of3.http"));
 
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards?page=3").reply(readFixtureAt("pages-3of3.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards?page=3", fetchMockResponse("pages-3of3.http"));
 
       const items = await dnsimple.domains.listEmailForwards.collectAll(accountId, domainId);
 
@@ -83,7 +83,7 @@ describe("domains", () => {
     const emailForwardId = 41872;
 
     it("produces an email forward", async () => {
-      nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards/41872").reply(readFixtureAt("getEmailForward/success.http"));
+      fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards/41872", fetchMockResponse("getEmailForward/success.http"));
 
       const response = await dnsimple.domains.getEmailForward(accountId, domainId, emailForwardId);
 
@@ -100,7 +100,7 @@ describe("domains", () => {
 
     describe("when the email forward does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com").get("/v2/1010/domains/example.com/email_forwards/0").reply(readFixtureAt("notfound-emailforward.http"));
+        fetchMock.get("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards/0", fetchMockResponse("notfound-emailforward.http"));
 
         await expect(dnsimple.domains.getEmailForward(accountId, domainId, 0)).rejects.toThrow(NotFoundError);
       });
@@ -113,15 +113,15 @@ describe("domains", () => {
     const attributes = { alias_name: "jim" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/email_forwards", attributes).reply(readFixtureAt("createEmailForward/created.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards", fetchMockResponse("createEmailForward/created.http"));
 
       await dnsimple.domains.createEmailForward(accountId, domainId, attributes);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces an email forward", async () => {
-      nock("https://api.dnsimple.com").post("/v2/1010/domains/example.com/email_forwards").reply(readFixtureAt("createEmailForward/created.http"));
+      fetchMock.post("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards", fetchMockResponse("createEmailForward/created.http"));
 
       const response = await dnsimple.domains.createEmailForward(accountId, domainId, attributes);
 
@@ -135,7 +135,7 @@ describe("domains", () => {
     const emailForwardId = 1;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com").delete("/v2/1010/domains/example.com/email_forwards/1").reply(readFixtureAt("deleteEmailForward/success.http"));
+      fetchMock.delete("https://api.dnsimple.com/v2/1010/domains/example.com/email_forwards/1", fetchMockResponse("deleteEmailForward/success.http"));
 
       const response = await dnsimple.domains.deleteEmailForward(accountId, domainId, emailForwardId);
 
