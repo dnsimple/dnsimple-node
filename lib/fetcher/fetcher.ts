@@ -8,9 +8,34 @@ export type Fetcher = (params: {
   url: string;
   headers: { [name: string]: string };
   body?: string;
-  // Since Node.js 14 doesn't support AbortController, we cannot simply provide the AbortSignal directly. We should move to that once we drop support for Node.js 14.
   timeout: number;
 }) => Promise<{
   status: number;
   body: string;
 }>;
+
+let fetcherImports: {
+  fetchFetcher: Fetcher;
+  httpsFetcher: Fetcher;
+};
+let fetcherImportError: Error | undefined;
+
+try {
+  fetcherImports = {
+    fetchFetcher: require("./fetch-fetcher").default,
+    httpsFetcher: require("./https-fetcher").default,
+  };
+} catch (error) {
+  fetcherImportError = error;
+}
+
+export function getRuntimeFetcher(): Fetcher {
+  if (fetcherImportError)
+    throw new Error(
+      `No global \`fetch\` or \`https\` module was found. Please, provide a Fetcher implementation: ${fetcherImportError}`
+    );
+
+  return typeof fetch === "undefined"
+    ? fetcherImports.httpsFetcher
+    : fetcherImports.fetchFetcher;
+}
