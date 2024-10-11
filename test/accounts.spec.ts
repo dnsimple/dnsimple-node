@@ -1,4 +1,4 @@
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -8,7 +8,7 @@ describe("accounts", () => {
     it("produces an account list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/accounts",
-        fetchMockResponse("listAccounts/success-account.http")
+        responseFromFixture("listAccounts/success-account.http")
       );
 
       const result = await dnsimple.accounts.listAccounts();

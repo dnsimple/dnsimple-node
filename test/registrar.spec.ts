@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 import { ClientError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -14,7 +14,7 @@ describe("registrar", () => {
     it("produces a check result", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/check",
-        fetchMockResponse("checkDomain/success.http")
+        responseFromFixture("checkDomain/success.http")
       );
 
       const response = await dnsimple.registrar.checkDomain(
@@ -36,7 +36,7 @@ describe("registrar", () => {
       it("produces a premium price result", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/premium_price",
-          fetchMockResponse("getDomainPremiumPrice/success.http")
+          responseFromFixture("getDomainPremiumPrice/success.http")
         );
 
         const response = await dnsimple.registrar.getDomainPremiumPrice(
@@ -56,7 +56,7 @@ describe("registrar", () => {
       it("produces an error", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/premium_price",
-          fetchMockResponse("getDomainPremiumPrice/failure.http")
+          responseFromFixture("getDomainPremiumPrice/failure.http")
         );
 
         try {
@@ -76,7 +76,7 @@ describe("registrar", () => {
       it("produces a domain prices result", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pizza/prices",
-          fetchMockResponse("getDomainPrices/success.http")
+          responseFromFixture("getDomainPrices/success.http")
         );
 
         const response = await dnsimple.registrar.getDomainPrices(
@@ -97,7 +97,7 @@ describe("registrar", () => {
       it("produces an error", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pineaple/prices",
-          fetchMockResponse("getDomainPrices/failure.http")
+          responseFromFixture("getDomainPrices/failure.http")
         );
 
         try {
@@ -149,7 +149,7 @@ describe("registrar", () => {
 
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/registrations",
-        fetchMockResponse("registerDomain/success.http")
+        responseFromFixture("registerDomain/success.http")
       );
 
       const response = await dnsimple.registrar.registerDomain(
@@ -170,7 +170,7 @@ describe("registrar", () => {
 
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/renewals",
-        fetchMockResponse("renewDomain/success.http")
+        responseFromFixture("renewDomain/success.http")
       );
 
       const response = await dnsimple.registrar.renewDomain(
@@ -190,7 +190,7 @@ describe("registrar", () => {
 
         fetchMock.post(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/renewals",
-          fetchMockResponse("renewDomain/error-tooearly.http")
+          responseFromFixture("renewDomain/error-tooearly.http")
         );
 
         await expect(
@@ -206,7 +206,7 @@ describe("registrar", () => {
     it("produces a domain", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers",
-        fetchMockResponse("transferDomain/success.http")
+        responseFromFixture("transferDomain/success.http")
       );
 
       const response = await dnsimple.registrar.transferDomain(
@@ -224,7 +224,7 @@ describe("registrar", () => {
       it("results in an error", async () => {
         fetchMock.post(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers",
-          fetchMockResponse("transferDomain/error-indnsimple.http")
+          responseFromFixture("transferDomain/error-indnsimple.http")
         );
 
         await expect(
@@ -237,7 +237,7 @@ describe("registrar", () => {
       it("results in an error", async () => {
         fetchMock.post(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers",
-          fetchMockResponse("transferDomain/error-missing-authcode.http")
+          responseFromFixture("transferDomain/error-missing-authcode.http")
         );
 
         await expect(
@@ -251,7 +251,7 @@ describe("registrar", () => {
     it("retrieves a domain transfer", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers/42",
-        fetchMockResponse("getDomainTransfer/success.http")
+        responseFromFixture("getDomainTransfer/success.http")
       );
 
       const response = await dnsimple.registrar.getDomainTransfer(
@@ -277,7 +277,7 @@ describe("registrar", () => {
     it("cancels a domain transfer", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/transfers/42",
-        fetchMockResponse("cancelDomainTransfer/success.http")
+        responseFromFixture("cancelDomainTransfer/success.http")
       );
 
       const response = await dnsimple.registrar.cancelDomainTransfer(
@@ -303,7 +303,7 @@ describe("registrar", () => {
     it("produces nothing", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/authorize_transfer_out",
-        fetchMockResponse("authorizeDomainTransferOut/success.http")
+        responseFromFixture("authorizeDomainTransferOut/success.http")
       );
 
       const response = await dnsimple.registrar.transferDomainOut(

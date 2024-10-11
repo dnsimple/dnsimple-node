@@ -1,5 +1,5 @@
 import { ClientError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -11,7 +11,7 @@ describe("billing", () => {
     it("produces a charges list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/billing/charges",
-        fetchMockResponse("listCharges/success.http")
+        responseFromFixture("listCharges/success.http")
       );
 
       const response = await dnsimple.billing.listCharges(accountId);
@@ -79,7 +79,7 @@ describe("billing", () => {
     it("throws an error on bad filter", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/billing/charges",
-        fetchMockResponse("listCharges/fail-400-bad-filter.http")
+        responseFromFixture("listCharges/fail-400-bad-filter.http")
       );
 
       try {
@@ -97,7 +97,7 @@ describe("billing", () => {
     it("throws an error on missing scope", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/billing/charges",
-        fetchMockResponse("listCharges/fail-403.http")
+        responseFromFixture("listCharges/fail-403.http")
       );
 
       try {

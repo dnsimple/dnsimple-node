@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -10,7 +10,7 @@ describe("domain transfer lock", () => {
     it("produces a transfer lock", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/registrar/domains/101/transfer_lock",
-        fetchMockResponse("getDomainTransferLock/success.http")
+        responseFromFixture("getDomainTransferLock/success.http")
       );
 
       const response = await dnsimple.registrar.getDomainTransferLock(
@@ -28,7 +28,7 @@ describe("domain transfer lock", () => {
     it("produces a transfer lock", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/domains/101/transfer_lock",
-        fetchMockResponse("enableDomainTransferLock/success.http")
+        responseFromFixture("enableDomainTransferLock/success.http")
       );
 
       const response = await dnsimple.registrar.enableDomainTransferLock(
@@ -46,7 +46,7 @@ describe("domain transfer lock", () => {
     it("produces a transfer lock", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/registrar/domains/101/transfer_lock",
-        fetchMockResponse("disableDomainTransferLock/success.http")
+        responseFromFixture("disableDomainTransferLock/success.http")
       );
 
       const response = await dnsimple.registrar.disableDomainTransferLock(

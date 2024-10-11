@@ -1,4 +1,4 @@
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -12,7 +12,7 @@ describe("domains", () => {
     it("builds the correct request", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
-        fetchMockResponse("initiatePush/success.http")
+        responseFromFixture("initiatePush/success.http")
       );
 
       await dnsimple.domains.initiatePush(accountId, domainId, attributes);
@@ -23,7 +23,7 @@ describe("domains", () => {
     it("produces a push result", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
-        fetchMockResponse("initiatePush/success.http")
+        responseFromFixture("initiatePush/success.http")
       );
 
       const response = await dnsimple.domains.initiatePush(
@@ -49,7 +49,7 @@ describe("domains", () => {
     it("produces an pushes list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/pushes",
-        fetchMockResponse("listPushes/success.http")
+        responseFromFixture("listPushes/success.http")
       );
 
       const response = await dnsimple.domains.listPushes(accountId);
@@ -66,7 +66,7 @@ describe("domains", () => {
     it("builds the correct request", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/pushes/200",
-        fetchMockResponse("acceptPush/success.http")
+        responseFromFixture("acceptPush/success.http")
       );
 
       await dnsimple.domains.acceptPush(accountId, pushId, attributes);
@@ -77,7 +77,7 @@ describe("domains", () => {
     it("produces nothing", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/pushes/200",
-        fetchMockResponse("acceptPush/success.http")
+        responseFromFixture("acceptPush/success.http")
       );
 
       const response = await dnsimple.domains.acceptPush(
@@ -97,7 +97,7 @@ describe("domains", () => {
     it("builds the correct request", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/pushes/200",
-        fetchMockResponse("rejectPush/success.http")
+        responseFromFixture("rejectPush/success.http")
       );
 
       await dnsimple.domains.rejectPush(accountId, pushId);
@@ -108,7 +108,7 @@ describe("domains", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/pushes/200",
-        fetchMockResponse("rejectPush/success.http")
+        responseFromFixture("rejectPush/success.http")
       );
 
       const response = await dnsimple.domains.rejectPush(accountId, pushId);

@@ -1,4 +1,4 @@
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -11,7 +11,7 @@ describe("domain services", () => {
     it("supports pagination", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=1",
-        fetchMockResponse("appliedServices/success.http")
+        responseFromFixture("appliedServices/success.http")
       );
 
       await dnsimple.services.applyService(accountId, domainId, { page: 1 });
@@ -22,7 +22,7 @@ describe("domain services", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services?foo=bar",
-        fetchMockResponse("appliedServices/success.http")
+        responseFromFixture("appliedServices/success.http")
       );
 
       await dnsimple.services.applyService(accountId, domainId, { foo: "bar" });
@@ -33,7 +33,7 @@ describe("domain services", () => {
     it("supports sorting", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services?sort=name%3Aasc",
-        fetchMockResponse("appliedServices/success.http")
+        responseFromFixture("appliedServices/success.http")
       );
 
       await dnsimple.services.applyService(accountId, domainId, {
@@ -46,7 +46,7 @@ describe("domain services", () => {
     it("produces a service list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services",
-        fetchMockResponse("appliedServices/success.http")
+        responseFromFixture("appliedServices/success.http")
       );
 
       const response = await dnsimple.services.applyService(
@@ -67,17 +67,17 @@ describe("domain services", () => {
     it("produces a complete list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=1",
-        fetchMockResponse("pages-1of3.http")
+        responseFromFixture("pages-1of3.http")
       );
 
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=2",
-        fetchMockResponse("pages-2of3.http")
+        responseFromFixture("pages-2of3.http")
       );
 
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services?page=3",
-        fetchMockResponse("pages-3of3.http")
+        responseFromFixture("pages-3of3.http")
       );
 
       const items = await dnsimple.services.applyService.collectAll(
@@ -99,7 +99,7 @@ describe("domain services", () => {
     it("produces nothing", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services/name",
-        fetchMockResponse("applyService/success.http")
+        responseFromFixture("applyService/success.http")
       );
 
       const response = await dnsimple.services.appliedServices(
@@ -121,7 +121,7 @@ describe("domain services", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/domains/example.com/services/name",
-        fetchMockResponse("unapplyService/success.http")
+        responseFromFixture("unapplyService/success.http")
       );
 
       const response = await dnsimple.services.unapplyService(

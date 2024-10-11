@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -12,7 +12,7 @@ describe("zone records", () => {
     it("supports pagination", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?page=1",
-        fetchMockResponse("listZoneRecords/success.http")
+        responseFromFixture("listZoneRecords/success.http")
       );
 
       await dnsimple.zones.listZoneRecords(accountId, zoneId, { page: 1 });
@@ -23,7 +23,7 @@ describe("zone records", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?foo=bar",
-        fetchMockResponse("listZoneRecords/success.http")
+        responseFromFixture("listZoneRecords/success.http")
       );
 
       await dnsimple.zones.listZoneRecords(accountId, zoneId, { foo: "bar" });
@@ -34,7 +34,7 @@ describe("zone records", () => {
     it("supports sorting", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?sort=name%3Aasc",
-        fetchMockResponse("listZoneRecords/success.http")
+        responseFromFixture("listZoneRecords/success.http")
       );
 
       await dnsimple.zones.listZoneRecords(accountId, zoneId, {
@@ -47,7 +47,7 @@ describe("zone records", () => {
     it("supports filter", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?name_like=example",
-        fetchMockResponse("listZoneRecords/success.http")
+        responseFromFixture("listZoneRecords/success.http")
       );
 
       await dnsimple.zones.listZoneRecords(accountId, zoneId, {
@@ -60,7 +60,7 @@ describe("zone records", () => {
     it("produces a record list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records",
-        fetchMockResponse("listZoneRecords/success.http")
+        responseFromFixture("listZoneRecords/success.http")
       );
 
       const response = await dnsimple.zones.listZoneRecords(accountId, zoneId);
@@ -84,7 +84,7 @@ describe("zone records", () => {
     it("exposes the pagination info", async () => {
       fetchMock.get(
         `https://api.dnsimple.com/v2/1010/zones/${zoneId}/records`,
-        fetchMockResponse("listZoneRecords/success.http")
+        responseFromFixture("listZoneRecords/success.http")
       );
 
       const response = await dnsimple.zones.listZoneRecords(accountId, zoneId);
@@ -102,17 +102,17 @@ describe("zone records", () => {
     it("produces a complete list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?page=1",
-        fetchMockResponse("pages-1of3.http")
+        responseFromFixture("pages-1of3.http")
       );
 
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?page=2",
-        fetchMockResponse("pages-2of3.http")
+        responseFromFixture("pages-2of3.http")
       );
 
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records?page=3",
-        fetchMockResponse("pages-3of3.http")
+        responseFromFixture("pages-3of3.http")
       );
 
       const items = await dnsimple.zones.listZoneRecords.collectAll(
@@ -133,7 +133,7 @@ describe("zone records", () => {
     it("produces a record", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records/64784",
-        fetchMockResponse("getZoneRecord/success.http")
+        responseFromFixture("getZoneRecord/success.http")
       );
 
       const response = await dnsimple.zones.getZoneRecord(
@@ -153,7 +153,7 @@ describe("zone records", () => {
       it("produces an error", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/zones/example.com/records/0",
-          fetchMockResponse("notfound-record.http")
+          responseFromFixture("notfound-record.http")
         );
 
         await expect(
@@ -176,7 +176,7 @@ describe("zone records", () => {
     it("builds the correct request", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records",
-        fetchMockResponse("createZoneRecord/created.http")
+        responseFromFixture("createZoneRecord/created.http")
       );
 
       await dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
@@ -187,7 +187,7 @@ describe("zone records", () => {
     it("produces a record", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records",
-        fetchMockResponse("createZoneRecord/created.http")
+        responseFromFixture("createZoneRecord/created.http")
       );
 
       const response = await dnsimple.zones.createZoneRecord(
@@ -210,7 +210,7 @@ describe("zone records", () => {
       fetchMock.patch(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
           recordId,
-        fetchMockResponse("updateZoneRecord/success.http")
+        responseFromFixture("updateZoneRecord/success.http")
       );
 
       await dnsimple.zones.updateZoneRecord(
@@ -227,7 +227,7 @@ describe("zone records", () => {
       fetchMock.patch(
         "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
           recordId,
-        fetchMockResponse("updateZoneRecord/success.http")
+        responseFromFixture("updateZoneRecord/success.http")
       );
 
       const response = await dnsimple.zones.updateZoneRecord(
@@ -245,7 +245,7 @@ describe("zone records", () => {
         fetchMock.patch(
           "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
             recordId,
-          fetchMockResponse("notfound-record.http")
+          responseFromFixture("notfound-record.http")
         );
 
         await expect(
@@ -268,7 +268,7 @@ describe("zone records", () => {
         fetchMock.delete(
           "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
             recordId,
-          fetchMockResponse("deleteZoneRecord/success.http")
+          responseFromFixture("deleteZoneRecord/success.http")
         );
 
         await dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId);
@@ -280,7 +280,7 @@ describe("zone records", () => {
         fetchMock.delete(
           "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
             recordId,
-          fetchMockResponse("deleteZoneRecord/success.http")
+          responseFromFixture("deleteZoneRecord/success.http")
         );
 
         const response = await dnsimple.zones.deleteZoneRecord(
@@ -297,7 +297,7 @@ describe("zone records", () => {
           fetchMock.delete(
             "https://api.dnsimple.com/v2/1010/zones/example.com/records/" +
               recordId,
-            fetchMockResponse("notfound-record.http")
+            responseFromFixture("notfound-record.http")
           );
 
           await expect(

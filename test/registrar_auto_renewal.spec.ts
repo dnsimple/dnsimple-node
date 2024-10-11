@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -12,7 +12,7 @@ describe("registrar auto renewal", () => {
     it("produces an empty result", async () => {
       fetchMock.put(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/auto_renewal",
-        fetchMockResponse("enableDomainAutoRenewal/success.http")
+        responseFromFixture("enableDomainAutoRenewal/success.http")
       );
 
       const response = await dnsimple.registrar.enableDomainAutoRenewal(
@@ -27,7 +27,7 @@ describe("registrar auto renewal", () => {
       it("results in an error", async () => {
         fetchMock.put(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/auto_renewal",
-          fetchMockResponse("notfound-domain.http")
+          responseFromFixture("notfound-domain.http")
         );
 
         await expect(
@@ -41,7 +41,7 @@ describe("registrar auto renewal", () => {
     it("produces an empty result", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/auto_renewal",
-        fetchMockResponse("disableDomainAutoRenewal/success.http")
+        responseFromFixture("disableDomainAutoRenewal/success.http")
       );
 
       const response = await dnsimple.registrar.disableDomainAutoRenewal(
@@ -56,7 +56,7 @@ describe("registrar auto renewal", () => {
       it("results in an error", async () => {
         fetchMock.delete(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/auto_renewal",
-          fetchMockResponse("notfound-domain.http")
+          responseFromFixture("notfound-domain.http")
         );
 
         await expect(

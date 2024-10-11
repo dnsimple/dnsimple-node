@@ -38,19 +38,12 @@ export function createTestClient() {
   });
 }
 
-export function readFixtureAt(path: string): () => [number, string] {
+export function responseFromFixture(path: string): { status: number, body?: string[] } {
   const data = readFileSync(`${__dirname}/fixtures.http/${path}`, "utf-8");
   const lines = data.split(/\r?\n/);
 
-  const statusCode = parseStatusCode(lines);
-  if (statusCode === 204) return () => [204, ""];
-
-  return () => [statusCode, parseBody(lines)];
-}
-
-export const fetchMockResponse = (fixturePath: string) => {
-  const [status, body] = readFixtureAt(fixturePath)();
+  const status = parseStatusCode(lines);
   if (status === 204) return { status: 204 };
 
-  return { status, body };
-};
+  return { status: status, body: parseBody(lines) };
+}

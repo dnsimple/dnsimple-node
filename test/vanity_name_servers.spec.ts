@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -11,7 +11,7 @@ describe("vanity name servers", () => {
     it("produces a list of name servers", async () => {
       fetchMock.put(
         "https://api.dnsimple.com/v2/1010/vanity/example.com",
-        fetchMockResponse("enableVanityNameServers/success.http")
+        responseFromFixture("enableVanityNameServers/success.http")
       );
 
       const response = await dnsimple.vanityNameServers.enableVanityNameServers(
@@ -33,7 +33,7 @@ describe("vanity name servers", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/vanity/example.com",
-        fetchMockResponse("disableVanityNameServers/success.http")
+        responseFromFixture("disableVanityNameServers/success.http")
       );
 
       const response =
