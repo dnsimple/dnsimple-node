@@ -116,7 +116,9 @@ describe("tlds", () => {
       it("returns an empty collection", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/tlds/com/extended_attributes",
-          responseFromFixture("getTldExtendedAttributes/success-noattributes.http")
+          responseFromFixture(
+            "getTldExtendedAttributes/success-noattributes.http"
+          )
         );
 
         const response = await dnsimple.tlds.getTldExtendedAttributes("com");

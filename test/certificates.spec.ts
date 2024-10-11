@@ -292,7 +292,9 @@ describe("certificates", () => {
     it("purchases a certificate renewal", async () => {
       fetchMock.post(
         `https://api.dnsimple.com/v2/1010/domains/example.com/certificates/letsencrypt/${certificateId}/renewals`,
-        responseFromFixture("purchaseRenewalLetsencryptCertificate/success.http")
+        responseFromFixture(
+          "purchaseRenewalLetsencryptCertificate/success.http"
+        )
       );
 
       const response =

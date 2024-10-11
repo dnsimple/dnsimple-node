@@ -38,7 +38,10 @@ export function createTestClient() {
   });
 }
 
-export function responseFromFixture(path: string): { status: number, body?: string[] } {
+export function responseFromFixture(path: string): {
+  status: number;
+  body?: string[];
+} {
   const data = readFileSync(`${__dirname}/fixtures.http/${path}`, "utf-8");
   const lines = data.split(/\r?\n/);
 
