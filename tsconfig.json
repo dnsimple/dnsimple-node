@@ -9,7 +9,6 @@
     "esModuleInterop": false,
     "exactOptionalPropertyTypes": false,
     "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
     "isolatedModules": true,
     "lib": ["ESNext", "DOM"],
     "module": "CommonJS",
