@@ -1,5 +1,6 @@
 {
-  "include": ["lib/**/*.ts", "test/**/*.ts"],
+  "include": ["lib/**/*.ts"],
+  "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": false,
