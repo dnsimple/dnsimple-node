@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -11,7 +11,7 @@ describe("whois privacy", () => {
     it("produces a whois privacy", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
-        fetchMockResponse("getWhoisPrivacy/success.http")
+        responseFromFixture("getWhoisPrivacy/success.http")
       );
 
       const response = await dnsimple.registrar.getWhoisPrivacy(
@@ -34,7 +34,7 @@ describe("whois privacy", () => {
       it("produces a whois privacy", async () => {
         fetchMock.put(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
-          fetchMockResponse("enableWhoisPrivacy/success.http")
+          responseFromFixture("enableWhoisPrivacy/success.http")
         );
 
         const response = await dnsimple.registrar.enableWhoisPrivacy(
@@ -52,7 +52,7 @@ describe("whois privacy", () => {
       it("produces a whois privacy", async () => {
         fetchMock.put(
           "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
-          fetchMockResponse("enableWhoisPrivacy/created.http")
+          responseFromFixture("enableWhoisPrivacy/created.http")
         );
 
         const response = await dnsimple.registrar.enableWhoisPrivacy(
@@ -71,7 +71,7 @@ describe("whois privacy", () => {
     it("produces a whois privacy", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
-        fetchMockResponse("disableWhoisPrivacy/success.http")
+        responseFromFixture("disableWhoisPrivacy/success.http")
       );
 
       const response = await dnsimple.registrar.disableWhoisPrivacy(
@@ -89,7 +89,7 @@ describe("whois privacy", () => {
     it("produces a whois privacy renewal", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy/renewals",
-        fetchMockResponse("renewWhoisPrivacy/success.http")
+        responseFromFixture("renewWhoisPrivacy/success.http")
       );
 
       const response = await dnsimple.registrar.renewWhoisPrivacy(

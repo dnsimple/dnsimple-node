@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,7 +8,7 @@ describe("identity", () => {
     it("produces an account", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/whoami",
-        fetchMockResponse("whoami/success-account.http")
+        responseFromFixture("whoami/success-account.http")
       );
 
       const response = await dnsimple.identity.whoami();
@@ -24,7 +24,7 @@ describe("identity", () => {
     it("produces a user", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/whoami",
-        fetchMockResponse("whoami/success-user.http")
+        responseFromFixture("whoami/success-user.http")
       );
 
       const response = await dnsimple.identity.whoami();

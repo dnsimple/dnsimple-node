@@ -1,4 +1,4 @@
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -11,7 +11,7 @@ describe("collaborators", () => {
     it("supports pagination", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?page=1",
-        fetchMockResponse("listCollaborators/success.http")
+        responseFromFixture("listCollaborators/success.http")
       );
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
@@ -24,7 +24,7 @@ describe("collaborators", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?foo=bar",
-        fetchMockResponse("listCollaborators/success.http")
+        responseFromFixture("listCollaborators/success.http")
       );
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
@@ -37,7 +37,7 @@ describe("collaborators", () => {
     it("produces a collaborators list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
-        fetchMockResponse("listCollaborators/success.http")
+        responseFromFixture("listCollaborators/success.http")
       );
 
       const response = await dnsimple.domains.listCollaborators(
@@ -55,7 +55,7 @@ describe("collaborators", () => {
     it("exposes the pagination info", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
-        fetchMockResponse("listCollaborators/success.http")
+        responseFromFixture("listCollaborators/success.http")
       );
 
       const response = await dnsimple.domains.listCollaborators(
@@ -79,7 +79,7 @@ describe("collaborators", () => {
     it("produces a response", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
-        fetchMockResponse("addCollaborator/success.http")
+        responseFromFixture("addCollaborator/success.http")
       );
 
       const response = await dnsimple.domains.addCollaborator(
@@ -102,7 +102,7 @@ describe("collaborators", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators/100",
-        fetchMockResponse("removeCollaborator/success.http")
+        responseFromFixture("removeCollaborator/success.http")
       );
 
       const response = await dnsimple.domains.removeCollaborator(

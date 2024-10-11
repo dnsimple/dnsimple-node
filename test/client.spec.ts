@@ -1,5 +1,5 @@
 import { ClientError, MethodNotAllowedError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -9,7 +9,7 @@ describe("response handling", () => {
     it("includes the error message from the server", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/validation-error",
-        fetchMockResponse("validation-error.http")
+        responseFromFixture("validation-error.http")
       );
 
       try {
@@ -27,7 +27,7 @@ describe("response handling", () => {
     it("produces a JSON parse error", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/success-with-malformed-json",
-        fetchMockResponse("success-with-malformed-json.http")
+        responseFromFixture("success-with-malformed-json.http")
       );
 
       await expect(
@@ -40,7 +40,7 @@ describe("response handling", () => {
     it("produces a JSON parse error", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/badgateway",
-        fetchMockResponse("badgateway.http")
+        responseFromFixture("badgateway.http")
       );
 
       await expect(
@@ -53,7 +53,7 @@ describe("response handling", () => {
     it("results in a rejected promise", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/method-not-allowed",
-        fetchMockResponse("method-not-allowed.http")
+        responseFromFixture("method-not-allowed.http")
       );
 
       await expect(

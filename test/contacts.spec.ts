@@ -1,5 +1,5 @@
 import { NotFoundError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
@@ -11,7 +11,7 @@ describe("contacts", () => {
     it("supports pagination", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?page=1",
-        fetchMockResponse("listContacts/success.http")
+        responseFromFixture("listContacts/success.http")
       );
 
       await dnsimple.contacts.listContacts(accountId, { page: 1 });
@@ -22,7 +22,7 @@ describe("contacts", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?foo=bar",
-        fetchMockResponse("listContacts/success.http")
+        responseFromFixture("listContacts/success.http")
       );
 
       await dnsimple.contacts.listContacts(accountId, { foo: "bar" });
@@ -33,7 +33,7 @@ describe("contacts", () => {
     it("supports sorting", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?sort=label%3Aasc",
-        fetchMockResponse("listContacts/success.http")
+        responseFromFixture("listContacts/success.http")
       );
 
       await dnsimple.contacts.listContacts(accountId, { sort: "label:asc" });
@@ -44,7 +44,7 @@ describe("contacts", () => {
     it("supports filter", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?first_name_like=example",
-        fetchMockResponse("listContacts/success.http")
+        responseFromFixture("listContacts/success.http")
       );
 
       await dnsimple.contacts.listContacts(accountId, {
@@ -57,7 +57,7 @@ describe("contacts", () => {
     it("produces a contact list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts",
-        fetchMockResponse("listContacts/success.http")
+        responseFromFixture("listContacts/success.http")
       );
 
       const response = await dnsimple.contacts.listContacts(accountId);
@@ -73,7 +73,7 @@ describe("contacts", () => {
     it("exposes the pagination info", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts",
-        fetchMockResponse("listContacts/success.http")
+        responseFromFixture("listContacts/success.http")
       );
 
       const response = await dnsimple.contacts.listContacts(accountId);
@@ -90,17 +90,17 @@ describe("contacts", () => {
     it("produces a complete list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?page=1",
-        fetchMockResponse("pages-1of3.http")
+        responseFromFixture("pages-1of3.http")
       );
 
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?page=2",
-        fetchMockResponse("pages-2of3.http")
+        responseFromFixture("pages-2of3.http")
       );
 
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts?page=3",
-        fetchMockResponse("pages-3of3.http")
+        responseFromFixture("pages-3of3.http")
       );
 
       const contacts =
@@ -118,7 +118,7 @@ describe("contacts", () => {
     it("produces a contact", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/contacts/1",
-        fetchMockResponse("getContact/success.http")
+        responseFromFixture("getContact/success.http")
       );
 
       const response = await dnsimple.contacts.getContact(accountId, 1);
@@ -135,7 +135,7 @@ describe("contacts", () => {
       it("produces an error", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/contacts/0",
-          fetchMockResponse("notfound-contact.http")
+          responseFromFixture("notfound-contact.http")
         );
 
         await expect(
@@ -153,7 +153,7 @@ describe("contacts", () => {
       const expectedPayload = attributes;
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/contacts",
-        fetchMockResponse("createContact/created.http")
+        responseFromFixture("createContact/created.http")
       );
 
       await dnsimple.contacts.createContact(accountId, attributes);
@@ -166,7 +166,7 @@ describe("contacts", () => {
     it("produces a contact", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/contacts",
-        fetchMockResponse("createContact/created.http")
+        responseFromFixture("createContact/created.http")
       );
 
       const response = await dnsimple.contacts.createContact(
@@ -185,7 +185,7 @@ describe("contacts", () => {
     it("includes validation errors coming from the API", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/contacts",
-        fetchMockResponse("createContact/error-validation-errors.http")
+        responseFromFixture("createContact/error-validation-errors.http")
       );
 
       try {
@@ -220,7 +220,7 @@ describe("contacts", () => {
     it("builds the correct request", async () => {
       fetchMock.patch(
         "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
-        fetchMockResponse("updateContact/success.http")
+        responseFromFixture("updateContact/success.http")
       );
 
       await dnsimple.contacts.updateContact(accountId, contactId, attributes);
@@ -231,7 +231,7 @@ describe("contacts", () => {
     it("produces a contact", async () => {
       fetchMock.patch(
         "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
-        fetchMockResponse("updateContact/success.http")
+        responseFromFixture("updateContact/success.http")
       );
 
       const response = await dnsimple.contacts.updateContact(
@@ -247,7 +247,7 @@ describe("contacts", () => {
       it("produces an error", async () => {
         fetchMock.patch(
           "https://api.dnsimple.com/v2/1010/contacts/0",
-          fetchMockResponse("notfound-contact.http")
+          responseFromFixture("notfound-contact.http")
         );
 
         await expect(
@@ -264,7 +264,7 @@ describe("contacts", () => {
     it("builds the correct request", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
-        fetchMockResponse("deleteContact/success.http")
+        responseFromFixture("deleteContact/success.http")
       );
 
       await dnsimple.contacts.deleteContact(accountId, contactId);
@@ -275,7 +275,7 @@ describe("contacts", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/contacts/" + contactId,
-        fetchMockResponse("deleteContact/success.http")
+        responseFromFixture("deleteContact/success.http")
       );
 
       const response = await dnsimple.contacts.deleteContact(
@@ -290,7 +290,7 @@ describe("contacts", () => {
       it("produces an error", async () => {
         fetchMock.delete(
           "https://api.dnsimple.com/v2/1010/contacts/0",
-          fetchMockResponse("notfound-contact.http")
+          responseFromFixture("notfound-contact.http")
         );
 
         await expect(

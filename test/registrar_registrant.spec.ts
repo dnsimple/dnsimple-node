@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -10,7 +10,7 @@ describe("registrant", () => {
     it("produces a registrant change", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/registrant_changes/check",
-        fetchMockResponse("checkRegistrantChange/success.http")
+        responseFromFixture("checkRegistrantChange/success.http")
       );
 
       const response = await dnsimple.registrar.checkRegistrantChange(
@@ -33,7 +33,7 @@ describe("registrant", () => {
     it("produces a registrant change", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/registrar/registrant_changes",
-        fetchMockResponse("createRegistrantChange/success.http")
+        responseFromFixture("createRegistrantChange/success.http")
       );
 
       const response = await dnsimple.registrar.createRegistrantChange(
@@ -63,7 +63,7 @@ describe("registrant", () => {
     it("deletes the registrant change", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101",
-        fetchMockResponse("deleteRegistrantChange/success.http")
+        responseFromFixture("deleteRegistrantChange/success.http")
       );
 
       await dnsimple.registrar.deleteRegistrantChange(accountId, 101);
@@ -76,7 +76,7 @@ describe("registrant", () => {
     it("returns the registrant change", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/registrar/registrant_changes/101",
-        fetchMockResponse("getRegistrantChange/success.http")
+        responseFromFixture("getRegistrantChange/success.http")
       );
 
       const response = await dnsimple.registrar.getRegistrantChange(

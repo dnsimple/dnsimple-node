@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,7 +8,7 @@ describe("tlds", () => {
     it("supports pagination", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds?page=1",
-        fetchMockResponse("listTlds/success.http")
+        responseFromFixture("listTlds/success.http")
       );
 
       await dnsimple.tlds.listTlds({ page: 1 });
@@ -19,7 +19,7 @@ describe("tlds", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds?foo=bar",
-        fetchMockResponse("listTlds/success.http")
+        responseFromFixture("listTlds/success.http")
       );
 
       await dnsimple.tlds.listTlds({ foo: "bar" });
@@ -30,7 +30,7 @@ describe("tlds", () => {
     it("supports sorting", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds?sort=tld%3Aasc",
-        fetchMockResponse("listTlds/success.http")
+        responseFromFixture("listTlds/success.http")
       );
 
       await dnsimple.tlds.listTlds({ sort: "tld:asc" });
@@ -41,7 +41,7 @@ describe("tlds", () => {
     it("produces a tld list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds",
-        fetchMockResponse("listTlds/success.http")
+        responseFromFixture("listTlds/success.http")
       );
 
       const response = await dnsimple.tlds.listTlds();
@@ -54,7 +54,7 @@ describe("tlds", () => {
     it("exposes the pagination info", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds",
-        fetchMockResponse("listTlds/success.http")
+        responseFromFixture("listTlds/success.http")
       );
 
       const response = await dnsimple.tlds.listTlds();
@@ -69,7 +69,7 @@ describe("tlds", () => {
     it("produces a tld", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds/com",
-        fetchMockResponse("getTld/success.http")
+        responseFromFixture("getTld/success.http")
       );
 
       const response = await dnsimple.tlds.getTld("com");
@@ -92,7 +92,7 @@ describe("tlds", () => {
     it("produces a collection of extended attributes", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/tlds/uk/extended_attributes",
-        fetchMockResponse("getTldExtendedAttributes/success.http")
+        responseFromFixture("getTldExtendedAttributes/success.http")
       );
 
       const response = await dnsimple.tlds.getTldExtendedAttributes("uk");
@@ -116,7 +116,7 @@ describe("tlds", () => {
       it("returns an empty collection", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/tlds/com/extended_attributes",
-          fetchMockResponse(
+          responseFromFixture(
             "getTldExtendedAttributes/success-noattributes.http"
           )
         );

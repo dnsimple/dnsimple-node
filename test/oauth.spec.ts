@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -22,7 +22,7 @@ describe("oauth", () => {
       };
       fetchMock.post(
         "https://api.dnsimple.com/v2/oauth/access_token",
-        fetchMockResponse("oauthAccessToken/success.http")
+        responseFromFixture("oauthAccessToken/success.http")
       );
 
       await dnsimple.oauth.exchangeAuthorizationForToken({
@@ -41,7 +41,7 @@ describe("oauth", () => {
     it("returns the oauth token", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/oauth/access_token",
-        fetchMockResponse("oauthAccessToken/success.http")
+        responseFromFixture("oauthAccessToken/success.http")
       );
 
       const response = await dnsimple.oauth.exchangeAuthorizationForToken({
@@ -72,7 +72,7 @@ describe("oauth", () => {
         };
         fetchMock.post(
           "https://api.dnsimple.com/v2/oauth/access_token",
-          fetchMockResponse("oauthAccessToken/success.http")
+          responseFromFixture("oauthAccessToken/success.http")
         );
 
         await dnsimple.oauth.exchangeAuthorizationForToken({

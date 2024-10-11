@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -11,7 +11,7 @@ describe("domain delegation", () => {
     it("produces a name server list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation",
-        fetchMockResponse("getDomainDelegation/success.http")
+        responseFromFixture("getDomainDelegation/success.http")
       );
 
       const response = await dnsimple.registrar.getDomainDelegation(
@@ -39,7 +39,7 @@ describe("domain delegation", () => {
     it("produces a name server list", async () => {
       fetchMock.put(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation",
-        fetchMockResponse("changeDomainDelegation/success.http")
+        responseFromFixture("changeDomainDelegation/success.http")
       );
 
       const response = await dnsimple.registrar.changeDomainDelegation(
@@ -63,7 +63,7 @@ describe("domain delegation", () => {
     it("produces a name server list", async () => {
       fetchMock.put(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation/vanity",
-        fetchMockResponse("changeDomainDelegationToVanity/success.http")
+        responseFromFixture("changeDomainDelegationToVanity/success.http")
       );
 
       const response = await dnsimple.registrar.changeDomainDelegationToVanity(
@@ -80,7 +80,7 @@ describe("domain delegation", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/delegation/vanity",
-        fetchMockResponse("changeDomainDelegationFromVanity/success.http")
+        responseFromFixture("changeDomainDelegationFromVanity/success.http")
       );
 
       const response =

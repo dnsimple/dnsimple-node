@@ -13,6 +13,7 @@ import { Tlds } from "./tlds";
 import { VanityNameServers } from "./vanity_name_servers";
 import { Webhooks } from "./webhooks";
 import { Zones } from "./zones";
+import { type Fetcher, getRuntimeFetcher } from "./fetcher/fetcher";
 
 export * from "./types";
 
@@ -102,80 +103,6 @@ export class ServerError extends RequestError {
   }
 }
 
-/**
- * A function that makes an HTTP request. It's responsible for throwing {@link TimeoutError} and aborting the request on {@param params.timeout}.
- * It should return the response status and full body as a string. It should not throw on any status, even if 4xx or 5xx.
- * It can decide to implement retries as appropriate. The default fetcher currently does not implement any retry strategy.
- */
-export type Fetcher = (params: {
-  method: string;
-  url: string;
-  headers: { [name: string]: string };
-  body?: string;
-  // Since Node.js 14 doesn't support AbortController, we cannot simply provide the AbortSignal directly. We should move to that once we drop support for Node.js 14.
-  timeout: number;
-}) => Promise<{
-  status: number;
-  body: string;
-}>;
-
-const getFetcherForPlatform = (): Fetcher => {
-  // @ts-ignore
-  if (typeof window == "object") {
-    return async ({ url, timeout, ...req }) => {
-      const abortController = new AbortController();
-      if (timeout) {
-        setTimeout(() => abortController.abort(), timeout);
-      }
-      try {
-        const res = await fetch(url, {
-          ...req,
-          signal: abortController.signal,
-        });
-        const status = res.status;
-        const body = await res.text();
-        return { status, body };
-      } catch (err) {
-        // Don't just check `err.name == "AbortError"`, as that could be any AbortController and aborted for any reason. Only `abortController` signifies tiemout.
-        if (abortController.signal.aborted) {
-          throw new TimeoutError();
-        }
-        throw err;
-      }
-    };
-  }
-  const { Buffer }: typeof import("buffer") = require("buffer");
-  const https: typeof import("https") = require("https");
-  return ({ url, method, headers, timeout, body }) =>
-    new Promise((resolve, reject) => {
-      const req = https.request(url, {
-        method,
-        headers,
-        timeout,
-      });
-      req
-        .on("response", (res) => {
-          const chunks = Array<Buffer>();
-          res
-            .on("data", (chunk) => chunks.push(chunk))
-            .on("end", () =>
-              resolve({
-                status: res.statusCode!,
-                body: Buffer.concat(chunks).toString("utf-8"),
-              })
-            )
-            .on("error", reject);
-        })
-        .on("timeout", () => {
-          // A Promise can only be fulfilled once, so we don't need to flag this; any further "error" events with `reject` calls will do nothing.
-          req.destroy();
-          reject(new TimeoutError());
-        })
-        .on("error", reject)
-        .end(body);
-    });
-};
-
 export class DNSimple {
   static VERSION = pkg.version;
   static DEFAULT_TIMEOUT = 120000;
@@ -206,7 +133,7 @@ export class DNSimple {
   constructor({
     accessToken,
     baseUrl = DNSimple.DEFAULT_BASE_URL,
-    fetcher = getFetcherForPlatform(),
+    fetcher = getRuntimeFetcher(),
     timeout = DNSimple.DEFAULT_TIMEOUT,
     userAgent = "",
   }: {

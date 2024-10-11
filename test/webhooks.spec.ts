@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, fetchMockResponse } from "./util";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -11,7 +11,7 @@ describe("webhooks", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/webhooks?foo=bar",
-        fetchMockResponse("listWebhooks/success.http")
+        responseFromFixture("listWebhooks/success.http")
       );
 
       await dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
@@ -22,7 +22,7 @@ describe("webhooks", () => {
     it("produces a webhook list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/webhooks",
-        fetchMockResponse("listWebhooks/success.http")
+        responseFromFixture("listWebhooks/success.http")
       );
 
       const response = await dnsimple.webhooks.listWebhooks(accountId);
@@ -39,7 +39,7 @@ describe("webhooks", () => {
     it("supports extra request options", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/webhooks?foo=bar",
-        fetchMockResponse("listWebhooks/success.http")
+        responseFromFixture("listWebhooks/success.http")
       );
 
       await dnsimple.webhooks.listWebhooks(accountId, { foo: "bar" });
@@ -50,7 +50,7 @@ describe("webhooks", () => {
     it("produces a webhook list", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/webhooks",
-        fetchMockResponse("listWebhooks/success.http")
+        responseFromFixture("listWebhooks/success.http")
       );
 
       const response = await dnsimple.webhooks.listWebhooks(accountId);
@@ -68,7 +68,7 @@ describe("webhooks", () => {
     it("produces a webhook", async () => {
       fetchMock.get(
         "https://api.dnsimple.com/v2/1010/webhooks/1",
-        fetchMockResponse("getWebhook/success.http")
+        responseFromFixture("getWebhook/success.http")
       );
 
       const response = await dnsimple.webhooks.getWebhook(accountId, webhookId);
@@ -82,7 +82,7 @@ describe("webhooks", () => {
       it("produces an error", async () => {
         fetchMock.get(
           "https://api.dnsimple.com/v2/1010/webhooks/0",
-          fetchMockResponse("notfound-webhook.http")
+          responseFromFixture("notfound-webhook.http")
         );
 
         await expect(
@@ -99,7 +99,7 @@ describe("webhooks", () => {
     it("builds the correct request", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/webhooks",
-        fetchMockResponse("createWebhook/created.http")
+        responseFromFixture("createWebhook/created.http")
       );
 
       await dnsimple.webhooks.createWebhook(accountId, attributes);
@@ -110,7 +110,7 @@ describe("webhooks", () => {
     it("produces a webhook", async () => {
       fetchMock.post(
         "https://api.dnsimple.com/v2/1010/webhooks",
-        fetchMockResponse("createWebhook/created.http")
+        responseFromFixture("createWebhook/created.http")
       );
 
       const response = await dnsimple.webhooks.createWebhook(
@@ -129,7 +129,7 @@ describe("webhooks", () => {
     it("produces nothing", async () => {
       fetchMock.delete(
         "https://api.dnsimple.com/v2/1010/webhooks/1",
-        fetchMockResponse("deleteWebhook/success.http")
+        responseFromFixture("deleteWebhook/success.http")
       );
 
       const response = await dnsimple.webhooks.deleteWebhook(
@@ -144,7 +144,7 @@ describe("webhooks", () => {
       it("produces an error", async () => {
         fetchMock.delete(
           "https://api.dnsimple.com/v2/1010/webhooks/0",
-          fetchMockResponse("notfound-webhook.http")
+          responseFromFixture("notfound-webhook.http")
         );
 
         await expect(
