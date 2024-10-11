@@ -1,7 +1,7 @@
 import * as https from "https";
 import { URL } from "url";
-import type { Fetcher } from "./fetcher";
 import { TimeoutError } from "../main";
+import type { Fetcher } from "./fetcher";
 
 const httpsFetcher: Fetcher = (params: {
   method: string;

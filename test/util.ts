@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
-import { DNSimple } from "../lib/main";
 import fetchFetcher from "../lib/fetcher/fetch-fetcher";
+import { DNSimple } from "../lib/main";
 
 function hasJsonContent(lines: string[]) {
   for (let line of lines) {

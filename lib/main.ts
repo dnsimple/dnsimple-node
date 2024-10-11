@@ -4,6 +4,7 @@ import { Billing } from "./billing";
 import { Certificates } from "./certificates";
 import { Contacts } from "./contacts";
 import { Domains } from "./domains";
+import { getRuntimeFetcher, type Fetcher } from "./fetcher/fetcher";
 import { Identity } from "./identity";
 import { OAuth } from "./oauth";
 import { Registrar } from "./registrar";
@@ -13,7 +14,6 @@ import { Tlds } from "./tlds";
 import { VanityNameServers } from "./vanity_name_servers";
 import { Webhooks } from "./webhooks";
 import { Zones } from "./zones";
-import { type Fetcher, getRuntimeFetcher } from "./fetcher/fetcher";
 
 export * from "./types";
 

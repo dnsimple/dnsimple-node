@@ -1,5 +1,5 @@
-import { createTestClient, responseFromFixture } from "./util";
 import fetchMock from "fetch-mock";
+import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
 

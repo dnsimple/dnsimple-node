@@ -1,6 +1,6 @@
+import fetchMock from "fetch-mock";
 import { NotFoundError } from "../lib/main";
 import { createTestClient, responseFromFixture } from "./util";
-import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
