@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import fetchMock from "fetch-mock";
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -8,9 +8,10 @@ describe("domain transfer lock", () => {
 
   describe("#getDomainTransferLock", () => {
     it("produces a transfer lock", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/registrar/domains/101/transfer_lock")
-        .reply(readFixtureAt("getDomainTransferLock/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/101/transfer_lock",
+        fetchMockResponse("getDomainTransferLock/success.http")
+      );
 
       const response = await dnsimple.registrar.getDomainTransferLock(
         accountId,
@@ -25,9 +26,10 @@ describe("domain transfer lock", () => {
 
   describe("#enableDomainTransferLock", () => {
     it("produces a transfer lock", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/registrar/domains/101/transfer_lock")
-        .reply(readFixtureAt("enableDomainTransferLock/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/101/transfer_lock",
+        fetchMockResponse("enableDomainTransferLock/success.http")
+      );
 
       const response = await dnsimple.registrar.enableDomainTransferLock(
         accountId,
@@ -42,9 +44,10 @@ describe("domain transfer lock", () => {
 
   describe("#disableDomainTransferLock", () => {
     it("produces a transfer lock", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/registrar/domains/101/transfer_lock")
-        .reply(readFixtureAt("disableDomainTransferLock/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/101/transfer_lock",
+        fetchMockResponse("disableDomainTransferLock/success.http")
+      );
 
       const response = await dnsimple.registrar.disableDomainTransferLock(
         accountId,

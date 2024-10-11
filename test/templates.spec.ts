@@ -1,6 +1,6 @@
-import * as nock from "nock";
 import { NotFoundError } from "../lib/main";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -9,39 +9,43 @@ describe("templates", () => {
     const accountId = 1010;
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates?page=1")
-        .reply(readFixtureAt("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=1",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       await dnsimple.templates.listTemplates(accountId, { page: 1 });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toBe([]);
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates?foo=bar")
-        .reply(readFixtureAt("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?foo=bar",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       await dnsimple.templates.listTemplates(accountId, { foo: "bar" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toBe([]);
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates?sort=name%3Aasc")
-        .reply(readFixtureAt("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?sort=name%3Aasc",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       await dnsimple.templates.listTemplates(accountId, { sort: "name:asc" });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toBe([]);
     });
 
     it("produces a template list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates")
-        .reply(readFixtureAt("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       const response = await dnsimple.templates.listTemplates(accountId);
 
@@ -52,9 +56,10 @@ describe("templates", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates")
-        .reply(readFixtureAt("listTemplates/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("listTemplates/success.http")
+      );
 
       const response = await dnsimple.templates.listTemplates(accountId);
 
@@ -68,17 +73,20 @@ describe("templates", () => {
     const accountId = 1010;
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates?page=1")
-        .reply(readFixtureAt("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates?page=2")
-        .reply(readFixtureAt("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates?page=3")
-        .reply(readFixtureAt("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
       const items =
         await dnsimple.templates.listTemplates.collectAll(accountId);
@@ -94,9 +102,10 @@ describe("templates", () => {
     const templateId = "name";
 
     it("produces a template", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/name")
-        .reply(readFixtureAt("getTemplate/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/name",
+        fetchMockResponse("getTemplate/success.http")
+      );
 
       const response = await dnsimple.templates.getTemplate(
         accountId,
@@ -115,9 +124,10 @@ describe("templates", () => {
 
     describe("when the template does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/templates/name")
-          .reply(readFixtureAt("notfound-template.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/templates/name",
+          fetchMockResponse("notfound-template.http")
+        );
 
         await expect(
           dnsimple.templates.getTemplate(accountId, templateId)
@@ -131,19 +141,24 @@ describe("templates", () => {
     const attributes = { name: "Beta" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/templates", { name: "Beta" })
-        .reply(readFixtureAt("createTemplate/created.http"));
+      const expectedPayload = { name: "Beta" };
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("createTemplate/created.http")
+      );
 
       await dnsimple.templates.createTemplate(accountId, attributes);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a template", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/templates")
-        .reply(readFixtureAt("createTemplate/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/templates",
+        fetchMockResponse("createTemplate/created.http")
+      );
 
       const response = await dnsimple.templates.createTemplate(
         accountId,
@@ -160,9 +175,11 @@ describe("templates", () => {
     const attributes = { name: "Alpha" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .patch("/v2/1010/templates/1", { name: "Alpha" })
-        .reply(readFixtureAt("updateTemplate/success.http"));
+      const expectedPayload = { name: "Alpha" };
+      fetchMock.patch(
+        "https://api.dnsimple.com/v2/1010/templates/1",
+        fetchMockResponse("updateTemplate/success.http")
+      );
 
       await dnsimple.templates.updateTemplate(
         accountId,
@@ -170,13 +187,16 @@ describe("templates", () => {
         attributes
       );
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a template", async () => {
-      nock("https://api.dnsimple.com")
-        .patch("/v2/1010/templates/1")
-        .reply(readFixtureAt("updateTemplate/success.http"));
+      fetchMock.patch(
+        "https://api.dnsimple.com/v2/1010/templates/1",
+        fetchMockResponse("updateTemplate/success.http")
+      );
 
       const response = await dnsimple.templates.updateTemplate(
         accountId,
@@ -189,9 +209,10 @@ describe("templates", () => {
 
     describe("when the template does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .patch("/v2/1010/templates/0")
-          .reply(readFixtureAt("notfound-template.http"));
+        fetchMock.patch(
+          "https://api.dnsimple.com/v2/1010/templates/0",
+          fetchMockResponse("notfound-template.http")
+        );
 
         await expect(
           dnsimple.templates.updateTemplate(accountId, 0, attributes)
@@ -205,9 +226,10 @@ describe("templates", () => {
     const templateId = 1;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/templates/1")
-        .reply(readFixtureAt("deleteTemplate/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/templates/1",
+        fetchMockResponse("deleteTemplate/success.http")
+      );
 
       const response = await dnsimple.templates.deleteTemplate(
         accountId,
@@ -224,9 +246,10 @@ describe("templates", () => {
     const templateId = 1;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/templates/1")
-        .reply(readFixtureAt("applyTemplate/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/templates/1",
+        fetchMockResponse("applyTemplate/success.http")
+      );
 
       const response = await dnsimple.templates.applyTemplate(
         accountId,
@@ -240,50 +263,58 @@ describe("templates", () => {
 });
 
 describe("template records", () => {
+  afterEach(() => {
+    fetchMock.restore();
+  });
+
   describe("#listTemplateRecords", () => {
     const accountId = 1010;
     const templateId = "1";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records?page=1")
-        .reply(readFixtureAt("listTemplateRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records?page=1",
+        fetchMockResponse("listTemplateRecords/success.http")
+      );
 
       await dnsimple.templates.listTemplateRecords(accountId, templateId, {
         page: 1,
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toBe([]);
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records?foo=bar")
-        .reply(readFixtureAt("listTemplateRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records?foo=bar",
+        fetchMockResponse("listTemplateRecords/success.http")
+      );
 
       await dnsimple.templates.listTemplateRecords(accountId, templateId, {
         foo: "bar",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toBe([]);
     });
 
     it("supports sorting", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records?sort=name%3Aasc")
-        .reply(readFixtureAt("listTemplateRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records?sort=name%3Aasc",
+        fetchMockResponse("listTemplateRecords/success.http")
+      );
 
       await dnsimple.templates.listTemplateRecords(accountId, templateId, {
         sort: "name:asc",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toBe([]);
     });
 
     it("produces a template list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records")
-        .reply(readFixtureAt("listTemplateRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records",
+        fetchMockResponse("listTemplateRecords/success.http")
+      );
 
       const response = await dnsimple.templates.listTemplateRecords(
         accountId,
@@ -294,9 +325,10 @@ describe("template records", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records")
-        .reply(readFixtureAt("listTemplateRecords/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records",
+        fetchMockResponse("listTemplateRecords/success.http")
+      );
 
       const response = await dnsimple.templates.listTemplateRecords(
         accountId,
@@ -314,17 +346,20 @@ describe("template records", () => {
     const templateId = 1;
 
     it("produces a complete list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records?page=1")
-        .reply(readFixtureAt("pages-1of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records?page=1",
+        fetchMockResponse("pages-1of3.http")
+      );
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records?page=2")
-        .reply(readFixtureAt("pages-2of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records?page=2",
+        fetchMockResponse("pages-2of3.http")
+      );
 
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/1/records?page=3")
-        .reply(readFixtureAt("pages-3of3.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/1/records?page=3",
+        fetchMockResponse("pages-3of3.http")
+      );
 
       const items = await dnsimple.templates.listTemplateRecords.collectAll(
         accountId,
@@ -342,9 +377,10 @@ describe("template records", () => {
     const recordId = 1;
 
     it("produces a template", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/templates/name/records/1")
-        .reply(readFixtureAt("getTemplateRecord/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/templates/name/records/1",
+        fetchMockResponse("getTemplateRecord/success.http")
+      );
 
       const response = await dnsimple.templates.getTemplateRecord(
         accountId,
@@ -366,9 +402,10 @@ describe("template records", () => {
 
     describe("when the template does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/templates/0/records/1")
-          .reply(readFixtureAt("notfound-template.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/templates/0/records/1",
+          fetchMockResponse("notfound-template.http")
+        );
 
         await expect(
           dnsimple.templates.getTemplateRecord(accountId, 0, recordId)
@@ -378,9 +415,10 @@ describe("template records", () => {
 
     describe("when the template record does not exist", () => {
       it("produces an error", async () => {
-        nock("https://api.dnsimple.com")
-          .get("/v2/1010/templates/name/records/0")
-          .reply(readFixtureAt("notfound-record.http"));
+        fetchMock.get(
+          "https://api.dnsimple.com/v2/1010/templates/name/records/0",
+          fetchMockResponse("notfound-record.http")
+        );
 
         await expect(
           dnsimple.templates.getTemplateRecord(accountId, templateId, 0)
@@ -395,9 +433,11 @@ describe("template records", () => {
     const attributes = { content: "mx.example.com" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/templates/1/records", { content: "mx.example.com" })
-        .reply(readFixtureAt("createTemplateRecord/created.http"));
+      const expectedPayload = { content: "mx.example.com" };
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/templates/1/records",
+        fetchMockResponse("createTemplateRecord/created.http")
+      );
 
       await dnsimple.templates.createTemplateRecord(
         accountId,
@@ -405,13 +445,16 @@ describe("template records", () => {
         attributes
       );
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("produces a record", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/templates/1/records")
-        .reply(readFixtureAt("createTemplateRecord/created.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/templates/1/records",
+        fetchMockResponse("createTemplateRecord/created.http")
+      );
 
       const response = await dnsimple.templates.createTemplateRecord(
         accountId,
@@ -429,9 +472,10 @@ describe("template records", () => {
     const recordId = 2;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/templates/1/records/2")
-        .reply(readFixtureAt("deleteTemplateRecord/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/templates/1/records/2",
+        fetchMockResponse("deleteTemplateRecord/success.http")
+      );
 
       const response = await dnsimple.templates.deleteTemplateRecord(
         accountId,

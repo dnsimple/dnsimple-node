@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -9,33 +9,36 @@ describe("collaborators", () => {
     const domainId = "example.com";
 
     it("supports pagination", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators?page=1")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?page=1",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
         page: 1,
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("supports extra request options", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators?foo=bar")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators?foo=bar",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       await dnsimple.domains.listCollaborators(accountId, domainId, {
         foo: "bar",
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces a collaborators list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       const response = await dnsimple.domains.listCollaborators(
         accountId,
@@ -50,9 +53,10 @@ describe("collaborators", () => {
     });
 
     it("exposes the pagination info", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/collaborators")
-        .reply(readFixtureAt("listCollaborators/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
+        fetchMockResponse("listCollaborators/success.http")
+      );
 
       const response = await dnsimple.domains.listCollaborators(
         accountId,
@@ -73,9 +77,10 @@ describe("collaborators", () => {
     };
 
     it("produces a response", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/collaborators")
-        .reply(readFixtureAt("addCollaborator/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators",
+        fetchMockResponse("addCollaborator/success.http")
+      );
 
       const response = await dnsimple.domains.addCollaborator(
         accountId,
@@ -95,9 +100,10 @@ describe("collaborators", () => {
     const collaboratorId = 100;
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com/collaborators/100")
-        .reply(readFixtureAt("removeCollaborator/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/collaborators/100",
+        fetchMockResponse("removeCollaborator/success.http")
+      );
 
       const response = await dnsimple.domains.removeCollaborator(
         accountId,

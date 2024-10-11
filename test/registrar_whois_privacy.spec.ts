@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import fetchMock from "fetch-mock";
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -9,9 +9,10 @@ describe("whois privacy", () => {
 
   describe("#getWhoisPrivacy", () => {
     it("produces a whois privacy", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/registrar/domains/example.com/whois_privacy")
-        .reply(readFixtureAt("getWhoisPrivacy/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
+        fetchMockResponse("getWhoisPrivacy/success.http")
+      );
 
       const response = await dnsimple.registrar.getWhoisPrivacy(
         accountId,
@@ -31,9 +32,10 @@ describe("whois privacy", () => {
   describe("#enableWhoisPrivacy", () => {
     describe("when whois privacy is already purchased", () => {
       it("produces a whois privacy", async () => {
-        nock("https://api.dnsimple.com")
-          .put("/v2/1010/registrar/domains/example.com/whois_privacy")
-          .reply(readFixtureAt("enableWhoisPrivacy/success.http"));
+        fetchMock.put(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
+          fetchMockResponse("enableWhoisPrivacy/success.http")
+        );
 
         const response = await dnsimple.registrar.enableWhoisPrivacy(
           accountId,
@@ -48,9 +50,10 @@ describe("whois privacy", () => {
 
     describe("when whois privacy is newly purchased", () => {
       it("produces a whois privacy", async () => {
-        nock("https://api.dnsimple.com")
-          .put("/v2/1010/registrar/domains/example.com/whois_privacy")
-          .reply(readFixtureAt("enableWhoisPrivacy/created.http"));
+        fetchMock.put(
+          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
+          fetchMockResponse("enableWhoisPrivacy/created.http")
+        );
 
         const response = await dnsimple.registrar.enableWhoisPrivacy(
           accountId,
@@ -66,9 +69,10 @@ describe("whois privacy", () => {
 
   describe("#disableWhoisPrivacy", () => {
     it("produces a whois privacy", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/registrar/domains/example.com/whois_privacy")
-        .reply(readFixtureAt("disableWhoisPrivacy/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy",
+        fetchMockResponse("disableWhoisPrivacy/success.http")
+      );
 
       const response = await dnsimple.registrar.disableWhoisPrivacy(
         accountId,
@@ -83,9 +87,10 @@ describe("whois privacy", () => {
 
   describe("#renewWhoisPrivacy", () => {
     it("produces a whois privacy renewal", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/registrar/domains/example.com/whois_privacy/renewals")
-        .reply(readFixtureAt("renewWhoisPrivacy/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/whois_privacy/renewals",
+        fetchMockResponse("renewWhoisPrivacy/success.http")
+      );
 
       const response = await dnsimple.registrar.renewWhoisPrivacy(
         accountId,

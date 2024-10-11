@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import fetchMock from "fetch-mock";
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -9,9 +9,10 @@ describe("vanity name servers", () => {
 
   describe("#enableVanityNameServers", () => {
     it("produces a list of name servers", async () => {
-      nock("https://api.dnsimple.com")
-        .put("/v2/1010/vanity/example.com")
-        .reply(readFixtureAt("enableVanityNameServers/success.http"));
+      fetchMock.put(
+        "https://api.dnsimple.com/v2/1010/vanity/example.com",
+        fetchMockResponse("enableVanityNameServers/success.http")
+      );
 
       const response = await dnsimple.vanityNameServers.enableVanityNameServers(
         accountId,
@@ -30,9 +31,10 @@ describe("vanity name servers", () => {
 
   describe("#disableVanityNameServers", () => {
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/vanity/example.com")
-        .reply(readFixtureAt("disableVanityNameServers/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/vanity/example.com",
+        fetchMockResponse("disableVanityNameServers/success.http")
+      );
 
       const response =
         await dnsimple.vanityNameServers.disableVanityNameServers(

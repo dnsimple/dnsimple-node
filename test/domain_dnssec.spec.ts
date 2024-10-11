@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -9,19 +9,21 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("enableDnssec/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/dnssec",
+        fetchMockResponse("enableDnssec/success.http")
+      );
 
       await dnsimple.domains.enableDnssec(accountId, domainId);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces an response", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("enableDnssec/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/dnssec",
+        fetchMockResponse("enableDnssec/success.http")
+      );
 
       const response = await dnsimple.domains.enableDnssec(accountId, domainId);
 
@@ -34,9 +36,10 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("disableDnssec/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/dnssec",
+        fetchMockResponse("disableDnssec/success.http")
+      );
 
       const response = await dnsimple.domains.disableDnssec(
         accountId,
@@ -52,19 +55,21 @@ describe("domains", () => {
     const domainId = "example.com";
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("getDnssec/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/dnssec",
+        fetchMockResponse("getDnssec/success.http")
+      );
 
       await dnsimple.domains.getDnssec(accountId, domainId);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces an response", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/domains/example.com/dnssec")
-        .reply(readFixtureAt("getDnssec/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/dnssec",
+        fetchMockResponse("getDnssec/success.http")
+      );
 
       const response = await dnsimple.domains.getDnssec(accountId, domainId);
 

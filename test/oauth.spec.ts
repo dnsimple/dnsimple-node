@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import fetchMock from "fetch-mock";
+import { createTestClient, fetchMockResponse } from "./util";
 
 const dnsimple = createTestClient();
 
@@ -12,16 +12,18 @@ describe("oauth", () => {
 
   describe("#exchangeAuthorizationForToken", () => {
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/oauth/access_token", {
-          client_id: clientId,
-          client_secret: clientSecret,
-          code,
-          grant_type: "authorization_code",
-          redirect_uri: redirectUri,
-          state,
-        })
-        .reply(readFixtureAt("oauthAccessToken/success.http"));
+      let expectedPayload = {
+        client_id: clientId,
+        client_secret: clientSecret,
+        code,
+        grant_type: "authorization_code",
+        redirect_uri: redirectUri,
+        state,
+      };
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/oauth/access_token",
+        fetchMockResponse("oauthAccessToken/success.http")
+      );
 
       await dnsimple.oauth.exchangeAuthorizationForToken({
         code,
@@ -31,20 +33,16 @@ describe("oauth", () => {
         state,
       });
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()[0][1]!.body).toEqual(
+        JSON.stringify(expectedPayload)
+      );
     });
 
     it("returns the oauth token", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/oauth/access_token", {
-          client_id: clientId,
-          client_secret: clientSecret,
-          code,
-          grant_type: "authorization_code",
-          redirect_uri: redirectUri,
-          state,
-        })
-        .reply(readFixtureAt("oauthAccessToken/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/oauth/access_token",
+        fetchMockResponse("oauthAccessToken/success.http")
+      );
 
       const response = await dnsimple.oauth.exchangeAuthorizationForToken({
         code,
@@ -64,16 +62,18 @@ describe("oauth", () => {
       const redirectUri = "super-redirect-uri";
 
       it("builds the correct request", async () => {
-        const scope = nock("https://api.dnsimple.com")
-          .post("/v2/oauth/access_token", {
-            client_id: clientId,
-            client_secret: clientSecret,
-            code,
-            grant_type: "authorization_code",
-            state,
-            redirect_uri: redirectUri,
-          })
-          .reply(readFixtureAt("oauthAccessToken/success.http"));
+        let expectedPayload = {
+          client_id: clientId,
+          client_secret: clientSecret,
+          code,
+          grant_type: "authorization_code",
+          redirect_uri: redirectUri,
+          state,
+        };
+        fetchMock.post(
+          "https://api.dnsimple.com/v2/oauth/access_token",
+          fetchMockResponse("oauthAccessToken/success.http")
+        );
 
         await dnsimple.oauth.exchangeAuthorizationForToken({
           code,
@@ -83,7 +83,9 @@ describe("oauth", () => {
           redirectUri,
         });
 
-        expect(scope.isDone()).toBeTruthy();
+        expect(fetchMock.calls()[0][1]!.body).toEqual(
+          JSON.stringify(expectedPayload)
+        );
       });
     });
   });

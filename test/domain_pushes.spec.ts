@@ -1,5 +1,5 @@
-import * as nock from "nock";
-import { createTestClient, readFixtureAt } from "./util";
+import { createTestClient, fetchMockResponse } from "./util";
+import fetchMock from "fetch-mock";
 
 const dnsimple = createTestClient();
 
@@ -10,19 +10,21 @@ describe("domains", () => {
     const attributes = { new_account_email: "jim@example.com" };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/pushes", attributes)
-        .reply(readFixtureAt("initiatePush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
+        fetchMockResponse("initiatePush/success.http")
+      );
 
       await dnsimple.domains.initiatePush(accountId, domainId, attributes);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a push result", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/domains/example.com/pushes")
-        .reply(readFixtureAt("initiatePush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
+        fetchMockResponse("initiatePush/success.http")
+      );
 
       const response = await dnsimple.domains.initiatePush(
         accountId,
@@ -45,9 +47,10 @@ describe("domains", () => {
     const accountId = 1010;
 
     it("produces an pushes list", async () => {
-      nock("https://api.dnsimple.com")
-        .get("/v2/1010/pushes")
-        .reply(readFixtureAt("listPushes/success.http"));
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/pushes",
+        fetchMockResponse("listPushes/success.http")
+      );
 
       const response = await dnsimple.domains.listPushes(accountId);
 
@@ -61,19 +64,21 @@ describe("domains", () => {
     const attributes = { contact_id: 1 };
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .post("/v2/1010/pushes/200", attributes)
-        .reply(readFixtureAt("acceptPush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("acceptPush/success.http")
+      );
 
       await dnsimple.domains.acceptPush(accountId, pushId, attributes);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .post("/v2/1010/pushes/200")
-        .reply(readFixtureAt("acceptPush/success.http"));
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("acceptPush/success.http")
+      );
 
       const response = await dnsimple.domains.acceptPush(
         accountId,
@@ -90,19 +95,21 @@ describe("domains", () => {
     const pushId = 200;
 
     it("builds the correct request", async () => {
-      const scope = nock("https://api.dnsimple.com")
-        .delete("/v2/1010/pushes/200")
-        .reply(readFixtureAt("rejectPush/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("rejectPush/success.http")
+      );
 
       await dnsimple.domains.rejectPush(accountId, pushId);
 
-      expect(scope.isDone()).toBeTruthy();
+      expect(fetchMock.calls()).not.toEqual([]);
     });
 
     it("produces nothing", async () => {
-      nock("https://api.dnsimple.com")
-        .delete("/v2/1010/pushes/200")
-        .reply(readFixtureAt("rejectPush/success.http"));
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/pushes/200",
+        fetchMockResponse("rejectPush/success.http")
+      );
 
       const response = await dnsimple.domains.rejectPush(accountId, pushId);
 
