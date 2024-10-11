@@ -4,12 +4,12 @@
 
 ## 8.1.0
 
-- Getting the built-in `Fecther` default instance for the `DNSimple` class constructor has been made more robust to cover more scenarios where `fetch` might be present. 
+- Getting the built-in `Fecther` default instance for the `DNSimple` class constructor has been made more robust to cover more scenarios where `fetch` might be present.
 
-   Now it also throws an actionable user error when no built-in `Fetcher` instance can be produced so that end-users can provide an implementation through the constructor's `fetcher` parameter.   
+   Now it also throws an actionable user error when no built-in `Fetcher` instance can be produced so that end-users can provide an implementation through the constructor's `fetcher` parameter.  
 
 - Housekeeping:
-  - Development stack has been updated, including a migration of the test suite to Jest and `fetchMock` 
+  - Development stack has been updated, including a migration of the test suite to Jest and `fetchMock`
 
 ## 8.0.0
 
