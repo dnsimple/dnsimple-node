@@ -146,6 +146,8 @@ export class Domains {
   })();
 
   /**
+   * @deprecated since v9.0.0 - `DomainCollaborators` have been deprecated and will be removed in the next major version. Please use our Domain Access Control feature.
+   *
    * Lists collaborators for the domain.
    *
    * This API is paginated. Call `listCollaborators.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await listCollaborators.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
@@ -194,6 +196,8 @@ export class Domains {
   })();
 
   /**
+   * @deprecated since v9.0.0 - `DomainCollaborators` have been deprecated and will be removed in the next major version. Please use our Domain Access Control feature.
+   *
    * Adds a collaborator to the domain.
    *
    * At the time of the add, a collaborator may or may not have a DNSimple account. In case the collaborator doesn't have a DNSimple account, the system will invite them to register to DNSimple first and then to accept the collaboration invitation. In the other case, they are automatically added to the domain as collaborator. They can decide to reject the invitation later.
@@ -223,6 +227,8 @@ export class Domains {
   })();
 
   /**
+   * @deprecated since v9.0.0 - `DomainCollaborators` have been deprecated and will be removed in the next major version. Please use our Domain Access Control feature.
+   *
    * Removes a collaborator from the domain.
    *
    * DELETE /{account}/domains/{domain}/collaborators/{collaborator}
