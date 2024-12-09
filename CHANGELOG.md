@@ -2,6 +2,8 @@
 
 ## main
 
+- NEW: Add support for node 22.x
+
 ## 8.1.0
 
 - Getting the built-in `Fecther` default instance for the `DNSimple` class constructor has been made more robust to cover more scenarios where `fetch` might be present.
