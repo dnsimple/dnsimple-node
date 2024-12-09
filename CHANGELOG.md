@@ -4,6 +4,7 @@
 
 - NEW: Add support for node 22.x
 - CHANGED: `DomainCollaborators` have been deprecated and will be removed in the next major version. Please use our Domain Access Control feature.
+- CHANGED: Updated dependencies
 
 ## 8.1.0
 
