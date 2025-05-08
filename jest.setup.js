@@ -2,4 +2,5 @@ const fetchMock = require("fetch-mock").default;
 
 fetchMock.config.overwriteRoutes = true;
 
-afterEach(() => fetchMock.restore());
+beforeEach(() => fetchMock.mockGlobal());
+afterEach(() => fetchMock.hardReset());
