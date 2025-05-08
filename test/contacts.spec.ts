@@ -225,7 +225,9 @@ describe("contacts", () => {
 
       await dnsimple.contacts.updateContact(accountId, contactId, attributes);
 
-      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces a contact", async () => {

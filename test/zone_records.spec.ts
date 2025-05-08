@@ -181,7 +181,9 @@ describe("zone records", () => {
 
       await dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
 
-      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces a record", async () => {
@@ -220,7 +222,9 @@ describe("zone records", () => {
         attributes
       );
 
-      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces a record", async () => {

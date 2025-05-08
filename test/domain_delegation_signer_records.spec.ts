@@ -172,7 +172,9 @@ describe("domains", () => {
         attributes
       );
 
-      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces a delegation signer record", async () => {
