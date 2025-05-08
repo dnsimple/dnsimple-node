@@ -126,7 +126,7 @@ describe("registrar", () => {
         {}
       );
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
   });
 
@@ -139,7 +139,7 @@ describe("registrar", () => {
 
       await dnsimple.registrar.getDomainRenewal(1023, "example.com", 1694, {});
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
   });
 

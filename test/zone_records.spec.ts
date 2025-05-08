@@ -17,7 +17,7 @@ describe("zone records", () => {
 
       await dnsimple.zones.listZoneRecords(accountId, zoneId, { page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -28,7 +28,7 @@ describe("zone records", () => {
 
       await dnsimple.zones.listZoneRecords(accountId, zoneId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -41,7 +41,7 @@ describe("zone records", () => {
         sort: "name:asc",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports filter", async () => {
@@ -54,7 +54,7 @@ describe("zone records", () => {
         name_like: "example",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a record list", async () => {
@@ -181,7 +181,7 @@ describe("zone records", () => {
 
       await dnsimple.zones.createZoneRecord(accountId, zoneId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a record", async () => {
@@ -220,7 +220,7 @@ describe("zone records", () => {
         attributes
       );
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a record", async () => {
@@ -273,7 +273,7 @@ describe("zone records", () => {
 
         await dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId);
 
-        expect(fetchMock.calls()).not.toEqual([]);
+        expect(fetchMock.callHistory.called()).toBe(true);
       });
 
       it("produces nothing", async () => {

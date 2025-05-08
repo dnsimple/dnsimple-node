@@ -16,7 +16,7 @@ describe("contacts", () => {
 
       await dnsimple.contacts.listContacts(accountId, { page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -27,7 +27,7 @@ describe("contacts", () => {
 
       await dnsimple.contacts.listContacts(accountId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -38,7 +38,7 @@ describe("contacts", () => {
 
       await dnsimple.contacts.listContacts(accountId, { sort: "label:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports filter", async () => {
@@ -51,7 +51,7 @@ describe("contacts", () => {
         first_name_like: "example",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a contact list", async () => {
@@ -158,7 +158,7 @@ describe("contacts", () => {
 
       await dnsimple.contacts.createContact(accountId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
         JSON.stringify(expectedPayload)
       );
     });
@@ -225,7 +225,7 @@ describe("contacts", () => {
 
       await dnsimple.contacts.updateContact(accountId, contactId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a contact", async () => {
@@ -269,7 +269,7 @@ describe("contacts", () => {
 
       await dnsimple.contacts.deleteContact(accountId, contactId);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces nothing", async () => {

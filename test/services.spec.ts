@@ -13,7 +13,7 @@ describe("services", () => {
 
       await dnsimple.services.listServices({ page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -24,7 +24,7 @@ describe("services", () => {
 
       await dnsimple.services.listServices({ foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -35,7 +35,7 @@ describe("services", () => {
 
       await dnsimple.services.listServices({ sort: "sid:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a service list", async () => {

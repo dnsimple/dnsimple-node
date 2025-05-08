@@ -19,7 +19,7 @@ describe("certificates", () => {
         page: 1,
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -32,7 +32,7 @@ describe("certificates", () => {
         foo: "bar",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -45,7 +45,7 @@ describe("certificates", () => {
         sort: "expiration:asc",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a certificate list", async () => {

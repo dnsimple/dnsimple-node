@@ -13,7 +13,7 @@ describe("tlds", () => {
 
       await dnsimple.tlds.listTlds({ page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -24,7 +24,7 @@ describe("tlds", () => {
 
       await dnsimple.tlds.listTlds({ foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -35,7 +35,7 @@ describe("tlds", () => {
 
       await dnsimple.tlds.listTlds({ sort: "tld:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a tld list", async () => {

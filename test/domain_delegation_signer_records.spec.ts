@@ -19,7 +19,7 @@ describe("domains", () => {
         page: 1,
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -32,7 +32,7 @@ describe("domains", () => {
         foo: "bar",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -45,7 +45,7 @@ describe("domains", () => {
         sort: "created_at:asc",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces an delegation signer records list", async () => {
@@ -172,7 +172,7 @@ describe("domains", () => {
         attributes
       );
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(JSON.stringify(attributes));
     });
 
     it("produces a delegation signer record", async () => {
