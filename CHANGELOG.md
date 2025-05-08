@@ -3,7 +3,7 @@
 ## main
 
 - REMOVED: `DomainCollaborators` have been removed. Please use our Domain Access Control feature.
-- REMOVED: Dropped support for node 18.x
+- REMOVED: Dropped support for node 18.x. Upgraded NodeJS runtime requirements to Node JS 20 or higher
 - NEW: Add support for node 24.x
 - CHANGED: Updated dependencies
 

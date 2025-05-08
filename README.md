@@ -9,7 +9,7 @@ A Node.js client for the [DNSimple API v2](https://developer.dnsimple.com/v2/) w
 
 ## Requirements
 
-The [dnsimple-node](https://npmjs.org/package/dnsimple-node) package requires Node.js 18 or higher.
+The [dnsimple-node](https://npmjs.org/package/dnsimple-node) package requires Node.js 20 or higher.
 
 You must also have an activated DNSimple account to access the DNSimple API.
 
