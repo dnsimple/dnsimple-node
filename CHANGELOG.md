@@ -2,6 +2,9 @@
 
 ## main
 
+- REMOVED: `DomainCollaborators` have been removed. Please use our Domain Access Control feature.
+- CHANGED: Updated dependencies
+
 ## 9.0.0
 
 - NEW: Add support for node 22.x
