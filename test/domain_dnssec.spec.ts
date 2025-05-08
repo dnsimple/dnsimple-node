@@ -16,7 +16,7 @@ describe("domains", () => {
 
       await dnsimple.domains.enableDnssec(accountId, domainId);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces an response", async () => {
@@ -62,7 +62,7 @@ describe("domains", () => {
 
       await dnsimple.domains.getDnssec(accountId, domainId);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces an response", async () => {

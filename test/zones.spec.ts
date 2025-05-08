@@ -64,7 +64,7 @@ describe("zones", () => {
 
       await dnsimple.zones.listZones(accountId, { page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -75,7 +75,7 @@ describe("zones", () => {
 
       await dnsimple.zones.listZones(accountId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -86,7 +86,7 @@ describe("zones", () => {
 
       await dnsimple.zones.listZones(accountId, { sort: "name:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports filter", async () => {
@@ -97,7 +97,7 @@ describe("zones", () => {
 
       await dnsimple.zones.listZones(accountId, { name_like: "example" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a zone list", async () => {

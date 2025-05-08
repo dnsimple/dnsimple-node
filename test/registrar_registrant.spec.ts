@@ -68,7 +68,7 @@ describe("registrant", () => {
 
       await dnsimple.registrar.deleteRegistrantChange(accountId, 101);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
   });
 

@@ -17,7 +17,9 @@ describe("domains", () => {
 
       await dnsimple.domains.initiatePush(accountId, domainId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces a push result", async () => {
@@ -71,7 +73,9 @@ describe("domains", () => {
 
       await dnsimple.domains.acceptPush(accountId, pushId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces nothing", async () => {
@@ -102,7 +106,7 @@ describe("domains", () => {
 
       await dnsimple.domains.rejectPush(accountId, pushId);
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces nothing", async () => {

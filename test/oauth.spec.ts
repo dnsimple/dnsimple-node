@@ -33,7 +33,7 @@ describe("oauth", () => {
         state,
       });
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
         JSON.stringify(expectedPayload)
       );
     });
@@ -83,7 +83,7 @@ describe("oauth", () => {
           redirectUri,
         });
 
-        expect(fetchMock.calls()[0][1]!.body).toEqual(
+        expect(fetchMock.callHistory.lastCall().options.body).toEqual(
           JSON.stringify(expectedPayload)
         );
       });

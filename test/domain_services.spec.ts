@@ -16,7 +16,7 @@ describe("domain services", () => {
 
       await dnsimple.services.applyService(accountId, domainId, { page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -27,7 +27,7 @@ describe("domain services", () => {
 
       await dnsimple.services.applyService(accountId, domainId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -40,7 +40,7 @@ describe("domain services", () => {
         sort: "name:asc",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a service list", async () => {

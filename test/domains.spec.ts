@@ -16,7 +16,7 @@ describe("domains", () => {
 
       await dnsimple.domains.listDomains(accountId, { page: 1 });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -27,7 +27,7 @@ describe("domains", () => {
 
       await dnsimple.domains.listDomains(accountId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -38,7 +38,7 @@ describe("domains", () => {
 
       await dnsimple.domains.listDomains(accountId, { sort: "expiration:asc" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports filter", async () => {
@@ -49,7 +49,7 @@ describe("domains", () => {
 
       await dnsimple.domains.listDomains(accountId, { name_like: "example" });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a domain list", async () => {
@@ -159,7 +159,9 @@ describe("domains", () => {
 
       await dnsimple.domains.createDomain(accountId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(JSON.stringify(attributes));
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
     });
 
     it("produces a domain", async () => {

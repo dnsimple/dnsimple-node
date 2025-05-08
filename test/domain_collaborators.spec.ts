@@ -18,7 +18,7 @@ describe("collaborators", () => {
         page: 1,
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -31,7 +31,7 @@ describe("collaborators", () => {
         foo: "bar",
       });
 
-      expect(fetchMock.calls()).not.toEqual([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a collaborators list", async () => {

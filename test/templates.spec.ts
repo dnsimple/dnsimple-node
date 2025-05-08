@@ -16,7 +16,7 @@ describe("templates", () => {
 
       await dnsimple.templates.listTemplates(accountId, { page: 1 });
 
-      expect(fetchMock.calls()).not.toBe([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -27,7 +27,7 @@ describe("templates", () => {
 
       await dnsimple.templates.listTemplates(accountId, { foo: "bar" });
 
-      expect(fetchMock.calls()).not.toBe([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -38,7 +38,7 @@ describe("templates", () => {
 
       await dnsimple.templates.listTemplates(accountId, { sort: "name:asc" });
 
-      expect(fetchMock.calls()).not.toBe([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a template list", async () => {
@@ -149,7 +149,7 @@ describe("templates", () => {
 
       await dnsimple.templates.createTemplate(accountId, attributes);
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
         JSON.stringify(expectedPayload)
       );
     });
@@ -187,7 +187,7 @@ describe("templates", () => {
         attributes
       );
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
         JSON.stringify(expectedPayload)
       );
     });
@@ -264,7 +264,7 @@ describe("templates", () => {
 
 describe("template records", () => {
   afterEach(() => {
-    fetchMock.restore();
+    fetchMock.hardReset();
   });
 
   describe("#listTemplateRecords", () => {
@@ -281,7 +281,7 @@ describe("template records", () => {
         page: 1,
       });
 
-      expect(fetchMock.calls()).not.toBe([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports extra request options", async () => {
@@ -294,7 +294,7 @@ describe("template records", () => {
         foo: "bar",
       });
 
-      expect(fetchMock.calls()).not.toBe([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("supports sorting", async () => {
@@ -307,7 +307,7 @@ describe("template records", () => {
         sort: "name:asc",
       });
 
-      expect(fetchMock.calls()).not.toBe([]);
+      expect(fetchMock.callHistory.called()).toBe(true);
     });
 
     it("produces a template list", async () => {
@@ -445,7 +445,7 @@ describe("template records", () => {
         attributes
       );
 
-      expect(fetchMock.calls()[0][1]!.body).toEqual(
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
         JSON.stringify(expectedPayload)
       );
     });
