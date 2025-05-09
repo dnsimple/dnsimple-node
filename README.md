@@ -9,7 +9,7 @@ A Node.js client for the [DNSimple API v2](https://developer.dnsimple.com/v2/) w
 
 ## Requirements
 
-The [dnsimple-node](https://npmjs.org/package/dnsimple-node) package requires Node.js 18 or higher.
+The [dnsimple-node](https://npmjs.org/package/dnsimple-node) package requires Node.js 20 or higher.
 
 You must also have an activated DNSimple account to access the DNSimple API.
 
@@ -114,4 +114,4 @@ The value you provide will be appended to the default `User-Agent` the client us
 
 ## License
 
-Copyright © 2016&ndash;2024 DNSimple Corporation. This is Free Software distributed under the MIT license.
+Copyright © 2016&ndash;2025 DNSimple Corporation. This is Free Software distributed under the MIT license.
