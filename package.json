@@ -27,7 +27,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
+    "@jest/globals": "^30.0.3",
     "@types/jest": "^29.5.13",
     "fetch-mock": "^12.5.2",
     "jest": "^29.7.0",
