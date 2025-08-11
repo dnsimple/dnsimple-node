@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run markdownlint-cli
         uses: nosborn/github-action-markdown-cli@v3.5.0
         with:
@@ -32,7 +32,7 @@ jobs:
         node-version: [20.x, 22.x, 24.x]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
