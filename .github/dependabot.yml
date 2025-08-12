@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: monthly
+      interval: weekly
     open-pull-requests-limit: 10
     labels:
       - task
@@ -15,13 +15,10 @@ updates:
       # We only bump this when we want to use newer TypeScript language features in our codebase for development. This does not impact end users as the distributed package contains compiled JavaScript, not TypeScript.
       - dependency-name: 'typescript'
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: "
     schedule:
-      interval: "daily"
-      time: '12:00'
-    open-pull-requests-limit: 10
+      interval: weekly
     labels:
       - task
       - dependencies
-      - automerge
