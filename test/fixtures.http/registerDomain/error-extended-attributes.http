@@ -15,4 +15,4 @@ X-Frame-Options: DENY
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
-{"message":"Validation failed","errors":{"address1":["can't be blank"],"city":["can't be blank"],"country":["can't be blank"],"email":["can't be blank","is an invalid email address"],"first_name":["can't be blank"],"last_name":["can't be blank"],"phone":["can't be blank","is probably not a phone number"],"postal_code":["can't be blank"],"state_province":["can't be blank"]}}
+{"message":"Invalid extended attributes","errors":{"x-accept-ssl-requirement": "it's required", "x-id-number": "invalid number"}}
