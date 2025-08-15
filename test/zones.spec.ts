@@ -24,8 +24,8 @@ describe("zones", () => {
       expect(zone.account_id).toBe(1010);
       expect(zone.name).toBe("example.com");
       expect(zone.reverse).toBe(false);
-      expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
-      expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
+      expect(zone.created_at).toBe("2022-09-28T04:45:24Z");
+      expect(zone.updated_at).toBe("2023-07-06T11:19:48Z");
     });
   });
 
@@ -48,8 +48,8 @@ describe("zones", () => {
       expect(zone.account_id).toBe(1010);
       expect(zone.name).toBe("example.com");
       expect(zone.reverse).toBe(false);
-      expect(zone.created_at).toBe("2015-04-23T07:40:03Z");
-      expect(zone.updated_at).toBe("2015-04-23T07:40:03Z");
+      expect(zone.created_at).toBe("2022-09-28T04:45:24Z");
+      expect(zone.updated_at).toBe("2023-08-08T04:19:52Z");
     });
   });
 
