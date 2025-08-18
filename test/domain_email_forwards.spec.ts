@@ -60,6 +60,7 @@ describe("domains", () => {
       );
 
       expect(response.data.length).toBe(1);
+      expect(response.data[0].active).toBe(true);
     });
 
     it("exposes the pagination info", async () => {
@@ -134,6 +135,7 @@ describe("domains", () => {
       expect(emailForward.to).toBe("example@example.com");
       expect(emailForward.alias_email).toBe("example@dnsimple.xyz");
       expect(emailForward.destination_email).toBe("example@example.com");
+      expect(emailForward.active).toBe(true);
       expect(emailForward.created_at).toBe("2021-01-25T13:54:40Z");
       expect(emailForward.updated_at).toBe("2021-01-25T13:54:40Z");
     });
@@ -187,6 +189,7 @@ describe("domains", () => {
       );
 
       expect(response.data.id).toBe(41872);
+      expect(response.data.active).toBe(true);
     });
   });
 
