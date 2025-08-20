@@ -131,8 +131,6 @@ describe("domains", () => {
       const emailForward = response.data;
       expect(emailForward.id).toBe(41872);
       expect(emailForward.domain_id).toBe(235146);
-      expect(emailForward.from).toBe("example@dnsimple.xyz");
-      expect(emailForward.to).toBe("example@example.com");
       expect(emailForward.alias_email).toBe("example@dnsimple.xyz");
       expect(emailForward.destination_email).toBe("example@example.com");
       expect(emailForward.active).toBe(true);

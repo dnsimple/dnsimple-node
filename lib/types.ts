@@ -89,8 +89,6 @@ export type EmailForward = {
   domain_id: number;
   alias_email: string;
   destination_email: string;
-  from: string;
-  to: string;
   active: boolean;
   created_at: string;
   updated_at: string;
