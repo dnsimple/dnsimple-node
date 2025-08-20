@@ -16,7 +16,7 @@ updates:
       - dependency-name: 'typescript'
 
   - package-ecosystem: github-actions
-    directory: "
+    directory: /
     schedule:
       interval: weekly
     labels:
