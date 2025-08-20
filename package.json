@@ -32,7 +32,7 @@
     "fetch-mock": "^12.5.2",
     "jest": "^30.0.5",
     "prettier": "3.6.2",
-    "prettier-plugin-organize-imports": "4.1.0",
+    "prettier-plugin-organize-imports": "4.2.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
   },
