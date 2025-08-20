@@ -2,6 +2,12 @@
 
 ## main
 
+## 11.0.0
+
+- REMOVED: Remove from and to from Email Forward
+- CHANGED: Add active attribute to Email Forward
+- CHANGED: Updated dependencies
+
 ## 10.0.0
 
 - REMOVED: `DomainCollaborators` have been removed. Please use our Domain Access Control feature.
