@@ -112,6 +112,14 @@ var client = require('dnsimple')({
 The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
 
 
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for details.
+
 ## License
 
 Copyright (c) 2016-2020 DNSimple Corporation. This is Free Software distributed under the MIT license.
