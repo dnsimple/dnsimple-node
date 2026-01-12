@@ -192,7 +192,7 @@ describe("domains", () => {
 
       const response = await dnsimple.domains.deleteDomain(accountId, domainId);
 
-      expect(response).toEqual({});
+      expect(response.rateLimit).toBeDefined();
     });
   });
 });

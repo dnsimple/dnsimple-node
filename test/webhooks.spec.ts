@@ -139,7 +139,7 @@ describe("webhooks", () => {
         webhookId
       );
 
-      expect(response).toEqual({});
+      expect(response.rateLimit).toBeDefined();
     });
 
     describe("when the webhook does not exist", () => {

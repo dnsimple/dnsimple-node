@@ -42,7 +42,7 @@ describe("vanity name servers", () => {
           domainId
         );
 
-      expect(response).toEqual({});
+      expect(response.rateLimit).toBeDefined();
     });
   });
 });

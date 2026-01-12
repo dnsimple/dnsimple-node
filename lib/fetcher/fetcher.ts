@@ -1,6 +1,15 @@
 /**
+ * Rate limit headers returned by the DNSimple API.
+ */
+export type RateLimitHeaders = {
+  limit: number | null;
+  remaining: number | null;
+  reset: number | null;
+};
+
+/**
  * A function that makes an HTTP request. It's responsible for throwing {@link TimeoutError} and aborting the request on {@param params.timeout}.
- * It should return the response status and full body as a string. It should not throw on any status, even if 4xx or 5xx.
+ * It should return the response status, full body as a string, and rate limit headers. It should not throw on any status, even if 4xx or 5xx.
  * It can decide to implement retries as appropriate. The default fetcher currently does not implement any retry strategy.
  */
 export type Fetcher = (params: {
@@ -12,6 +21,7 @@ export type Fetcher = (params: {
 }) => Promise<{
   status: number;
   body: string;
+  rateLimit: RateLimitHeaders;
 }>;
 
 let fetcherImports: {

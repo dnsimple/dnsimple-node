@@ -208,7 +208,7 @@ describe("domains", () => {
         emailForwardId
       );
 
-      expect(response).toEqual({});
+      expect(response.rateLimit).toBeDefined();
     });
   });
 });

@@ -1,3 +1,9 @@
+export type RateLimit = {
+  limit: number | null;
+  remaining: number | null;
+  reset: number | null;
+};
+
 export type Account = {
   id: number;
   email: string;

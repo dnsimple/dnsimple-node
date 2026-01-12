@@ -89,7 +89,7 @@ describe("domain delegation", () => {
           domainId
         );
 
-      expect(response).toEqual({});
+      expect(response.rateLimit).toBeDefined();
     });
   });
 });

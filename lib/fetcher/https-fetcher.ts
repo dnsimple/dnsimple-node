@@ -1,7 +1,26 @@
+import * as http from "http";
 import * as https from "https";
 import { URL } from "url";
 import { TimeoutError } from "../main";
-import type { Fetcher } from "./fetcher";
+import type { Fetcher, RateLimitHeaders } from "./fetcher";
+
+function parseRateLimitHeaders(
+  headers: http.IncomingHttpHeaders
+): RateLimitHeaders {
+  const parseHeader = (name: string): number | null => {
+    const value = headers[name];
+    if (value === undefined) return null;
+    const strValue = Array.isArray(value) ? value[0] : value;
+    const parsed = parseInt(strValue, 10);
+    return isNaN(parsed) ? null : parsed;
+  };
+
+  return {
+    limit: parseHeader("x-ratelimit-limit"),
+    remaining: parseHeader("x-ratelimit-remaining"),
+    reset: parseHeader("x-ratelimit-reset"),
+  };
+}
 
 const httpsFetcher: Fetcher = (params: {
   method: string;
@@ -9,7 +28,7 @@ const httpsFetcher: Fetcher = (params: {
   headers: { [name: string]: string };
   timeout: number;
   body?: string;
-}): Promise<{ status: number; body: string }> => {
+}) => {
   return new Promise((resolve, reject) => {
     const urlObj = new URL(params.url);
     const options: https.RequestOptions = {
@@ -27,6 +46,7 @@ const httpsFetcher: Fetcher = (params: {
           resolve({
             status: res.statusCode || 500, // Fallback to 500 if statusCode is undefined
             body: body,
+            rateLimit: parseRateLimitHeaders(res.headers),
           });
         });
     });

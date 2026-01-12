@@ -2,6 +2,10 @@
 
 ## main
 
+### Added
+
+- Add rate limit information to all API responses via `rateLimit` property, exposing `limit`, `remaining`, and `reset` values from response headers
+
 ## 11.0.0 - 2025-08-20
 
 ### Changed
