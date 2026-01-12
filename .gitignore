@@ -1,4 +1,8 @@
-/dist/
-/package-lock.json
+# Local configs
+.claude/
+
+# Local files
+dist/
 node_modules/
 npm-debug.log
+package-lock.json

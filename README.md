@@ -60,6 +60,38 @@ TOKEN=[TOKEN VALUE GOES HERE] node test.js
 
 Take a look at [https://github.com/dnsimple/hello-domains-node](https://github.com/dnsimple/hello-domains-node) for an example app that authorizes via OAuth and displays your domain list.
 
+## Configuration
+
+### Sandbox Environment
+
+We highly recommend testing against our [sandbox environment](https://developer.dnsimple.com/sandbox/) before using our production environment. This will allow you to avoid real purchases, live charges on your credit card, and reduce the chance of your running up against rate limits.
+
+The client supports both the production and sandbox environment. To switch to sandbox pass the sandbox API host using the `baseUrl` property when you construct the client:
+
+```javascript
+const { DNSimple } = require("dnsimple");
+const client = new DNSimple({
+  baseUrl: "https://api.sandbox.dnsimple.com",
+  accessToken: process.env.TOKEN,
+});
+```
+
+You will need to ensure that you are using an access token created in the sandbox environment. Production tokens will *not* work in the sandbox environment.
+
+### Setting a custom `User-Agent` header
+
+You customize the `User-Agent` header for the calls made to the DNSimple API:
+
+```javascript
+const { DNSimple } = require("dnsimple");
+const client = new DNSimple({
+  userAgent: "my-app",
+  accessToken: process.env.TOKEN,
+});
+```
+
+The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
+
 ## Pagination
 
 There are helper submethods available on API methods that are paginated to assist with fetching items across all pages.
@@ -82,36 +114,14 @@ const certificates: Array<Certificate> = await client.certificates.listCertifica
 console.log(certificates.length);
 ```
 
-## Sandbox Environment
+## Contributing
 
-We highly recommend testing against our [sandbox environment](https://developer.dnsimple.com/sandbox/) before using our production environment. This will allow you to avoid real purchases, live charges on your credit card, and reduce the chance of your running up against rate limits.
+Contributions are welcome! Please feel free to submit issues and pull requests. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-The client supports both the production and sandbox environment. To switch to sandbox pass the sandbox API host using the `baseUrl` property when you construct the client:
+## Changelog
 
-```javascript
-const { DNSimple } = require("dnsimple");
-const client = new DNSimple({
-  baseUrl: "https://api.sandbox.dnsimple.com",
-  accessToken: process.env.TOKEN,
-});
-```
-
-You will need to ensure that you are using an access token created in the sandbox environment. Production tokens will *not* work in the sandbox environment.
-
-## Setting a custom `User-Agent` header
-
-You customize the `User-Agent` header for the calls made to the DNSimple API:
-
-```javascript
-const { DNSimple } = require("dnsimple");
-const client = new DNSimple({
-  userAgent: "my-app",
-  accessToken: process.env.TOKEN,
-});
-```
-
-The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
+See [CHANGELOG.md](CHANGELOG.md) for details.
 
 ## License
 
-Copyright © 2016&ndash;2025 DNSimple Corporation. This is Free Software distributed under the MIT license.
+Copyright (c) 2016-2026 DNSimple Corporation. This is Free Software distributed under the [MIT License](LICENSE.txt).
