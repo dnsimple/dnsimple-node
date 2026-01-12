@@ -2,6 +2,10 @@
 
 ## main
 
+### Removed
+
+- Removed deprecated `getDomainPremiumPrice`. Use `getDomainPrices` instead.
+
 ## 11.0.0 - 2025-08-20
 
 ### Changed
