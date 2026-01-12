@@ -7,7 +7,6 @@ This document describes the steps to release a new version of DNSimple/Node.
 - You have commit access to the repository
 - You have push access to the repository
 - You have a GPG key configured for signing tags
-- You have permission to publish to npm
 
 ## Release process
 
@@ -27,22 +26,12 @@ This document describes the steps to release a new version of DNSimple/Node.
    npm test
    ```
 
-3. **Update the version files** with the new version
-
-   Edit `package.json`:
+3. **Set the version** in `package.json`
 
    ```json
    {
-     "name": "dnsimple",
      "version": "$VERSION",
-     ...
    }
-   ```
-
-   Edit `lib/dnsimple.js`:
-
-   ```javascript
-   Dnsimple.VERSION = '$VERSION';
    ```
 
 4. **Run tests** again and confirm they pass
@@ -55,36 +44,25 @@ This document describes the steps to release a new version of DNSimple/Node.
 
    Finalize the `## main` section in `CHANGELOG.md` assigning the version.
 
-6. **Commit the new version**
+6. **Commit and push the changes**
 
    ```shell
    git commit -a -m "Release $VERSION"
-   ```
-
-7. **Push the changes**
-
-   ```shell
    git push origin main
    ```
 
-8. **Wait for CI to complete**
+7. **Wait for CI to complete**
 
-9. **Create a signed tag**
+8. **Create a signed tag**
 
    ```shell
    git tag -a v$VERSION -s -m "Release $VERSION"
    git push origin --tags
    ```
 
-10. **Publish to npm**
-
-    ```shell
-    npm login
-    npm publish
-    ```
+GitHub Actions will take it from here and publish to npm.
 
 ## Post-release
 
 - Verify the new version appears on [npm](https://www.npmjs.com/package/dnsimple)
 - Verify the GitHub release was created
-- Announce the release if necessary
