@@ -487,32 +487,6 @@ export class Registrar {
   })();
 
   /**
-   * Gets the whois privacy status for an existing domain.
-   *
-   * GET /{account}/registrar/domains/{domain}/whois_privacy
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#getWhoisPrivacy
-   *
-   * @param account The account id
-   * @param domain The domain name or id
-   * @param params Query parameters
-   */
-  getWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacy }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
    * Enables the WHOIS privacy for the domain.
    *
    * Note that if the WHOIS privacy is not purchased for the domain, enabling WHOIS privacy will cause the service to be purchased for a period of 1 year. If WHOIS privacy was previously purchased and disabled, then calling this will enable the WHOIS privacy.
@@ -560,34 +534,6 @@ export class Registrar {
       this._client.request(
         "DELETE",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
-   * Renews the WHOIS privacy for the domain.
-   *
-   * Note that if the WHOIS privacy was never purchased for the domain or if there is another renewal order in progress, renewing WHOIS privacy will return an error.
-   *
-   * POST /{account}/registrar/domains/{domain}/whois_privacy/renewals
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#renewWhoisPrivacy
-   *
-   * @param account The account id
-   * @param domain The domain name or id
-   * @param params Query parameters
-   */
-  renewWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacyRenewal }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
         null,
         params
       );

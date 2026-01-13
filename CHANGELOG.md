@@ -2,6 +2,11 @@
 
 ## main
 
+### Removed
+
+- Removed deprecated `getWhoisPrivacy` (dnsimple/dnsimple-developer#919)
+- Removed deprecated `renewWhoisPrivacy` (dnsimple/dnsimple-developer#919)
+
 ## 11.0.0 - 2025-08-20
 
 ### Changed
