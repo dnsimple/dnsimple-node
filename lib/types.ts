@@ -262,17 +262,6 @@ export type WhoisPrivacy = {
   updated_at: string;
 };
 
-export type WhoisPrivacyRenewal = {
-  id: number;
-  domain_id: number;
-  whois_privacy_id: number;
-  state: string;
-  enabled: boolean;
-  expires_on: string;
-  created_at: string;
-  updated_at: string;
-};
-
 export type PrimaryServer = {
   id: number;
   account_id: number;
