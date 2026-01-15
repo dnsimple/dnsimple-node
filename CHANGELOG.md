@@ -2,8 +2,13 @@
 
 ## main
 
+### Changed
+
+- `ZoneRecord.type`, `TemplateRecord.type`, and `createZoneRecord` type parameter changed from enum to `string`
+
 ### Removed
 
+- Removed `ZoneRecordType` and `TemplateRecordType` type enumerations
 - Removed deprecated `getWhoisPrivacy` (dnsimple/dnsimple-developer#919)
 - Removed deprecated `renewWhoisPrivacy` (dnsimple/dnsimple-developer#919)
 
