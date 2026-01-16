@@ -32,37 +32,6 @@ export class Registrar {
   })();
 
   /**
-   * Deprecated in favor of getDomainPrices.
-   *
-   * Retrieves the premium price for a premium domain.
-   *
-   * Please note that a premium price can be different for registration, renewal, transfer. By default this endpoint returns the premium price for registration. If you need to check a different price, you should specify it with the action param.
-   *
-   * GET /{account}/registrar/domains/{domain}/premium_price
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainPremiumPrice
-   *
-   * @param account The account id
-   * @param domain The domain name or id
-   * @param params Query parameters
-   * @param params.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
-   */
-  getDomainPremiumPrice = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & { action?: string } = {}
-    ): Promise<{ data: types.DomainPremiumPrice }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/premium_price`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
    * Retrieve domain prices.
    *
    * GET /{account}/registrar/domains/{domain}/prices

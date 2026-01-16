@@ -8,6 +8,7 @@
 
 ### Removed
 
+- Removed deprecated `getDomainPremiumPrice`. Use `getDomainPrices` instead. (dnsimple/dnsimple-developer#916)
 - Removed `ZoneRecordType` and `TemplateRecordType` type enumerations
 - Removed deprecated `getWhoisPrivacy` (dnsimple/dnsimple-developer#919)
 - Removed deprecated `renewWhoisPrivacy` (dnsimple/dnsimple-developer#919)

@@ -203,8 +203,6 @@ export type DomainCheckResult = {
   premium: boolean;
 };
 
-export type DomainPremiumPrice = { premium_price: string; action: string };
-
 export type DomainPrices = {
   domain: string;
   premium: boolean;
