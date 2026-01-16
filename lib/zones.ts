@@ -308,7 +308,7 @@ export class Zones {
       zone: string,
       data: Partial<{
         name: string;
-        type: types.ZoneRecordType;
+        type: string;
         content: string;
         ttl: number;
         priority: number;

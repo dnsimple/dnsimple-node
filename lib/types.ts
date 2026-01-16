@@ -289,27 +289,6 @@ export type ZoneFile = { zone: string };
 
 export type ZoneDistribution = { distributed: boolean };
 
-export type ZoneRecordType =
-  | "A"
-  | "AAAA"
-  | "ALIAS"
-  | "CAA"
-  | "CNAME"
-  | "DNSKEY"
-  | "DS"
-  | "HINFO"
-  | "MX"
-  | "NAPTR"
-  | "NS"
-  | "POOL"
-  | "PTR"
-  | "SOA"
-  | "SPF"
-  | "SRV"
-  | "SSHFP"
-  | "TXT"
-  | "URL";
-
 export type ZoneRecordRegion =
   | "global"
   | "SV1"
@@ -329,7 +308,7 @@ export type ZoneRecord = {
   content: string;
   ttl: number;
   priority?: number | null;
-  type: ZoneRecordType;
+  type: string;
   regions: Array<ZoneRecordRegion>;
   system_record: boolean;
   created_at: string;
@@ -389,27 +368,6 @@ export type Template = {
   updated_at: string;
 };
 
-export type TemplateRecordType =
-  | "A"
-  | "AAAA"
-  | "ALIAS"
-  | "CAA"
-  | "CNAME"
-  | "DNSKEY"
-  | "DS"
-  | "HINFO"
-  | "MX"
-  | "NAPTR"
-  | "NS"
-  | "POOL"
-  | "PTR"
-  | "SOA"
-  | "SPF"
-  | "SRV"
-  | "SSHFP"
-  | "TXT"
-  | "URL";
-
 export type TemplateRecord = {
   id: number;
   template_id: number;
@@ -417,7 +375,7 @@ export type TemplateRecord = {
   content: string;
   ttl: number;
   priority: number | null;
-  type: TemplateRecordType;
+  type: string;
   created_at: string;
   updated_at: string;
 };
