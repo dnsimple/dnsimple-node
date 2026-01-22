@@ -6,6 +6,17 @@
 
 - Add rate limit information to all API responses via `rateLimit` property, exposing `limit`, `remaining`, and `reset` values from response headers
 
+### Changed
+
+- `ZoneRecord.type`, `TemplateRecord.type`, and `createZoneRecord` type parameter changed from enum to `string`
+
+### Removed
+
+- Removed deprecated `getDomainPremiumPrice`. Use `getDomainPrices` instead. (dnsimple/dnsimple-developer#916)
+- Removed `ZoneRecordType` and `TemplateRecordType` type enumerations
+- Removed deprecated `getWhoisPrivacy` (dnsimple/dnsimple-developer#919)
+- Removed deprecated `renewWhoisPrivacy` (dnsimple/dnsimple-developer#919)
+
 ## 11.0.0 - 2025-08-20
 
 ### Changed

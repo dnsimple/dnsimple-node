@@ -32,37 +32,6 @@ export class Registrar {
   })();
 
   /**
-   * Deprecated in favor of getDomainPrices.
-   *
-   * Retrieves the premium price for a premium domain.
-   *
-   * Please note that a premium price can be different for registration, renewal, transfer. By default this endpoint returns the premium price for registration. If you need to check a different price, you should specify it with the action param.
-   *
-   * GET /{account}/registrar/domains/{domain}/premium_price
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainPremiumPrice
-   *
-   * @param account The account id
-   * @param domain The domain name or id
-   * @param params Query parameters
-   * @param params.action Optional action between "registration", "renewal", and "transfer". If omitted, it defaults to "registration".
-   */
-  getDomainPremiumPrice = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & { action?: string } = {}
-    ): Promise<{ data: types.DomainPremiumPrice }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/premium_price`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
    * Retrieve domain prices.
    *
    * GET /{account}/registrar/domains/{domain}/prices
@@ -487,32 +456,6 @@ export class Registrar {
   })();
 
   /**
-   * Gets the whois privacy status for an existing domain.
-   *
-   * GET /{account}/registrar/domains/{domain}/whois_privacy
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#getWhoisPrivacy
-   *
-   * @param account The account id
-   * @param domain The domain name or id
-   * @param params Query parameters
-   */
-  getWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacy }> =>
-      this._client.request(
-        "GET",
-        `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
    * Enables the WHOIS privacy for the domain.
    *
    * Note that if the WHOIS privacy is not purchased for the domain, enabling WHOIS privacy will cause the service to be purchased for a period of 1 year. If WHOIS privacy was previously purchased and disabled, then calling this will enable the WHOIS privacy.
@@ -560,34 +503,6 @@ export class Registrar {
       this._client.request(
         "DELETE",
         `/${account}/registrar/domains/${domain}/whois_privacy`,
-        null,
-        params
-      );
-    return method;
-  })();
-
-  /**
-   * Renews the WHOIS privacy for the domain.
-   *
-   * Note that if the WHOIS privacy was never purchased for the domain or if there is another renewal order in progress, renewing WHOIS privacy will return an error.
-   *
-   * POST /{account}/registrar/domains/{domain}/whois_privacy/renewals
-   *
-   * @see https://developer.dnsimple.com/v2/registrar/whois-privacy/#renewWhoisPrivacy
-   *
-   * @param account The account id
-   * @param domain The domain name or id
-   * @param params Query parameters
-   */
-  renewWhoisPrivacy = (() => {
-    const method = (
-      account: number,
-      domain: string,
-      params: QueryParams & {} = {}
-    ): Promise<{ data: types.WhoisPrivacyRenewal }> =>
-      this._client.request(
-        "POST",
-        `/${account}/registrar/domains/${domain}/whois_privacy/renewals`,
         null,
         params
       );

@@ -29,48 +29,6 @@ describe("registrar", () => {
     });
   });
 
-  describe("#getDomainPremiumPrice", () => {
-    describe("when the domain has a premium price", () => {
-      const domainId = "ruby.codes";
-
-      it("produces a premium price result", async () => {
-        fetchMock.get(
-          "https://api.dnsimple.com/v2/1010/registrar/domains/ruby.codes/premium_price",
-          responseFromFixture("getDomainPremiumPrice/success.http")
-        );
-
-        const response = await dnsimple.registrar.getDomainPremiumPrice(
-          accountId,
-          domainId
-        );
-
-        const premiumPriceResult = response.data;
-        expect(premiumPriceResult.premium_price).toEqual("109.00");
-        expect(premiumPriceResult.action).toEqual("registration");
-      });
-    });
-
-    describe("when the domain is not a premium domain", () => {
-      const domainId = "example.com";
-
-      it("produces an error", async () => {
-        fetchMock.get(
-          "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/premium_price",
-          responseFromFixture("getDomainPremiumPrice/failure.http")
-        );
-
-        try {
-          await dnsimple.registrar.getDomainPremiumPrice(accountId, domainId);
-        } catch (error) {
-          expect(error).toBeInstanceOf(ClientError);
-          expect(error.data.message).toBe(
-            "`example.com` is not a premium domain for registration"
-          );
-        }
-      });
-    });
-  });
-
   describe("#getDomainPrices", () => {
     describe("when the TLD is supported", () => {
       it("produces a domain prices result", async () => {
