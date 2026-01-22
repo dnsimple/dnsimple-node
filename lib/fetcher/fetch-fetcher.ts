@@ -10,9 +10,9 @@ function parseRateLimitHeaders(headers: Headers): RateLimitHeaders {
   };
 
   return {
-    limit: parseHeader("X-RateLimit-Limit"),
-    remaining: parseHeader("X-RateLimit-Remaining"),
-    reset: parseHeader("X-RateLimit-Reset"),
+    limit: parseHeader("x-ratelimit-limit"),
+    remaining: parseHeader("x-ratelimit-remaining"),
+    reset: parseHeader("x-ratelimit-reset"),
   };
 }
 
