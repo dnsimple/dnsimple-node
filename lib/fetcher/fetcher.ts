@@ -1,11 +1,4 @@
-/**
- * Rate limit headers returned by the DNSimple API.
- */
-export type RateLimitHeaders = {
-  limit: number | null;
-  remaining: number | null;
-  reset: number | null;
-};
+import type { RateLimitHeaders } from "../types";
 
 /**
  * A function that makes an HTTP request. It's responsible for throwing {@link TimeoutError} and aborting the request on {@param params.timeout}.

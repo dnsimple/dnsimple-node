@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { ClientError, MethodNotAllowedError, RateLimit } from "../lib/main";
+import { ClientError, MethodNotAllowedError, RateLimitHeaders } from "../lib/main";
 import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -14,7 +14,7 @@ describe("rate limit", () => {
 
       const response = await dnsimple.domains.listDomains(1010);
 
-      const rateLimit = response.rateLimit as RateLimit;
+      const rateLimit = response.rateLimit as RateLimitHeaders;
       expect(rateLimit).toBeDefined();
       expect(rateLimit.limit).toBe(2400);
       expect(rateLimit.remaining).toBe(2399);

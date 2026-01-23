@@ -1,4 +1,4 @@
-export type RateLimit = {
+export type RateLimitHeaders = {
   limit: number | null;
   remaining: number | null;
   reset: number | null;

@@ -2,7 +2,8 @@ import * as http from "http";
 import * as https from "https";
 import { URL } from "url";
 import { TimeoutError } from "../main";
-import type { Fetcher, RateLimitHeaders } from "./fetcher";
+import type { RateLimitHeaders } from "../types";
+import type { Fetcher } from "./fetcher";
 
 function parseRateLimitHeaders(
   headers: http.IncomingHttpHeaders
