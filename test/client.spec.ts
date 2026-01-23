@@ -1,5 +1,9 @@
 import fetchMock from "fetch-mock";
-import { ClientError, MethodNotAllowedError, RateLimitHeaders } from "../lib/main";
+import {
+  ClientError,
+  MethodNotAllowedError,
+  RateLimitHeaders,
+} from "../lib/main";
 import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
