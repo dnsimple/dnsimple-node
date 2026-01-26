@@ -15,6 +15,7 @@ jobs:
   publish:
     name: Publish Client
     runs-on: ubuntu-latest
+    environment: deployment
     steps:
       - uses: actions/checkout@v6
       - name: Set up Node
