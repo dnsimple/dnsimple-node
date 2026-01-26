@@ -4,7 +4,7 @@ name: Release
 on:
   workflow_run:
     workflows:
-      - "CI"
+      - CI
     types:
       - completed
 
@@ -59,6 +59,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm i
       - run: npm run build
-      - uses: JS-DevTools/npm-publish@v4
+      - uses: JS-DevTools/npm-publish@v4.1.4
         with:
           token: ${{ secrets.NPM_TOKEN }}
