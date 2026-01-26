@@ -210,7 +210,7 @@ describe("domains", () => {
         dsRecordId
       );
 
-      expect(response.rateLimit).toBeDefined();
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });

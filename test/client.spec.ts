@@ -51,7 +51,7 @@ describe("rate limit", () => {
 
       const response = await dnsimple.domains.deleteDomain(1010, "example.com");
 
-      expect(response.rateLimit).toBeDefined();
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });

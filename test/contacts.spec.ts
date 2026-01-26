@@ -285,7 +285,7 @@ describe("contacts", () => {
         contactId
       );
 
-      expect(response.rateLimit).toBeDefined();
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
 
     describe("when the contact does not exist", () => {

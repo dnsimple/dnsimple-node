@@ -293,7 +293,7 @@ describe("zone records", () => {
           recordId
         );
 
-        expect(response.rateLimit).toBeDefined();
+        expect(response).toEqual({ rateLimit: expect.any(Object) });
       });
 
       describe("when the record does not exist", () => {
