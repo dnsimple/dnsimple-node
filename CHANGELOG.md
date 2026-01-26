@@ -4,6 +4,10 @@ This project uses [Semantic Versioning 2.0.0](http://semver.org/), the format is
 
 ## main
 
+### Added
+
+- Add rate limit information to all API responses via `rateLimit` property, exposing `limit`, `remaining`, and `reset` values from response headers
+
 ### Changed
 
 - `ZoneRecord.type`, `TemplateRecord.type`, and `createZoneRecord` type parameter changed from enum to `string`

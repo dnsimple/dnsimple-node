@@ -236,7 +236,7 @@ describe("templates", () => {
         templateId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 
@@ -257,7 +257,7 @@ describe("templates", () => {
         templateId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });
@@ -483,7 +483,7 @@ describe("template records", () => {
         recordId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });

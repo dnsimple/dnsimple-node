@@ -20,7 +20,7 @@ describe("registrar auto renewal", () => {
         domainId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
 
     describe("when the domain does not exist", () => {
@@ -49,7 +49,7 @@ describe("registrar auto renewal", () => {
         domainId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
 
     describe("when the domain does not exist", () => {

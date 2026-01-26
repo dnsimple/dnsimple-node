@@ -1,5 +1,21 @@
 import { DNSimple, TimeoutError } from "../main";
+import type { RateLimitHeaders } from "../types";
 import type { Fetcher } from "./fetcher";
+
+function parseRateLimitHeaders(headers: Headers): RateLimitHeaders {
+  const parseHeader = (name: string): number | null => {
+    const value = headers.get(name);
+    if (value === null) return null;
+    const parsed = parseInt(value, 10);
+    return isNaN(parsed) ? null : parsed;
+  };
+
+  return {
+    limit: parseHeader("x-ratelimit-limit"),
+    remaining: parseHeader("x-ratelimit-remaining"),
+    reset: parseHeader("x-ratelimit-reset"),
+  };
+}
 
 const fetchFetcher: Fetcher = async (params: {
   method: string;
@@ -17,7 +33,11 @@ const fetchFetcher: Fetcher = async (params: {
       body: params.body,
       signal: abortController.signal,
     });
-    return { status: response.status, body: await response.text() };
+    return {
+      status: response.status,
+      body: await response.text(),
+      rateLimit: parseRateLimitHeaders(response.headers),
+    };
   } catch (error) {
     if (abortController && abortController.signal.aborted)
       throw new TimeoutError();

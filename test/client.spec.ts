@@ -1,8 +1,60 @@
 import fetchMock from "fetch-mock";
-import { ClientError, MethodNotAllowedError } from "../lib/main";
+import {
+  ClientError,
+  MethodNotAllowedError,
+  RateLimitHeaders,
+} from "../lib/main";
 import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
+
+describe("rate limit", () => {
+  describe("when rate limit headers are present", () => {
+    it("exposes the rate limit info", async () => {
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains",
+        responseFromFixture("listDomains/success.http")
+      );
+
+      const response = await dnsimple.domains.listDomains(1010);
+
+      const rateLimit = response.rateLimit as RateLimitHeaders;
+      expect(rateLimit).toBeDefined();
+      expect(rateLimit.limit).toBe(2400);
+      expect(rateLimit.remaining).toBe(2399);
+      expect(rateLimit.reset).toBe(1591304056);
+    });
+  });
+
+  describe("when rate limit headers are missing", () => {
+    it("returns null values", async () => {
+      fetchMock.get("https://api.dnsimple.com/v2/1010/test", {
+        status: 200,
+        body: { data: {} },
+      });
+
+      const response = await dnsimple.request("GET", "/1010/test", null, {});
+
+      expect(response.rateLimit).toBeDefined();
+      expect(response.rateLimit.limit).toBeNull();
+      expect(response.rateLimit.remaining).toBeNull();
+      expect(response.rateLimit.reset).toBeNull();
+    });
+  });
+
+  describe("on a 204 response", () => {
+    it("exposes the rate limit info", async () => {
+      fetchMock.delete(
+        "https://api.dnsimple.com/v2/1010/domains/example.com",
+        responseFromFixture("deleteDomain/success.http")
+      );
+
+      const response = await dnsimple.domains.deleteDomain(1010, "example.com");
+
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
+    });
+  });
+});
 
 describe("response handling", () => {
   describe("a 400 error", () => {

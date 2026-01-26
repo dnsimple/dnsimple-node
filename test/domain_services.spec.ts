@@ -109,7 +109,7 @@ describe("domain services", () => {
         {}
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 
@@ -130,7 +130,7 @@ describe("domain services", () => {
         serviceId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });

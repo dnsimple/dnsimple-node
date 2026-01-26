@@ -90,7 +90,7 @@ describe("domains", () => {
         attributes
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 
@@ -117,7 +117,7 @@ describe("domains", () => {
 
       const response = await dnsimple.domains.rejectPush(accountId, pushId);
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });

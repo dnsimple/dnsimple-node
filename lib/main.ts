@@ -158,7 +158,11 @@ export class DNSimple {
       "Content-Type": "application/json",
       "User-Agent": `${this.userAgent} ${DNSimple.DEFAULT_USER_AGENT}`.trim(),
     };
-    const { status, body: data } = await this.fetcher({
+    const {
+      status,
+      body: data,
+      rateLimit,
+    } = await this.fetcher({
       url: this.baseUrl + versionedPath(path, params),
       method,
       headers,
@@ -181,10 +185,11 @@ export class DNSimple {
       throw new ClientError(status, JSON.parse(data));
     }
     if (status === 204) {
-      return {};
+      return { rateLimit };
     }
     if (status >= 200 && status < 300) {
-      return !data ? {} : JSON.parse(data);
+      const parsed = !data ? {} : JSON.parse(data);
+      return { ...parsed, rateLimit };
     }
     if (status >= 500) {
       throw new ServerError(status, JSON.parse(data));

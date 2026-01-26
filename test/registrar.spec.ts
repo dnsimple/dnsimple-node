@@ -269,7 +269,7 @@ describe("registrar", () => {
         domainId
       );
 
-      expect(response).toEqual({});
+      expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
 });
