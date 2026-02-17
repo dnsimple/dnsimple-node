@@ -1,7 +1,7 @@
+import { DomainsResearch } from "./domains-research";
 import type { DNSimple, QueryParams } from "./main";
 import { paginate } from "./paginate";
 import type * as types from "./types";
-import { DomainsResearch } from "./domains-research";
 
 export class Domains {
   private readonly _domainsResearch: DomainsResearch;
@@ -637,8 +637,8 @@ export class Domains {
         null,
         params
       );
-      return method;
-    })();
+    return method;
+  })();
 
   /**
    * Research a domain name for availability and registration status information.

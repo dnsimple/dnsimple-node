@@ -25,12 +25,10 @@ export class DomainsResearch {
       domain: string,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.DomainResearchStatus }> =>
-      this._client.request(
-        "GET",
-        `/${account}/domains/research/status`,
-        null,
-        { ...params, domain }
-      );
+      this._client.request("GET", `/${account}/domains/research/status`, null, {
+        ...params,
+        domain,
+      });
     return method;
   })();
 }
