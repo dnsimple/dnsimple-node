@@ -198,12 +198,12 @@ describe("domains", () => {
 
   describe("#domainResearchStatus", () => {
     const accountId = 1010;
-    const domain = "example.com";
+    const domain = "taken.com";
 
     it("produces the correct request", async () => {
       fetchMock.get(
-        "https://api.dnsimple.com/v2/1010/domains/research/status?domain=example.com",
-        responseFromFixture("domainResearchStatus/success.http")
+        "https://api.dnsimple.com/v2/1010/domains/research/status?domain=taken.com",
+        responseFromFixture("getDomainsResearchStatus/success-unavailable.http")
       );
 
       await dnsimple.domains.domainResearchStatus(accountId, domain);
@@ -213,8 +213,8 @@ describe("domains", () => {
 
     it("returns the domain research status", async () => {
       fetchMock.get(
-        "https://api.dnsimple.com/v2/1010/domains/research/status?domain=example.com",
-        responseFromFixture("domainResearchStatus/success.http")
+        "https://api.dnsimple.com/v2/1010/domains/research/status?domain=taken.com",
+        responseFromFixture("getDomainsResearchStatus/success-unavailable.http")
       );
 
       const response = await dnsimple.domains.domainResearchStatus(
@@ -223,9 +223,9 @@ describe("domains", () => {
       );
 
       expect(response.data.request_id).toBe(
-        "f453dabc-a27e-4bf1-a93e-f263577ffaae"
+        "25dd77cb-2f71-48b9-b6be-1dacd2881418"
       );
-      expect(response.data.domain).toBe("example.com");
+      expect(response.data.domain).toBe("taken.com");
       expect(response.data.availability).toBe("unavailable");
       expect(response.data.errors).toEqual([]);
     });
