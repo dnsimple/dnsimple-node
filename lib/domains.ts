@@ -655,7 +655,7 @@ export class Domains {
    * @param domain The domain name to research
    * @param params Query parameters
    */
-  get domainResearchStatus() {
-    return this._domainsResearch.domainResearchStatus;
+  get getDomainResearchStatus() {
+    return this._domainsResearch.getDomainResearchStatus;
   }
 }

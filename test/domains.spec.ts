@@ -196,7 +196,7 @@ describe("domains", () => {
     });
   });
 
-  describe("#domainResearchStatus", () => {
+  describe("#getDomainResearchStatus", () => {
     const accountId = 1010;
     const domain = "taken.com";
 
@@ -206,7 +206,7 @@ describe("domains", () => {
         responseFromFixture("getDomainsResearchStatus/success-unavailable.http")
       );
 
-      await dnsimple.domains.domainResearchStatus(accountId, domain);
+      await dnsimple.domains.getDomainResearchStatus(accountId, domain);
 
       expect(fetchMock.callHistory.called()).toBe(true);
     });
@@ -217,7 +217,7 @@ describe("domains", () => {
         responseFromFixture("getDomainsResearchStatus/success-unavailable.http")
       );
 
-      const response = await dnsimple.domains.domainResearchStatus(
+      const response = await dnsimple.domains.getDomainResearchStatus(
         accountId,
         domain
       );

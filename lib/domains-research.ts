@@ -19,7 +19,7 @@ export class DomainsResearch {
    * @param domain The domain name to research
    * @param params Query parameters
    */
-  domainResearchStatus = (() => {
+  getDomainResearchStatus = (() => {
     const method = (
       account: number,
       domain: string,
