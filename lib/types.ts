@@ -418,3 +418,10 @@ export type RegistrantChangeCheck = {
 };
 
 export type DomainTransferLock = { enabled: boolean };
+
+export type DomainResearchStatus = {
+  request_id: string;
+  domain: string;
+  availability: string;
+  errors: Array<string>;
+};

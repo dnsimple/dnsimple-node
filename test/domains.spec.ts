@@ -195,4 +195,39 @@ describe("domains", () => {
       expect(response).toEqual({ rateLimit: expect.any(Object) });
     });
   });
+
+  describe("#getDomainResearchStatus", () => {
+    const accountId = 1010;
+    const domain = "taken.com";
+
+    it("produces the correct request", async () => {
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/research/status?domain=taken.com",
+        responseFromFixture("getDomainsResearchStatus/success-unavailable.http")
+      );
+
+      await dnsimple.domains.getDomainResearchStatus(accountId, domain);
+
+      expect(fetchMock.callHistory.called()).toBe(true);
+    });
+
+    it("returns the domain research status", async () => {
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/domains/research/status?domain=taken.com",
+        responseFromFixture("getDomainsResearchStatus/success-unavailable.http")
+      );
+
+      const response = await dnsimple.domains.getDomainResearchStatus(
+        accountId,
+        domain
+      );
+
+      expect(response.data.request_id).toBe(
+        "25dd77cb-2f71-48b9-b6be-1dacd2881418"
+      );
+      expect(response.data.domain).toBe("taken.com");
+      expect(response.data.availability).toBe("unavailable");
+      expect(response.data.errors).toEqual([]);
+    });
+  });
 });
