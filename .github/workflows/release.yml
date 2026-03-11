@@ -5,15 +5,27 @@ on:
   push:
     tags:
       - v*.*.*
-  workflow_dispatch:
 
 permissions:
   id-token: write  # Required for OIDC
   contents: read
 
 jobs:
+  wait-for-ci:
+    name: Wait for CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for CI to pass
+        uses: lewagon/wait-on-check-action@v1.5.0
+        with:
+          ref: ${{ github.sha }}
+          running-workflow-name: Wait for CI
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+
   publish:
     name: Publish Client
+    needs: wait-for-ci
     runs-on: ubuntu-latest
     environment: deployment
     steps:
@@ -25,5 +37,4 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm i
       - run: npm run build --if-present
-      - run: npm test
       - run: npm publish
