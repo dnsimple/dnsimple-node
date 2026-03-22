@@ -49,6 +49,8 @@ describe("tlds", () => {
       const tlds = response.data;
       expect(tlds.length).toBe(2);
       expect(tlds[0].tld).toBe("ac");
+      expect(tlds[0].trustee_service_enabled).toBe(false);
+      expect(tlds[0].trustee_service_required).toBe(false);
     });
 
     it("exposes the pagination info", async () => {
@@ -78,6 +80,8 @@ describe("tlds", () => {
       expect(tld.tld).toBe("com");
       expect(tld.tld_type).toBe(1);
       expect(tld.whois_privacy).toBe(true);
+      expect(tld.trustee_service_enabled).toBe(false);
+      expect(tld.trustee_service_required).toBe(false);
       expect(tld.auto_renew_only).toBe(false);
       expect(tld.idn).toBe(true);
       expect(tld.minimum_registration).toBe(1);

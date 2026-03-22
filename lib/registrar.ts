@@ -77,6 +77,7 @@ export class Registrar {
       data: Partial<{
         registrant_id: number;
         whois_privacy: boolean;
+        trustee_service: boolean;
         auto_renew: boolean;
         extended_attributes: {};
         premium_price: string;

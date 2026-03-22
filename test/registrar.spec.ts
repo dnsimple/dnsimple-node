@@ -48,6 +48,7 @@ describe("registrar", () => {
         expect(pricesResult.registration_price).toEqual(20.0);
         expect(pricesResult.renewal_price).toEqual(20.0);
         expect(pricesResult.transfer_price).toEqual(20.0);
+        expect(pricesResult.trustee_service_price).toEqual(20.0);
       });
     });
 
