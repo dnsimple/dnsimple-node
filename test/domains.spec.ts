@@ -127,6 +127,7 @@ describe("domains", () => {
       expect(domain.state).toBe("registered");
       expect(domain.auto_renew).toBe(false);
       expect(domain.private_whois).toBe(false);
+      expect(domain.trustee_service).toBe(false);
       expect(domain.expires_on).toBe("2021-06-05");
       expect(domain.expires_at).toBe("2021-06-05T02:15:00Z");
       expect(domain.created_at).toBe("2020-06-04T19:15:14Z");
