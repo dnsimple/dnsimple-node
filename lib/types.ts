@@ -7,6 +7,7 @@ export type RateLimitHeaders = {
 export type Account = {
   id: number;
   email: string;
+  name: string;
   plan_identifier: string;
   created_at: string;
   updated_at: string;
