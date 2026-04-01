@@ -9,6 +9,8 @@ updates:
     labels:
       - task
       - dependencies
+    cooldown:
+      default-days: 3
     ignore:
       # We pin @types/node to our minimum supported Node.js version.
       - dependency-name: '@types/node'
