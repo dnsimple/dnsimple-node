@@ -45,6 +45,25 @@ describe("domains", () => {
     });
   });
 
+  describe("#initiatePush with domain push identifier", () => {
+    const accountId = 1010;
+    const domainId = "example.com";
+    const attributes = { new_domain_push_identifier: "abc123" };
+
+    it("builds the correct request", async () => {
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/domains/example.com/pushes",
+        responseFromFixture("initiatePush/success.http")
+      );
+
+      await dnsimple.domains.initiatePush(accountId, domainId, attributes);
+
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
+    });
+  });
+
   describe("#listPushes", () => {
     const accountId = 1010;
 
