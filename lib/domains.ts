@@ -548,9 +548,9 @@ export class Domains {
       account: number,
       domain: string,
       data: Partial<{
-        /** @deprecated Use new_domain_push_identifier instead */
+        /** @deprecated Use new_account_identifier instead */
         new_account_email: string;
-        new_domain_push_identifier: string;
+        new_account_identifier: string;
       }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.Push }> =>

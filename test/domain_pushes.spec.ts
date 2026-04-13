@@ -48,7 +48,7 @@ describe("domains", () => {
   describe("#initiatePush with domain push identifier", () => {
     const accountId = 1010;
     const domainId = "example.com";
-    const attributes = { new_domain_push_identifier: "abc123" };
+    const attributes = { new_account_identifier: "abc123" };
 
     it("builds the correct request", async () => {
       fetchMock.post(
