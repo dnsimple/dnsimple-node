@@ -17,6 +17,7 @@ describe("accounts", () => {
         {
           id: 123,
           email: "john@example.com",
+          name: "John",
           plan_identifier: "dnsimple-personal",
           created_at: "2011-09-11T17:15:58Z",
           updated_at: "2016-06-03T15:02:26Z",
