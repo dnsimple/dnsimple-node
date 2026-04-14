@@ -547,7 +547,11 @@ export class Domains {
     const method = (
       account: number,
       domain: string,
-      data: Partial<{ new_account_email: string }>,
+      data: Partial<{
+        /** @deprecated Use new_account_identifier instead */
+        new_account_email: string;
+        new_account_identifier: string;
+      }>,
       params: QueryParams & {} = {}
     ): Promise<{ data: types.Push }> =>
       this._client.request(
