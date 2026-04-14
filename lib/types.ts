@@ -242,6 +242,7 @@ export type DomainTransfer = {
   state: "cancelled" | "new" | "transferring" | "transferred" | "failed";
   auto_renew: boolean;
   whois_privacy: boolean;
+  trustee_service: boolean;
   status_description: string;
   created_at: string;
   updated_at: string;
