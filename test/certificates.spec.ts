@@ -135,7 +135,6 @@ describe("certificates", () => {
       const certificate = response.data;
       expect(certificate.id).toBe(101967);
       expect(certificate.domain_id).toBe(289333);
-      expect(certificate.contact_id).toBe(2511);
       expect(certificate.common_name).toBe("www.bingo.pizza");
       expect(certificate.alternate_names).toEqual([]);
       expect(certificate.state).toBe("issued");

@@ -115,7 +115,6 @@ export type Push = {
 export type Certificate = {
   id: number;
   domain_id: number;
-  contact_id: number;
   name: string;
   common_name: string;
   years: number;
