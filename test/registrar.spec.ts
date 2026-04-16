@@ -177,6 +177,7 @@ describe("registrar", () => {
       const domain = response.data;
       expect(domain.id).toBe(1);
       expect(domain.state).toBe("transferring");
+      expect(domain.trustee_service).toBe(false);
     });
 
     describe("when the domain is already in DNSimple", () => {
@@ -226,6 +227,7 @@ describe("registrar", () => {
       expect(domainTransfer.state).toBe("cancelled");
       expect(domainTransfer.auto_renew).toBe(false);
       expect(domainTransfer.whois_privacy).toBe(false);
+      expect(domainTransfer.trustee_service).toBe(false);
       expect(domainTransfer.status_description).toBe("Canceled by customer");
       expect(domainTransfer.created_at).toBe("2020-06-05T18:08:00Z");
       expect(domainTransfer.updated_at).toBe("2020-06-05T18:10:01Z");
@@ -252,6 +254,7 @@ describe("registrar", () => {
       expect(domainTransfer.state).toBe("transferring");
       expect(domainTransfer.auto_renew).toBe(false);
       expect(domainTransfer.whois_privacy).toBe(false);
+      expect(domainTransfer.trustee_service).toBe(false);
       expect(domainTransfer.status_description).toBe(null);
       expect(domainTransfer.created_at).toBe("2020-06-05T18:08:00Z");
       expect(domainTransfer.updated_at).toBe("2020-06-05T18:08:04Z");

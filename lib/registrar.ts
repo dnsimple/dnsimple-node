@@ -142,6 +142,7 @@ export class Registrar {
         registrant_id: number;
         auth_code: string;
         whois_privacy: boolean;
+        trustee_service: boolean;
         auto_renew: boolean;
         extended_attributes: {};
         premium_price: string;
