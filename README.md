@@ -90,7 +90,7 @@ const client = new DNSimple({
 });
 ```
 
-The value you provide will be appended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `dnsimple-node/x.x.x my-app` (note that it will vary depending on the client version).
+The value you provide will be prepended to the default `User-Agent` the client uses. For example, if you use `my-app`, the final header value will be `my-app dnsimple-node/x.x.x` (note that it will vary depending on the client version).
 
 ## Pagination
 
