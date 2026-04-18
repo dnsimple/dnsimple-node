@@ -73,6 +73,22 @@ describe("billing", () => {
             },
           ],
         },
+        {
+          invoiced_at: "2023-10-24T09:00:00Z",
+          total_amount: "20.00",
+          balance_amount: "0.00",
+          reference: "5-2",
+          state: "collected",
+          items: [
+            {
+              description: "Purchase Certificate www.bubble-registered.com",
+              amount: "20.00",
+              product_id: 42,
+              product_type: "certificate-purchase",
+              product_reference: "42",
+            },
+          ],
+        },
       ]);
     });
 
