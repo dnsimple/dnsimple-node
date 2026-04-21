@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wait for CI to pass
-        uses: lewagon/wait-on-check-action@v1.6.1
+        uses: lewagon/wait-on-check-action@v1.7.0
         with:
           ref: ${{ github.sha }}
           running-workflow-name: Wait for CI
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v6.3.0
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
