@@ -48,7 +48,7 @@ export type Domain = {
   state: "hosted" | "registered" | "expired";
   auto_renew: boolean;
   private_whois: boolean;
-  trustee_service: boolean;
+  trustee: boolean;
   expires_at: NullableDateTime;
   expires_on: string;
   created_at: string;
@@ -218,7 +218,7 @@ export type DomainPrices = {
   registration_price: number;
   renewal_price: number;
   transfer_price: number;
-  trustee_service_price: number;
+  trustee_price: number | null;
 };
 
 export type DomainRegistration = {
@@ -229,7 +229,7 @@ export type DomainRegistration = {
   state: "cancelled" | "new" | "registering" | "registered" | "failed";
   auto_renew: boolean;
   whois_privacy: boolean;
-  trustee_service: boolean;
+  trustee: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -241,7 +241,7 @@ export type DomainTransfer = {
   state: "cancelled" | "new" | "transferring" | "transferred" | "failed";
   auto_renew: boolean;
   whois_privacy: boolean;
-  trustee_service: boolean;
+  trustee: boolean;
   status_description: string;
   created_at: string;
   updated_at: string;
