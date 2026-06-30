@@ -302,15 +302,7 @@ export type ZoneFile = { zone: string };
 export type ZoneDistribution = { distributed: boolean };
 
 export type ZoneRecordRegion =
-  | "global"
-  | "SV1"
-  | "ORD"
-  | "IAD"
-  | "AMS"
-  | "TKO"
-  | "SYD"
-  | "CDG"
-  | "FRA";
+  "global" | "SV1" | "ORD" | "IAD" | "AMS" | "TKO" | "SYD" | "CDG" | "FRA";
 
 export type ZoneRecord = {
   id: number;
