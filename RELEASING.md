@@ -10,7 +10,8 @@ This document describes the steps to release a new version of DNSimple/Node.
 
 ## Release process
 
-1. **Determine the new version** using [Semantic Versioning](https://semver.org/)
+1. **Determine the new version** using
+   [Semantic Versioning](https://semver.org/)
 
    ```shell
    VERSION=X.Y.Z
@@ -30,7 +31,7 @@ This document describes the steps to release a new version of DNSimple/Node.
 
    ```json
    {
-     "version": "$VERSION",
+     "version": "$VERSION"
    }
    ```
 
@@ -64,5 +65,6 @@ GitHub Actions will take it from here and publish to npm.
 
 ## Post-release
 
-- Verify the new version appears on [npm](https://www.npmjs.com/package/dnsimple)
+- Verify the new version appears on
+  [npm](https://www.npmjs.com/package/dnsimple)
 - Verify the GitHub release was created
