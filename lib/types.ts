@@ -307,6 +307,7 @@ export type ZoneRecordRegion =
 export type ZoneRecord = {
   id: number;
   zone_id: string;
+  /** @deprecated the value is always null, and the field will be removed in the next major version */
   parent_id: number | null;
   name: string;
   content: string;
