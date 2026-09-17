@@ -278,7 +278,7 @@ export class Registrar {
    *
    * POST /{account}/registrar/domains/{domain}/restores
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#domainRestore
+   * @see https://developer.dnsimple.com/v2/registrar/#restoreDomain
    *
    * @param account The account id
    * @param domain The domain name or id
