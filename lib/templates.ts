@@ -171,7 +171,7 @@ export class Templates {
    *
    * GET /{account}/templates/{template}/records
    *
-   * @see https://developer.dnsimple.com/v2/templates/#listTemplateRecords
+   * @see https://developer.dnsimple.com/v2/templates/records/#listTemplateRecords
    *
    * @param account The account id
    * @param template The template id or short name
@@ -248,7 +248,7 @@ export class Templates {
    *
    * POST /{account}/templates/{template}/records
    *
-   * @see https://developer.dnsimple.com/v2/templates/#createTemplateRecord
+   * @see https://developer.dnsimple.com/v2/templates/records/#createTemplateRecord
    *
    * @param account The account id
    * @param template The template id or short name
@@ -275,7 +275,7 @@ export class Templates {
    *
    * GET /{account}/templates/{template}/records/{templaterecord}
    *
-   * @see https://developer.dnsimple.com/v2/templates/#getTemplateRecord
+   * @see https://developer.dnsimple.com/v2/templates/records/#getTemplateRecord
    *
    * @param account The account id
    * @param template The template id or short name
@@ -303,7 +303,7 @@ export class Templates {
    *
    * DELETE /{account}/templates/{template}/records/{templaterecord}
    *
-   * @see https://developer.dnsimple.com/v2/templates/#deleteTemplateRecord
+   * @see https://developer.dnsimple.com/v2/templates/records/#deleteTemplateRecord
    *
    * @param account The account id
    * @param template The template id or short name
@@ -331,7 +331,7 @@ export class Templates {
    *
    * POST /{account}/domains/{domain}/templates/{template}
    *
-   * @see https://developer.dnsimple.com/v2/templates/#applyTemplateToDomain
+   * @see https://developer.dnsimple.com/v2/templates/domains/#applyTemplateToDomain
    *
    * @param account The account id
    * @param domain The domain name or id

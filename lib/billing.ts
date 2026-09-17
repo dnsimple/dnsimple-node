@@ -12,7 +12,7 @@ export class Billing {
    *
    * GET /{account}/billing/charges
    *
-   * @see https://developer.dnsimple.com/v2/billing/#listCharges
+   * @see https://developer.dnsimple.com/v2/billing-charges/#listCharges
    *
    * @param account The account id
    * @param params Query parameters
