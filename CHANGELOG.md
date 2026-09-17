@@ -3,6 +3,13 @@
 This project uses [Semantic Versioning 2.0.0](http://semver.org/), the format is
 based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Deprecated
+
+- Deprecated `parent_id` in the `ZoneRecord` type. The value is always null, and
+  the field will be removed in the next major version. (#308)
+
 ## 13.0.0 - 2026-05-05
 
 ### Changed
