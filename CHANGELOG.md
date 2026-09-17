@@ -8,7 +8,7 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Added `Registrar.restoreDomain` and `Registrar.getDomainRestore` to restore a
-  domain and retrieve a domain restore, and the `DomainRestore` type.
+  domain and retrieve a domain restore, and the `DomainRestore` type. (#309)
 
 ### Changed
 
