@@ -69,7 +69,7 @@ export class Services {
    *
    * GET /{account}/domains/{domain}/services
    *
-   * @see https://developer.dnsimple.com/v2/services/#listDomainAppliedServices
+   * @see https://developer.dnsimple.com/v2/services/domains/#listDomainAppliedServices
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -112,7 +112,7 @@ export class Services {
    *
    * POST /{account}/domains/{domain}/services/{service}
    *
-   * @see https://developer.dnsimple.com/v2/services/#applyServiceToDomain
+   * @see https://developer.dnsimple.com/v2/services/domains/#applyServiceToDomain
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -141,7 +141,7 @@ export class Services {
    *
    * DELETE /{account}/domains/{domain}/services/{service}
    *
-   * @see https://developer.dnsimple.com/v2/services/#unapplyServiceFromDomain
+   * @see https://developer.dnsimple.com/v2/services/domains/#unapplyServiceFromDomain
    *
    * @param account The account id
    * @param domain The domain name or id

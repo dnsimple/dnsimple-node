@@ -179,7 +179,7 @@ export class Zones {
    *
    * PUT /{account}/zones/{zone}/ns_records
    *
-   * @see https://developer.dnsimple.com/v2/zones/#updateZoneNsRecords
+   * @see https://developer.dnsimple.com/v2/zones/ns-records/#updateZoneNsRecords
    *
    * @param account The account id
    * @param zone The zone name
@@ -208,7 +208,7 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}/records
    *
-   * @see https://developer.dnsimple.com/v2/zones/#listZoneRecords
+   * @see https://developer.dnsimple.com/v2/zones/records/#listZoneRecords
    *
    * @param account The account id
    * @param zone The zone name
@@ -296,7 +296,7 @@ export class Zones {
    *
    * POST /{account}/zones/{zone}/records
    *
-   * @see https://developer.dnsimple.com/v2/zones/#createZoneRecord
+   * @see https://developer.dnsimple.com/v2/zones/records/#createZoneRecord
    *
    * @param account The account id
    * @param zone The zone name
@@ -330,7 +330,7 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}/records/{zonerecord}
    *
-   * @see https://developer.dnsimple.com/v2/zones/#getZoneRecord
+   * @see https://developer.dnsimple.com/v2/zones/records/#getZoneRecord
    *
    * @param account The account id
    * @param zone The zone name
@@ -358,7 +358,7 @@ export class Zones {
    *
    * PATCH /{account}/zones/{zone}/records/{zonerecord}
    *
-   * @see https://developer.dnsimple.com/v2/zones/#updateZoneRecord
+   * @see https://developer.dnsimple.com/v2/zones/records/#updateZoneRecord
    *
    * @param account The account id
    * @param zone The zone name
@@ -393,7 +393,7 @@ export class Zones {
    *
    * DELETE /{account}/zones/{zone}/records/{zonerecord}
    *
-   * @see https://developer.dnsimple.com/v2/zones/#deleteZoneRecord
+   * @see https://developer.dnsimple.com/v2/zones/records/#deleteZoneRecord
    *
    * @param account The account id
    * @param zone The zone name
@@ -421,7 +421,7 @@ export class Zones {
    *
    * GET /{account}/zones/{zone}/records/{zonerecord}/distribution
    *
-   * @see https://developer.dnsimple.com/v2/zones/#checkZoneRecordDistribution
+   * @see https://developer.dnsimple.com/v2/zones/records/#checkZoneRecordDistribution
    *
    * @param account The account id
    * @param zone The zone name

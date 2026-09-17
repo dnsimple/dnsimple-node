@@ -221,7 +221,7 @@ export class Registrar {
    *
    * POST /{account}/registrar/domains/{domain}/renewals
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#domainRenew
+   * @see https://developer.dnsimple.com/v2/registrar/#renewDomain
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -410,7 +410,7 @@ export class Registrar {
    *
    * PUT /{account}/registrar/domains/{domain}/auto_renewal
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#enableDomainAutoRenewal
+   * @see https://developer.dnsimple.com/v2/registrar/auto-renewal/#enableDomainAutoRenewal
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -436,7 +436,7 @@ export class Registrar {
    *
    * DELETE /{account}/registrar/domains/{domain}/auto_renewal
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#disableDomainAutoRenewal
+   * @see https://developer.dnsimple.com/v2/registrar/auto-renewal/#disableDomainAutoRenewal
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -518,7 +518,7 @@ export class Registrar {
    *
    * GET /{account}/registrar/registrant_changes
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#listRegistrantChanges
+   * @see https://developer.dnsimple.com/v2/registrar/registrant-changes/#listRegistrantChanges
    *
    * @param account The account id
    * @param params Query parameters
@@ -578,7 +578,7 @@ export class Registrar {
    *
    * POST /{account}/registrar/registrant_changes
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#createRegistrantChange
+   * @see https://developer.dnsimple.com/v2/registrar/registrant-changes/#createRegistrantChange
    *
    * @param account The account id
    * @param params Query parameters
@@ -607,7 +607,7 @@ export class Registrar {
    *
    * POST /{account}/registrar/registrant_changes/check
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#checkRegistrantChange
+   * @see https://developer.dnsimple.com/v2/registrar/registrant-changes/#checkRegistrantChange
    *
    * @param account The account id
    * @param params Query parameters
@@ -635,7 +635,7 @@ export class Registrar {
    *
    * GET /{account}/registrar/registrant_changes/{registrantchange}
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#getRegistrantChange
+   * @see https://developer.dnsimple.com/v2/registrar/registrant-changes/#getRegistrantChange
    *
    * @param account The account id
    * @param registrantchange The registrant change id
@@ -661,7 +661,7 @@ export class Registrar {
    *
    * DELETE /{account}/registrar/registrant_changes/{registrantchange}
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#deleteRegistrantChange
+   * @see https://developer.dnsimple.com/v2/registrar/registrant-changes/#deleteRegistrantChange
    *
    * @param account The account id
    * @param registrantchange The registrant change id
@@ -687,7 +687,7 @@ export class Registrar {
    *
    * GET /{account}/registrar/domains/{domain}/transfer_lock
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#getDomainTransferLock
+   * @see https://developer.dnsimple.com/v2/registrar/transfer-lock/#getDomainTransferLock
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -713,7 +713,7 @@ export class Registrar {
    *
    * POST /{account}/registrar/domains/{domain}/transfer_lock
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#enableDomainTransferLock
+   * @see https://developer.dnsimple.com/v2/registrar/transfer-lock/#enableDomainTransferLock
    *
    * @param account The account id
    * @param domain The domain name or id
@@ -739,7 +739,7 @@ export class Registrar {
    *
    * DELETE /{account}/registrar/domains/{domain}/transfer_lock
    *
-   * @see https://developer.dnsimple.com/v2/registrar/#disableDomainTransferLock
+   * @see https://developer.dnsimple.com/v2/registrar/transfer-lock/#disableDomainTransferLock
    *
    * @param account The account id
    * @param domain The domain name or id
