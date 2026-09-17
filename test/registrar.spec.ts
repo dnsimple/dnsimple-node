@@ -102,6 +102,28 @@ describe("registrar", () => {
     });
   });
 
+  describe("#getDomainRestore", () => {
+    it("produces a domain restore", async () => {
+      fetchMock.get(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/bingo.pizza/restores/1",
+        responseFromFixture("getDomainRestore/success.http")
+      );
+
+      const response = await dnsimple.registrar.getDomainRestore(
+        accountId,
+        "bingo.pizza",
+        1
+      );
+
+      const domainRestore = response.data;
+      expect(domainRestore.id).toBe(43);
+      expect(domainRestore.domain_id).toBe(214);
+      expect(domainRestore.state).toBe("new");
+      expect(domainRestore.created_at).toBe("2024-02-14T14:40:42Z");
+      expect(domainRestore.updated_at).toBe("2024-02-14T14:40:42Z");
+    });
+  });
+
   describe("#registerDomain", () => {
     it("produces a domain", async () => {
       const attributes = { registrant_id: 10 };
@@ -156,6 +178,43 @@ describe("registrar", () => {
           dnsimple.registrar.renewDomain(accountId, domainId, attributes)
         ).rejects.toThrow();
       });
+    });
+  });
+
+  describe("#restoreDomain", () => {
+    const attributes = { premium_price: "109.00" };
+
+    it("builds the correct request", async () => {
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/restores",
+        responseFromFixture("restoreDomain/success.http")
+      );
+
+      await dnsimple.registrar.restoreDomain(accountId, domainId, attributes);
+
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
+    });
+
+    it("produces a domain restore", async () => {
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/registrar/domains/example.com/restores",
+        responseFromFixture("restoreDomain/success.http")
+      );
+
+      const response = await dnsimple.registrar.restoreDomain(
+        accountId,
+        domainId,
+        attributes
+      );
+
+      const domainRestore = response.data;
+      expect(domainRestore.id).toBe(43);
+      expect(domainRestore.domain_id).toBe(214);
+      expect(domainRestore.state).toBe("new");
+      expect(domainRestore.created_at).toBe("2024-02-14T14:40:42Z");
+      expect(domainRestore.updated_at).toBe("2024-02-14T14:40:42Z");
     });
   });
 

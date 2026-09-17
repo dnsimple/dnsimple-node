@@ -256,6 +256,14 @@ export type DomainRenewal = {
   updated_at: string;
 };
 
+export type DomainRestore = {
+  id: number;
+  domain_id: number;
+  state: "new" | "restoring" | "restored" | "cancelled";
+  created_at: string;
+  updated_at: string;
+};
+
 export type NameServer = {
   id: number;
   name: string;
@@ -302,7 +310,15 @@ export type ZoneFile = { zone: string };
 export type ZoneDistribution = { distributed: boolean };
 
 export type ZoneRecordRegion =
-  "global" | "SV1" | "ORD" | "IAD" | "AMS" | "TKO" | "SYD" | "CDG" | "FRA";
+  | "global"
+  | "SV1"
+  | "ORD"
+  | "IAD"
+  | "AMS"
+  | "TKO"
+  | "SYD"
+  | "CDG"
+  | "FRA";
 
 export type ZoneRecord = {
   id: number;

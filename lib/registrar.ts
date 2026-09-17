@@ -272,6 +272,63 @@ export class Registrar {
   })();
 
   /**
+   * Explicitly restores an domain that can not be renewed anymore, if the registry supports this function.
+   *
+   * Your account must be active for this command to complete successfully. You will be automatically charged the restore fee upon successful restore, so please be careful with this command.
+   *
+   * POST /{account}/registrar/domains/{domain}/restores
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#domainRestore
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param params Query parameters
+   */
+  restoreDomain = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      data: Partial<{ premium_price: string }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainRestore }> =>
+      this._client.request(
+        "POST",
+        `/${account}/registrar/domains/${domain}/restores`,
+        data,
+        params
+      );
+    return method;
+  })();
+
+  /**
+   * Retrieves the details of an existing domain restore.
+   *
+   * GET /{account}/registrar/domains/{domain}/restores/{domainrestore}
+   *
+   * @see https://developer.dnsimple.com/v2/registrar/#getDomainRestore
+   *
+   * @param account The account id
+   * @param domain The domain name or id
+   * @param domainrestore The domain restore id
+   * @param params Query parameters
+   */
+  getDomainRestore = (() => {
+    const method = (
+      account: number,
+      domain: string,
+      domainrestore: number,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.DomainRestore }> =>
+      this._client.request(
+        "GET",
+        `/${account}/registrar/domains/${domain}/restores/${domainrestore}`,
+        null,
+        params
+      );
+    return method;
+  })();
+
+  /**
    * Prepares a domain for transferring out.
    *
    * This will unlock a domain and send the authorization code to the domain's administrative contact.
