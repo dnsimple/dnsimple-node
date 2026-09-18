@@ -442,3 +442,18 @@ export type DomainResearchStatus = {
   availability: string;
   errors: Array<string>;
 };
+
+export type DnsAnalytics = {
+  headers: Array<"zone_name" | "date" | "volume">;
+  rows: Array<Array<string | number>>;
+};
+
+export type DnsAnalyticsQuery = {
+  account_id: number;
+  start_date: string | null;
+  end_date: string | null;
+  sort: string;
+  page: number;
+  per_page: number;
+  groupings: string | null;
+};
