@@ -328,6 +328,12 @@ export type ZoneRecord = {
   updated_at: string;
 };
 
+export type BatchChangeZoneRecordsResponse = {
+  creates: Array<ZoneRecord>;
+  updates: Array<ZoneRecord>;
+  deletes: Array<{ id: number }>;
+};
+
 export type Contact = {
   id: number;
   account_id: number;

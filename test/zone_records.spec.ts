@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import { NotFoundError } from "../lib/main";
+import { ClientError, NotFoundError } from "../lib/main";
 import { createTestClient, responseFromFixture } from "./util";
 
 const dnsimple = createTestClient();
@@ -307,6 +307,95 @@ describe("zone records", () => {
           await expect(
             dnsimple.zones.deleteZoneRecord(accountId, zoneId, recordId)
           ).rejects.toThrow(NotFoundError);
+        });
+      });
+    });
+  });
+
+  describe("#batchChangeZoneRecords", () => {
+    const accountId = 1010;
+    const zoneId = "example.com";
+    const attributes = {
+      creates: [
+        { name: "ab", type: "A", content: "3.2.3.4" },
+        { name: "ab", type: "A", content: "4.2.3.4" },
+      ],
+      updates: [
+        { id: 67622534, content: "3.2.3.40" },
+        { id: 67622537, content: "5.2.3.40" },
+      ],
+      deletes: [{ id: 67622509 }, { id: 67622527 }],
+    };
+
+    it("builds the correct request", async () => {
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/zones/example.com/batch",
+        responseFromFixture("batchChangeZoneRecords/success.http")
+      );
+
+      await dnsimple.zones.batchChangeZoneRecords(
+        accountId,
+        zoneId,
+        attributes
+      );
+
+      expect(fetchMock.callHistory.lastCall().options.body).toEqual(
+        JSON.stringify(attributes)
+      );
+    });
+
+    it("produces the changed records", async () => {
+      fetchMock.post(
+        "https://api.dnsimple.com/v2/1010/zones/example.com/batch",
+        responseFromFixture("batchChangeZoneRecords/success.http")
+      );
+
+      const response = await dnsimple.zones.batchChangeZoneRecords(
+        accountId,
+        zoneId,
+        attributes
+      );
+
+      const { creates, updates, deletes } = response.data;
+      expect(creates.length).toBe(2);
+      expect(creates[0].id).toBe(67623409);
+      expect(creates[0].zone_id).toBe(zoneId);
+      expect(creates[0].name).toBe("ab");
+      expect(creates[0].content).toBe("3.2.3.4");
+      expect(creates[0].ttl).toBe(3600);
+      expect(creates[0].type).toBe("A");
+      expect(creates[0].regions).toEqual(["global"]);
+      expect(creates[1].id).toBe(67623410);
+      expect(updates.length).toBe(2);
+      expect(updates[0].id).toBe(67622534);
+      expect(updates[0].content).toBe("3.2.3.40");
+      expect(updates[1].id).toBe(67622537);
+      expect(deletes).toEqual([{ id: 67622509 }, { id: 67622527 }]);
+    });
+
+    describe("when the validation fails", () => {
+      it("produces an error", async () => {
+        fetchMock.post(
+          "https://api.dnsimple.com/v2/1010/zones/example.com/batch",
+          responseFromFixture(
+            "batchChangeZoneRecords/error_400_create_validation_failed.http"
+          )
+        );
+
+        const error = await dnsimple.zones
+          .batchChangeZoneRecords(accountId, zoneId, {
+            creates: [{ name: "ab", type: "XYZ", content: "3.2.3.4" }],
+          })
+          .catch((e) => e);
+
+        expect(error).toBeInstanceOf(ClientError);
+        const clientError = error as ClientError;
+        expect(clientError.status).toBe(400);
+        expect(clientError.data.message).toBe("Validation failed");
+        expect(clientError.attributeErrors().creates[0]).toEqual({
+          index: 0,
+          message: "Validation failed",
+          errors: { record_type: ["unsupported"] },
         });
       });
     });
