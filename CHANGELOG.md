@@ -11,6 +11,11 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `services.appliedServices`. `appliedServices` now lists the services on a
   domain, and `applyService` applies one. (#312) (requires major version)
 
+### Fixed
+
+- Type `Webhook.suppressed_at` and `Zone.last_transferred_at` as
+  `NullableDateTime`, because the API returns `null` for both. (#296)
+
 ## 13.1.0 - 2026-09-17
 
 ### Deprecated
