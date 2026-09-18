@@ -9,7 +9,7 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - **BREAKING**: Swap the names of `services.applyService` and
   `services.appliedServices`. `appliedServices` now lists the services on a
-  domain, and `applyService` applies one. (#312) (requires major version)
+  domain, and `applyService` applies one. (#312)
 
 ### Fixed
 
@@ -97,13 +97,13 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- **Breaking:** Remove from and to from Email Forward
+- **BREAKING**: Remove from and to from Email Forward
 
 ## 10.0.0 - 2025-05-09
 
 ### Changed
 
-- **Breaking:** Upgrade NodeJS runtime requirements to Node JS 20 or higher
+- **BREAKING**: Upgrade NodeJS runtime requirements to Node JS 20 or higher
 - Update dependencies
 
 ### Added
@@ -112,9 +112,9 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- **Breaking:** Remove `DomainCollaborators`. Please use our Domain Access
+- **BREAKING**: Remove `DomainCollaborators`. Please use our Domain Access
   Control feature.
-- **Breaking:** Drop support for node 18.x
+- **BREAKING**: Drop support for node 18.x
 
 ## 9.0.0 - 2024-12-12
 
@@ -144,7 +144,7 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- **Breaking:** Upgrade NodeJS runtime requirements to Node JS 18 or higher
+- **BREAKING**: Upgrade NodeJS runtime requirements to Node JS 18 or higher
 
 ## 7.4.0 - 2023-12-12
 
@@ -202,13 +202,13 @@ For the full breakdown of all changes in detail, see the PR (#170).
 
 ### Changed
 
-- **Breaking:** Type all method parameters and return types with TypeScript.
+- **BREAKING**: Type all method parameters and return types with TypeScript.
   Usages can be checked and bugs can be detected before runtime, and text
   editors and IDEs can now provide automatic completions and hints on all of
   DNSimple's APIs easily and accurately.
-- **Breaking:** Make request errors full JS classes that allow more type-safe
+- **BREAKING**: Make request errors full JS classes that allow more type-safe
   and ergonomic error handling.
-- **Breaking:** Make all exports named and written in ESM syntax, which allows
+- **BREAKING**: Make all exports named and written in ESM syntax, which allows
   for future migration to the new standard that has better browser and tooling
   support. The output JS still uses CommonJS syntax for compatibility with most
   of today's programs (including Node.js and Webpack).
@@ -246,7 +246,7 @@ For the full breakdown of all changes in detail, see the PR (#170).
 
 ### Changed
 
-- **Breaking:** Deprecate support for NodeJS v12 (EOL)
+- **BREAKING**: Deprecate support for NodeJS v12 (EOL)
 
 ### Added
 
@@ -268,7 +268,7 @@ For the full breakdown of all changes in detail, see the PR (#170).
 
 ### Changed
 
-- **Breaking:** Deprecate support for NodeJS v10 (EOL)
+- **BREAKING**: Deprecate support for NodeJS v10 (EOL)
 - Move lockfileVersion to v2
 - Deprecate `registrar.getDomainPremiumPrice` in favour of
   `registrar.getDomainPrices`
@@ -333,7 +333,7 @@ For the full breakdown of all changes in detail, see the PR (#170).
 
 ### Changed
 
-- **Breaking:** Deprecate support for NodeJS v8
+- **BREAKING**: Deprecate support for NodeJS v8
 - Deprecate JSCS usage. Implement
   [semistandard](https://www.npmjs.com/package/semistandard)
 - Simplify testing instructions
@@ -373,7 +373,7 @@ For the full breakdown of all changes in detail, see the PR (#170).
 
 ### Changed
 
-- **Breaking:** Deprecate Node v6
+- **BREAKING**: Deprecate Node v6
 
 ### Added
 
