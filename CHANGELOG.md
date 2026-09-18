@@ -3,6 +3,14 @@
 This project uses [Semantic Versioning 2.0.0](http://semver.org/), the format is
 based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Changed
+
+- Swap the names of `services.applyService` and `services.appliedServices`.
+  `appliedServices` now lists the services applied to a domain, and
+  `applyService` now applies a service to a domain. (requires major version)
+
 ## 13.1.0 - 2026-09-17
 
 ### Deprecated
