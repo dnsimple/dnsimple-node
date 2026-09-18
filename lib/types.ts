@@ -394,7 +394,11 @@ export type VanityNameServer = {
   updated_at: string;
 };
 
-export type Webhook = { id: number; url: string; suppressed_at: NullableDateTime };
+export type Webhook = {
+  id: number;
+  url: string;
+  suppressed_at: NullableDateTime;
+};
 
 export type RegistrantChange = {
   id: number;
