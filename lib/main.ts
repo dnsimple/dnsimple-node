@@ -3,6 +3,7 @@ import { Accounts } from "./accounts";
 import { Billing } from "./billing";
 import { Certificates } from "./certificates";
 import { Contacts } from "./contacts";
+import { DnsAnalytics } from "./dns_analytics";
 import { Domains } from "./domains";
 import { getRuntimeFetcher, type Fetcher } from "./fetcher/fetcher";
 import { Identity } from "./identity";
@@ -119,6 +120,7 @@ export class DNSimple {
   readonly billing = new Billing(this);
   readonly certificates = new Certificates(this);
   readonly contacts = new Contacts(this);
+  readonly dnsAnalytics = new DnsAnalytics(this);
   readonly domains = new Domains(this);
   readonly identity = new Identity(this);
   readonly oauth = new OAuth(this);
