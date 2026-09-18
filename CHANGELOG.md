@@ -9,6 +9,8 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Added `Registrar.restoreDomain` and `Registrar.getDomainRestore` to restore a
   domain and retrieve a domain restore, and the `DomainRestore` type. (#309)
+- Added `Zones.batchChangeZoneRecords` to create, update, and delete zone
+  records in a single request, and the `BatchChangeZoneRecordsResponse` type. (#313)
 
 ### Changed
 

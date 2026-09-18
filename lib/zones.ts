@@ -417,6 +417,51 @@ export class Zones {
   })();
 
   /**
+   * Performs multiple record operations (create, update and/or delete) for a zone in a single request for atomicity and efficiency.
+   *
+   * POST /{account}/zones/{zone}/batch
+   *
+   * @see https://developer.dnsimple.com/v2/zones/records/#batchChangeZoneRecords
+   *
+   * @param account The account id
+   * @param zone The zone name
+   * @param params Query parameters
+   */
+  batchChangeZoneRecords = (() => {
+    const method = (
+      account: number,
+      zone: string,
+      data: Partial<{
+        creates: Array<{
+          name: string;
+          type: string;
+          content: string;
+          ttl?: number;
+          priority?: number;
+          regions?: Array<types.ZoneRecordRegion>;
+        }>;
+        updates: Array<{
+          id: number;
+          name?: string;
+          content?: string;
+          ttl?: number;
+          priority?: number;
+          regions?: Array<types.ZoneRecordRegion>;
+        }>;
+        deletes: Array<{ id: number }>;
+      }>,
+      params: QueryParams & {} = {}
+    ): Promise<{ data: types.BatchChangeZoneRecordsResponse }> =>
+      this._client.request(
+        "POST",
+        `/${account}/zones/${zone}/batch`,
+        data,
+        params
+      );
+    return method;
+  })();
+
+  /**
    * Checks if a zone record is fully distributed to all our name servers across the globe.
    *
    * GET /{account}/zones/{zone}/records/{zonerecord}/distribution
