@@ -256,6 +256,14 @@ export type DomainRenewal = {
   updated_at: string;
 };
 
+export type DomainRestore = {
+  id: number;
+  domain_id: number;
+  state: "new" | "restoring" | "restored" | "cancelled";
+  created_at: string;
+  updated_at: string;
+};
+
 export type NameServer = {
   id: number;
   name: string;
