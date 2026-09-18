@@ -7,9 +7,9 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Swap the names of `services.applyService` and `services.appliedServices`.
-  `appliedServices` now lists the services on a domain, and `applyService` now
-  applies a service to a domain. (#312) (requires major version)
+- **BREAKING**: Swap the names of `services.applyService` and
+  `services.appliedServices`. `appliedServices` now lists the services on a
+  domain, and `applyService` applies one. (#312) (requires major version)
 
 ## 13.1.0 - 2026-09-17
 
