@@ -4,7 +4,7 @@ import { createTestClient, responseFromFixture } from "./util";
 const dnsimple = createTestClient();
 
 describe("domain services", () => {
-  describe("#applyService", () => {
+  describe("#appliedServices", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -14,7 +14,7 @@ describe("domain services", () => {
         responseFromFixture("appliedServices/success.http")
       );
 
-      await dnsimple.services.applyService(accountId, domainId, { page: 1 });
+      await dnsimple.services.appliedServices(accountId, domainId, { page: 1 });
 
       expect(fetchMock.callHistory.called()).toBe(true);
     });
@@ -25,7 +25,9 @@ describe("domain services", () => {
         responseFromFixture("appliedServices/success.http")
       );
 
-      await dnsimple.services.applyService(accountId, domainId, { foo: "bar" });
+      await dnsimple.services.appliedServices(accountId, domainId, {
+        foo: "bar",
+      });
 
       expect(fetchMock.callHistory.called()).toBe(true);
     });
@@ -36,7 +38,7 @@ describe("domain services", () => {
         responseFromFixture("appliedServices/success.http")
       );
 
-      await dnsimple.services.applyService(accountId, domainId, {
+      await dnsimple.services.appliedServices(accountId, domainId, {
         sort: "name:asc",
       });
 
@@ -49,7 +51,7 @@ describe("domain services", () => {
         responseFromFixture("appliedServices/success.http")
       );
 
-      const response = await dnsimple.services.applyService(
+      const response = await dnsimple.services.appliedServices(
         accountId,
         domainId
       );
@@ -60,7 +62,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#applyService.collectAll", () => {
+  describe("#appliedServices.collectAll", () => {
     const accountId = 1010;
     const domainId = "example.com";
 
@@ -80,7 +82,7 @@ describe("domain services", () => {
         responseFromFixture("pages-3of3.http")
       );
 
-      const items = await dnsimple.services.applyService.collectAll(
+      const items = await dnsimple.services.appliedServices.collectAll(
         accountId,
         domainId
       );
@@ -91,7 +93,7 @@ describe("domain services", () => {
     });
   });
 
-  describe("#appliedServices", () => {
+  describe("#applyService", () => {
     const accountId = 1010;
     const domainId = "example.com";
     const serviceId = "name";
@@ -102,7 +104,7 @@ describe("domain services", () => {
         responseFromFixture("applyService/success.http")
       );
 
-      const response = await dnsimple.services.appliedServices(
+      const response = await dnsimple.services.applyService(
         accountId,
         domainId,
         serviceId,

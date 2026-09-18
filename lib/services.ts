@@ -65,17 +65,17 @@ export class Services {
   /**
    * List services applied to a domain.
    *
-   * This API is paginated. Call `applyService.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await applyService.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
+   * This API is paginated. Call `appliedServices.iterateAll(account, domain, params)` to get an asynchronous iterator over individual items across all pages. You can also use `await appliedServices.collectAll(account, domain, params)` to quickly retrieve all items across all pages into an array. We suggest using `iterateAll` when possible, as `collectAll` will make all requests at once, which may increase latency and trigger rate limits.
    *
    * GET /{account}/domains/{domain}/services
    *
-   * @see https://developer.dnsimple.com/v2/services/#listDomainAppliedServices
+   * @see https://developer.dnsimple.com/v2/services/domains/#listDomainAppliedServices
    *
    * @param account The account id
    * @param domain The domain name or id
    * @param params Query parameters
    */
-  applyService = (() => {
+  appliedServices = (() => {
     const method = (
       account: number,
       domain: string,
@@ -112,14 +112,14 @@ export class Services {
    *
    * POST /{account}/domains/{domain}/services/{service}
    *
-   * @see https://developer.dnsimple.com/v2/services/#applyServiceToDomain
+   * @see https://developer.dnsimple.com/v2/services/domains/#applyServiceToDomain
    *
    * @param account The account id
    * @param domain The domain name or id
    * @param service The service sid or id
    * @param params Query parameters
    */
-  appliedServices = (() => {
+  applyService = (() => {
     const method = (
       account: number,
       domain: string,
@@ -141,7 +141,7 @@ export class Services {
    *
    * DELETE /{account}/domains/{domain}/services/{service}
    *
-   * @see https://developer.dnsimple.com/v2/services/#unapplyServiceFromDomain
+   * @see https://developer.dnsimple.com/v2/services/domains/#unapplyServiceFromDomain
    *
    * @param account The account id
    * @param domain The domain name or id

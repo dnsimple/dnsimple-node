@@ -302,19 +302,12 @@ export type ZoneFile = { zone: string };
 export type ZoneDistribution = { distributed: boolean };
 
 export type ZoneRecordRegion =
-  | "global"
-  | "SV1"
-  | "ORD"
-  | "IAD"
-  | "AMS"
-  | "TKO"
-  | "SYD"
-  | "CDG"
-  | "FRA";
+  "global" | "SV1" | "ORD" | "IAD" | "AMS" | "TKO" | "SYD" | "CDG" | "FRA";
 
 export type ZoneRecord = {
   id: number;
   zone_id: string;
+  /** @deprecated the value is always null, and the field will be removed in the next major version */
   parent_id: number | null;
   name: string;
   content: string;

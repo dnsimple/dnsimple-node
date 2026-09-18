@@ -7,7 +7,7 @@ on:
       - v*.*.*
 
 permissions:
-  id-token: write  # Required for OIDC
+  id-token: write # Required for OIDC
   contents: read
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wait for CI to pass
-        uses: lewagon/wait-on-check-action@v1.8.0
+        uses: lewagon/wait-on-check-action@v1.9.1
         with:
           ref: ${{ github.sha }}
           running-workflow-name: Wait for CI
@@ -29,9 +29,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: deployment
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.1
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"

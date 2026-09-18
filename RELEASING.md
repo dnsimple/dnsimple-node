@@ -10,7 +10,8 @@ This document describes the steps to release a new version of DNSimple/Node.
 
 ## Release process
 
-1. **Determine the new version** using [Semantic Versioning](https://semver.org/)
+1. **Determine the new version** using
+   [Semantic Versioning](https://semver.org/)
 
    ```shell
    VERSION=X.Y.Z
@@ -19,6 +20,11 @@ This document describes the steps to release a new version of DNSimple/Node.
    - **MAJOR** version for incompatible API changes
    - **MINOR** version for backwards-compatible functionality additions
    - **PATCH** version for backwards-compatible bug fixes
+
+   Check the `## Unreleased` section in `CHANGELOG.md` for entries tagged
+   `(requires major version)`. Any such entry requires a **MAJOR** version,
+   whatever the other entries are. Raising the minimum supported Node.js version
+   is always a breaking change, so its changelog entry must carry this tag.
 
 2. **Run tests** and confirm they pass
 
@@ -30,7 +36,7 @@ This document describes the steps to release a new version of DNSimple/Node.
 
    ```json
    {
-     "version": "$VERSION",
+     "version": "$VERSION"
    }
    ```
 
@@ -42,7 +48,7 @@ This document describes the steps to release a new version of DNSimple/Node.
 
 5. **Update the changelog** with the new version
 
-   Finalize the `## main` section in `CHANGELOG.md` assigning the version.
+   Finalize the `## Unreleased` section in `CHANGELOG.md` assigning the version.
 
 6. **Commit and push the changes**
 
@@ -64,5 +70,6 @@ GitHub Actions will take it from here and publish to npm.
 
 ## Post-release
 
-- Verify the new version appears on [npm](https://www.npmjs.com/package/dnsimple)
+- Verify the new version appears on
+  [npm](https://www.npmjs.com/package/dnsimple)
 - Verify the GitHub release was created
