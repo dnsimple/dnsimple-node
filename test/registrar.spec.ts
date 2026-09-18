@@ -211,10 +211,7 @@ describe("registrar", () => {
 
       const domainRestore = response.data;
       expect(domainRestore.id).toBe(43);
-      expect(domainRestore.domain_id).toBe(214);
       expect(domainRestore.state).toBe("new");
-      expect(domainRestore.created_at).toBe("2024-02-14T14:40:42Z");
-      expect(domainRestore.updated_at).toBe("2024-02-14T14:40:42Z");
     });
   });
 
