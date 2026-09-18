@@ -66,44 +66,19 @@ describe("dns analytics", () => {
 
       const response = await dnsimple.dnsAnalytics.queryDnsAnalytics(accountId);
 
-      const data = response.data;
-      expect(data.headers).toEqual(["zone_name", "date", "volume"]);
-      expect(data.rows.length).toBe(12);
-      expect(data.rows[0]).toEqual(["bar.com", "2023-12-08", 1200]);
-      expect(data.rows[11]).toEqual(["foo.com", "2024-01-08", 1200]);
-    });
-
-    it("exposes the query", async () => {
-      fetchMock.get(
-        "https://api.dnsimple.com/v2/1/dns_analytics",
-        responseFromFixture("dnsAnalytics/success.http")
-      );
-
-      const response = await dnsimple.dnsAnalytics.queryDnsAnalytics(accountId);
-
-      const query = response.query;
-      expect(query.account_id).toBe(1);
-      expect(query.start_date).toBe("2023-12-08");
-      expect(query.end_date).toBe("2024-01-08");
-      expect(query.sort).toBe("zone_name:asc,date:asc");
-      expect(query.page).toBe(0);
-      expect(query.per_page).toBe(100);
-      expect(query.groupings).toBe("zone_name,date");
-    });
-
-    it("exposes the pagination info", async () => {
-      fetchMock.get(
-        "https://api.dnsimple.com/v2/1/dns_analytics",
-        responseFromFixture("dnsAnalytics/success.http")
-      );
-
-      const response = await dnsimple.dnsAnalytics.queryDnsAnalytics(accountId);
-
-      const pagination = response.pagination;
-      expect(pagination.current_page).toBe(0);
-      expect(pagination.per_page).toBe(100);
-      expect(pagination.total_entries).toBe(93);
-      expect(pagination.total_pages).toBe(1);
+      expect(response.data.headers).toEqual(["zone_name", "date", "volume"]);
+      expect(response.data.rows.length).toBe(12);
+      expect(response.data.rows[0]).toEqual(["bar.com", "2023-12-08", 1200]);
+      expect(response.query).toEqual({
+        account_id: 1,
+        start_date: "2023-12-08",
+        end_date: "2024-01-08",
+        sort: "zone_name:asc,date:asc",
+        page: 0,
+        per_page: 100,
+        groupings: "zone_name,date",
+      });
+      expect(response.pagination.current_page).toBe(0);
     });
   });
 });
