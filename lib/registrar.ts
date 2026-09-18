@@ -272,7 +272,7 @@ export class Registrar {
   })();
 
   /**
-   * Explicitly restores an domain that can not be renewed anymore, if the registry supports this function.
+   * Explicitly restores a domain that can no longer be renewed, if the registry supports this function.
    *
    * Your account must be active for this command to complete successfully. You will be automatically charged the restore fee upon successful restore, so please be careful with this command.
    *
