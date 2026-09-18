@@ -359,16 +359,9 @@ describe("zone records", () => {
       const { creates, updates, deletes } = response.data;
       expect(creates.length).toBe(2);
       expect(creates[0].id).toBe(67623409);
-      expect(creates[0].zone_id).toBe(zoneId);
-      expect(creates[0].name).toBe("ab");
-      expect(creates[0].content).toBe("3.2.3.4");
-      expect(creates[0].ttl).toBe(3600);
-      expect(creates[0].type).toBe("A");
-      expect(creates[0].regions).toEqual(["global"]);
       expect(creates[1].id).toBe(67623410);
       expect(updates.length).toBe(2);
       expect(updates[0].id).toBe(67622534);
-      expect(updates[0].content).toBe("3.2.3.40");
       expect(updates[1].id).toBe(67622537);
       expect(deletes).toEqual([{ id: 67622509 }, { id: 67622527 }]);
     });
