@@ -3,6 +3,14 @@
 This project uses [Semantic Versioning 2.0.0](http://semver.org/), the format is
 based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Changed
+
+- **BREAKING**: Swap the names of `services.applyService` and
+  `services.appliedServices`. `appliedServices` now lists the services on a
+  domain, and `applyService` applies one. (#312) (requires major version)
+
 ## 13.1.0 - 2026-09-17
 
 ### Deprecated
@@ -183,8 +191,9 @@ literal string as a constant string type.
 
 This is a major change that brings TypeScript support as well as many
 quality-of-life improvements and internal improvements. For details on important
-changes and how to migrate, see [UPGRADE.md](./UPGRADE.md). For the full
-breakdown of all changes in detail, see the PR (#170).
+changes and how to migrate, see
+[UPGRADE.md](https://github.com/dnsimple/dnsimple-node/blob/v7.0.0/UPGRADE.md).
+For the full breakdown of all changes in detail, see the PR (#170).
 
 ### Changed
 
