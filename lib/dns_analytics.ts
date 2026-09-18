@@ -17,7 +17,7 @@ export class DnsAnalytics {
    * @param params Query parameters
    * @param params.start_date Only include results on or after this date (YYYY-MM-DD)
    * @param params.end_date Only include results on or before this date (YYYY-MM-DD)
-   * @param params.groupings Group results by the given comma separated fields: date, zone_name
+   * @param params.groupings Group results by the given comma separated fields: date, volume, zone_name
    * @param params.sort Sort results by the given comma separated fields and directions, for example "volume:desc,zone_name:asc"
    */
   queryDnsAnalytics = (() => {
