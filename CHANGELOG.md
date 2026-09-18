@@ -12,7 +12,7 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added `Zones.batchChangeZoneRecords` to create, update, and delete zone
   records in a single request, and the `BatchChangeZoneRecordsResponse` type. (#313)
 - Added `DnsAnalytics.queryDnsAnalytics` to query DNS Analytics data, and the
-  `DnsAnalytics` and `DnsAnalyticsQuery` types.
+  `DnsAnalytics` and `DnsAnalyticsQuery` types. (#314)
 
 ### Changed
 
